@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.dev.bar;
+package com.dev.pygmy;
 
 import android.app.Activity;
 import android.content.Intent;

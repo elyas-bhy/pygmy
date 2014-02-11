@@ -36,7 +36,7 @@
             android:value="@integer/google_play_services_version"/>
 
         <activity
-            android:name="com.dev.bar.MainActivity"
+            android:name="com.dev.pygmy.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
