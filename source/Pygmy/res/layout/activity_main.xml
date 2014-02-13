@@ -24,7 +24,7 @@
     <LinearLayout android:id="@+id/screen_sign_in" style="@style/LLScreen">
         <TextView style="@style/GameTitle" />
         <TextView style="@style/GameBlurb" />
-
+        
         <Button android:id="@+id/button_single_player"
             style="@style/MainScreenButton"
             android:text="@string/single_player" />
@@ -91,4 +91,5 @@
             <TextView android:id="@+id/score3" style="@style/ScoreText" />
         </LinearLayout>
     </LinearLayout>
+  
 </FrameLayout>

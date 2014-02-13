@@ -32,7 +32,7 @@
     <string name="inv_popup_text">Incoming invitation!</string>
     <string name="accept_popup_invite">Accept!</string>
     <string name="sign_out">Sign Out</string>
-    <string name="please_wait">Please wait...</string>
+    <string name="please_wait">Please wait.</string>
     <string name="instructions">Click the button as fast as you can!</string>
     <string name="dismiss">Dismiss</string>
     <string name="your_score">Your score:</string>
@@ -40,4 +40,15 @@
     <string name="game_problem">An error occurred while starting the game. Please try again.</string>
     <string name="click_me">Click me!</string>
     <string name="is_inviting_you">is challenging you to a game!</string>
+    <string name="pref_sound">Sound</string>
+    <string name="pref_vib">Vibrate</string>
+    <string name="pref_notif">Notifications</string>
+    <string name="button_send">Send</string>
+    <string name="text_settings">Settings</string>
+    <string name="pref_des">Design</string>
+    <string name="pref_gen">General</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="Night">Night</string>
+    <string name="Day">Day</string>
 </resources>

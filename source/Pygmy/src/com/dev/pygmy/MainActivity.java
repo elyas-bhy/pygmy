@@ -19,8 +19,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -113,7 +116,27 @@ public class MainActivity extends BaseGameActivity
         for (int id : CLICKABLES) {
             findViewById(id).setOnClickListener(this);
         }
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.default_actionbar, menu);
+        return true;
+    }
+    
+    @Override
+   	public boolean onOptionsItemSelected(MenuItem item) {
+      	switch(item.getItemId()) {
+      		case R.id.menu_settings:
+      			startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+      			return true;
+      		default:
+      			break;
+      	}
+      	return false;
+      }
 
     /**
      * Called by the base class (BaseGameActivity) when sign-in has failed. For
