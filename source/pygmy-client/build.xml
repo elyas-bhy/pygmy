@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="pygmy-client" default="dex" basedir=".">
+
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="bin" />
+	<property name="libs.dir" location="libs" />
+	<property name="dex.dir" location="dex" />
+	
+    <property environment="env" />
+	<property name="android-sdk" location="${env.ANDROID_HOME}" />
+	<property name="dex.bin" location="${android-sdk}/build-tools/19.0.1" />
+	<property name="dexed-jar" value="${dex.dir}/plugin-dexed.jar" />
+	
+	<path id="classpath">
+	    <fileset dir="${libs.dir}" >
+	        <include name="*.jar" />
+	    </fileset>
+	</path>
+
+	<!-- Deletes the existing build and dex directories -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${dex.dir}" />
+	</target>
+
+	<!-- Creates the build and dex directory -->
+	<target name="makedir">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dex.dir}" />
+	</target>
+
+	<!-- Compiles the Java code -->
+	<target name="compile" depends="clean, makedir">
+		<javac srcdir="${src.dir}" destdir="${build.dir}">
+		    <classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<!-- Convert this project's .class files into a dexed JAR. -->
+	<target name="dex" depends="compile">
+		<echo>Using Android SDK: ${android-sdk}</echo>
+		<echo>Converting compiled files into ${dexed-jar}...</echo>
+		<apply executable="${dex.bin}/dx" failonerror="true" parallel="true">
+			<arg value="--dex" />
+			<arg value="--output=${dexed-jar}" />
+			<arg path="${build.dir}" />
+			<fileset dir="${build.dir}" includes="${build.dir}" />
+		</apply>
+	</target>
+
+</project> 
