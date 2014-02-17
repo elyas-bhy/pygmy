@@ -16,6 +16,8 @@
 
 package com.dev.pygmy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +35,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
 import com.dev.pygmy.util.SkeletonTurn;
+import com.dev.pygmy.util.ImageDownloader;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -48,6 +53,7 @@ import com.google.android.gms.games.multiplayer.turnbased.LoadMatchesResponse;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
@@ -161,6 +167,7 @@ public class MainActivity extends BaseGameActivity implements
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mSlidingMenu.showContent();
 				Log.d(TAG, "Selected entry: " + position);
+				setProfileView();
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
@@ -200,6 +207,8 @@ public class MainActivity extends BaseGameActivity implements
 	public void onStartMatchClicked(View view) {
 		Intent intent = getGamesClient().getSelectPlayersIntent(1, 7, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
+		
+
 	}
 
 	// Create a one-on-one automatch game.
@@ -333,6 +342,35 @@ public class MainActivity extends BaseGameActivity implements
 		setViewVisibility();
 		mDataView.setText(mTurnData.data);
 		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
+	}
+	
+	//Switch to profile view
+	public void setProfileView(){
+		//Initialisation
+		URL imageUrl = null;
+        Person p = getPlusClient().getCurrentPerson();
+  
+        //To display
+        String name =p.getDisplayName();
+        String nationality=p.getLanguage().toUpperCase();	
+
+        //getting url 
+        try {
+        	imageUrl = new URL(p.getImage().getUrl());
+				
+        } catch (MalformedURLException e) {
+        	e.printStackTrace();
+        }	 
+
+       //Setting text and image in views
+       ((TextView)findViewById(R.id.name_profile)).setText(name);
+       ((TextView)findViewById(R.id.game_one)).setText("First game");
+       ((TextView)findViewById(R.id.nat_profile)).setText(nationality);
+       ImageView a = (ImageView)findViewById(R.id.image_profile);
+       final ImageDownloader mDownload = new ImageDownloader();
+       mDownload.download(imageUrl.toString(), a);
+       
+       findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 	}
 
 	// Helpful dialogs

@@ -25,7 +25,16 @@
         <item name="android:textAppearanceLarge">@style/Heading</item>
         <item name="android:textAppearanceMedium">@style/SubHeading</item>
     </style>
+    
+    <color name="BlurbColor">#a0a0a0</color>
+    <color name="AccentColor">#cc0000</color>
+    <color name="ButtonTextColor">#ffffff</color>
 
+    <style name="Blurb">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/BlurbColor</item>
+    </style>
 
     <style name="DefaultText" parent="@android:style/TextAppearance">
         <item name="android:textSize">15sp</item>
@@ -69,4 +78,73 @@
         <item name="android:textSize">24sp</item>
         <item name="android:padding">12dp</item>
     </style>
+    
+    <style name="screen_profile">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    
+      <style name="box_profile">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#f0f0f0</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">40dp</item>
+    </style>
+    
+     <style name="text_profile">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/BlurbColor</item>
+    </style>
+    
+    <style name="game_profile">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/BlurbColor</item>
+    </style>
+    
+    <style name="image_profile">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">#000000</item>
+		<item name="android:padding">3dp</item>
+     </style>
+    
+     <style name="game_list_profile">
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    
+     <style name="text_game_list_profile">
+         <item name="android:padding">5dp</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/BlurbColor</item>
+    </style>
+    
+    <style name="name_profile" parent="@style/Blurb">
+         <item name="android:gravity">left</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/AccentColor</item>
+        <item name="android:textColor">@color/ButtonTextColor</item>     
+    </style>
+    
+    
 </resources>
