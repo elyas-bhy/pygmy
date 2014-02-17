@@ -42,6 +42,7 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
 
 /** 
  * TBMPSkeleton: A minimalistic "game" that shows turn-based
@@ -130,6 +131,10 @@ public class MainActivity extends BaseGameActivity implements
 		mMenu.setFadeDegree(0.35f);
 		mMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		mMenu.setMenu(R.layout.menu_frame);
+		mMenu.setActionBarSlideIcon(new ActionBarSlideIcon(this,
+		           R.drawable.ic_navigation_drawer, 
+		           R.string.app_name, 
+		           R.string.app_name));
     }
     
     private void initSigninButtons() {

@@ -14,7 +14,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -28,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.jeremyfeinstein.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
+import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
 
 public class SlidingMenu extends RelativeLayout {
 
@@ -64,15 +64,19 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public static final int LEFT_RIGHT = 2;
 
-	private CustomViewAbove mViewAbove;
+	private ActionBarSlideIcon mActionBarSlideIcon;
+	
+	private final CustomViewAbove mViewAbove;
 
-	private CustomViewBehind mViewBehind;
+	private final CustomViewBehind mViewBehind;
 
 	private OnOpenListener mOpenListener;
 	
 	private OnOpenListener mSecondaryOpenListner;
 
 	private OnCloseListener mCloseListener;
+	
+	private OnSlideListener mOnSlideListener;
 
 	/**
 	 * The listener interface for receiving onOpen events.
@@ -160,6 +164,22 @@ public class SlidingMenu extends RelativeLayout {
 		 * @param percentOpen the percent open
 		 */
 		public void transformCanvas(Canvas canvas, float percentOpen);
+	}
+	
+	/**
+	 * This listener will observe the slide out offset of the left menu
+	 * 
+	 * @author Hannes Dorfmann
+	 * 
+	 */
+	public interface OnSlideListener {
+		/**
+		 * This method is called to inform how wide open the sliding menu is.
+		 * 
+		 * @param offset
+		 *            0.0f means closed (not visible), 1.0f means fully opened
+		 */
+		public void onSlideMenu(float offset);
 	}
 
 	/**
@@ -279,7 +299,57 @@ public class SlidingMenu extends RelativeLayout {
 		int selectorRes = ta.getResourceId(R.styleable.SlidingMenu_selectorDrawable, -1);
 		if (selectorRes != -1)
 			setSelectorDrawable(selectorRes);
+		// ActionBarSlideIcon
+		boolean xmlAttrActionBarSlideIconEnabled = ta.getBoolean(
+				R.styleable.SlidingMenu_actionBarIconSlideable, false);
+		int xmlAttrActionBarSlideIconDrawable = ta.getResourceId(
+				R.styleable.SlidingMenu_actionBarSlideIconDrawable, -1);
+		int xmlAttrActionBarSlideIconOpenContentDescRes = ta.getResourceId(
+				R.styleable.SlidingMenu_actionBarSlideIconOpenContentDesc, 0);
+		int xmlAttrActionBarSlideIconCloseContentDescRes = ta.getResourceId(
+				R.styleable.SlidingMenu_actionBarSlideIconCloseContentDesc, 0);
+		if (context instanceof Activity)
+			initActionBarSlideIconFromXmlAttributes(((Activity) context),
+					xmlAttrActionBarSlideIconEnabled,
+					xmlAttrActionBarSlideIconDrawable,
+					xmlAttrActionBarSlideIconOpenContentDescRes,
+					xmlAttrActionBarSlideIconCloseContentDescRes);
+		else
+			Log.e(TAG,
+					"The context who has created the this View seems not to be an Activity. Therefore the ActionBarSlideIcon could not be instantiated");
 		ta.recycle();
+	}
+	
+	/**
+	 * This method initializes the {@link ActionBarSlideIcon}, that has been
+	 * specified in the {@link SlidingMenu} xml. Since the
+	 * {@link ActionBarSlideIcon} needs a reference to the attached activity, a
+	 * {@link ActionBarSlideIcon} can not be created from the
+	 * {@link #SlidingMenu(Context, AttributeSet, int)} constructor. So this
+	 * method will be called from
+	 * {@link #attachToActivity(Activity, int, boolean)}
+	 * 
+	 * @param activity
+	 */
+	private void initActionBarSlideIconFromXmlAttributes(Activity activity,
+			boolean actionBarSlideIconEnabled,
+			int actionBarSlideIconDrawable,
+			int actionBarSlideIconOpenContentDescRes,
+			int actionBarSlideIconCloseContentDescRes) {
+
+		if (actionBarSlideIconEnabled) {
+
+			if (actionBarSlideIconDrawable != -1) {
+				setActionBarSlideIcon(new ActionBarSlideIcon(activity,
+						actionBarSlideIconDrawable,
+						actionBarSlideIconOpenContentDescRes,
+						actionBarSlideIconCloseContentDescRes));
+			} else
+				setActionBarSlideIcon(new ActionBarSlideIcon(activity,
+						actionBarSlideIconOpenContentDescRes,
+						actionBarSlideIconOpenContentDescRes));
+		}
+
 	}
 
 	/**
@@ -335,6 +405,25 @@ public class SlidingMenu extends RelativeLayout {
 				content.setBackgroundResource(background);
 			break;
 		}
+	}
+	
+	/**
+	 * Sets the {@link ActionBarSlideIcon}
+	 * 
+	 * @param slideIcon
+	 */
+	public void setActionBarSlideIcon(ActionBarSlideIcon slideIcon) {
+		this.mActionBarSlideIcon = slideIcon;
+	}
+
+	/**
+	 * Get the {@link ActionBarSlideIcon}
+	 * 
+	 * @return the {@link ActionBarSlideIcon} or null, if no
+	 *         {@link ActionBarSlideIcon} has been set yet
+	 */
+	public ActionBarSlideIcon getSlideIcon() {
+		return mActionBarSlideIcon;
 	}
 
 	/**
@@ -921,6 +1010,15 @@ public class SlidingMenu extends RelativeLayout {
 	public void setOnClosedListener(OnClosedListener listener) {
 		mViewAbove.setOnClosedListener(listener);
 	}
+	
+	/**
+	 * Set the {@link OnSlideListener}
+	 * 
+	 * @param listener
+	 */
+	public void setOnSlideListener(OnSlideListener listener) {
+		this.mOnSlideListener = listener;
+	}
 
 	public static class SavedState extends BaseSavedState {
 
@@ -943,6 +1041,7 @@ public class SlidingMenu extends RelativeLayout {
 		/* (non-Javadoc)
 		 * @see android.view.AbsSavedState#writeToParcel(android.os.Parcel, int)
 		 */
+		@Override
 		public void writeToParcel(Parcel out, int flags) {
 			super.writeToParcel(out, flags);
 			out.writeInt(mItem);
@@ -954,6 +1053,7 @@ public class SlidingMenu extends RelativeLayout {
 				return new SavedState(in);
 			}
 
+			@Override
 			public SavedState[] newArray(int size) {
 				return new SavedState[size];
 			}
@@ -1000,13 +1100,21 @@ public class SlidingMenu extends RelativeLayout {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void manageLayers(float percentOpen) {
-		if (Build.VERSION.SDK_INT < 11) return;
+		if (mOnSlideListener != null)
+			mOnSlideListener.onSlideMenu(percentOpen);
+
+		if (mActionBarSlideIcon != null)
+			mActionBarSlideIcon.setSlideOffset(percentOpen);
+
+		if (Build.VERSION.SDK_INT < 11)
+			return;
 
 		boolean layer = percentOpen > 0.0f && percentOpen < 1.0f;
 		final int layerType = layer ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_NONE;
 
 		if (layerType != getContent().getLayerType()) {
 			getHandler().post(new Runnable() {
+				@Override
 				public void run() {
 					Log.v(TAG, "changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
 					getContent().setLayerType(layerType, null);
