@@ -1,13 +1,13 @@
 package com.dev.pluginloader;
 
-import com.dev.pluginloader.R;
-import com.lib.pygmy.PygmyGame;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+
+import com.lib.pygmy.PygmyGame;
+
 import dalvik.system.DexClassLoader;
 
 public class MainActivity extends Activity {

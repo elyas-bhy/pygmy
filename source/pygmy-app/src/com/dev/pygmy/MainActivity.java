@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dev.pygmy.R;
 import com.dev.pygmy.util.SkeletonTurn;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
@@ -40,6 +41,8 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
 import com.google.example.games.basegameutils.BaseGameActivity;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
 
 /** 
  * TBMPSkeleton: A minimalistic "game" that shows turn-based
@@ -67,6 +70,7 @@ public class MainActivity extends BaseGameActivity implements
     public TextView mTurnTextView;
 
     private AlertDialog mAlertDialog;
+    private SlidingMenu mMenu;
 
     // For our intents
     final static int RC_SELECT_PLAYERS = 10000;
@@ -90,32 +94,14 @@ public class MainActivity extends BaseGameActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Setup signin button
-        findViewById(R.id.sign_out_button).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        signOut();
-                        setViewVisibility();
-                    }
-                });
-
-        findViewById(R.id.sign_in_button).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // start the asynchronous sign in flow
-                        beginUserInitiatedSignIn();
-
-                        findViewById(R.id.sign_in_button).setVisibility(
-                                View.GONE);
-
-                    }
-                });
+        
+        // Load preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        
+        initSlidingMenu();
+        initSigninButtons();
         mDataView = ((TextView) findViewById(R.id.data_view));
         mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
     
     @Override
@@ -134,6 +120,43 @@ public class MainActivity extends BaseGameActivity implements
     		break;
     	}
     	return false;
+    }
+    
+    private void initSlidingMenu() {
+		mMenu = new SlidingMenu(this);
+		mMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		mMenu.setShadowWidthRes(R.dimen.shadow_width);
+		mMenu.setShadowDrawable(R.drawable.shadow);
+		mMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		mMenu.setFadeDegree(0.35f);
+		mMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+		mMenu.setMenu(R.layout.menu_frame);
+		mMenu.setActionBarSlideIcon(new ActionBarSlideIcon(this,
+		           R.drawable.ic_navigation_drawer, 
+		           R.string.app_name, 
+		           R.string.app_name));
+    }
+    
+    private void initSigninButtons() {
+        findViewById(R.id.sign_out_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        signOut();
+                        setViewVisibility();
+                    }
+                });
+
+        findViewById(R.id.sign_in_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // start the asynchronous sign in flow
+                        beginUserInitiatedSignIn();
+                        findViewById(R.id.sign_in_button).setVisibility(
+                                View.GONE);
+                    }
+                });
     }
 
     // Displays your inbox. You will get back onActivityResult where
