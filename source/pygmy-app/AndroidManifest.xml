@@ -40,6 +40,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
+        
+        <activity android:name=".GameHomePageActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dev.pygmy.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

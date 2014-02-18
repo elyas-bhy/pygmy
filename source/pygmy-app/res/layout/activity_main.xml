@@ -197,40 +197,70 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
     </RelativeLayout>
-    
-    
+
     <!-- "PROFILE SCREEN -->
-    <LinearLayout android:id="@+id/screen_profile" style="@style/screen_profile">
-        <LinearLayout style="@style/box_profile">
-           <ImageView android:id="@+id/image_profile" style="@style/image_profile"/> 	
-           <TextView android:id="@+id/name_profile"   style="@style/text_profile" /> 
-           <TextView android:id="@+id/nat_profile"    style="@style/text_profile" /> 
-         </LinearLayout>   
-         <View
-    		android:layout_width="fill_parent"
-    		android:layout_height="3dp"
-    		android:background="@android:color/black"/>	
-    		
-         <LinearLayout style="@style/box_profile">
-            <TextView android:id="@+id/played_games_profile"
-            	style="@style/game_profile" android:text="@string/games_played_profile" /> 
-           
-            <!-- "MOST PLAYED 1-->
-            <LinearLayout style="@style/game_list_profile">
-                <TextView android:id="@+id/game_one"
-           		style="@style/text_game_list_profile" android:text="@string/games_played_profile" /> 
-            	<TextView android:id="@+id/score_one"
-            	style="@style/text_game_list_profile" android:text="@string/games_played_profile" /> 
+
+    <LinearLayout
+        android:id="@+id/screen_profile"
+        style="@style/screen_profile" >
+
+        <LinearLayout style="@style/box_profile" >
+
+            <ImageView
+                android:id="@+id/image_profile"
+                style="@style/image_profile" />
+
+            <TextView
+                android:id="@+id/name_profile"
+                style="@style/text_profile" />
+
+            <TextView
+                android:id="@+id/nat_profile"
+                style="@style/text_profile" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout style="@style/box_profile" >
+
+            <TextView
+                android:id="@+id/played_games_profile"
+                style="@style/game_profile"
+                android:text="@string/games_played_profile" />
+
+            <!-- "MOST PLAYED 1 -->
+
+            <LinearLayout style="@style/game_list_profile" >
+
+                <TextView
+                    android:id="@+id/game_one"
+                    style="@style/text_game_list_profile"
+                    android:text="@string/games_played_profile" />
+
+                <TextView
+                    android:id="@+id/score_one"
+                    style="@style/text_game_list_profile"
+                    android:text="@string/games_played_profile" />
             </LinearLayout>
-                
-            <!-- "MOST PLAYED 2-->
-            <LinearLayout style="@style/game_list_profile">
-                <TextView android:id="@+id/game_two"
-           		style="@style/text_game_list_profile" android:text="@string/games_played_profile" /> 
-            	<TextView android:id="@+id/scoreètwo"
-            	style="@style/text_game_list_profile" android:text="@string/games_played_profile" /> 
+
+            <!-- "MOST PLAYED 2 -->
+
+            <LinearLayout style="@style/game_list_profile" >
+
+                <TextView
+                    android:id="@+id/game_two"
+                    style="@style/text_game_list_profile"
+                    android:text="@string/games_played_profile" />
+
+                <TextView
+                    android:id="@+id/scoreètwo"
+                    style="@style/text_game_list_profile"
+                    android:text="@string/games_played_profile" />
             </LinearLayout>
-        </LinearLayout>     
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

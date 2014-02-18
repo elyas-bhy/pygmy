@@ -40,7 +40,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -146,10 +145,9 @@ public class MainActivity extends BaseGameActivity implements
 		mSlidingMenu.setFadeDegree(0.35f);
 		mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		mSlidingMenu.setActionBarSlideIcon(new ActionBarSlideIcon(this,
-				R.drawable.ic_navigation_drawer, 
-				R.string.app_name,
+				R.drawable.ic_navigation_drawer, R.string.app_name,
 				R.string.app_name));
-		
+
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
@@ -164,7 +162,8 @@ public class MainActivity extends BaseGameActivity implements
 		menuView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				mSlidingMenu.showContent();
 				if (position == 2) {
 					setProfileView();
@@ -342,34 +341,34 @@ public class MainActivity extends BaseGameActivity implements
 		mDataView.setText(mTurnData.data);
 		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
 	}
-	
-	//Switch to profile view
-	public void setProfileView(){
-		//Initialisation
+
+	// Switch to profile view
+	public void setProfileView() {
+		// Initialisation
 		URL imageUrl = null;
-        Person p = getPlusClient().getCurrentPerson();
-  
-        //To display
-        String name =p.getDisplayName();
-        String nationality=p.getLanguage().toUpperCase();	
+		Person p = getPlusClient().getCurrentPerson();
 
-        //getting url 
-        try {
-        	imageUrl = new URL(p.getImage().getUrl());
-				
-        } catch (MalformedURLException e) {
-        	e.printStackTrace();
-        }	 
+		// To display
+		String name = p.getDisplayName();
+		String nationality = p.getLanguage().toUpperCase();
 
-       //Setting text and image in views
-       ((TextView)findViewById(R.id.name_profile)).setText(name);
-       ((TextView)findViewById(R.id.game_one)).setText("First game");
-       ((TextView)findViewById(R.id.nat_profile)).setText(nationality);
-       ImageView a = (ImageView)findViewById(R.id.image_profile);
-       final ImageDownloader mDownload = new ImageDownloader();
-       mDownload.download(imageUrl.toString(), a);
-       
-       findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
+		// getting url
+		try {
+			imageUrl = new URL(p.getImage().getUrl());
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		// Setting text and image in views
+		((TextView) findViewById(R.id.name_profile)).setText(name);
+		((TextView) findViewById(R.id.game_one)).setText("First game");
+		((TextView) findViewById(R.id.nat_profile)).setText(nationality);
+		ImageView a = (ImageView) findViewById(R.id.image_profile);
+		final ImageDownloader mDownload = new ImageDownloader();
+		mDownload.download(imageUrl.toString(), a);
+
+		findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 	}
 
 	// Helpful dialogs

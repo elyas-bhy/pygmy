@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array  name="Skin">
+
+    <string-array name="Skin">
         <item>@string/Day</item>
         <item>@string/Night</item>
     </string-array>
-    
-    <string-array  name="SkinData">
+    <string-array name="SkinData">
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="Conditions">
+        <item>@string/cond1</item>
+        <item>@string/cond2</item>
+        <item>@string/cond3</item>
+    </string-array>
+    <string-array name="CondData">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>
