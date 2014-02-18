@@ -27,7 +27,7 @@
     </style>
     
     <color name="BlurbColor">#a0a0a0</color>
-    <color name="AccentColor">#cc0000</color>
+    <color name="AccentColor">@color/orange</color>
     <color name="ButtonTextColor">#ffffff</color>
 
     <style name="Blurb">
