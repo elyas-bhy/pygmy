@@ -73,12 +73,12 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onReportClicked(View view) {
-		Spinner spin = (Spinner) findViewById(R.id.spinner);
+		/*Spinner spin = (Spinner) findViewById(R.id.spinner);
 		String valToSet = spin.getSelectedItem().toString();
 
 		Context context = getApplicationContext();
 
 		Toast toast = Toast.makeText(context, valToSet, TOAST_DELAY);
-		toast.show();
+		toast.show();*/
 	}
 }
