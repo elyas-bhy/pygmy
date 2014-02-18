@@ -166,7 +166,7 @@ public class MainActivity extends BaseGameActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mSlidingMenu.showContent();
-				if (position == 2) {
+				if (position == 1) {
 					setProfileView();
 				}
 			}
@@ -344,7 +344,7 @@ public class MainActivity extends BaseGameActivity implements
 	}
 	
 	//Switch to profile view
-	public void setProfileView(){
+	public void setProfileView() {
 		//Initialisation
 		URL imageUrl = null;
         Person p = getPlusClient().getCurrentPerson();
