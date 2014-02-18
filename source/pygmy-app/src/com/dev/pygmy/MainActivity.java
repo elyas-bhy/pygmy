@@ -166,8 +166,9 @@ public class MainActivity extends BaseGameActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mSlidingMenu.showContent();
-				Log.d(TAG, "Selected entry: " + position);
-				setProfileView();
+				if (position == 2) {
+					setProfileView();
+				}
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
@@ -207,8 +208,6 @@ public class MainActivity extends BaseGameActivity implements
 	public void onStartMatchClicked(View view) {
 		Intent intent = getGamesClient().getSelectPlayersIntent(1, 7, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
-		
-
 	}
 
 	// Create a one-on-one automatch game.
