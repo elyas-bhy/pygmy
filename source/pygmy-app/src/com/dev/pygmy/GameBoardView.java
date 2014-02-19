@@ -51,7 +51,7 @@ public class GameBoardView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.d("", "draw");
-		int nb_case = 5;
+		int nb_case = 19;
 
 		// Colors
 		Paint color1 = new Paint();
@@ -61,50 +61,44 @@ public class GameBoardView extends View {
 
 		draw_checkerboard(canvas, nb_case, color1, color2);
 	}
-	
+
 	private void draw_checkerboard(Canvas canvas, int nb_case, Paint color1, Paint color2){
 		Paint color_black = new Paint();
 		color_black.setColor(Color.BLACK);
 		color_black.setTextSize(20);
-		
-		// Largeur de la vue
+
 		int width = getWidth();
-		// Hauteur de la vue
 		int height = getHeight();
 
-		int step = 0, min = 0, offset = 0;
+		int step = 0, min = 0, offset = 0, coord_i = 0, coord_j = 0;
 		// Minimum taille in width and length
 		min = Math.min(width, height);
-		/*int marge = min/nb_case;
-		min = min - marge;*/
 
-		// Variable number column and line + space for numbering
-		//step = min / nb_case;
+		// Variable number column and line + space for numbering and marge
 		step = min / (nb_case+2);
 		offset = step / 3;
-		
-		float text_position = step/2+color_black.getTextSize()/2;
 
-		for(int i = 0; i < min -step ; i += step) {
+		for(int i = 0; i < nb_case +1 ; ++i) {
 			if (i != 0){
-				for(int j = 0 ; j < min -step; j += step) {
+				for(int j = 0 ; j < nb_case +1; ++j) {
 					if (j != 0){
 						// Alternance
-						canvas.drawRect(i+offset, j+offset, i+offset + step, j+offset + step, ((i/step + j/step)%2 != 0)?color1:color2);
+						coord_i = i*step+offset;
+						coord_j = j*step+offset;
+						canvas.drawRect(coord_i, coord_j, coord_i + step, coord_j + step, ((i + j)%2 != 0)?color1:color2);
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+i/step)), i+(step/2)-color_black.getTextSize()/2+offset, text_position+offset, color_black);		
-				canvas.drawText(Integer.toString(i/step), step/2-color_black.getTextSize()/2+offset, i+(step/2)+color_black.getTextSize()/2+offset, color_black);		
+				canvas.drawText(Character.toString((char)('A'-1+i)), i*step+(step/2)-color_black.getTextSize()/2+offset, step/2+color_black.getTextSize()/2+offset, color_black);		
+				canvas.drawText(Integer.toString(i), step/2-color_black.getTextSize()/2+offset, i*step+(step/2)+color_black.getTextSize()/2+offset, color_black);		
 			}
 		}
 
-
-		canvas.drawLine(step+offset, step+offset, step+offset, step*(nb_case+1)+offset, color_black);
-		canvas.drawLine(step+offset, step+offset, step*(nb_case+1)+offset, step+offset, color_black);
-		canvas.drawLine(step*(nb_case+1)+offset, step*(nb_case+1)+offset, step*(nb_case+1)+offset, step+offset, color_black);
-		canvas.drawLine(step*(nb_case+1)+offset, step*(nb_case+1)+offset, step+offset, step*(nb_case+1)+offset, color_black);
-
-
+		int small_distance = step+offset;
+		int long_distance = step*(nb_case+1)+offset;
+		canvas.drawLine(small_distance, small_distance, small_distance, long_distance, color_black);
+		canvas.drawLine(small_distance, small_distance, long_distance, small_distance, color_black);
+		canvas.drawLine(long_distance, long_distance, long_distance, small_distance, color_black);
+		canvas.drawLine(long_distance, long_distance, small_distance, long_distance, color_black);
 	}
-	
+
 }
