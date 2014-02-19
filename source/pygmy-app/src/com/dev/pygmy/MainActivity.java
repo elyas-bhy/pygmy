@@ -152,6 +152,7 @@ public class MainActivity extends BaseGameActivity implements
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -166,9 +167,13 @@ public class MainActivity extends BaseGameActivity implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				mSlidingMenu.showContent();
-				if (position == 2) {
+				if (position == 1) {
 					setProfileView();
 				}
+				if (position == 2) {
+					startActivity(new Intent(MainActivity.this, GameBoardInterfaceActivity.class));
+				}
+				
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
