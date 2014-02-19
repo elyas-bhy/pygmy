@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
 public class GameBoardView extends View {
@@ -49,7 +50,8 @@ public class GameBoardView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		int nb_case = 8;
+		Log.d("", "draw");
+		int nb_case = 5;
 
 		// Colors
 		Paint color1 = new Paint();

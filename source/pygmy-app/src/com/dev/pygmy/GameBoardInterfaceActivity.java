@@ -9,10 +9,5 @@ public class GameBoardInterfaceActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new GameBoardView(getApplicationContext()));;
-    } 
-	
-    
-    
-    
-    
+    }    
 }
