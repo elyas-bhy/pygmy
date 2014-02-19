@@ -19,12 +19,12 @@
     <item
             android:state_pressed="true"
             android:state_enabled="true"
-            android:drawable="@drawable/button_pressed" />
+            android:drawable="@drawable/button_orange_pressed" />
     <item
             android:state_focused="true"
             android:state_enabled="true"
-            android:drawable="@drawable/button_focused" />
+            android:drawable="@drawable/button_orange_focused" />
     <item
             android:state_enabled="true"
-            android:drawable="@drawable/button_default" />
+            android:drawable="@drawable/button_orange_default" />
 </selector>
