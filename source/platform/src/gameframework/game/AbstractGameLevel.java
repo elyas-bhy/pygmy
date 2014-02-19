@@ -14,8 +14,6 @@ public abstract class AbstractGameLevel implements GameLevel {
 	
 	protected GameUniverse universe;
 	protected GameUniverseViewPort gameBoard;
-	protected ObservableValue<Integer> score[];
-	protected ObservableValue<Integer> life[];
 	protected ObservableValue<Boolean> endOfGame;
 
 	protected final Game g;
@@ -27,8 +25,6 @@ public abstract class AbstractGameLevel implements GameLevel {
 	public AbstractGameLevel(Game g) {
 		this.g = g;
 		this.gameRules = new ArrayList<GameRule>();
-		this.score = g.score();
-		this.life = g.life();
 		g.setCurrentPlayer(g.getPlayers().get(0));
 	}
 	

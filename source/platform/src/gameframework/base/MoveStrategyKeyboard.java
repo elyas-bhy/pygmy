@@ -6,22 +6,21 @@ import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import pacman.entity.Pacman;
+import my.first.game.MovableEntities;
 
 /**
  * {@link MoveStrategy} which listens to the keyboard and answers new
  * {@link Direction speed vectors} based on what the user typed.
  */
 public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
-	protected Direction speedVector = new DirectionDefaultImpl(new Point(0,
-			0));
-	
-	private Pacman pacman;
-	private GameLevel level;
-	
-	public MoveStrategyKeyboard(Pacman pacman, GameLevel level) {
-		this.pacman = pacman;
-		this.level = level;
+	protected Direction speedVector = new DirectionDefaultImpl(new Point(0, 0));
+
+	private GameLevel ml;
+	private MovableEntities me;
+
+	public MoveStrategyKeyboard(MovableEntities me, GameLevel ml) {
+		this.me = me;
+		this.ml = ml;
 	}
 
 	public Direction getSpeedVector() {
@@ -45,6 +44,8 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 			speedVector.setDirection(new Point(0, 1));
 			break;
 		}
-		level.tryMove(pacman, "");
+
+		ml.tryMove(me, "");
+
 	}
 }

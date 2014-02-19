@@ -38,6 +38,7 @@ public abstract class GameMovable implements Movable {
 	}
 
 	public void oneStepMove() {
+		
 		Direction m = moveDriver.getSpeedVector(this);
 		speedVector.setDirection(m.getDirection());
 		position.translate((int) speedVector.getDirection().getX(), 

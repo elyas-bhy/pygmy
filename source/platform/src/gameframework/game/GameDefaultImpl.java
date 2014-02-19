@@ -27,15 +27,15 @@ import javax.swing.JPanel;
  */
 public class GameDefaultImpl implements Game, Observer {
 	
-	protected static final int NB_ROWS = 31;
-	protected static final int NB_COLUMNS = 28;
+	protected String title="Default Game";
+	protected static int NB_ROWS = 31;
+	protected static int NB_COLUMNS = 28;
 	protected static final int SPRITE_SIZE = 16;
-	public static final int MAX_NUMBER_OF_PLAYER = 4;
+	public static int MAX_NUMBER_OF_PLAYER = 4;
+	public static  int MIN_NUMBER_OF_PLAYER=1;
 	public static final int NUMBER_OF_LIVES = 1;
 
 	protected CanvasDefaultImpl defaultCanvas = null;
-	protected ObservableValue<Integer> score[] = new ObservableValue[MAX_NUMBER_OF_PLAYER];
-	protected ObservableValue<Integer> life[] = new ObservableValue[MAX_NUMBER_OF_PLAYER];
 
 	// initialized before each level
 	protected ObservableValue<Boolean> endOfGame = null;
@@ -48,25 +48,17 @@ public class GameDefaultImpl implements Game, Observer {
 	protected int levelNumber;
 	protected ArrayList<GameLevel> gameLevels;
 
-	protected Label lifeText, scoreText;
+	
 	protected Label information;
 	protected Label informationValue;
-	protected Label lifeValue, scoreValue;
 	protected Label currentLevel;
 	protected Label currentLevelValue;
 
+
 	public GameDefaultImpl() {
-		for (int i = 0; i < MAX_NUMBER_OF_PLAYER; ++i) {
-			score[i] = new ObservableValue<Integer>(0);
-			life[i] = new ObservableValue<Integer>(0);
-		}
-		lifeText = new Label("Lives:");
-		scoreText = new Label("Score:");
 		information = new Label("State:");
 		informationValue = new Label("Playing");
-		currentLevel = new Label("Level:");
-		createGUI();
-		setPlayers(1);
+		currentLevel = new Label("Level:");	
 	}
 
 	public void createGUI() {
@@ -128,13 +120,7 @@ public class GameDefaultImpl implements Game, Observer {
 		JPanel c = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
 		c.setLayout(layout);
-		lifeValue = new Label(Integer.toString(life[0].getValue()));
-		scoreValue = new Label(Integer.toString(score[0].getValue()));
 		currentLevelValue = new Label(Integer.toString(levelNumber));
-		c.add(lifeText);
-		c.add(lifeValue);
-		c.add(scoreText);
-		c.add(scoreValue);
 		c.add(currentLevel);
 		c.add(currentLevelValue);
 		c.add(information);
@@ -147,12 +133,6 @@ public class GameDefaultImpl implements Game, Observer {
 	}
 
 	public void start() {
-		for (int i = 0; i < MAX_NUMBER_OF_PLAYER; ++i) {
-			score[i].addObserver(this);
-			life[i].addObserver(this);
-			life[i].setValue(NUMBER_OF_LIVES);
-			score[i].setValue(0);
-		}
 		levelNumber = 0;
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
@@ -164,13 +144,6 @@ public class GameDefaultImpl implements Game, Observer {
 
 	}
 
-	public ObservableValue<Integer>[] score() {
-		return score;
-	}
-
-	public ObservableValue<Integer>[] life() {
-		return life;
-	}
 
 	public ObservableValue<Boolean> endOfGame() {
 		return endOfGame;
@@ -186,34 +159,18 @@ public class GameDefaultImpl implements Game, Observer {
 				informationValue.setText("You win");
 				currentPlayedLevel.end();
 			}
-		} else {
-			for (ObservableValue<Integer> lifeObservable : life) {
-				if (o == lifeObservable) {
-					int lives = ((ObservableValue<Integer>) o).getValue();
-					lifeValue.setText(Integer.toString(lives));
-					if (lives == 0) {
-						informationValue.setText("Defeat");
-						currentPlayedLevel.end();
-					}
-				}
-			}
-			for (ObservableValue<Integer> scoreObservable : score) {
-				if (o == scoreObservable) {
-					scoreValue
-							.setText(Integer
-									.toString(((ObservableValue<Integer>) o)
-											.getValue()));
-				}
-			}
 		}
 	}
 
 	@Override
-	public void setPlayers(int numPlayers) {
+	public void setPlayers(int minPlayers, int maxPlayers) {
 		players = new ArrayList<Player>();
-		for (int i = 0; i < numPlayers; ++i) {
-			players.add(new Player());
-		}
+		this.MAX_NUMBER_OF_PLAYER=maxPlayers;
+		this.MIN_NUMBER_OF_PLAYER=minPlayers;
+		players.add(new Player());
+		
+		
+		createGUI();
 	}
 	
 	public List<Player> getPlayers() {
@@ -228,5 +185,15 @@ public class GameDefaultImpl implements Game, Observer {
 	@Override
 	public void setCurrentPlayer(Player player) {
 		this.currentPlayer = player;
+	}
+	
+	public void setTitle(String title){
+		this.title=title;
+	}
+
+	public void setBoardsize(int columns, int rows) {
+		this.NB_COLUMNS=columns;
+		this.NB_ROWS=rows;
+		
 	}
 }

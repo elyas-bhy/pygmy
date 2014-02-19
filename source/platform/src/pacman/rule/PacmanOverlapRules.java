@@ -28,19 +28,14 @@ public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
 	protected Point pacManStartPos;
 	protected Point ghostStartPos;
 	protected boolean managePacmanDeath;
-	private final ObservableValue<Integer> score;
-	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
 	private int totalNbGums = 0;
 	private int nbEatenGums = 0;
 
 	public PacmanOverlapRules(Point pacPos, Point gPos,
-			ObservableValue<Integer> life, ObservableValue<Integer> score,
 			ObservableValue<Boolean> endOfGame) {
 		pacManStartPos = (Point) pacPos.clone();
 		ghostStartPos = (Point) gPos.clone();
-		this.life = life;
-		this.score = score;
 		this.endOfGame = endOfGame;
 	}
 
@@ -76,7 +71,6 @@ public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
 		} else {
 			if (g.isActive()) {
 				if (managePacmanDeath) {
-					life.setValue(life.getValue() - 1);
 					p.setPosition(pacManStartPos);
 					for (Ghost ghost : vGhosts) {
 						ghost.setPosition(ghostStartPos);
@@ -113,7 +107,6 @@ public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 
 	public void overlapRule(Pacman p, SuperPacgum spg) {
-		score.setValue(score.getValue() + 5);
 		universe.removeGameEntity(spg);
 		pacgumEatenHandler();
 		p.setInvulnerable(INVULNERABLE_DURATION);
@@ -123,7 +116,6 @@ public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 
 	public void overlapRule(Pacman p, Pacgum pg) {
-		score.setValue(score.getValue() + 1);
 		universe.removeGameEntity(pg);
 		pacgumEatenHandler();
 	}
