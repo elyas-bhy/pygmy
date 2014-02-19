@@ -41,7 +41,7 @@ public class GameDefaultImpl implements Game, Observer {
 	protected ObservableValue<Boolean> endOfGame = null;
 
 	private Frame f;
-	private GameLevelDefaultImpl currentPlayedLevel = null;
+	private AbstractGameLevel currentPlayedLevel = null;
 	private List<Player> players;
 	private Player currentPlayer;
 
@@ -157,7 +157,7 @@ public class GameDefaultImpl implements Game, Observer {
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
 			endOfGame.addObserver(this);
-			currentPlayedLevel = (GameLevelDefaultImpl) level;
+			currentPlayedLevel = (AbstractGameLevel) level;
 			levelNumber++;
 			currentLevelValue.setText(Integer.toString(levelNumber));
 		}

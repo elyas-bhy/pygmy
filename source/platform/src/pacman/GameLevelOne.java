@@ -2,11 +2,11 @@ package pacman;
 
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.MoveStrategyRandom;
+import gameframework.game.AbstractGameLevel;
 import gameframework.game.CanvasDefaultImpl;
-import gameframework.game.Game;
-import gameframework.game.GameLevelDefaultImpl;
-import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.EternalGameRule;
+import gameframework.game.Game;
+import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverseDefaultImpl;
 import gameframework.game.GameUniverseViewPortDefaultImpl;
 import gameframework.game.MoveBlockerChecker;
@@ -28,7 +28,7 @@ import pacman.rule.GhostMovableDriver;
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
 
-public class GameLevelOne extends GameLevelDefaultImpl {
+public class GameLevelOne extends AbstractGameLevel {
 	Canvas canvas;
 
 	// 0 : Pacgums; 1 : Walls; 2 : SuperPacgums; 3 : Doors; 4 : Jail; 5 : empty
@@ -147,14 +147,9 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 
 	public GameLevelOne(Game g) {
 		super(g);
-		addGameRule(new EternalGameRule());
 		canvas = g.getCanvas();
+		addGameRule(new EternalGameRule());
 		start();
-		run();
-	}
-	
-	public void step() {
-		run();
 	}
 
 	@Override

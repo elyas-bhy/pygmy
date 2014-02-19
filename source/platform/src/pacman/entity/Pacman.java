@@ -79,4 +79,9 @@ public class Pacman extends GameMovable implements Drawable, GameEntity,
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE));
 	}
+
+	@Override
+	public boolean isLegalMove(String move) {
+		return true;
+	}
 }

@@ -23,4 +23,5 @@ public class Jail implements GameEntity, Overlappable {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				SPRITE_SIZE, SPRITE_SIZE));
 	}
+	
 }

@@ -10,7 +10,7 @@ import java.util.List;
  * universe and the gameBoard
  */
 
-public abstract class GameLevelDefaultImpl implements GameLevel {
+public abstract class AbstractGameLevel implements GameLevel {
 	
 	protected GameUniverse universe;
 	protected GameUniverseViewPort gameBoard;
@@ -24,30 +24,44 @@ public abstract class GameLevelDefaultImpl implements GameLevel {
 
 	protected abstract void init();
 
-	public GameLevelDefaultImpl(Game g) {
+	public AbstractGameLevel(Game g) {
 		this.g = g;
 		this.gameRules = new ArrayList<GameRule>();
 		this.score = g.score();
 		this.life = g.life();
+		g.setCurrentPlayer(g.getPlayers().get(0));
+	}
+	
+	@Override
+	public Player getCurrentPlayer() {
+		return g.getCurrentPlayer();
 	}
 	
 	@Override
 	public void start() {
 		endOfGame = g.endOfGame();
-		g.setCurrentPlayer(g.getPlayers().get(0));
 		init();
+		gameBoard.paint();
+	}
+	
+	public void tryMove(GameMovable entity, String move) {
+		if (entity.isLegalMove(move)) {
+			for (GameRule rule : gameRules) {
+				if (!rule.check()) {
+					System.out.println(rule.getMessage());
+					end();
+				}
+			}
+			takeTurn(entity, move);
+		} else {
+			// throw new IllegalMoveException();
+		}
 	}
 
-	public void run() {
+	public void takeTurn(GameMovable entity, String move) {
 		gameBoard.paint();
-		
-		for (GameRule rule : gameRules) {
-			if (!rule.check()) {
-				System.out.println(rule.getMessage());
-				end();
-			}
-		}
-		g.getCurrentPlayer().play("");
+		getCurrentPlayer().play(entity, move);
+		entity.oneStepMove();
 		universe.processAllOverlaps();
 	}
 
@@ -57,9 +71,6 @@ public abstract class GameLevelDefaultImpl implements GameLevel {
 	
 	public void addGameRule(GameRule rule) {
 		gameRules.add(rule);
-	}
-
-	protected void overlap_handler() {
 	}
 
 }

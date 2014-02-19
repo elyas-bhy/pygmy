@@ -45,5 +45,8 @@ public abstract class GameMovable implements Movable {
 		oneStepMoveAddedBehavior();
 	}
 
+	public abstract boolean isLegalMove(String move);
+	
 	public abstract void oneStepMoveAddedBehavior();
+	
 }

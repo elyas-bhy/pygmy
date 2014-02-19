@@ -8,7 +8,7 @@ public class Player {
 		return id;
 	}
 	
-	public boolean play(String dest) {
+	public boolean play(GameMovable entity, String move) {
 		return true;
 	}
 }

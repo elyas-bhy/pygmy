@@ -1,10 +1,11 @@
 package gameframework.base;
 
+import gameframework.game.GameLevel;
+
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import pacman.GameLevelOne;
 import pacman.entity.Pacman;
 
 /**
@@ -16,9 +17,9 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 			0));
 	
 	private Pacman pacman;
-	private GameLevelOne level;
+	private GameLevel level;
 	
-	public MoveStrategyKeyboard(Pacman pacman, GameLevelOne level) {
+	public MoveStrategyKeyboard(Pacman pacman, GameLevel level) {
 		this.pacman = pacman;
 		this.level = level;
 	}
@@ -44,7 +45,6 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 			speedVector.setDirection(new Point(0, 1));
 			break;
 		}
-		pacman.oneStepMove();
-		level.step();
+		level.tryMove(pacman, "");
 	}
 }
