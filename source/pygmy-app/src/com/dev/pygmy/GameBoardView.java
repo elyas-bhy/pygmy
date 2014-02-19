@@ -50,63 +50,59 @@ public class GameBoardView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		int nb_case = 8;
-		
+
+		// Colors
+		Paint color1 = new Paint();
+		color1.setColor(Color.BLACK);
+		Paint color2 = new Paint(Color.WHITE);
+		color2.setColor(Color.WHITE);
+
+		draw_checkerboard(canvas, nb_case, color1, color2);
+	}
+	
+	private void draw_checkerboard(Canvas canvas, int nb_case, Paint color1, Paint color2){
 		Paint color_black = new Paint();
 		color_black.setColor(Color.BLACK);
 		color_black.setTextSize(20);
 		
-		// Color 1
-		Paint color1 = new Paint();
-		color1.setColor(Color.BLACK);
-		Paint color2 = new Paint();
-		color2.setColor(Color.WHITE);
-
 		// Largeur de la vue
 		int width = getWidth();
 		// Hauteur de la vue
 		int height = getHeight();
 
-		int step = 0, min = 0;
+		int step = 0, min = 0, offset = 0;
 		// Minimum taille in width and length
 		min = Math.min(width, height);
-		int marge = min/nb_case;
-		min = min - marge;
+		/*int marge = min/nb_case;
+		min = min - marge;*/
 
 		// Variable number column and line + space for numbering
-		step = min / nb_case;
-
-		float text_position = step/2+color_black.getTextSize()/2;
+		//step = min / nb_case;
+		step = min / (nb_case+2);
+		offset = step / 3;
 		
-		boolean switchColor = true;
-		for(int i = 0 ; i < min ; i += step) {
-			if (i != 0){
-				for(int j = 0 ; j < min ; j += step) {
-					if (j != 0){
-						if(switchColor)
-							canvas.drawRect(i, j, i + step, j + step, color1);
-						else
-							canvas.drawRect(i, j, i + step, j + step, color2);
-						 // Change color (line)
-						switchColor = !switchColor;
-						
+		float text_position = step/2+color_black.getTextSize()/2;
 
+		for(int i = 0; i < min -step ; i += step) {
+			if (i != 0){
+				for(int j = 0 ; j < min -step; j += step) {
+					if (j != 0){
+						// Alternance
+						canvas.drawRect(i+offset, j+offset, i+offset + step, j+offset + step, ((i/step + j/step)%2 != 0)?color1:color2);
 					}
 				}
-				// Change color (column)
-				switchColor = !switchColor;
-				System.out.println("Text size = " + color_black.getTextSize() + " Slide size " + min);
-				canvas.drawText(Character.toString((char)('A'-1+i/step)), i+(step/2)-color_black.getTextSize()/2, text_position, color_black);		
-				canvas.drawText(Integer.toString(i/step), step/2-color_black.getTextSize()/2, i+(step/2)+color_black.getTextSize()/2, color_black);		
-			}		
-			
+				canvas.drawText(Character.toString((char)('A'-1+i/step)), i+(step/2)-color_black.getTextSize()/2+offset, text_position+offset, color_black);		
+				canvas.drawText(Integer.toString(i/step), step/2-color_black.getTextSize()/2+offset, i+(step/2)+color_black.getTextSize()/2+offset, color_black);		
+			}
 		}
-		
-		
-		canvas.drawLine(step, step, step, step*(nb_case+1), color_black);
-		canvas.drawLine(step, step, step*(nb_case+1), step, color_black);
-		canvas.drawLine(step*(nb_case+1), step*(nb_case+1), step*(nb_case+1), step, color_black);
-		canvas.drawLine(step*(nb_case+1), step*(nb_case+1), step, step*(nb_case+1), color_black);
 
-		
+
+		canvas.drawLine(step+offset, step+offset, step+offset, step*(nb_case+1)+offset, color_black);
+		canvas.drawLine(step+offset, step+offset, step*(nb_case+1)+offset, step+offset, color_black);
+		canvas.drawLine(step*(nb_case+1)+offset, step*(nb_case+1)+offset, step*(nb_case+1)+offset, step+offset, color_black);
+		canvas.drawLine(step*(nb_case+1)+offset, step*(nb_case+1)+offset, step+offset, step*(nb_case+1)+offset, color_black);
+
+
 	}
+	
 }
