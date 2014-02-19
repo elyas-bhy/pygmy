@@ -95,7 +95,7 @@ public class GameBoardView extends View {
 				// Change color (column)
 				switchColor = !switchColor;
 				System.out.println("Text size = " + color_black.getTextSize() + " Slide size " + min);
-				canvas.drawText(Integer.toString(i/step), i+(step/2)-color_black.getTextSize()/2, text_position, color_black);		
+				canvas.drawText(Character.toString((char)('A'-1+i/step)), i+(step/2)-color_black.getTextSize()/2, text_position, color_black);		
 				canvas.drawText(Integer.toString(i/step), step/2-color_black.getTextSize()/2, i+(step/2)+color_black.getTextSize()/2, color_black);		
 			}		
 			
