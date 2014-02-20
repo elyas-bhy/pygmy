@@ -40,13 +40,12 @@ public  class Levels extends AbstractGameLevel {
 		mbc = new MoveBlockerCheckerDefaultImpl();
 		mbc.setMoveBlockerRules(pmb);
 		
-	
-		
-		overlapProcessor.setOverlapRules(por);
-
 		
 		universe = new GameUniverseDefaultImpl(mbc, overlapProcessor);
 		por.setUniverse(universe);
+		
+		overlapProcessor.setOverlapRules(por);
+		overlapProcessor.setUniverse(universe);
 
 		gameBoard = new GameUniverseViewPortDefaultImpl(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
