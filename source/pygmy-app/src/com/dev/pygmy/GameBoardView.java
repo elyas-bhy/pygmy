@@ -77,31 +77,34 @@ public class GameBoardView extends View {
 		int width = getWidth();
 		int height = getHeight();
 
-		int step = 0, offset = 0, coord_i = 0, coord_j = 0;
+		int case_size = 0, offset = 0, coord_i = 0, coord_j = 0;
 
-		step = Math.min(width / (width_case+2), height / (height_case+2));
-		offset = step / 3;
+		// One case distance
+		case_size = Math.min(width / (width_case+2), height / (height_case+2));
+		// Marge based to case_size
+		offset = case_size / 3;
 
 		for(int i = 0; i < width_case +1 ; ++i) {
 			if (i != 0){
 				for(int j = 0 ; j < height_case +1; ++j) {
 					if (j != 0){
-						// Alternance
-						coord_i = i*step+offset;
-						coord_j = j*step+offset;
-						canvas.drawRect(coord_i, coord_j, coord_i + step, coord_j + step, ((i + j)%2 != 0)?color1:color2);
+						coord_i = i*case_size+offset;
+						coord_j = j*case_size+offset;
+						// Draw case
+						canvas.drawRect(coord_i, coord_j, coord_i + case_size, coord_j + case_size, ((i + j)%2 != 0)?color1:color2);
 						if (i == 1)
-							canvas.drawText(Integer.toString(j), step/2-color_black.getTextSize()/2+offset, j*step+(step/2)+color_black.getTextSize()/2+offset, color_black);		
+							canvas.drawText(Integer.toString(j), case_size/2-color_black.getTextSize()/2+offset, j*case_size+(case_size/2)+color_black.getTextSize()/2+offset, color_black);		
 
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+i)), i*step+(step/2)-color_black.getTextSize()/2+offset, step/2+color_black.getTextSize()/2+offset, color_black);		
+				canvas.drawText(Character.toString((char)('A'-1+i)), i*case_size+(case_size/2)-color_black.getTextSize()/2+offset, case_size/2+color_black.getTextSize()/2+offset, color_black);		
 			}
 		}
 
-		int small_distance = step+offset;
-		int long_distance_height = step*(height_case+1)+offset;
-		int long_distance_width = step*(width_case+1)+offset;
+		// Draw checkerboard's outline
+		int small_distance = case_size+offset;
+		int long_distance_height = case_size*(height_case+1)+offset;
+		int long_distance_width = case_size*(width_case+1)+offset;
 		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, color_black);
 		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, color_black);
 		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, color_black);
