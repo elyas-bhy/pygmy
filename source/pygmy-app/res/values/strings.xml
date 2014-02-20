@@ -51,5 +51,6 @@
     <string name="name_profile"></string>
     <string name="language_profile"></string>
     <string name="games_played_profile">Most played games</string>
+    <string name="offline">Offline</string>
     
 </resources>

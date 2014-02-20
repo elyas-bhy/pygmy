@@ -22,15 +22,39 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_large"
+            android:layout_margin="@dimen/margin_medium"
             android:text="@string/welcome_to_pygmy"
             android:textAppearance="@style/GuessWordText" />
 
-        <com.google.android.gms.common.SignInButton
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:src="@drawable/logo_home_page" />
+
+        <Button 
+            android:id="@+id/offline_button" 
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_large"
+            android:text="@string/offline" />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_sign_in"
+            android:src="@drawable/signin_white_normal" >
+        </Button>
+
+        <!--
+       <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content" >
         </com.google.android.gms.common.SignInButton>
+        -->
     </LinearLayout>
 
     <LinearLayout
