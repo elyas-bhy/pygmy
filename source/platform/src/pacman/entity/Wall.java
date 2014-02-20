@@ -26,7 +26,7 @@ public class Wall implements Drawable, MoveBlocker, GameEntity {
 				null);
 	}
 
-	public Point getPos() {
+	public Point getPosition() {
 		return (new Point(x, y));
 	}
 

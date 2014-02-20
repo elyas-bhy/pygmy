@@ -6,7 +6,7 @@ import gameframework.base.Overlappable;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-public abstract class OverlapRulesApplierDefaultImpl implements
+public abstract class AbstractOverlapRulesApplier implements
 		OverlapRulesApplier {
 
 	public void applyOverlapRules(Vector<Overlap> overlaps) {

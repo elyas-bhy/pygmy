@@ -10,5 +10,5 @@ public interface GameLevel {
 	
 	public void tryMove(GameMovable entity, String move);
 	
-	public int[][] getMap();
+	public GameMap getMap();
 }

@@ -27,7 +27,7 @@ import javax.swing.JPanel;
  */
 public class GameDefaultImpl implements Game, Observer {
 	
-	protected String title="Default Game";
+	protected String title = "Default Game";
 	protected static int NB_ROWS = 31;
 	protected static int NB_COLUMNS = 28;
 	protected static final int SPRITE_SIZE = 16;

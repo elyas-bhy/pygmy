@@ -1,6 +1,8 @@
 package gameframework.game;
 
+import java.awt.Point;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * stores all the gameframework.game entities of a gameframework.game level:
@@ -13,10 +15,10 @@ public interface GameUniverse {
 
 	public void removeGameEntity(GameEntity gameEntity);
 
-	Iterator<GameEntity> gameEntities();
+	public Iterator<GameEntity> gameEntities();
 
-	public void allOneStepMoves();
+	public ConcurrentHashMap<Point,GameEntity> getGameEntities();
 
-	public void processAllOverlaps();
+	public void processOverlap(GameMovable entity);
 
 }

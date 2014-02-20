@@ -1,13 +1,10 @@
 package gameframework.base;
 
-import java.awt.Point;
 
 /**
- * Has a current position, a {@link Direction} and a bounding box.
+ * Has a current position, a {@link Direction}
  */
-public interface Movable extends ObjectWithBoundedBox {
-	
-	public Point getPosition();
+public interface Movable {
 
 	public Direction getSpeedVector();
 

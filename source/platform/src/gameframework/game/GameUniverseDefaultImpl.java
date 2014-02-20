@@ -1,18 +1,22 @@
 package gameframework.game;
 
 import gameframework.base.Overlappable;
-import gameframework.base.Movable;
 
+import java.awt.Point;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameUniverseDefaultImpl implements GameUniverse {
-	private ConcurrentLinkedQueue<GameEntity> gameEntities = new ConcurrentLinkedQueue<GameEntity>();
+	private ConcurrentHashMap<Point,GameEntity> gameEntities = new ConcurrentHashMap<Point,GameEntity>();
 	private OverlapProcessor overlapProcessor;
 	private MoveBlockerChecker moveBlockerChecker;
 
 	public Iterator<GameEntity> gameEntities() {
-		return gameEntities.iterator();
+		return gameEntities.values().iterator();
+	}
+	
+	public ConcurrentHashMap<Point,GameEntity> getGameEntities() {
+		return gameEntities;
 	}
 
 	public GameUniverseDefaultImpl(MoveBlockerChecker obs, OverlapProcessor col) {
@@ -21,7 +25,7 @@ public class GameUniverseDefaultImpl implements GameUniverse {
 	}
 
 	public synchronized void addGameEntity(GameEntity gameEntity) {
-		gameEntities.add(gameEntity);
+		gameEntities.put(gameEntity.getPosition(), gameEntity);
 		if (gameEntity instanceof Overlappable) {
 			overlapProcessor.addOverlappable((Overlappable) gameEntity);
 		}
@@ -40,16 +44,8 @@ public class GameUniverseDefaultImpl implements GameUniverse {
 		}
 	}
 
-	public void allOneStepMoves() {
-		for (GameEntity entity : gameEntities) {
-			if (entity instanceof Movable) {
-				((Movable) entity).oneStepMove();
-			}
-		}
-	}
-
-	public void processAllOverlaps() {
-		overlapProcessor.processOverlapsAll();
+	public void processOverlap(GameMovable entity) {
+		overlapProcessor.processOverlap(entity);
 	}
 
 }

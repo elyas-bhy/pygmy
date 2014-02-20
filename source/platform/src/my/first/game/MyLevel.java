@@ -2,10 +2,11 @@ package my.first.game;
 
 
 
-import java.awt.Point;
-
 import gameframework.game.EternalGameRule;
 import gameframework.game.Game;
+
+import java.awt.Point;
+
 import pacman.entity.Wall;
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;

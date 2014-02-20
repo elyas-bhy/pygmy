@@ -1,16 +1,10 @@
 package gameframework.game;
 
-import gameframework.base.IntersectTools;
 import gameframework.base.Movable;
 import gameframework.base.Overlap;
 import gameframework.base.Overlappable;
-import gameframework.base.Direction;
-import gameframework.base.DirectionDefaultImpl;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.Area;
-import java.util.List;
+import java.awt.Point;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,10 +19,16 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 	private ConcurrentLinkedQueue<Overlappable> overlappablesMovable;
 
 	private OverlapRulesApplier overlapRules;
+	private GameUniverse universe;
 
 	public OverlapProcessorDefaultImpl() {
 		overlappablesNonMovable = new ConcurrentLinkedQueue<Overlappable>();
 		overlappablesMovable = new ConcurrentLinkedQueue<Overlappable>();
+	}
+
+	@Override
+	public void setUniverse(GameUniverse universe) {
+		this.universe = universe;
 	}
 
 	public void addOverlappable(Overlappable p) {
@@ -51,79 +51,15 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 		this.overlapRules = overlapRules;
 	}
 
-	// for optimization purpose : prevents to compute two times the overlaps
-	private List<Overlappable> movablesTmp;
-
-	public void processOverlapsAll() {
-		Vector<Overlap> overlaps = new Vector<Overlap>();
-
-		movablesTmp = new Vector<Overlappable>(overlappablesMovable);
-		for (Overlappable overlappable : overlappablesMovable) {
-			movablesTmp.remove(overlappable);
-			computeOneOverlap(overlappable, overlaps);
+	public void processOverlap(GameMovable entity) {
+		universe.getGameEntities().remove(entity.getPosition());
+		entity.oneStepMove();
+		GameEntity dst = universe.getGameEntities().get(entity.getPosition());
+		if (entity instanceof Overlappable && dst instanceof Overlappable) {
+			Vector<Overlap> overlaps = new Vector<Overlap>();
+			overlaps.add(new Overlap((Overlappable)entity, (Overlappable)dst));
+			overlapRules.applyOverlapRules(overlaps);
 		}
-		overlapRules.applyOverlapRules(overlaps);
-	}
-
-	private void computeOneOverlap(Overlappable overlappable,
-			Vector<Overlap> overlaps) {
-		Area overlappableArea, targetArea;
-		Rectangle boundingBoxTarget, boundingBoxOverlappable;
-
-		Shape intersectShape = intersectionComputation(overlappable);
-
-		overlappableArea = new Area(intersectShape);
-		boundingBoxOverlappable = intersectShape.getBounds();
-
-		for (Overlappable targetOverlappable : overlappablesNonMovable) {
-			if (targetOverlappable != overlappable) {
-				Shape targetShape;
-				targetShape = targetOverlappable.getBoundingBox();
-				boundingBoxTarget = targetShape.getBounds();
-
-				if (boundingBoxOverlappable.intersects(boundingBoxTarget)) {
-					targetArea = new Area(targetShape);
-					targetArea.intersect(overlappableArea);
-					if (!targetArea.isEmpty()) {
-						overlaps.add(new Overlap(overlappable,
-								targetOverlappable));
-					}
-				}
-			}
-		}
-
-		for (Overlappable targetOverlappable : movablesTmp) {
-			if (targetOverlappable != overlappable) {
-				Shape targetShape;
-				targetShape = IntersectTools.getIntersectShape(
-						(Movable) targetOverlappable,
-						new DirectionDefaultImpl(
-								((Movable) targetOverlappable).getSpeedVector()
-										.getDirection()));
-				boundingBoxTarget = targetShape.getBounds();
-
-				if (boundingBoxOverlappable.intersects(boundingBoxTarget)) {
-					targetArea = new Area(targetShape);
-					targetArea.intersect(overlappableArea);
-					if (!targetArea.isEmpty()) {
-						overlaps.add(new Overlap(overlappable,
-								targetOverlappable));
-					}
-				}
-			}
-		}
-	}
-
-	private Shape intersectionComputation(Overlappable overlappable) {
-		if (overlappable instanceof Movable) {
-			Movable movable = (Movable) overlappable;
-			Direction speedVector = movable.getSpeedVector();
-			DirectionDefaultImpl oppositeSpeedVector = new DirectionDefaultImpl(
-					speedVector.getDirection());
-			return IntersectTools.getIntersectShape(movable,
-					oppositeSpeedVector);
-		} else {
-			return overlappable.getBoundingBox();
-		}
+		universe.getGameEntities().put(entity.getPosition(), (GameEntity)entity);
 	}
 }

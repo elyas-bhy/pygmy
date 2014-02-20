@@ -12,6 +12,7 @@ import java.util.List;
 
 public abstract class AbstractGameLevel implements GameLevel {
 	
+	protected GameMap gameMap;
 	protected GameUniverse universe;
 	protected GameUniverseViewPort gameBoard;
 	protected ObservableValue<Boolean> endOfGame;
@@ -57,8 +58,7 @@ public abstract class AbstractGameLevel implements GameLevel {
 	public void takeTurn(GameMovable entity, String move) {
 		gameBoard.paint();
 		getCurrentPlayer().play(entity, move);
-		entity.oneStepMove();
-		universe.processAllOverlaps();
+		universe.processOverlap(entity);
 	}
 
 	public void end() {
@@ -67,6 +67,10 @@ public abstract class AbstractGameLevel implements GameLevel {
 	
 	public void addGameRule(GameRule rule) {
 		gameRules.add(rule);
+	}
+	
+	public GameMap getMap() {
+		return gameMap;
 	}
 
 	public abstract void initRules();

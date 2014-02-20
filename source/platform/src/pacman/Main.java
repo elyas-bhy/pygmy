@@ -12,7 +12,7 @@ public class Main {
 		GameDefaultImpl g = new GameDefaultImpl();
 		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
 
-		levels.add(new MyLevel(g)); // only one level is available at this time
+		levels.add(new GameLevelOne(g)); // only one level is available at this time
 		
 		g.setLevels(levels);
 		g.start();

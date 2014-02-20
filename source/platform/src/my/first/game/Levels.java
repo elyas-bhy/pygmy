@@ -104,13 +104,6 @@ public  class Levels extends AbstractGameLevel {
 	public void addEntity(GameEntity gm){
 		universe.addGameEntity(gm);
 	}
-	
-
-
-	@Override
-	public int[][] getMap() {
-		return map;
-	}
 
 	@Override
 	public void initRules() {	

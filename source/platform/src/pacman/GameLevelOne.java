@@ -5,6 +5,7 @@ import gameframework.game.AbstractGameLevel;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.EternalGameRule;
 import gameframework.game.Game;
+import gameframework.game.GameMap;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverseDefaultImpl;
 import gameframework.game.GameUniverseViewPortDefaultImpl;
@@ -32,7 +33,7 @@ public class GameLevelOne extends AbstractGameLevel {
 	// 0 : Pacgums; 1 : Walls; 2 : SuperPacgums; 3 : Doors; 4 : Jail; 5 : empty
 	// Note: teleportation points are not indicated since they are defined by
 	// directed pairs of positions.
-	static int[][] map = { 
+	static int[][] tab = { 
 		    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1 },
 			{ 1, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 1 },
@@ -68,8 +69,16 @@ public class GameLevelOne extends AbstractGameLevel {
 	public static final int SPRITE_SIZE = 16;
 	public static final int NUMBER_OF_GHOSTS = 5;
 
+	public GameLevelOne(Game g) {
+		super(g);
+		canvas = g.getCanvas();
+		addGameRule(new EternalGameRule());
+		start();
+	}
+	
 	@Override
 	protected void init() {
+		gameMap = new GameMap(tab);
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
@@ -80,6 +89,7 @@ public class GameLevelOne extends AbstractGameLevel {
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
+		overlapProcessor.setUniverse(universe);
 		overlapRules.setUniverse(universe);
 
 		gameBoard = new GameUniverseViewPortDefaultImpl(canvas, universe);
@@ -90,18 +100,18 @@ public class GameLevelOne extends AbstractGameLevel {
 		// Filling up the universe with basic non movable entities and inclusion in the universe
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 28; ++j) {
-				if (map[i][j] == 0) {
+				if (tab[i][j] == 0) {
 					universe.addGameEntity(new Pacgum(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGums++;
 				}
-				if (map[i][j] == 1) {
+				if (tab[i][j] == 1) {
 					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}
-				if (map[i][j] == 2) {
+				if (tab[i][j] == 2) {
 					universe.addGameEntity(new SuperPacgum(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGums++;
 				}
-				if (map[i][j] == 4) {
+				if (tab[i][j] == 4) {
 					universe.addGameEntity(new Jail(new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 				}
 			}
@@ -143,18 +153,6 @@ public class GameLevelOne extends AbstractGameLevel {
 		}
 	}
 
-	public GameLevelOne(Game g) {
-		super(g);
-		canvas = g.getCanvas();
-		addGameRule(new EternalGameRule());
-		start();
-	}
-
-	@Override
-	public int[][] getMap() {
-		return map;
-	}
-
 	@Override
 	public void initRules() {
 		// TODO Auto-generated method stub
@@ -166,5 +164,4 @@ public class GameLevelOne extends AbstractGameLevel {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

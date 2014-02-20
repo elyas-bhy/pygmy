@@ -52,14 +52,6 @@ Overlappable {
 		spriteManager.draw(g, getPosition());
 		
 	}
-
-	
-
-	@Override
-	public Rectangle getBoundingBox() {
-		return (new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE));
-	}
-	
 	
 	@Override
 	public abstract void oneStepMoveAddedBehavior();

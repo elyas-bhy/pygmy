@@ -6,7 +6,7 @@ import gameframework.base.MoveStrategyStraightLine;
 import gameframework.base.Overlap;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
-import gameframework.game.OverlapRulesApplierDefaultImpl;
+import gameframework.game.AbstractOverlapRulesApplier;
 
 import java.awt.Point;
 import java.util.Vector;
@@ -18,7 +18,8 @@ import pacman.entity.Pacman;
 import pacman.entity.SuperPacgum;
 import pacman.entity.TeleportPairOfPoints;
 
-public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
+public class PacmanOverlapRules extends AbstractOverlapRulesApplier {
+	
 	protected GameUniverse universe;
 	protected Vector<Ghost> vGhosts = new Vector<Ghost>();
 
