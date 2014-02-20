@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.InputFilter.LengthFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +52,8 @@ public class GameBoardView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.d("", "draw");
-		int nb_case = 19;
+		int dim1 = 5;
+		int dim2 = 9;
 
 		// Colors
 		Paint color1 = new Paint();
@@ -59,10 +61,15 @@ public class GameBoardView extends View {
 		Paint color2 = new Paint(Color.WHITE);
 		color2.setColor(Color.WHITE);
 
-		draw_checkerboard(canvas, nb_case, color1, color2);
+
+		draw_checkerboard(canvas, dim1, dim2, color1, color2);
 	}
 
-	private void draw_checkerboard(Canvas canvas, int nb_case, Paint color1, Paint color2){
+	private void draw_checkerboard(Canvas canvas, int dim1, int dim2, Paint color1, Paint color2){
+
+		int width_case = Math.min(dim1, dim2);
+		int height_case = Math.max(dim1, dim2);
+
 		Paint color_black = new Paint();
 		color_black.setColor(Color.BLACK);
 		color_black.setTextSize(20);
@@ -70,35 +77,36 @@ public class GameBoardView extends View {
 		int width = getWidth();
 		int height = getHeight();
 
-		int step = 0, min = 0, offset = 0, coord_i = 0, coord_j = 0;
-		// Minimum taille in width and length
-		min = Math.min(width, height);
+		int step = 0, offset = 0, coord_i = 0, coord_j = 0;
 
-		// Variable number column and line + space for numbering and marge
-		step = min / (nb_case+2);
+		step = Math.min(width / (width_case+2), height / (height_case+2));
 		offset = step / 3;
 
-		for(int i = 0; i < nb_case +1 ; ++i) {
+		for(int i = 0; i < width_case +1 ; ++i) {
 			if (i != 0){
-				for(int j = 0 ; j < nb_case +1; ++j) {
+				for(int j = 0 ; j < height_case +1; ++j) {
 					if (j != 0){
 						// Alternance
 						coord_i = i*step+offset;
 						coord_j = j*step+offset;
 						canvas.drawRect(coord_i, coord_j, coord_i + step, coord_j + step, ((i + j)%2 != 0)?color1:color2);
+						if (i == 1)
+							canvas.drawText(Integer.toString(j), step/2-color_black.getTextSize()/2+offset, j*step+(step/2)+color_black.getTextSize()/2+offset, color_black);		
+
 					}
 				}
 				canvas.drawText(Character.toString((char)('A'-1+i)), i*step+(step/2)-color_black.getTextSize()/2+offset, step/2+color_black.getTextSize()/2+offset, color_black);		
-				canvas.drawText(Integer.toString(i), step/2-color_black.getTextSize()/2+offset, i*step+(step/2)+color_black.getTextSize()/2+offset, color_black);		
 			}
 		}
 
 		int small_distance = step+offset;
-		int long_distance = step*(nb_case+1)+offset;
-		canvas.drawLine(small_distance, small_distance, small_distance, long_distance, color_black);
-		canvas.drawLine(small_distance, small_distance, long_distance, small_distance, color_black);
-		canvas.drawLine(long_distance, long_distance, long_distance, small_distance, color_black);
-		canvas.drawLine(long_distance, long_distance, small_distance, long_distance, color_black);
+		int long_distance_height = step*(height_case+1)+offset;
+		int long_distance_width = step*(width_case+1)+offset;
+		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, color_black);
+		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, color_black);
+		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, color_black);
+		canvas.drawLine(long_distance_width, long_distance_height, small_distance, long_distance_height, color_black);
+
 	}
 
 }
