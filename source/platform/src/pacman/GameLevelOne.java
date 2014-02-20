@@ -155,4 +155,16 @@ public class GameLevelOne extends AbstractGameLevel {
 		return map;
 	}
 
+	@Override
+	public void initRules() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initMoveBlockers() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

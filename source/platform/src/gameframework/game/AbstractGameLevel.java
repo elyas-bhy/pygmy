@@ -69,4 +69,7 @@ public abstract class AbstractGameLevel implements GameLevel {
 		gameRules.add(rule);
 	}
 
+	public abstract void initRules();
+	
+	public abstract void initMoveBlockers();
 }
