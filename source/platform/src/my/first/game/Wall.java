@@ -1,16 +1,18 @@
 package my.first.game;
 
-import java.awt.Canvas;
-import java.awt.Point;
-
+import gameframework.base.Drawable;
 import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
+import gameframework.game.MoveBlocker;
 
-public class Wall implements GameEntity {
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Point;
+
+public class Wall implements Drawable, MoveBlocker, GameEntity {
 	
+	private int x, y;
 	protected static DrawableImage image = null;
-	int x;
-	int y;
 	
 	public Wall(Canvas canvas, int xx, int yy) {
 		image = new DrawableImage("images/wall.gif", canvas);
@@ -21,6 +23,11 @@ public class Wall implements GameEntity {
 	@Override
 	public Point getPosition() {
 		return new Point(x, y);
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		g.drawImage(image.getImage(), x, y, 16, 16, null);
 	}
 
 }
