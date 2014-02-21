@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import my.first.game.MovableEntities;
+import my.first.game.MovableEntity;
 
 /**
  * {@link MoveStrategy} which listens to the keyboard and answers new
@@ -16,9 +16,9 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 	protected Direction speedVector = new DirectionDefaultImpl(new Point(0, 0));
 
 	private GameLevel ml;
-	private MovableEntities me;
+	private MovableEntity me;
 
-	public MoveStrategyKeyboard(MovableEntities me, GameLevel ml) {
+	public MoveStrategyKeyboard(MovableEntity me, GameLevel ml) {
 		this.me = me;
 		this.ml = ml;
 	}
@@ -32,20 +32,19 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 		int keycode = event.getKeyCode();
 		switch (keycode) {
 		case KeyEvent.VK_RIGHT:
-			speedVector.setDirection(new Point(1, 0));
+			speedVector.setDirection(new Point(16, 0));
 			break;
 		case KeyEvent.VK_LEFT:
-			speedVector.setDirection(new Point(-1, 0));
+			speedVector.setDirection(new Point(-16, 0));
 			break;
 		case KeyEvent.VK_UP:
-			speedVector.setDirection(new Point(0, -1));
+			speedVector.setDirection(new Point(0, -16));
 			break;
 		case KeyEvent.VK_DOWN:
-			speedVector.setDirection(new Point(0, 1));
+			speedVector.setDirection(new Point(0, 16));
 			break;
 		}
 
-		ml.tryMove(me, "");
-
+		ml.tryMove(me, speedVector);
 	}
 }

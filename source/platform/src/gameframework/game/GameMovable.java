@@ -7,11 +7,9 @@ import gameframework.base.DirectionDefaultImpl;
 import java.awt.Point;
 
 public abstract class GameMovable implements Movable {
-	
-	GameMovableDriver moveDriver = new GameMovableDriverDefaultImpl();
 
-	Point position = new Point();
-	Direction speedVector = DirectionDefaultImpl.createNullVector();
+	private Point position = new Point();
+	private Direction speedVector = DirectionDefaultImpl.createNullVector();
 
 	public void setPosition(Point p) {
 		position = (Point) p.clone();
@@ -29,24 +27,14 @@ public abstract class GameMovable implements Movable {
 		return (Direction) speedVector.clone();
 	}
 
-	public void setDriver(GameMovableDriver driver) {
-		moveDriver = driver;
-	}
-
-	public GameMovableDriver getDriver() {
-		return moveDriver;
-	}
-
-	public void oneStepMove() {
-		
-		Direction m = moveDriver.getSpeedVector(this);
+	public void oneStepMove(Direction m) {
 		speedVector.setDirection(m.getDirection());
 		position.translate((int) speedVector.getDirection().getX(), 
 				(int) speedVector.getDirection().getY());
 		oneStepMoveAddedBehavior();
 	}
 
-	public abstract boolean isLegalMove(String move);
+	public abstract boolean isLegalMove(Direction move);
 	
 	public abstract void oneStepMoveAddedBehavior();
 	

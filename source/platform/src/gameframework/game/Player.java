@@ -1,5 +1,7 @@
 package gameframework.game;
 
+import gameframework.base.Direction;
+
 public class Player {
 	
 	private String id;
@@ -8,7 +10,7 @@ public class Player {
 		return id;
 	}
 	
-	public boolean play(GameMovable entity, String move) {
+	public boolean play(GameMovable entity, Direction move) {
 		return true;
 	}
 }

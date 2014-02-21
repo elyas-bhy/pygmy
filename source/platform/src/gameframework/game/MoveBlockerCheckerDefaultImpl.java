@@ -1,8 +1,8 @@
 package gameframework.game;
 
 import gameframework.base.Direction;
-import gameframework.base.Movable;
 
+import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MoveBlockerCheckerDefaultImpl implements MoveBlockerChecker {
@@ -26,27 +26,17 @@ public class MoveBlockerCheckerDefaultImpl implements MoveBlockerChecker {
 		this.moveBlockerRuleApplier = moveBlockerRules;
 	}
 
-	public boolean moveValidation(Movable m, Direction mov) {
-//		Shape intersectShape = IntersectTools.getIntersectShape(m, mov);
-//		Vector<MoveBlocker> moveBlockersInIntersection = new Vector<MoveBlocker>();
-//		Area intersectArea = new Area(intersectShape);
-//		Rectangle tmpIntersec = (intersectShape.getBounds());
-//
-//		for (MoveBlocker moveBlocker : moveBlockers) {
-//			Rectangle tmpB = moveBlocker.getBoundingBox();
-//			if (tmpIntersec.intersects(tmpB)) {
-//				Area tmpArea = new Area(tmpB);
-//				tmpArea.intersect(intersectArea);
-//				if (!tmpArea.isEmpty()) {
-//					moveBlockersInIntersection.add(moveBlocker);
-//				}
-//			}
-//		}
-//
-//		if (!moveBlockersInIntersection.isEmpty()) {
-//			return moveBlockerRuleApplier.moveValidationProcessing(
-//					moveBlockersInIntersection, m);
-//		}
+	public boolean moveValidation(GameMovable m, Direction mov) {
+		Vector<MoveBlocker> moveBlockersInIntersection = new Vector<MoveBlocker>();
+
+		for (MoveBlocker moveBlocker : moveBlockers) {
+			//moveBlockersInIntersection.add(moveBlocker);
+		}
+
+		if (!moveBlockersInIntersection.isEmpty()) {
+			return moveBlockerRuleApplier.moveValidationProcessing(
+					moveBlockersInIntersection, m);
+		}
 
 		return true;
 	}

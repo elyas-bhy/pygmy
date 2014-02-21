@@ -1,5 +1,7 @@
 package gameframework.game;
 
+import gameframework.base.Direction;
+
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,6 +21,6 @@ public interface GameUniverse {
 
 	public ConcurrentHashMap<Point,GameEntity> getGameEntities();
 
-	public void processOverlap(GameMovable entity);
+	public void processMove(GameMovable entity, Direction move);
 
 }

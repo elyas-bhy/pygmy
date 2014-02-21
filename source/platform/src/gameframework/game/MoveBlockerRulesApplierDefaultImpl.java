@@ -15,7 +15,7 @@ public class MoveBlockerRulesApplierDefaultImpl implements
 				moveBlockerRuleApply(m, moveBlocker);
 			} catch (Exception e) {
 				/*
-				 * by default the moveBlocker implies the invalidation of the
+				 * By default the moveBlocker implies the invalidation of the
 				 * move (in particular, if no method has been found by
 				 * moveBlockerRuleApply)
 				 */

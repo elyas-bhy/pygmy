@@ -10,5 +10,5 @@ public interface Movable {
 
 	public void setSpeedVector(Direction m);
 
-	public void oneStepMove();
+	public void oneStepMove(Direction m);
 }

@@ -2,9 +2,11 @@ package my.first.game;
 
 // Create a movable entity for your game.
 
+import gameframework.base.Direction;
+
 import java.awt.Canvas;
 
-public class MyMovableEntity extends MovableEntities{
+public class MyMovableEntity extends MovableEntity {
 
 	public MyMovableEntity(Canvas defaultCanvas, String img) {
 		super(defaultCanvas, img);
@@ -16,7 +18,7 @@ public class MyMovableEntity extends MovableEntities{
 	}
 	
 	@Override
-	public boolean isLegalMove(String move) {
+	public boolean isLegalMove(Direction move) {
 		System.out.println(this.getPosition().toString());
 		//capacityOK?
 		//checkPath...

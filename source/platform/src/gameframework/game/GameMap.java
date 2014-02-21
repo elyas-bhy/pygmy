@@ -16,4 +16,8 @@ public class GameMap {
 	public void setMap(int[][] map) {
 		this.map = map;
 	}
+	
+	public void setValue(int x, int y, int value) {
+		map[x][y] = value;
+	}
 }

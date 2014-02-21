@@ -22,17 +22,19 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import my.first.game.PygmyGameLevel;
+
 /**
  * Create a basic game application with menus and displays of lives and score
  */
 public class GameDefaultImpl implements Game, Observer {
 	
 	protected String title = "Default Game";
-	protected static int NB_ROWS = 31;
-	protected static int NB_COLUMNS = 28;
+	protected int nbRows = 31;
+	protected int nbColumns = 28;
 	protected static final int SPRITE_SIZE = 16;
-	public static int MAX_NUMBER_OF_PLAYER = 4;
-	public static  int MIN_NUMBER_OF_PLAYER=1;
+	public int maxPlayers = 4;
+	public int minPlayers = 1;
 	public static final int NUMBER_OF_LIVES = 1;
 
 	protected CanvasDefaultImpl defaultCanvas = null;
@@ -41,12 +43,12 @@ public class GameDefaultImpl implements Game, Observer {
 	protected ObservableValue<Boolean> endOfGame = null;
 
 	private Frame f;
-	private AbstractGameLevel currentPlayedLevel = null;
+	private PygmyGameLevel currentPlayedLevel = null;
 	private List<Player> players;
 	private Player currentPlayer;
 
 	protected int levelNumber;
-	protected ArrayList<GameLevel> gameLevels;
+	protected List<GameLevel> gameLevels;
 
 	
 	protected Label information;
@@ -69,7 +71,7 @@ public class GameDefaultImpl implements Game, Observer {
 		Container c = createStatusBar();
 
 		defaultCanvas = new CanvasDefaultImpl();
-		defaultCanvas.setSize(SPRITE_SIZE * NB_COLUMNS, SPRITE_SIZE * NB_ROWS);
+		defaultCanvas.setSize(SPRITE_SIZE * nbColumns, SPRITE_SIZE * nbRows);
 		f.add(defaultCanvas);
 		f.add(c, BorderLayout.NORTH);
 		f.pack();
@@ -137,20 +139,14 @@ public class GameDefaultImpl implements Game, Observer {
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
 			endOfGame.addObserver(this);
-			currentPlayedLevel = (AbstractGameLevel) level;
+			currentPlayedLevel = (PygmyGameLevel) level;
 			levelNumber++;
 			currentLevelValue.setText(Integer.toString(levelNumber));
 		}
-
 	}
-
 
 	public ObservableValue<Boolean> endOfGame() {
 		return endOfGame;
-	}
-
-	public void setLevels(ArrayList<GameLevel> levels) {
-		gameLevels = levels;
 	}
 
 	public void update(Observable o, Object arg) {
@@ -163,16 +159,20 @@ public class GameDefaultImpl implements Game, Observer {
 	}
 
 	@Override
+	public void setLevels(List<GameLevel> levels) {
+		gameLevels = levels;
+	}
+
+	@Override
 	public void setPlayers(int minPlayers, int maxPlayers) {
+		this.maxPlayers = maxPlayers;
+		this.minPlayers = minPlayers;
 		players = new ArrayList<Player>();
-		this.MAX_NUMBER_OF_PLAYER=maxPlayers;
-		this.MIN_NUMBER_OF_PLAYER=minPlayers;
 		players.add(new Player());
-		
-		
 		createGUI();
 	}
 	
+	@Override
 	public List<Player> getPlayers() {
 		return players;
 	}
@@ -187,13 +187,14 @@ public class GameDefaultImpl implements Game, Observer {
 		this.currentPlayer = player;
 	}
 	
-	public void setTitle(String title){
-		this.title=title;
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public void setBoardsize(int columns, int rows) {
-		this.NB_COLUMNS=columns;
-		this.NB_ROWS=rows;
-		
+	@Override
+	public void setBoardDimensions(int columns, int rows) {
+		this.nbColumns = columns;
+		this.nbRows = rows;
 	}
 }

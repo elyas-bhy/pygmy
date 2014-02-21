@@ -1,4 +1,6 @@
-package gameframework.game;
+package my.first.game;
+
+import gameframework.game.GameRule;
 
 public class EternalGameRule implements GameRule {
 

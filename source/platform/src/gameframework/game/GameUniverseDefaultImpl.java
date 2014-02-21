@@ -1,5 +1,6 @@
 package gameframework.game;
 
+import gameframework.base.Direction;
 import gameframework.base.Overlappable;
 
 import java.awt.Point;
@@ -7,21 +8,27 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameUniverseDefaultImpl implements GameUniverse {
-	private ConcurrentHashMap<Point,GameEntity> gameEntities = new ConcurrentHashMap<Point,GameEntity>();
+	
+	private ConcurrentHashMap<Point,GameEntity> gameEntities;
 	private OverlapProcessor overlapProcessor;
 	private MoveBlockerChecker moveBlockerChecker;
+	
+	public GameUniverseDefaultImpl() {
+		gameEntities = new ConcurrentHashMap<Point,GameEntity>();
+	}
 
+	public GameUniverseDefaultImpl(MoveBlockerChecker mbc, OverlapProcessor olp) {
+		this();
+		moveBlockerChecker = mbc;
+		overlapProcessor = olp;
+	}
+	
 	public Iterator<GameEntity> gameEntities() {
 		return gameEntities.values().iterator();
 	}
 	
 	public ConcurrentHashMap<Point,GameEntity> getGameEntities() {
 		return gameEntities;
-	}
-
-	public GameUniverseDefaultImpl(MoveBlockerChecker obs, OverlapProcessor col) {
-		overlapProcessor = col;
-		moveBlockerChecker = obs;
 	}
 
 	public synchronized void addGameEntity(GameEntity gameEntity) {
@@ -44,8 +51,9 @@ public class GameUniverseDefaultImpl implements GameUniverse {
 		}
 	}
 
-	public void processOverlap(GameMovable entity) {
-		overlapProcessor.processOverlap(entity);
+	public void processMove(GameMovable entity, Direction move) {
+		overlapProcessor.processOverlap(entity, move);
+		moveBlockerChecker.moveValidation(entity, move);
 	}
 
 }

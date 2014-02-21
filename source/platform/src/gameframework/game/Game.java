@@ -16,6 +16,8 @@ public interface Game {
 	public void start();
 
 	public ObservableValue<Boolean> endOfGame();
+	
+	public void setLevels(List<GameLevel> levels);
 
 	public Player getCurrentPlayer();
 
@@ -25,5 +27,5 @@ public interface Game {
 	
 	public void setTitle(String title);
 	
-	public void setBoardsize(int columns, int rows);
+	public void setBoardDimensions(int columns, int rows);
 }

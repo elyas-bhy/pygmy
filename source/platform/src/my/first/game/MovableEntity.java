@@ -1,11 +1,5 @@
 package my.first.game;
 
-
-import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import gameframework.base.Drawable;
 import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
@@ -13,15 +7,19 @@ import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
 import gameframework.game.SpriteManagerDefaultImpl;
 
-public abstract class MovableEntities extends GameMovable implements Drawable, GameEntity,
-Overlappable {
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Point;
+
+public abstract class MovableEntity extends GameMovable
+	implements Drawable, GameEntity, Overlappable {
 	
 	protected SpriteManager spriteManager=null;
 	public static final int RENDERING_SIZE = 16;
 	
 	
-	public MovableEntities(Canvas defaultCanvas, String img) {
-		this.spriteManager = new SpriteManagerDefaultImpl(img,
+	public MovableEntity(Canvas defaultCanvas, String img) {
+		spriteManager = new SpriteManagerDefaultImpl(img,
 				defaultCanvas, RENDERING_SIZE, 6);
 		spriteManager.setTypes(
 				//
