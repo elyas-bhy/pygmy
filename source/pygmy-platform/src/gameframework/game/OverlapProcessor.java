@@ -1,6 +1,5 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
 import gameframework.base.Overlappable;
 
 public interface OverlapProcessor {
@@ -13,5 +12,5 @@ public interface OverlapProcessor {
 
 	public void setOverlapRules(OverlapRulesApplier overlapRules);
 
-	public void processOverlap(GameMovable entity, Direction d);
+	public void processOverlap(GameMove move);
 }

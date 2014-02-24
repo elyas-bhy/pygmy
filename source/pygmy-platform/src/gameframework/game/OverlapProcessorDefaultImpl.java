@@ -1,6 +1,5 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
 import gameframework.base.Movable;
 import gameframework.base.Overlap;
 import gameframework.base.Overlappable;
@@ -51,9 +50,10 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 		this.overlapRules = overlapRules;
 	}
 
-	public void processOverlap(GameMovable entity, Direction d) {
+	public void processOverlap(GameMove move) {
+		GameMovable entity = move.getEntity();
 		universe.getGameEntities().remove(entity.getPosition());
-		entity.oneStepMove(d);
+		entity.oneStepMove(move.getMove());
 		GameEntity dst = universe.getGameEntities().get(entity.getPosition());
 		if (entity instanceof Overlappable && dst instanceof Overlappable) {
 			Vector<Overlap> overlaps = new Vector<Overlap>();

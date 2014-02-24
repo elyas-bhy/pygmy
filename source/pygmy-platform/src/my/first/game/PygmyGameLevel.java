@@ -9,6 +9,7 @@ import gameframework.game.GameEntity;
 import gameframework.game.GameLevel;
 import gameframework.game.GameMap;
 import gameframework.game.GameMovable;
+import gameframework.game.GameMove;
 import gameframework.game.GameRule;
 import gameframework.game.GameUniverse;
 import gameframework.game.GameUniverseDefaultImpl;
@@ -113,24 +114,24 @@ public abstract class PygmyGameLevel implements GameLevel {
 		addEntity(entity);
 	}
 	
-	public void tryMove(GameMovable entity, Direction move) {
-		if (entity.isLegalMove(move)) {
+	public void tryMove(GameMove move) {
+		if (move.getEntity().isLegalMove(move)) {
 			for (GameRule rule : gameRules) {
 				if (!rule.check()) {
 					System.out.println(rule.getMessage());
 					end();
 				}
 			}
-			makeMove(entity, move);
+			makeMove(move);
 		} else {
 			// throw new IllegalMoveException();
 		}
 	}
 
-	private void makeMove(GameMovable entity, Direction move) {
+	private void makeMove(GameMove move) {
 		gameBoard.paint();
-		getCurrentPlayer().play(entity, move);
-		universe.processMove(entity, move);
+		getCurrentPlayer().play(move);
+		universe.processMove(move);
 	}
 
 	public void end() {

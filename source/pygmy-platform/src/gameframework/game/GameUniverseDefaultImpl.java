@@ -1,6 +1,5 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
 import gameframework.base.Overlappable;
 
 import java.awt.Point;
@@ -51,9 +50,9 @@ public class GameUniverseDefaultImpl implements GameUniverse {
 		}
 	}
 
-	public void processMove(GameMovable entity, Direction move) {
-		overlapProcessor.processOverlap(entity, move);
-		moveBlockerChecker.moveValidation(entity, move);
+	public void processMove(GameMove move) {
+		overlapProcessor.processOverlap(move);
+		moveBlockerChecker.moveValidation(move);
 	}
 
 }

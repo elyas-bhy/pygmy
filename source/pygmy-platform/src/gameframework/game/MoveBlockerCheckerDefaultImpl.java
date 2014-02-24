@@ -1,7 +1,5 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
-
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -26,7 +24,7 @@ public class MoveBlockerCheckerDefaultImpl implements MoveBlockerChecker {
 		this.moveBlockerRuleApplier = moveBlockerRules;
 	}
 
-	public boolean moveValidation(GameMovable m, Direction mov) {
+	public boolean moveValidation(GameMove move) {
 		Vector<MoveBlocker> moveBlockersInIntersection = new Vector<MoveBlocker>();
 
 		for (MoveBlocker moveBlocker : moveBlockers) {
@@ -35,7 +33,7 @@ public class MoveBlockerCheckerDefaultImpl implements MoveBlockerChecker {
 
 		if (!moveBlockersInIntersection.isEmpty()) {
 			return moveBlockerRuleApplier.moveValidationProcessing(
-					moveBlockersInIntersection, m);
+					moveBlockersInIntersection, move.getEntity());
 		}
 
 		return true;

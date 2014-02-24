@@ -1,6 +1,5 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
 import my.first.game.MovableEntity;
 
 public interface GameLevel {
@@ -21,7 +20,7 @@ public interface GameLevel {
 
 	public void addMovableEntity(MovableEntity me, int x, int y);
 
-	public void tryMove(GameMovable entity, Direction move);
+	public void tryMove(GameMove move);
 
 	public void end();
 }

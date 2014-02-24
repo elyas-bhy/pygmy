@@ -27,5 +27,5 @@ public interface Game {
 	
 	public void setTitle(String title);
 	
-	public void setBoardDimensions(int columns, int rows);
+	public void setBoardDimensions(int rows, int columns);
 }

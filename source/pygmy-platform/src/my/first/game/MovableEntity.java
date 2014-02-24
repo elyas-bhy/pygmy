@@ -14,7 +14,7 @@ import java.awt.Point;
 public abstract class MovableEntity extends GameMovable
 	implements Drawable, GameEntity, Overlappable {
 	
-	protected SpriteManager spriteManager=null;
+	protected SpriteManager spriteManager = null;
 	public static final int RENDERING_SIZE = 16;
 	
 	

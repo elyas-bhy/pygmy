@@ -30,8 +30,8 @@ import my.first.game.PygmyGameLevel;
 public class GameDefaultImpl implements Game, Observer {
 	
 	protected String title = "Default Game";
-	protected int nbRows = 31;
-	protected int nbColumns = 28;
+	protected int rows = 31;
+	protected int columns = 28;
 	protected static final int SPRITE_SIZE = 16;
 	public int maxPlayers = 4;
 	public int minPlayers = 1;
@@ -71,7 +71,7 @@ public class GameDefaultImpl implements Game, Observer {
 		Container c = createStatusBar();
 
 		defaultCanvas = new CanvasDefaultImpl();
-		defaultCanvas.setSize(SPRITE_SIZE * nbColumns, SPRITE_SIZE * nbRows);
+		defaultCanvas.setSize(SPRITE_SIZE * columns, SPRITE_SIZE * rows);
 		f.add(defaultCanvas);
 		f.add(c, BorderLayout.NORTH);
 		f.pack();
@@ -193,8 +193,8 @@ public class GameDefaultImpl implements Game, Observer {
 	}
 
 	@Override
-	public void setBoardDimensions(int columns, int rows) {
-		this.nbColumns = columns;
-		this.nbRows = rows;
+	public void setBoardDimensions(int rows, int columns) {
+		this.rows = rows;
+		this.columns = columns;
 	}
 }

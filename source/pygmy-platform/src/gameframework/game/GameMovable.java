@@ -27,14 +27,14 @@ public abstract class GameMovable implements Movable {
 		return (Direction) speedVector.clone();
 	}
 
-	public void oneStepMove(Direction m) {
-		speedVector.setDirection(m.getDirection());
+	public void oneStepMove(Point p) {
+		speedVector.setDirection(p);
 		position.translate((int) speedVector.getDirection().getX(), 
 				(int) speedVector.getDirection().getY());
 		oneStepMoveAddedBehavior();
 	}
 
-	public abstract boolean isLegalMove(Direction move);
+	public abstract boolean isLegalMove(GameMove move);
 	
 	public abstract void oneStepMoveAddedBehavior();
 	

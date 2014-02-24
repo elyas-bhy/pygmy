@@ -1,6 +1,7 @@
 package gameframework.base;
 
 import gameframework.game.GameLevel;
+import gameframework.game.GameMove;
 
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
@@ -45,6 +46,9 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 			break;
 		}
 
-		ml.tryMove(me, speedVector);
+		GameMove move = new GameMove();
+		move.setEntity(me);
+		move.setMove(speedVector.getDirection());
+		ml.tryMove(move);
 	}
 }

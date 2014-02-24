@@ -1,7 +1,5 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
-
 public interface MoveBlockerChecker {
 	
 	public void addMoveBlocker(MoveBlocker p);
@@ -10,5 +8,5 @@ public interface MoveBlockerChecker {
 
 	public void setMoveBlockerRules(MoveBlockerRulesApplier moveBlockerRules);
 
-	public boolean moveValidation(GameMovable m, Direction mov);
+	public boolean moveValidation(GameMove move);
 }
