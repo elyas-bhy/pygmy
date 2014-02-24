@@ -1,4 +1,4 @@
-package my.first.game;
+package my.first.game.entity;
 
 import gameframework.base.Drawable;
 import gameframework.base.DrawableImage;

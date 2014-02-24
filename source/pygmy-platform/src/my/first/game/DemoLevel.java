@@ -6,6 +6,9 @@ import gameframework.game.PygmyGameLevel;
 
 import java.awt.Point;
 
+import my.first.game.entity.MyMovableEntity;
+import my.first.game.entity.Wall;
+
 public class DemoLevel extends PygmyGameLevel {
 
 	/*public DemoLevel(Game g, OverlapRulesApplier overlapRules,

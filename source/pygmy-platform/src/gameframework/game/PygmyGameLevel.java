@@ -119,9 +119,9 @@ public abstract class PygmyGameLevel implements GameLevel {
 	}
 
 	private void makeMove(GameMove move) {
-		gameBoard.paint();
 		getCurrentPlayer().play(move);
 		universe.processMove(move);
+		gameBoard.paint();
 	}
 
 	public void end() {

@@ -1,4 +1,4 @@
-package my.first.game;
+package my.first.game.entity;
 
 // Create a movable entity for your game.
 
