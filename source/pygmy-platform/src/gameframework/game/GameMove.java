@@ -5,7 +5,6 @@ import java.awt.Point;
 public class GameMove {
 	
 	private GameMovable entity;
-	
 	private Point move;
 	
 	public GameMove() {

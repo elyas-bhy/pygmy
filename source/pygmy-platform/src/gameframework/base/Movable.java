@@ -7,9 +7,9 @@ import java.awt.Point;
  */
 public interface Movable {
 
-	public Direction getSpeedVector();
+	public Point getDestination();
 
-	public void setSpeedVector(Direction m);
+	public void setDestination(Point p);
 
 	public void oneStepMove(Point move);
 }

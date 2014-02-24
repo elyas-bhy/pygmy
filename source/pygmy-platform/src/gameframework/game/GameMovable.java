@@ -1,36 +1,35 @@
 package gameframework.game;
 
-import gameframework.base.Direction;
-import gameframework.base.DirectionDefaultImpl;
 import gameframework.base.Movable;
 
 import java.awt.Point;
 
 public abstract class GameMovable implements Movable {
 
-	private Point position = new Point();
-	private Direction speedVector = DirectionDefaultImpl.createNullVector();
-
-	public void setPosition(Point p) {
-		position = (Point) p.clone();
-	}
+	private Point source = new Point();
+	private Point destination = new Point();
 
 	public Point getPosition() {
-		return position;
+		return source;
 	}
 
-	public void setSpeedVector(Direction speedVector) {
-		this.speedVector = (Direction) speedVector.clone();
+	public void setPosition(Point p) {
+		source = (Point) p.clone();
+	}
+	
+	@Override
+	public Point getDestination() {
+		return (Point) destination.clone();
 	}
 
-	public Direction getSpeedVector() {
-		return (Direction) speedVector.clone();
+	@Override
+	public void setDestination(Point p) {
+		this.destination = (Point) p.clone();
 	}
 
 	public void oneStepMove(Point p) {
-		speedVector.setDirection(p);
-		position.translate((int) speedVector.getDirection().getX(), 
-				(int) speedVector.getDirection().getY());
+		destination.setLocation(p);
+		source.translate((int) destination.getX(), (int) destination.getY());
 		oneStepMoveAddedBehavior();
 	}
 

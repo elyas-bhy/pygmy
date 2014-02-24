@@ -177,7 +177,8 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 
 	@Override
 	public Player getCurrentPlayer() {
-		return context.getCurrentPlayer();
+		return currentPlayer;
+		//return context.getCurrentPlayer();
 	}
 
 	@Override

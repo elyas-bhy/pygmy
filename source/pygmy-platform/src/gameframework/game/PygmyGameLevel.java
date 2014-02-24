@@ -78,9 +78,9 @@ public abstract class PygmyGameLevel implements GameLevel {
 	}
 
 	@Override
-	public void setDimensions(int rows, int col) {
-		gameMap = new GameMap(new int[rows][col]);
-		for (int i = 0; i < col; ++i) {
+	public void setDimensions(int rows, int cols) {
+		gameMap = new GameMap(rows, cols);
+		for (int i = 0; i < cols; ++i) {
 			for (int j = 0; j < rows; ++j) {
 				gameMap.setValue(i, j, 5);
 			}
