@@ -7,7 +7,6 @@ import gameframework.game.OverlapRulesApplier;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
 
 public class DemoPygmyGame {
@@ -29,7 +28,7 @@ public class DemoPygmyGame {
 			ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
 
 			OverlapRulesApplier rules = new PacmanOverlapRules(new Point(224, 272), new Point(224, 240));
-			PygmyGameLevel level1 = new DemoLevel(game, rules, new PacmanMoveBlockers());
+			PygmyGameLevel level1 = new DemoLevel(game, rules);
 			levels.add(level1); // only one level is available at this time
 			
 			game.setLevels(levels);

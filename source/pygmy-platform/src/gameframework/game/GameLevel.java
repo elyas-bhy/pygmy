@@ -1,5 +1,7 @@
 package gameframework.game;
 
+import java.awt.Point;
+
 import my.first.game.MovableEntity;
 
 public interface GameLevel {
@@ -18,7 +20,7 @@ public interface GameLevel {
 
 	public void addEntity(GameEntity entity);
 
-	public void addMovableEntity(MovableEntity me, int x, int y);
+	public void addMovableEntity(MovableEntity me, Point p);
 
 	public void tryMove(GameMove move);
 

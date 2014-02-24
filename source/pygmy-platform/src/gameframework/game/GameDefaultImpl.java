@@ -30,12 +30,11 @@ import my.first.game.PygmyGameLevel;
 public class GameDefaultImpl implements Game, Observer {
 	
 	protected String title = "Default Game";
+	protected static final int SPRITE_SIZE = 16;
 	protected int rows = 31;
 	protected int columns = 28;
-	protected static final int SPRITE_SIZE = 16;
-	public int maxPlayers = 4;
-	public int minPlayers = 1;
-	public static final int NUMBER_OF_LIVES = 1;
+	private int maxPlayers = 4;
+	private int minPlayers = 1;
 
 	protected CanvasDefaultImpl defaultCanvas = null;
 
@@ -49,7 +48,6 @@ public class GameDefaultImpl implements Game, Observer {
 
 	protected int levelNumber;
 	protected List<GameLevel> gameLevels;
-
 	
 	protected Label information;
 	protected Label informationValue;

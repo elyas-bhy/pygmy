@@ -1,6 +1,5 @@
 package my.first.game;
 
-import gameframework.base.Direction;
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
@@ -8,16 +7,12 @@ import gameframework.game.Game;
 import gameframework.game.GameEntity;
 import gameframework.game.GameLevel;
 import gameframework.game.GameMap;
-import gameframework.game.GameMovable;
 import gameframework.game.GameMove;
 import gameframework.game.GameRule;
 import gameframework.game.GameUniverse;
 import gameframework.game.GameUniverseDefaultImpl;
 import gameframework.game.GameUniverseViewPort;
 import gameframework.game.GameUniverseViewPortDefaultImpl;
-import gameframework.game.MoveBlockerChecker;
-import gameframework.game.MoveBlockerCheckerDefaultImpl;
-import gameframework.game.MoveBlockerRulesApplier;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import gameframework.game.OverlapRulesApplier;
@@ -47,18 +42,18 @@ public abstract class PygmyGameLevel implements GameLevel {
 
 	private final int SPRITE_SIZE = 16;
 
-	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules, 
-			MoveBlockerRulesApplier moveBlockerRules) {
+	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules) {
 		this.game = game;
 		this.gameRules = new ArrayList<GameRule>();
 		game.setCurrentPlayer(game.getPlayers().get(0));
 		canvas = game.getCanvas();
 
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
-		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
+		/*MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
 		moveBlockerChecker.setMoveBlockerRules(moveBlockerRules);
-
-		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
+		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);*/
+		
+		universe = new GameUniverseDefaultImpl(overlapProcessor);
 		overlapRules.setUniverse(universe);
 
 		overlapProcessor.setOverlapRules(overlapRules);
@@ -107,10 +102,10 @@ public abstract class PygmyGameLevel implements GameLevel {
 	}
 
 	// Adds a movable entity to the level
-	public void addMovableEntity(MovableEntity entity, int x, int y) {
+	public void addMovableEntity(MovableEntity entity, Point p) {
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard(entity, this);
 		canvas.addKeyListener(keyStr);
-		entity.setPosition(new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
+		entity.setPosition(new Point(p.x * SPRITE_SIZE, p.y * SPRITE_SIZE));
 		addEntity(entity);
 	}
 	
