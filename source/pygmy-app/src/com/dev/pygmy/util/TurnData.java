@@ -30,14 +30,14 @@ import android.util.Log;
  * @author wolff
  * 
  */
-public class SkeletonTurn {
+public class TurnData {
 
     public static final String TAG = "EBTurn";
 
     public String data = "";
     public int turnCounter;
 
-    public SkeletonTurn() {
+    public TurnData() {
     }
 
     // This is the byte array we will write out to the TBMP API.
@@ -61,11 +61,11 @@ public class SkeletonTurn {
     }
 
     // Creates a new instance of SkeletonTurn.
-    static public SkeletonTurn unpersist(byte[] byteArray) {
+    static public TurnData unpersist(byte[] byteArray) {
 
         if (byteArray == null) {
             Log.d(TAG, "Empty array---possible bug.");
-            return new SkeletonTurn();
+            return new TurnData();
         }
 
         String st = null;
@@ -78,7 +78,7 @@ public class SkeletonTurn {
 
         Log.d(TAG, "====UNPERSIST \n" + st);
 
-        SkeletonTurn retVal = new SkeletonTurn();
+        TurnData retVal = new TurnData();
 
         try {
             JSONObject obj = new JSONObject(st);
