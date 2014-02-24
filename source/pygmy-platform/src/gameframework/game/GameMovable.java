@@ -1,8 +1,8 @@
 package gameframework.game;
 
-import gameframework.base.Movable;
 import gameframework.base.Direction;
 import gameframework.base.DirectionDefaultImpl;
+import gameframework.base.Movable;
 
 import java.awt.Point;
 

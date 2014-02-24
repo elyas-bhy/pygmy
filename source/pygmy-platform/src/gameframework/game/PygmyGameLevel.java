@@ -1,22 +1,7 @@
-package my.first.game;
+package gameframework.game;
 
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.ObservableValue;
-import gameframework.game.CanvasDefaultImpl;
-import gameframework.game.Game;
-import gameframework.game.GameEntity;
-import gameframework.game.GameLevel;
-import gameframework.game.GameMap;
-import gameframework.game.GameMove;
-import gameframework.game.GameRule;
-import gameframework.game.GameUniverse;
-import gameframework.game.GameUniverseDefaultImpl;
-import gameframework.game.GameUniverseViewPort;
-import gameframework.game.GameUniverseViewPortDefaultImpl;
-import gameframework.game.OverlapProcessor;
-import gameframework.game.OverlapProcessorDefaultImpl;
-import gameframework.game.OverlapRulesApplier;
-import gameframework.game.Player;
 
 import java.awt.Canvas;
 import java.awt.Point;
@@ -37,12 +22,12 @@ public abstract class PygmyGameLevel implements GameLevel {
 	protected GameUniverseViewPort gameBoard;
 	protected ObservableValue<Boolean> endOfGame;
 
-	protected final Game game;
+	protected final PygmyGame game;
 	protected List<GameRule> gameRules;
 
 	private final int SPRITE_SIZE = 16;
 
-	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules) {
+	public PygmyGameLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		this.game = game;
 		this.gameRules = new ArrayList<GameRule>();
 		game.setCurrentPlayer(game.getPlayers().get(0));
@@ -80,6 +65,16 @@ public abstract class PygmyGameLevel implements GameLevel {
 	@Override
 	public GameMap getMap() {
 		return gameMap;
+	}
+
+	@Override
+	public Canvas getCanvas() {
+		return canvas;
+	}
+	
+	@Override
+	public PygmyGameContext getContext() {
+		return game.getContext();
 	}
 
 	@Override

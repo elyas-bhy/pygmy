@@ -1,8 +1,7 @@
 package gameframework.game;
 
+import java.awt.Canvas;
 import java.awt.Point;
-
-import my.first.game.MovableEntity;
 
 public interface GameLevel {
 
@@ -13,6 +12,10 @@ public interface GameLevel {
 	public Player getCurrentPlayer();
 
 	public GameMap getMap();
+	
+	public Canvas getCanvas();
+	
+	public PygmyGameContext getContext();
 
 	public void setDimensions(int rows, int col);
 

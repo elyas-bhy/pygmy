@@ -5,7 +5,13 @@ import gameframework.base.ObservableValue;
 import java.awt.Canvas;
 import java.util.List;
 
-public interface Game {
+public interface PygmyGame {
+
+	public PygmyGame getGame();
+	
+	public PygmyGameContext getContext();
+	
+	public void initGame();
 	
 	public void createGUI();
 	

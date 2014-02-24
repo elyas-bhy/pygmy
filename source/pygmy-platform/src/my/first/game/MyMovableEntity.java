@@ -3,14 +3,13 @@ package my.first.game;
 // Create a movable entity for your game.
 
 import gameframework.game.GameMove;
-
-import java.awt.Canvas;
-import java.awt.Point;
+import gameframework.game.MovableEntity;
+import gameframework.game.PygmyGameLevel;
 
 public class MyMovableEntity extends MovableEntity {
 
-	public MyMovableEntity(Canvas defaultCanvas, String img) {
-		super(defaultCanvas, img);
+	public MyMovableEntity(PygmyGameLevel level, String img) {
+		super(level, img);
 	}
 	
 	@Override

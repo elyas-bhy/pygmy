@@ -1,8 +1,10 @@
 package my.first.game;
 
-import gameframework.game.Game;
+import gameframework.game.AbstractPygmyGame;
 import gameframework.game.GameLevel;
 import gameframework.game.OverlapRulesApplier;
+import gameframework.game.PygmyGame;
+import gameframework.game.PygmyGameLevel;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class DemoPygmyGame {
 
 		@Override
 		public void initGame() {
-			Game game = getGame();
+			PygmyGame game = getGame();
 			game.setPlayers(1, 10);
 			game.setBoardDimensions(10, 10);
 			game.setTitle("DemoGame");

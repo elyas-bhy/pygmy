@@ -22,12 +22,10 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
-import my.first.game.PygmyGameLevel;
-
 /**
  * Create a basic game application with menus and displays of lives and score
  */
-public class GameDefaultImpl implements Game, Observer {
+public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 	
 	protected String title = "Default Game";
 	protected static final int SPRITE_SIZE = 16;
@@ -37,6 +35,7 @@ public class GameDefaultImpl implements Game, Observer {
 	private int minPlayers = 1;
 
 	protected CanvasDefaultImpl defaultCanvas = null;
+	private PygmyGameContext context;
 
 	// initialized before each level
 	protected ObservableValue<Boolean> endOfGame = null;
@@ -55,10 +54,11 @@ public class GameDefaultImpl implements Game, Observer {
 	protected Label currentLevelValue;
 
 
-	public GameDefaultImpl() {
+	public AbstractPygmyGame() {
+		context = new PygmyGameContext(this);
 		information = new Label("State:");
 		informationValue = new Label("Playing");
-		currentLevel = new Label("Level:");	
+		currentLevel = new Label("Level:");
 	}
 
 	public void createGUI() {
@@ -177,7 +177,7 @@ public class GameDefaultImpl implements Game, Observer {
 
 	@Override
 	public Player getCurrentPlayer() {
-		return currentPlayer;
+		return context.getCurrentPlayer();
 	}
 
 	@Override
@@ -195,4 +195,17 @@ public class GameDefaultImpl implements Game, Observer {
 		this.rows = rows;
 		this.columns = columns;
 	}
+
+	@Override
+	public PygmyGame getGame() {
+		return this;
+	}
+	
+	@Override
+	public PygmyGameContext getContext() {
+		return context;
+	}
+
+	@Override
+	public abstract void initGame();
 }

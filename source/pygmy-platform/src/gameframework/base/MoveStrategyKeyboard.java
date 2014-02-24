@@ -2,12 +2,11 @@ package gameframework.base;
 
 import gameframework.game.GameLevel;
 import gameframework.game.GameMove;
+import gameframework.game.MovableEntity;
 
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import my.first.game.MovableEntity;
 
 /**
  * {@link MoveStrategy} which listens to the keyboard and answers new
