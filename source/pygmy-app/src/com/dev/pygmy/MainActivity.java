@@ -43,7 +43,7 @@ import android.widget.Toast;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
-import com.dev.pygmy.util.SkeletonTurn;
+import com.dev.pygmy.util.TurnData;
 import com.dev.pygmy.util.ImageDownloader;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
@@ -99,7 +99,7 @@ public class MainActivity extends BaseGameActivity implements
 	// This is the current match data after being unpersisted.
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
-	public SkeletonTurn mTurnData;
+	public TurnData mTurnData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,7 @@ public class MainActivity extends BaseGameActivity implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				mSlidingMenu.showContent();
-				if (position == 2) {
+				if (position == 1) {
 					setProfileView();
 				}
 			}
@@ -341,10 +341,10 @@ public class MainActivity extends BaseGameActivity implements
 		mDataView.setText(mTurnData.data);
 		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
 	}
-
+	
 	// Switch to profile view
 	public void setProfileView() {
-		// Initialisation
+		//Initialisation
 		URL imageUrl = null;
 		Person p = getPlusClient().getCurrentPerson();
 
@@ -499,7 +499,7 @@ public class MainActivity extends BaseGameActivity implements
 	// callback to OnTurnBasedMatchUpdated(), which will show the game
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
-		mTurnData = new SkeletonTurn();
+		mTurnData = new TurnData();
 		// Some basic turn data
 		mTurnData.data = "First turn";
 
@@ -596,7 +596,7 @@ public class MainActivity extends BaseGameActivity implements
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 		case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
-			mTurnData = SkeletonTurn.unpersist(mMatch.getData());
+			mTurnData = TurnData.unpersist(mMatch.getData());
 			setGameplayUI();
 			return;
 		case TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN:
