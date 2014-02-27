@@ -6,10 +6,14 @@ import gameframework.game.GameMove;
 import gameframework.game.MovableEntity;
 import gameframework.game.PygmyGameLevel;
 
-public class MyMovableEntity extends MovableEntity {
+import java.awt.Point;
 
-	public MyMovableEntity(PygmyGameLevel level, String img) {
-		super(level, img);
+public class MyMovableEntity extends MovableEntity {
+	
+	private final static int SPRITE_SIZE = 16;
+
+	public MyMovableEntity(PygmyGameLevel level, int x, int y) {
+		super(level, "images/pac1.gif", new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
 	}
 	
 	@Override

@@ -4,7 +4,6 @@ import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.ObservableValue;
 
 import java.awt.Canvas;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +23,6 @@ public abstract class PygmyGameLevel implements GameLevel {
 
 	protected final PygmyGame game;
 	protected List<GameRule> gameRules;
-
-	private final int SPRITE_SIZE = 16;
 
 	public PygmyGameLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		this.game = game;
@@ -97,10 +94,9 @@ public abstract class PygmyGameLevel implements GameLevel {
 	}
 
 	// Adds a movable entity to the level
-	public void addMovableEntity(MovableEntity entity, Point p) {
+	public void addMovableEntity(MovableEntity entity) {
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard(entity, this);
 		canvas.addKeyListener(keyStr);
-		entity.setPosition(new Point(p.x * SPRITE_SIZE, p.y * SPRITE_SIZE));
 		addEntity(entity);
 	}
 	
