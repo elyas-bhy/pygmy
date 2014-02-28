@@ -23,7 +23,7 @@ public class DemoPygmyGame {
 		@Override
 		public void initGame() {
 			PygmyGame game = getGame();
-			game.setPlayers(1, 10);
+			game.setPlayers(2, 4);
 			game.setBoardDimensions(10, 10);
 			game.setTitle("DemoGame");
 

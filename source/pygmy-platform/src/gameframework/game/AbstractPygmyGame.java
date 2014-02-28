@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -42,8 +41,6 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 
 	private Frame f;
 	private PygmyGameLevel currentPlayedLevel = null;
-	private List<Player> players;
-	private Player currentPlayer;
 
 	protected int levelNumber;
 	protected List<GameLevel> gameLevels;
@@ -165,25 +162,23 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 	public void setPlayers(int minPlayers, int maxPlayers) {
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
-		players = new ArrayList<Player>();
-		players.add(new Player());
+		context.setPlayers(minPlayers, maxPlayers);
 		createGUI();
 	}
 	
 	@Override
 	public List<Player> getPlayers() {
-		return players;
+		return context.getPlayers();
 	}
 
 	@Override
 	public Player getCurrentPlayer() {
-		return currentPlayer;
-		//return context.getCurrentPlayer();
+		return context.getCurrentPlayer();
 	}
-
+	
 	@Override
-	public void setCurrentPlayer(Player player) {
-		this.currentPlayer = player;
+	public void nextPlayer() {
+		context.nextPlayer();
 	}
 	
 	@Override

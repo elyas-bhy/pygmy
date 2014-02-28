@@ -13,11 +13,12 @@ public abstract class MovableEntity extends GameMovable
 	protected SpriteManager spriteManager = null;
 	public static final int RENDERING_SIZE = 16;
 	
-	public MovableEntity(PygmyGameLevel level, String img, Point pos) {
+	public MovableEntity(PygmyGameLevel level, Player player, String img, Point pos) {
 		this.level = level;
 		spriteManager = new SpriteManagerDefaultImpl(img, level.getCanvas(), RENDERING_SIZE, 6);
 		spriteManager.setTypes("static");
 		setPosition(pos);
+		setPlayer(player);
 	}
 	
 	@Override

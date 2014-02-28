@@ -27,14 +27,9 @@ public abstract class PygmyGameLevel implements GameLevel {
 	public PygmyGameLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		this.game = game;
 		this.gameRules = new ArrayList<GameRule>();
-		game.setCurrentPlayer(game.getPlayers().get(0));
 		canvas = game.getCanvas();
 
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
-		/*MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
-		moveBlockerChecker.setMoveBlockerRules(moveBlockerRules);
-		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);*/
-		
 		universe = new GameUniverseDefaultImpl(overlapProcessor);
 		overlapRules.setUniverse(universe);
 
@@ -118,6 +113,7 @@ public abstract class PygmyGameLevel implements GameLevel {
 		getCurrentPlayer().play(move);
 		universe.processMove(move);
 		gameBoard.paint();
+		game.nextPlayer();
 	}
 
 	public void end() {

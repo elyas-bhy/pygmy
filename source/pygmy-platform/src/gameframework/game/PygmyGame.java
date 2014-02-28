@@ -27,11 +27,11 @@ public interface PygmyGame {
 
 	public Player getCurrentPlayer();
 
-	public void setCurrentPlayer(Player player);
-
 	void setPlayers(int minPlayers, int maxPlayers);
 	
 	public void setTitle(String title);
 	
 	public void setBoardDimensions(int rows, int columns);
+
+	public void nextPlayer();
 }
