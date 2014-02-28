@@ -1,4 +1,22 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.pygmy;
+
+import java.util.HashMap;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,31 +24,37 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * This class represents the view which shows the pieces of the board game on the screen.
+ */
 public class EntityView extends View {
 	private String TAG="EntityView";
 	private Entity[] entities; // array that holds the entities
 	private int entityID = 0; // variable to know what entity is being dragged
 	private boolean initial = true;
-
+	
+	/**
+	 * Constructor by default. 
+	 * @param context
+	 */
 	public EntityView(Context context) {
+		super(context);
+	}
+
+	/**
+	 * Constructs the view with the entities (pieces) of the board game.
+	 * @param context
+	 * @param gameParameters
+	 */
+	public EntityView(Context context, HashMap<String, Object> gameParameters) {
 		super(context);
 		Log.d(TAG, "Constructor");
 		setFocusable(true); //necessary for getting the touch events
-		
-		int numberOfEntities = 3;
-		entities = new Entity[numberOfEntities];
 
-		// declare each entity with the Entity class
-		createGameEntities(context, entities);
-	}
-	
-	private void createGameEntities(Context context, Entity [] entities) {
-		entities[0] = new Entity(context,R.drawable.black_bishop);
-		entities[1] = new Entity(context,R.drawable.black_king);
-		entities[2] = new Entity(context,R.drawable.black_pawn);		
+		// Initialise game
+		entities = (Entity[])gameParameters.get("entities");
 	}
 
-	// the method that draws the entities
 	@Override 
 	protected void onDraw(Canvas canvas) {
 		//canvas.drawColor(0xFFCCCCCC);     //if you want another background color
@@ -40,10 +64,13 @@ public class EntityView extends View {
 			initial = false;
 			// FIXME: fix this bad hack
 			int [][] coordXY = GameBoardView.getRectCoord();
-			
+
 			for (int index=0; index<entities.length; index++) {
-				entities[index].setX(coordXY[index+1][0]);
-				entities[index].setY(coordXY[index+1][1]);
+				if (entities[index] != null) {
+					int id = entities[index].getID();
+					entities[index].setX(coordXY[id][0]);
+					entities[index].setY(coordXY[id][1]);			
+				}
 			}
 		}
 
@@ -53,7 +80,9 @@ public class EntityView extends View {
 		}
 	}
 
-	// events when touching the screen
+	/**
+	 * Events when touching the screen
+	 */
 	public boolean onTouchEvent(MotionEvent event) {
 		int eventaction = event.getAction(); 
 

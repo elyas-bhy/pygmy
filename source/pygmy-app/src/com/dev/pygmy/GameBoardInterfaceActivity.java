@@ -1,4 +1,22 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.pygmy;
+
+import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
@@ -7,6 +25,11 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.dev.pygmy.game.Chess;
+
+/**
+ * 
+ */
 @SuppressLint("ResourceAsColor")
 public class GameBoardInterfaceActivity extends Activity {
 
@@ -22,10 +45,21 @@ public class GameBoardInterfaceActivity extends Activity {
 		FrameLayout mainLayout = createMainLayout();
 		setContentView(mainLayout);
 		
-		gameBoardView = new GameBoardView(getApplicationContext());
+		// FIXMI: Change this with introspection like bellow
+		Chess game = new Chess(this);
+		/*
+		String gameChosen = "Chess"; // Here the game chosen by user
+		Class<?> game = Class.forName("com.dev.pygmy.game."+gameChosen);
+		Constructor<?> constructor = game.getConstructor(Context.class);
+		Object instance = constructor.newInstance(this);
+		*/
+		
+		HashMap<String, Object> gameParameters = game.getParameters();
+		
+		gameBoardView = new GameBoardView(getApplicationContext(), gameParameters);
 		mainLayout.addView(gameBoardView);
 		
-		entityView = new EntityView(this);
+		entityView = new EntityView(this, gameParameters);
 		mainLayout.addView(entityView);
 	}
 	

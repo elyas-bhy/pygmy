@@ -1,51 +1,59 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.pygmy;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-public class Entity {
-	final private String TAG = "ENTITY";
-	
-	private Bitmap img; 			// the image of the entity
-	private int coordX = 0; 		// the x coordinate at the canvas
-	private int coordY = 0; 		// the y coordinate at the canvas
-	private int id; 				// gives every entity his own id
-	private static int count = 1;
+/**
+ * Interface of board game pieces (entities)
+ * @author Pygmy
+ */
+public interface Entity {
 
-	public Entity(Context context, int drawable) {
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(context.getResources(), drawable); 
-		id=count;
-		count++;
-	}
+	/**
+	 * Sets the X position of the image of the entity on the board 
+	 * @param posX
+	 */
+	public abstract void setX(int posX);
 
-	public static int getCount() {
-		return count;
-	}
+	/**
+	 * Returns the X position of the entity
+	 */
+	public abstract int getX();
 
-	void setX(int x) {
-		coordX = x;
-	}
+	/**
+	 * Sets the Y position of the image of the entity on the board 
+	 * @param posY
+	 */
+	public abstract void setY(int posY);
 
-	public int getX() {
-		return coordX;
-	}
+	/**
+	 * Returns the Y position of the entity
+	 */
+	public abstract int getY();
 
-	void setY(int y) {
-		coordY = y;
-	}
+	/**
+	 * Returns the identifier of the entity
+	 */
+	public abstract int getID();
 
-	public int getY() {
-		return coordY;
-	}
+	/**
+	 * Returns the image file of the entity
+	 */
+	public abstract Bitmap getBitmap();
 
-	public int getID() {
-		return id;
-	}
-
-	public Bitmap getBitmap() {
-		return img;
-	}
 }

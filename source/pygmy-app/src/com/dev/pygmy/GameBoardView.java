@@ -1,4 +1,22 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.pygmy;
+
+import java.util.HashMap;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,28 +26,42 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+/**
+ * 
+ */
 public class GameBoardView extends View {
 
 	private String TAG = "GameBoardView";
 	
 	private int nbCase;
-	private Paint mColor1 = null;
-	private Paint mColor2 = null;
-	private Paint color_black = null;
+	private Paint color1 = null;
+	private Paint color2 = null;
+	private Paint colorBlack = null;
 	
 	private static int[][] rectCoord;
 	
+	/**
+	 * Constructor by default.
+	 */
 	public GameBoardView(Context context) {
 		super(context);
-		nbCase = 8;
+	}
+	
+	/**
+	 * 
+	 * @param context
+	 * @param gameParameters
+	 */
+	public GameBoardView(Context context, HashMap<String, Object> gameParameters) {
+		super(context);
+		
+		nbCase = (Integer)gameParameters.get("numberRow");
 		rectCoord = new int[nbCase*(nbCase+1)][4];
 
 		// Colors
-		mColor1 = new Paint();
-		mColor1.setColor(Color.CYAN);
-		mColor2 = new Paint();
-		mColor2.setColor(Color.WHITE);
-		color_black = new Paint();
+		color1 = (Paint)gameParameters.get("color1");
+		color2 = (Paint)gameParameters.get("color2");
+		colorBlack = new Paint();
 	}
 
 	/**
@@ -76,13 +108,13 @@ public class GameBoardView extends View {
 	protected void onDraw(Canvas canvas) {
 		Log.d(TAG, "onDraw");
 		
-		color_black.setColor(Color.BLACK);
-		color_black.setTextSize(20);
+		colorBlack.setColor(Color.BLACK);
+		colorBlack.setTextSize(20);
 		
 		int width = getWidth();
 		int height = getHeight();
 		
-		int step = 0, min = 0, offset = 0, coord_X = 0, coord_Y = 0;
+		int step = 0, min = 0, offset = 0, coordX = 0, coordY = 0;
 		// Minimum size in width and length
 		min = Math.min(width, height);
 
@@ -95,38 +127,38 @@ public class GameBoardView extends View {
 			if (x != 0){
 				for(int y = 0 ; y < nbCase+1; ++y, ent++) {
 					if (y != 0){
-						coord_X = x*step+offset;
-						coord_Y = y*step+offset;
+						coordX = x*step+offset;
+						coordY = y*step+offset;
 
 						// (0,1) top left corner, (2,3) bottom right corner
-						rectCoord[ent][0] = coord_X;
-						rectCoord[ent][1] = coord_Y;
-						rectCoord[ent][2] = coord_X + step;
-						rectCoord[ent][3] = coord_Y + step;
+						rectCoord[ent][0] = coordX;
+						rectCoord[ent][1] = coordY;
+						rectCoord[ent][2] = coordX + step;
+						rectCoord[ent][3] = coordY + step;
 						
 						canvas.drawRect(rectCoord[ent][0], 
 										rectCoord[ent][1],
 										rectCoord[ent][2],
 										rectCoord[ent][3], 
-										((x + y)%2 != 0)?mColor1:mColor2);
+										((x + y)%2 != 0)?color1:color2);
 					}
 				}
 				canvas.drawText(Character.toString((char)('A'-1+x)), 
-								x*step+(step/2)-color_black.getTextSize()/2+offset, 
-								step/2+color_black.getTextSize()/2+offset, 
-								color_black);
+								x*step+(step/2)-colorBlack.getTextSize()/2+offset, 
+								step/2+colorBlack.getTextSize()/2+offset, 
+								colorBlack);
 				canvas.drawText(Integer.toString(x), 
-						        step/2-color_black.getTextSize()/2+offset, 
-						        x*step+(step/2)+color_black.getTextSize()/2+offset, 
-						        color_black);
+						        step/2-colorBlack.getTextSize()/2+offset, 
+						        x*step+(step/2)+colorBlack.getTextSize()/2+offset, 
+						        colorBlack);
 			}
 		}
 				
 		int small_distance = step+offset;
 		int long_distance = step*(nbCase+1)+offset;
-		canvas.drawLine(small_distance, small_distance, small_distance, long_distance, color_black);
-		canvas.drawLine(small_distance, small_distance, long_distance, small_distance, color_black);
-		canvas.drawLine(long_distance, long_distance, long_distance, small_distance, color_black);
-		canvas.drawLine(long_distance, long_distance, small_distance, long_distance, color_black);
+		canvas.drawLine(small_distance, small_distance, small_distance, long_distance, colorBlack);
+		canvas.drawLine(small_distance, small_distance, long_distance, small_distance, colorBlack);
+		canvas.drawLine(long_distance, long_distance, long_distance, small_distance, colorBlack);
+		canvas.drawLine(long_distance, long_distance, small_distance, long_distance, colorBlack);
 	}
 }
