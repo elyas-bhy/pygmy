@@ -21,4 +21,6 @@
     <color name="grey_metal_dark_divider">#535353</color>
     
     <color name="grey_details">#858585</color>
+    <color name="green_light">#E7E6C7</color>
+    <color name="green_dark">#4AA44A</color>
 </resources>
