@@ -59,8 +59,9 @@ public class GameBoardView extends View {
 		rectCoord = new int[nbCase*(nbCase+1)][4];
 
 		// Colors
-		color1 = (Paint)gameParameters.get("color1");
-		color2 = (Paint)gameParameters.get("color2");
+		Paint[] colors = (Paint[])gameParameters.get("colors");
+		color1 = colors[0];
+		color2 = colors[1];
 		colorBlack = new Paint();
 	}
 
@@ -115,6 +116,7 @@ public class GameBoardView extends View {
 		int height = getHeight();
 		
 		int step = 0, min = 0, offset = 0, coordX = 0, coordY = 0;
+		
 		// Minimum size in width and length
 		min = Math.min(width, height);
 
@@ -123,10 +125,10 @@ public class GameBoardView extends View {
 		offset = step / 3;
 
 		int ent=0;
-		for(int x = 0; x < nbCase +1; ++x) {
-			if (x != 0){
-				for(int y = 0 ; y < nbCase+1; ++y, ent++) {
-					if (y != 0){
+		for(int y = 0; y < nbCase +1; ++y) {
+			if (y != 0){
+				for(int x = 0 ; x < nbCase+1; ++x, ent++) {
+					if (x != 0){
 						coordX = x*step+offset;
 						coordY = y*step+offset;
 
@@ -143,13 +145,13 @@ public class GameBoardView extends View {
 										((x + y)%2 != 0)?color1:color2);
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+x)), 
-								x*step+(step/2)-colorBlack.getTextSize()/2+offset, 
+				canvas.drawText(Character.toString((char)('A'-1+y)), 
+								y*step+(step/2)-colorBlack.getTextSize()/2+offset, 
 								step/2+colorBlack.getTextSize()/2+offset, 
 								colorBlack);
-				canvas.drawText(Integer.toString(x), 
+				canvas.drawText(Integer.toString(y), 
 						        step/2-colorBlack.getTextSize()/2+offset, 
-						        x*step+(step/2)+colorBlack.getTextSize()/2+offset, 
+						        y*step+(step/2)+colorBlack.getTextSize()/2+offset, 
 						        colorBlack);
 			}
 		}
