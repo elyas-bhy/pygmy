@@ -111,6 +111,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		initSlidingMenu();
 		initSigninButtons();
+		initGameButtons();
 		mDataView = ((TextView) findViewById(R.id.data_view));
 		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
 	}
@@ -151,6 +152,7 @@ public class MainActivity extends BaseGameActivity implements
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -168,6 +170,10 @@ public class MainActivity extends BaseGameActivity implements
 				if (position == 1) {
 					setProfileView();
 				}
+				if (position == 2) {
+					startActivity(new Intent(MainActivity.this, GameBoardInterfaceActivity.class));
+				}
+				
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
@@ -195,6 +201,17 @@ public class MainActivity extends BaseGameActivity implements
 				});
 	}
 
+	private void initGameButtons(){
+		findViewById(R.id.game_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent myIntent = new Intent(v.getContext(), GameBoardInterfaceActivity.class);
+		                startActivityForResult(myIntent, 0);
+					}
+				});
+	}
+	
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
 	public void onCheckGamesClicked(View view) {

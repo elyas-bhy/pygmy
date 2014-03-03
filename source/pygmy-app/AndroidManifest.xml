@@ -41,11 +41,13 @@
             android:theme="@android:style/Theme.Holo" >
         </activity>
         
-        <activity android:name=".GameHomePageActivity" >
+        <activity android:name="com.dev.pygmy.GameHomePageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dev.pygmy.MainActivity" />
         </activity>
+        
+        <activity android:name="com.dev.pygmy.GameBoardInterfaceActivity" />
     </application>
 
 </manifest>
