@@ -17,18 +17,16 @@
 package com.dev.pygmy;
 
 import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
 import com.dev.pygmy.game.Chess;
 
 /**
- * 
+ * This class represents the whole game board including their pieces/entities.
  */
 @SuppressLint("ResourceAsColor")
 public class GameBoardInterfaceActivity extends Activity {
@@ -45,17 +43,18 @@ public class GameBoardInterfaceActivity extends Activity {
 		FrameLayout mainLayout = createMainLayout();
 		setContentView(mainLayout);
 		
-		// FIXMI: Change this with introspection like bellow
-		Chess game = new Chess(this);
 		/*
 		String gameChosen = "Chess"; // Here the game chosen by user
 		Class<?> game = Class.forName("com.dev.pygmy.game."+gameChosen);
 		Constructor<?> constructor = game.getConstructor(Context.class);
 		Object instance = constructor.newInstance(this);
 		*/
+		// FIXME: Change this with introspection like above
+		Chess game = new Chess(this);
 		
+		// Gets parameters of the game board.
 		HashMap<String, Object> gameParameters = game.getParameters();
-		
+		 
 		gameBoardView = new GameBoardView(getApplicationContext(), gameParameters);
 		mainLayout.addView(gameBoardView);
 		

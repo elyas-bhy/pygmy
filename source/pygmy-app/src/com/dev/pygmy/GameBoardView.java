@@ -27,7 +27,7 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * 
+ * 	This class represents the grid of the board.
  */
 public class GameBoardView extends View {
 
@@ -41,7 +41,7 @@ public class GameBoardView extends View {
 	private static int[][] rectCoord;
 	
 	/**
-	 * Constructor by default.
+	 * Default constructor.
 	 */
 	public GameBoardView(Context context) {
 		super(context);
@@ -49,8 +49,8 @@ public class GameBoardView extends View {
 	
 	/**
 	 * 
-	 * @param context
-	 * @param gameParameters
+	 * @param context			Context parent.
+	 * @param gameParameters	A map with board parameters. 
 	 */
 	public GameBoardView(Context context, HashMap<String, Object> gameParameters) {
 		super(context);
@@ -66,7 +66,7 @@ public class GameBoardView extends View {
 	}
 
 	/**
-	 * @return the boardRectCoord
+	 * @return A multidimensional array with the coordinates of each square of the board.
 	 */
 	public static int[][] getRectCoord() {
 		return rectCoord;

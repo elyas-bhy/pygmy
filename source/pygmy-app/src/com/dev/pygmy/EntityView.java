@@ -34,8 +34,8 @@ public class EntityView extends View {
 	private boolean initial = true;
 
 	/**
-	 * Constructor by default. 
-	 * @param context
+	 * Default constructor.
+	 * @param context		Context parent
 	 */
 	public EntityView(Context context) {
 		super(context);
@@ -43,8 +43,9 @@ public class EntityView extends View {
 
 	/**
 	 * Constructs the view with the entities (pieces) of the board game.
-	 * @param context
-	 * @param gameParameters
+	 * @param context			Context parent.
+	 * @param gameParameters	Parameters to set the board according to 
+	 * 							the game chosen by user. 
 	 */
 	public EntityView(Context context, HashMap<String, Object> gameParameters) {
 		super(context);
@@ -81,9 +82,7 @@ public class EntityView extends View {
 		}
 	}
 
-	/**
-	 * Events when touching the screen
-	 */
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		int eventaction = event.getAction();
 
