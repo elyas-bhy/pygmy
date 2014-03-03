@@ -109,9 +109,10 @@ public class GameBoardView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.d(TAG, "onDraw");
-		int dim1 = 5;
-		int dim2 = 9;
+		int dim1 = nbCase;
+		int dim2 = nbCase;
 		draw_checkerboard(canvas, dim1, dim2, color1, color2);
+	}
 		
 	private void draw_checkerboard(Canvas canvas, int dim1, int dim2, Paint color1, Paint color2){
 
@@ -119,12 +120,13 @@ public class GameBoardView extends View {
 		colorBlack.setTextSize(20);
 		int width_case = Math.min(dim1, dim2);
 		int height_case = Math.max(dim1, dim2);
-
+		
 		
 		int width = getWidth();
 		int height = getHeight();
 		
-		int case_size = 0, offset = 0, coord_i = 0, coord_j = 0;
+		int case_size = 0, offset = 0, coord_y = 0, coord_x = 0;
+		// Minimum size in width and length
 		// Minimum size in width and length
 
 		// One case distance
@@ -133,34 +135,32 @@ public class GameBoardView extends View {
 		offset = case_size / 3;
 
 		int ent=0;
-		for(int y = 0; y < nbCase +1; ++y) {
-			if (y != 0){
-				for(int x = 0 ; x < nbCase+1; ++x, ent++) {
-					if (x != 0){
-						coordX = x*step+offset;
-						coordY = y*step+offset;
+		for(int y = 0; y < width_case +1 ; ++y) {
+			if(y != 0){
+			for(int x = 0 ; x < height_case +1; ++x, ++ent) {
+				if(x != 0){
+						
+						coord_y = y*case_size+offset;
+						coord_x = x*case_size+offset;
+						if (y == 1)
+							canvas.drawText(Integer.toString(x), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
 						// (0,1) top left corner, (2,3) bottom right corner
-						rectCoord[ent][0] = coordX;
-						rectCoord[ent][1] = coordY;
-						rectCoord[ent][2] = coordX + step;
-						rectCoord[ent][3] = coordY + step;
+						rectCoord[ent][0] = coord_x;
+						rectCoord[ent][1] = coord_y;
+						rectCoord[ent][2] = coord_x + case_size;
+						rectCoord[ent][3] = coord_y + case_size;
 						
 						canvas.drawRect(rectCoord[ent][0], 
 										rectCoord[ent][1],
 										rectCoord[ent][2],
 										rectCoord[ent][3], 
-										((x + y)%2 != 0)?color1:color2);
+										((y + x)%2 != 0)?color1:color2);
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+y)), 
-								y*step+(step/2)-colorBlack.getTextSize()/2+offset, 
-								step/2+colorBlack.getTextSize()/2+offset, 
-								colorBlack);
-				canvas.drawText(Integer.toString(y), 
-						        step/2-colorBlack.getTextSize()/2+offset, 
-						        y*step+(step/2)+colorBlack.getTextSize()/2+offset, 
-						        colorBlack);
+				canvas.drawText(Character.toString((char)('A'-1+y)), y*case_size+(case_size/2)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);		
+				canvas.drawText(Integer.toString(y), case_size/2-colorBlack.getTextSize()/2+offset, y*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+								
 			}
 		}
 				
@@ -168,10 +168,9 @@ public class GameBoardView extends View {
 		int small_distance = case_size+offset;
 		int long_distance_height = case_size*(height_case+1)+offset;
 		int long_distance_width = case_size*(width_case+1)+offset;
-		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, color_black);
-		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, color_black);
-		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, color_black);
-		canvas.drawLine(long_distance_width, long_distance_height, small_distance, long_distance_height, color_black);
-
+		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, colorBlack);
+		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, colorBlack);
+		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, colorBlack);
+		canvas.drawLine(long_distance_width, long_distance_height, small_distance, long_distance_height, colorBlack);
 	}
 }
