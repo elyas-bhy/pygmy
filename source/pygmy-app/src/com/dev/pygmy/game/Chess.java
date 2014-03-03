@@ -18,8 +18,8 @@ package com.dev.pygmy.game;
 
 import java.util.HashMap;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.dev.pygmy.Entity;
@@ -30,19 +30,18 @@ import com.dev.pygmy.R;
  * This class initialise chess game pieces and give
  * game parameters.
  */
-@SuppressLint("ResourceAsColor")
+//@SuppressLint("ResourceAsColor")
 public class Chess {
 
 	final static String TAG = "Chess";
 
-	private Paint color1 = null;
-	private Paint color2 = null;
+	private Paint[] colors;
 	private Entity[] chessEntities = null;
 	private HashMap<String, Object> parameters;
-	
+
 	private int numberOfSquaresByColumn = 0;
 	private int numberOfSquaresByRow = 0;
-	private int numberOfEntities = 0;
+	private int numberOfPieces = 0;
 
 	/**
 	 * Gives the initial parameters of the chess board.
@@ -50,26 +49,30 @@ public class Chess {
 	 */
 	public Chess(Context context) {
 		parameters = new HashMap<String, Object>();
-		color1 = new Paint();
-		// color1.setColor(Color.CYAN);
-		color1.setColor(R.color.green_dark);
-		color2 = new Paint();
-		// color2.setColor(Color.WHITE);
-		color2.setColor(R.color.green_light);
 		
+		colors = new Paint[2];
+		colors[0] = new Paint();
+		colors[1] = new Paint();
+		colors[0].setColor(Color.CYAN);
+		colors[1].setColor(Color.WHITE);
+		
+		//colors[0].setColor(R.color.green_dark);
+		//colors[1].setColor(R.color.green_light);
+
 		numberOfSquaresByRow = 8;
 		numberOfSquaresByColumn = 8;
-		numberOfEntities = 32;
 
-		chessEntities = new Entity[numberOfEntities];
+		numberOfPieces = 32;
+		//chessEntities = new Entity[numberOfPieces];
+		//chessEntities = new Entity[numberOfSquaresByColumn*numberOfSquaresByRow];
+		chessEntities = new Entity[72];
 		setChessPiecesImages(context);
 
 		parameters.put("numberRow", numberOfSquaresByRow);
 		parameters.put("numberColumn", numberOfSquaresByColumn);
-		parameters.put("numberEntities", numberOfEntities);
+		parameters.put("numberPieces", numberOfPieces);
 		parameters.put("entities", chessEntities);
-		parameters.put("color1", color1);
-		parameters.put("color2",  color2);
+		parameters.put("colors", colors);
 	}
 
 	/**
@@ -86,6 +89,35 @@ public class Chess {
 	private void setChessPiecesImages(Context context) {
 
 		// declare each black piece (entity) with the Entity class
+		chessEntities[1] = new EntityImpl(context, 1, R.drawable.black_rook);
+		chessEntities[2] = new EntityImpl(context, 2, R.drawable.black_knight);
+		chessEntities[3] = new EntityImpl(context, 3, R.drawable.black_bishop);
+		chessEntities[4] = new EntityImpl(context, 4, R.drawable.black_queen);
+		chessEntities[5] = new EntityImpl(context, 5, R.drawable.black_king);
+		chessEntities[6] = new EntityImpl(context, 6, R.drawable.black_bishop);
+		chessEntities[7] = new EntityImpl(context, 7, R.drawable.black_knight);
+		chessEntities[8] = new EntityImpl(context, 8, R.drawable.black_rook);
+
+		for (int id=10; id<=17; ++id) {
+			chessEntities[id] = new EntityImpl(context, id, R.drawable.black_pawn);
+		}
+		
+		// declare each white piece (entity) with the Entity class
+		chessEntities[64] = new EntityImpl(context, 64, R.drawable.white_rook);
+		chessEntities[65] = new EntityImpl(context, 65, R.drawable.white_knight);
+		chessEntities[66] = new EntityImpl(context, 66, R.drawable.white_bishop);
+		chessEntities[67] = new EntityImpl(context, 67, R.drawable.white_queen);
+		chessEntities[68] = new EntityImpl(context, 68, R.drawable.white_king);
+		chessEntities[69] = new EntityImpl(context, 69, R.drawable.white_bishop);
+		chessEntities[70] = new EntityImpl(context, 70, R.drawable.white_knight);
+		chessEntities[71] = new EntityImpl(context, 71, R.drawable.white_rook);
+
+		for (int id=55; id<=62; ++id) {
+			chessEntities[id] = new EntityImpl(context, id, R.drawable.white_pawn);
+		}
+
+		/*
+		// declare each black piece (entity) with the Entity class
 		chessEntities[0] = new EntityImpl(context, 1, R.drawable.black_rook);
 		chessEntities[1] = new EntityImpl(context, 10, R.drawable.black_knight);
 		chessEntities[2] = new EntityImpl(context, 19, R.drawable.black_bishop);
@@ -95,10 +127,9 @@ public class Chess {
 		chessEntities[6] = new EntityImpl(context, 55, R.drawable.black_knight);
 		chessEntities[7] = new EntityImpl(context, 64, R.drawable.black_rook);
 
-		for (int index=8, id=2; index<chessEntities.length/2 && id<=65; ++index, id+=9) {
+		for (int index=8, id=2; index<16 && id<=65; ++index, id+=9) {
 			chessEntities[index] = new EntityImpl(context, id, R.drawable.black_pawn);
 		}
-
 		// declare each white piece (entity) with the Entity class
 		chessEntities[16] = new EntityImpl(context, 8, R.drawable.white_rook);
 		chessEntities[17] = new EntityImpl(context, 17, R.drawable.white_knight);
@@ -112,5 +143,6 @@ public class Chess {
 		for (int index=24, id=7; index<chessEntities.length && id<=71; ++index, id+=9) {
 			chessEntities[index] = new EntityImpl(context, id, R.drawable.white_pawn);
 		}
+		*/
 	}
 }
