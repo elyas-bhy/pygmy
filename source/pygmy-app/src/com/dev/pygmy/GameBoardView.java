@@ -35,11 +35,14 @@ public class GameBoardView extends View {
 	private String TAG = "GameBoardView";
 
 	private int nbCase;
+	private int caseDimension1;
+	private int caseDimension2;
 	private Paint color1 = null;
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
 	private static int[][] rectCoord;
+	private static int[][] tabCoord;
 
 	/**
 	 * Default constructor.
@@ -57,8 +60,13 @@ public class GameBoardView extends View {
 		super(context);
 
 		nbCase = (Integer)gameParameters.get("numberRow");
+		caseDimension1 = nbCase;
+		caseDimension2 = (Integer)gameParameters.get("numberColumn");
+		
 		rectCoord = new int[nbCase*(nbCase+1)][4];
-
+		tabCoord = new int[caseDimension1*caseDimension2][4];
+		System.out.println("nb_case " + caseDimension1*caseDimension2);
+		
 		// Colors
 		Paint[] colors = (Paint[])gameParameters.get("colors");
 		color1 = colors[0];
@@ -72,39 +80,11 @@ public class GameBoardView extends View {
 	public static int[][] getRectCoord() {
 		return rectCoord;
 	}
-
-	/**
-	 * Return a good dimension in an axe
-	 * @param spec - Mesure
-	 * @param screenDim - Screen Dimension
-	 * @return good size
-	 */
-	private int singleMeasure(int spec, int screenDim) {
-		int mode = MeasureSpec.getMode(spec);
-		int size = MeasureSpec.getSize(spec);
-
-		// If layout don't specify dimension, view takes screen's half
-		if(mode == MeasureSpec.UNSPECIFIED)
-			return screenDim/2;
-		else
-			// Else, it takes the layout's size
-			return size;
+	
+	public static int[] getCoord(int identity){
+		return tabCoord[identity];
 	}
 
-	@Override
-	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
-		// Screen Dimension
-		DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-		// Width
-		int screenWidth = metrics.widthPixels;
-		// length
-		int screenHeight = metrics.heightPixels;
-
-		int returnWidth = singleMeasure(widthMeasureSpec, screenWidth);
-		int returnHeight = singleMeasure(heightMeasureSpec, screenHeight);
-
-		setMeasuredDimension(returnWidth, returnHeight);
-	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -190,7 +170,7 @@ public class GameBoardView extends View {
 		int width = getWidth();
 		int height = getHeight();
 
-		int case_size = 0, offset = 0, coord_i = 0, coord_j = 0;
+		int case_size = 0, offset = 0, coord_y = 0, coord_x = 0;
 
 		// One case distance
 		case_size = Math.min(width / (width_case+2), height / (height_case+2));
@@ -201,21 +181,33 @@ public class GameBoardView extends View {
 		int long_distance_height = case_size*(height_case+1)+offset;
 		int long_distance_width = case_size*(width_case+1)+offset;
 
-		for(int i = 0; i <= width_case +1 ; ++i) {
-			if (i != 0){
-				for(int j = 0 ; j <= height_case +1; ++j) 
-					if (j != 0){
-						coord_i = i*case_size+offset;
-						coord_j = j*case_size+offset;
+		int ent = 0;
+		for(int y = 0; y <= width_case +1 ; ++y) {
+			if (y != 0){
+				for(int x = 0 ; x <= height_case +1; ++x, ++ent) 
+					if (x != 0){
+						coord_y = y*case_size+offset;
+						coord_x = x*case_size+offset;
+						
+						rectCoord[ent][0] = coord_x + offset;
+						rectCoord[ent][1] = coord_y + offset;
+						rectCoord[ent][2] = coord_x + case_size + offset;
+						rectCoord[ent][3] = coord_y + case_size + offset;
+
+						/*tabCoord[ent][0] = coord_x;
+						tabCoord[ent][1] = coord_y;
+						tabCoord[ent][2] = coord_x + case_size;
+						tabCoord[ent][3] = coord_y + case_size;*/
+						
 						// Draw case
-						canvas.drawLine(coord_i, small_distance, coord_i, long_distance_height, colorBlack);
-						canvas.drawLine(small_distance, coord_j, long_distance_width, coord_j, colorBlack);
-						if (i == 1 && j != height_case+1)
-							canvas.drawText(Integer.toString(j), case_size/2-colorBlack.getTextSize()/2+offset, j*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+						canvas.drawLine(coord_y, small_distance, coord_y, long_distance_height, colorBlack);
+						canvas.drawLine(small_distance, coord_x, long_distance_width, coord_x, colorBlack);
+						if (y == 1 && x != height_case+1)
+							canvas.drawText(Integer.toString(y), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
 					}
-				if (i != width_case+1)
-					canvas.drawText(Character.toString((char)('A'-1+i)), i*case_size+(case_size/2)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);
+				if (y != width_case+1)
+					canvas.drawText(Character.toString((char)('A'-1+y)), y*case_size+(case_size/2)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);
 			}
 		}
 	}
@@ -240,7 +232,7 @@ public class GameBoardView extends View {
 		// Marge based to case_size
 		offset = case_size / 3;
 
-		int ent=0;
+		int ent=0, id_case = 0;
 		for(int y = 0; y < width_case +1 ; ++y) {
 			if(y != 0){
 				for(int x = 0 ; x < height_case +1; ++x, ++ent) {
@@ -257,11 +249,25 @@ public class GameBoardView extends View {
 						rectCoord[ent][2] = coord_x + case_size;
 						rectCoord[ent][3] = coord_y + case_size;
 
+						tabCoord[id_case][0] = coord_x;
+						tabCoord[id_case][1] = coord_y;
+						tabCoord[id_case][2] = coord_x + case_size;
+						tabCoord[id_case][3] = coord_y + case_size;
+						
+						
+						canvas.drawRect(tabCoord[id_case][0], 
+								tabCoord[id_case][1],
+								tabCoord[id_case][2],
+								tabCoord[id_case][3], 
+								((y + x)%2 != 0)?color1:color2);
+						
 						canvas.drawRect(rectCoord[ent][0], 
 								rectCoord[ent][1],
 								rectCoord[ent][2],
 								rectCoord[ent][3], 
 								((y + x)%2 != 0)?color1:color2);
+						
+						id_case++;
 					}
 				}
 				canvas.drawText(Character.toString((char)('A'-1+y)), y*case_size+(case_size/2)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);		
