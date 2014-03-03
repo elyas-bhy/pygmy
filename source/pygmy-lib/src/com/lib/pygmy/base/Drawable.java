@@ -1,0 +1,7 @@
+package com.lib.pygmy.base;
+
+import java.awt.*;
+
+public interface Drawable {
+	public void draw(Graphics g);
+}
