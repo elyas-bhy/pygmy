@@ -17,7 +17,7 @@
 package com.dev.pygmy.game;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
+import java.util.Map;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
@@ -53,13 +53,14 @@ public class GameBoardInterfaceActivity extends Activity {
 			Constructor<?> constructor = clazz.getConstructor(Resources.class);
 			game = (PygmyGameImpl) constructor.newInstance(getResources());
 			game.initGame();
+			game.start();
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
 		
 		// Gets parameters of the game board.
 		if (game != null) {
-			HashMap<String, Object> gameParams = game.getParameters();
+			Map<String, Object> gameParams = game.getParameters();
 
 			gameBoardView = new GameBoardView(getApplicationContext(), gameParams);
 			mainLayout.addView(gameBoardView);
@@ -77,7 +78,7 @@ public class GameBoardInterfaceActivity extends Activity {
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		mainLayout.setLayoutParams(gerenalLayoutParams);
-		mainLayout.setBackgroundColor(getResources().getColor(R.color.blue));
+		mainLayout.setBackgroundColor(getResources().getColor(R.color.grey_metal));
 
 		return mainLayout;
 	}

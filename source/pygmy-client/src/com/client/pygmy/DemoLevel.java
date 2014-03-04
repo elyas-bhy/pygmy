@@ -16,36 +16,22 @@
 
 package com.client.pygmy;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
+import java.util.HashMap;
+import java.util.List;
 
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
 
-import java.util.HashMap;
-import java.util.List;
-
 public class DemoLevel extends PygmyGameLevel {
 	
 	final static String TAG = "Chess";
-
-	private Context context;
-	private Paint[] colors;
 	private HashMap<String, Object> parameters;
 
 	public DemoLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		super(game, overlapRules);
 		parameters = new HashMap<String, Object>();
-		
-		colors = new Paint[2];
-		colors[0] = new Paint(Color.CYAN);
-		colors[1] = new Paint(Color.WHITE);
-		//colors[0].setColor(R.color.green_dark);
-		//colors[1].setColor(R.color.green_light);
-		parameters.put("colors", colors);
 	}
 
 	/**
@@ -62,38 +48,38 @@ public class DemoLevel extends PygmyGameLevel {
 	@Override
 	public void init() {
 		List<Player> players = getContext().getGame().getPlayers();
-		Player player1 = players.get(0);
-		Player player2 = players.get(1);
+		Player p1 = players.get(0);
+		Player p2 = players.get(1);
 		
 		setDimensions(16, 16);
 		addGameRule(new EndlessGameRule());
 
 		// declare each black piece (entity) with the Entity class
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_rook, 0, 0));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_knight, 0, 1));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_bishop, 0, 2));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_queen, 0, 3));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_king, 0, 4));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_bishop, 0, 5));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_knight, 0, 6));
-		addEntity(new MyChessEntity(context, this, player1, R.drawable.black_rook, 0, 7));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_rook, 0, 0));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_knight, 0, 1));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_bishop, 0, 2));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_queen, 0, 3));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_king, 0, 4));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_bishop, 0, 5));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_knight, 0, 6));
+		addEntity(new MyChessEntity(this, p1, R.drawable.black_rook, 0, 7));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new MyChessEntity(context, this, player1, R.drawable.black_pawn, 1, i));
+			addEntity(new MyChessEntity(this, p1, R.drawable.black_pawn, 1, i));
 		}
 		
 		// declare each white piece (entity) with the Entity class
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_rook, 7, 0));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_knight, 7, 1));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_bishop, 7, 2));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_queen, 7, 3));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_king, 7, 4));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_bishop, 7, 5));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_knight, 7, 6));
-		addEntity(new MyChessEntity(context, this, player2, R.drawable.white_rook, 7, 7));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_rook, 7, 0));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_knight, 7, 1));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_bishop, 7, 2));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_queen, 7, 3));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_king, 7, 4));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_bishop, 7, 5));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_knight, 7, 6));
+		addEntity(new MyChessEntity(this, p2, R.drawable.white_rook, 7, 7));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new MyChessEntity(context, this, player2, R.drawable.white_pawn, 6, i));
+			addEntity(new MyChessEntity(this, p2, R.drawable.white_pawn, 6, i));
 		}
 	}
 	

@@ -16,13 +16,12 @@
 
 package com.dev.pygmy.game;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
@@ -55,21 +54,24 @@ public class GameBoardView extends View {
 	 * @param context	Context parent.
 	 * @param params	A map with board parameters. 
 	 */
-	public GameBoardView(Context context, HashMap<String, Object> params) {
+	public GameBoardView(Context context, Map<String,Object> params) {
 		super(context);
 
-		nbCase = (Integer) params.get("numberRow");
+		nbCase = (Integer) params.get("numberRows");
 		caseDimension1 = nbCase;
-		caseDimension2 = (Integer) params.get("numberColumn");
+		caseDimension2 = (Integer) params.get("numberColumns");
 		
 		rectCoord = new int[nbCase*(nbCase+1)][4];
 		tabCoord = new int[caseDimension1][caseDimension2][4];
-		
-		// Colors
-		Paint[] colors = (Paint[]) params.get("colors");
-		color1 = colors[0];
-		color2 = colors[1];
+
+		color1 = new Paint();
+		color2 = new Paint();
+		color1.setColor(Color.CYAN);
+		color2.setColor(Color.WHITE);
 		colorBlack = new Paint();
+
+		Log.d("FOO", caseDimension1 + "");
+		Log.d("FOO", caseDimension2 + "");
 	}
 
 	/**
@@ -79,7 +81,7 @@ public class GameBoardView extends View {
 		return rectCoord;
 	}
 	
-	public static int[] getCoord(int x, int y){
+	public static int[] getCoord(int x, int y) {
 		return tabCoord[x][y];
 	}
 
@@ -89,7 +91,7 @@ public class GameBoardView extends View {
 		Log.d(TAG, "onDraw");
 		int dim1 = nbCase;
 		int dim2 = nbCase;
-		draw_checkerboard(canvas, dim1, dim2, color1, color2);
+		draw_checkerboard(canvas, dim1, dim2);
 	}
 
 
@@ -210,7 +212,7 @@ public class GameBoardView extends View {
 		}
 	}
 
-	private void draw_checkerboard(Canvas canvas, int dim1, int dim2, Paint color1, Paint color2){
+	private void draw_checkerboard(Canvas canvas, int dim1, int dim2) {
 
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);

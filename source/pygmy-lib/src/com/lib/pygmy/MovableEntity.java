@@ -1,6 +1,5 @@
 package com.lib.pygmy;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -20,8 +19,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 
 	private PygmyGameLevel level;
 
-	public MovableEntity(Context context, PygmyGameLevel level, Player player, 
-			int drawable, Point pos) {
+	public MovableEntity(PygmyGameLevel level, Player player, int drawable, Point pos) {
 		this.level = level;
 		setPosition(pos);
 		setPlayer(player);
@@ -32,7 +30,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(context.getResources(), drawable);
+		img = BitmapFactory.decodeResource(level.getContext().getResources(), drawable);
 		id = count++;
 	}
 

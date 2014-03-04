@@ -2,7 +2,6 @@ package com.client.pygmy;
 
 // Create a movable entity for your game.
 
-import android.content.Context;
 import android.graphics.Point;
 
 import com.lib.pygmy.GameMove;
@@ -12,9 +11,8 @@ import com.lib.pygmy.PygmyGameLevel;
 
 public class MyChessEntity extends MovableEntity {
 
-	public MyChessEntity(Context context, PygmyGameLevel level, Player player, 
-			int resId, int x, int y) {
-		super(context, level, player, resId, new Point(x, y));
+	public MyChessEntity(PygmyGameLevel level, Player player, int resId, int x, int y) {
+		super(level, player, resId, new Point(x, y));
 	}
 	
 	@Override

@@ -63,9 +63,8 @@ public class EntityView extends View {
 
 		// Initialize game
 		GameLevel level = game.getContext().getCurrentLevel();
-		GameUniverse universe = level.getUniverse();
-		Map<Point,GameEntity> map = universe.getGameEntities();
 		entities = level.getUniverse().getGameEntities().values();
+		Log.d(TAG, entities.toString());
 	}
 
 	@Override 

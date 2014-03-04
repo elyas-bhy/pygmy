@@ -2,10 +2,9 @@ package com.client.pygmy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
 
 import com.lib.pygmy.AbstractPygmyGame;
 import com.lib.pygmy.GameLevel;
@@ -20,23 +19,11 @@ public class PygmyGameImpl extends AbstractPygmyGame {
 	}
 	
 	// TODO delegate to GameLevel
-	public HashMap<String,Object> getParameters() {
+	public Map<String,Object> getParameters() {
 		HashMap<String,Object> parameters = new HashMap<String, Object>();
-		
-		Paint[] colors = new Paint[2];
-		colors[0] = new Paint(Color.CYAN);
-		colors[1] = new Paint(Color.WHITE);
-		//colors[0].setColor(R.color.green_dark);
-		//colors[1].setColor(R.color.green_light);
-		
-		int numberOfSquaresByRow = 8;
-		int numberOfSquaresByColumn = 8;
-		int numberOfPieces = 32;
-		
-		parameters.put("colors", colors);
-		parameters.put("numberRow", numberOfSquaresByRow);
-		parameters.put("numberColumn", numberOfSquaresByColumn);
-		parameters.put("numberPieces", numberOfPieces);
+		parameters.put("numberRows", 8);
+		parameters.put("numberColumns", 8);
+		parameters.put("numberPieces", 32);
 		return parameters;
 	}
 
