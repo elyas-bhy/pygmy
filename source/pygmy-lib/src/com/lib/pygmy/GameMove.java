@@ -1,6 +1,6 @@
 package com.lib.pygmy;
 
-import java.awt.Point;
+import android.graphics.Point;
 
 public class GameMove {
 	

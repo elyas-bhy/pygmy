@@ -1,11 +1,12 @@
 package com.lib.pygmy;
 
-import com.lib.pygmy.base.MoveStrategyKeyboard;
-import com.lib.pygmy.base.ObservableValue;
-
-import java.awt.Canvas;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.graphics.Canvas;
+
+import com.lib.pygmy.base.MoveStrategyKeyboard;
+import com.lib.pygmy.base.ObservableValue;
 
 /**
  * To be implemented with respect to a specific game. Expected to initialize the
@@ -14,11 +15,10 @@ import java.util.List;
 
 public abstract class PygmyGameLevel implements GameLevel {
 	
-	protected Canvas canvas;
+	protected android.graphics.Canvas canvas;
 	
 	protected GameMap gameMap;
 	protected GameUniverse universe;
-	protected GameUniverseViewPort gameBoard;
 	protected ObservableValue<Boolean> endOfGame;
 
 	protected final PygmyGame game;
@@ -35,16 +35,13 @@ public abstract class PygmyGameLevel implements GameLevel {
 
 		overlapProcessor.setOverlapRules(overlapRules);
 		overlapProcessor.setUniverse(universe);
-
-		gameBoard = new GameUniverseViewPortDefaultImpl(canvas, universe);
-		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 	}
 
 	@Override
 	public void start() {
 		endOfGame = game.endOfGame();
 		init();
-		gameBoard.paint();
+		//gameBoard.paint();
 	}
 	
 	public abstract void init();
@@ -91,7 +88,7 @@ public abstract class PygmyGameLevel implements GameLevel {
 	// Adds a movable entity to the level
 	public void addMovableEntity(MovableEntity entity) {
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard(entity, this);
-		canvas.addKeyListener(keyStr);
+		//canvas.addKeyListener(keyStr);
 		addEntity(entity);
 	}
 	
@@ -112,7 +109,7 @@ public abstract class PygmyGameLevel implements GameLevel {
 	private void makeMove(GameMove move) {
 		getCurrentPlayer().play(move);
 		universe.processMove(move);
-		gameBoard.paint();
+		//gameBoard.paint();
 		game.nextPlayer();
 	}
 

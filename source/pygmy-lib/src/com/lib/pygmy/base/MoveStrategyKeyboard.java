@@ -1,18 +1,17 @@
 package com.lib.pygmy.base;
 
+import android.graphics.Point;
+import android.view.KeyEvent;
+
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.MovableEntity;
-
-import java.awt.Point;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 /**
  * {@link MoveStrategy} which listens to the keyboard and answers new
  * {@link Direction speed vectors} based on what the user typed.
  */
-public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
+public class MoveStrategyKeyboard implements MoveStrategy {
 	protected Direction speedVector = new DirectionDefaultImpl(new Point(0, 0));
 
 	private GameLevel ml;
@@ -27,21 +26,13 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 		return speedVector;
 	}
 
-	@Override
-	public void keyPressed(KeyEvent event) {
-		int keycode = event.getKeyCode();
-		switch (keycode) {
-		case KeyEvent.VK_RIGHT:
+	public void keyPressed() {
+		switch (1) {
+		case KeyEvent.ACTION_DOWN:
 			speedVector.setDirection(new Point(16, 0));
 			break;
-		case KeyEvent.VK_LEFT:
+		case KeyEvent.ACTION_UP:
 			speedVector.setDirection(new Point(-16, 0));
-			break;
-		case KeyEvent.VK_UP:
-			speedVector.setDirection(new Point(0, -16));
-			break;
-		case KeyEvent.VK_DOWN:
-			speedVector.setDirection(new Point(0, 16));
 			break;
 		}
 

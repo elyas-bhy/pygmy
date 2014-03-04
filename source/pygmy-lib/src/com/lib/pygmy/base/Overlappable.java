@@ -1,6 +1,6 @@
 package com.lib.pygmy.base;
 
-import java.awt.Point;
+import android.graphics.Point;
 
 public interface Overlappable {
 	

@@ -1,6 +1,6 @@
 package com.lib.pygmy;
 
-import java.awt.Canvas;
+import android.graphics.Canvas;
 
 public interface GameLevel {
 

@@ -1,6 +1,6 @@
 package com.lib.pygmy.base;
 
-import java.awt.Point;
+import android.graphics.Point;
 
 /**
  * This is the most basic implementation of {@link Direction} which is nothing

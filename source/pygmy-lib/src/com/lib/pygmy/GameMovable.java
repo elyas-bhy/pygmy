@@ -1,8 +1,8 @@
 package com.lib.pygmy;
 
-import com.lib.pygmy.base.Movable;
+import android.graphics.Point;
 
-import java.awt.Point;
+import com.lib.pygmy.base.Movable;
 
 public abstract class GameMovable implements Movable {
 
@@ -15,17 +15,19 @@ public abstract class GameMovable implements Movable {
 	}
 	
 	public void setPosition(Point p) {
-		source = (Point) p.clone();
+		source.x = p.x;
+		source.y = p.y;
 	}
 	
 	@Override
 	public Point getDestination() {
-		return (Point) destination.clone();
+		return new Point(destination.x, destination.y);
 	}
 
 	@Override
 	public void setDestination(Point p) {
-		this.destination = (Point) p.clone();
+		destination.x = p.x;
+		destination.y = p.y;
 	}
 	
 	public Player getPlayer() {
@@ -38,8 +40,10 @@ public abstract class GameMovable implements Movable {
 
 	@Override
 	public void oneStepMove(Point p) {
-		destination.setLocation(p);
-		source.translate((int) destination.getX(), (int) destination.getY());
+		destination.x = p.x;
+		destination.y = p.y;
+		source.x = destination.x;
+		source.y = destination.y;
 		oneStepMoveAddedBehavior();
 	}
 	

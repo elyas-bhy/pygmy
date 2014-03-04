@@ -1,9 +1,10 @@
 package com.lib.pygmy;
 
-import com.lib.pygmy.base.ObservableValue;
-
-import java.awt.Canvas;
 import java.util.List;
+
+import android.graphics.Canvas;
+
+import com.lib.pygmy.base.ObservableValue;
 
 public interface PygmyGame {
 
