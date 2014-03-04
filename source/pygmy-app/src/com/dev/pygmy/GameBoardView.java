@@ -42,7 +42,7 @@ public class GameBoardView extends View {
 	private Paint colorBlack = null;
 
 	private static int[][] rectCoord;
-	private static int[][] tabCoord;
+	private static int[][][] tabCoord;
 
 	/**
 	 * Default constructor.
@@ -64,8 +64,7 @@ public class GameBoardView extends View {
 		caseDimension2 = (Integer)gameParameters.get("numberColumn");
 		
 		rectCoord = new int[nbCase*(nbCase+1)][4];
-		tabCoord = new int[caseDimension1*caseDimension2][4];
-		System.out.println("nb_case " + caseDimension1*caseDimension2);
+		tabCoord = new int[caseDimension1][caseDimension2][4];
 		
 		// Colors
 		Paint[] colors = (Paint[])gameParameters.get("colors");
@@ -81,8 +80,8 @@ public class GameBoardView extends View {
 		return rectCoord;
 	}
 	
-	public static int[] getCoord(int identity){
-		return tabCoord[identity];
+	public static int[] getCoord(int x, int y){
+		return tabCoord[x][y];
 	}
 
 
@@ -249,16 +248,16 @@ public class GameBoardView extends View {
 						rectCoord[ent][2] = coord_x + case_size;
 						rectCoord[ent][3] = coord_y + case_size;
 
-						tabCoord[id_case][0] = coord_x;
-						tabCoord[id_case][1] = coord_y;
-						tabCoord[id_case][2] = coord_x + case_size;
-						tabCoord[id_case][3] = coord_y + case_size;
+						tabCoord[x-1][y-1][0] = coord_x;
+						tabCoord[x-1][y-1][1] = coord_y;
+						tabCoord[x-1][y-1][2] = coord_x + case_size;
+						tabCoord[x-1][y-1][3] = coord_y + case_size;
 						
 						
-						canvas.drawRect(tabCoord[id_case][0], 
-								tabCoord[id_case][1],
-								tabCoord[id_case][2],
-								tabCoord[id_case][3], 
+						canvas.drawRect(tabCoord[x-1][y-1][0], 
+								tabCoord[x-1][y-1][1],
+								tabCoord[x-1][y-1][2],
+								tabCoord[x-1][y-1][3], 
 								((y + x)%2 != 0)?color1:color2);
 						
 						canvas.drawRect(rectCoord[ent][0], 
