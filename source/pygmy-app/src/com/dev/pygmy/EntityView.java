@@ -25,7 +25,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * This class represents the view which shows the pieces of the board game on the screen.
+ * This class represents the view which shows the 
+ * pieces of the board game on the screen.
  */
 public class EntityView extends View {
 	private String TAG="EntityView";
@@ -58,18 +59,27 @@ public class EntityView extends View {
 
 	@Override 
 	protected void onDraw(Canvas canvas) {
-		//canvas.drawColor(0xFFCCCCCC);     //if you want another background color
-
 		// setting the start point for the entities
 		if (initial) {
 			initial = false;
-			// FIXME: fix this bad hack, getRectCoord is a static method.
-			int [][] coordXY = GameBoardView.getRectCoord();
-
-			for (int id=1; id<entities.length; id++) {
-				if (entities[id] != null) {
-					entities[id].setX(coordXY[id][0]);
-					entities[id].setY(coordXY[id][1]);
+			
+			int posX=0;
+			int posY=0;
+			int [] coordXY;
+			for (Entity ent : entities) {
+				if (ent != null) {
+					posX = ent.getBoundingPosition()[0];
+					posY = ent.getBoundingPosition()[1];
+					coordXY = GameBoardView.getCoord(posX, posY);				
+					ent.setX(coordXY[0]);
+					ent.setY(coordXY[1]);
+					
+//					Log.d(TAG, "X : "+posX);
+//					Log.d(TAG, "Y : "+posY);
+//					Log.d(TAG, "coordX : "+coordXY[0]);
+//					Log.d(TAG, "coordY : "+coordXY[1]);
+//					Log.d(TAG, "coordX+offset : "+coordXY[2]);
+//					Log.d(TAG, "coordY+offset : "+coordXY[3]);
 				}
 			}
 		}
@@ -91,7 +101,8 @@ public class EntityView extends View {
 
 		switch (eventaction) { 
 
-		case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on an entity
+		// touch down so check if the finger is on an entity
+		case MotionEvent.ACTION_DOWN: 
 			entityID = 0;
 			for (Entity ent : entities) {
 				// check all the bounds of the entity
@@ -107,7 +118,8 @@ public class EntityView extends View {
 			}
 			break;
 
-		case MotionEvent.ACTION_MOVE:   // touch drag with the entity
+		// touch drag with the entity
+		case MotionEvent.ACTION_MOVE:
 			// move the entities the same as the finger
 			if (entityID > 0) {
 				entities[entityID].setX(X-25);
