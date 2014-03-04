@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy;
+package com.dev.pygmy.game;
 
 import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import com.dev.pygmy.game.Chess;
+
+import com.dev.pygmy.R;
+import com.dev.pygmy.R.color;
 
 /**
  * This class represents the whole game board including their pieces/entities.

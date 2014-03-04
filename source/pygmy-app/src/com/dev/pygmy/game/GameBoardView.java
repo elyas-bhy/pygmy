@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy;
+package com.dev.pygmy.game;
 
 import java.util.HashMap;
 

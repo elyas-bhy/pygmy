@@ -19,11 +19,12 @@ package com.dev.pygmy.game;
 import java.util.HashMap;
 
 import android.content.Context;
+//import android.graphics.Color;
+//import android.graphics.Paint;
+
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.dev.pygmy.Entity;
-import com.dev.pygmy.EntityImpl;
 import com.dev.pygmy.R;
 
 /**

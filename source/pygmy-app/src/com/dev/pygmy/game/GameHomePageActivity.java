@@ -1,10 +1,9 @@
 /**
  * 
  */
-package com.dev.pygmy;
+package com.dev.pygmy.game;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,11 +11,11 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.dev.pygmy.R;
+import com.dev.pygmy.SettingsActivity;
 
 public class GameHomePageActivity extends Activity {
 
