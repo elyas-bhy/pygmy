@@ -78,6 +78,7 @@ public class EntityView extends View {
 					posX = entity.getBoundingPosition()[0];
 					posY = entity.getBoundingPosition()[1];
 					coordXY = GameBoardView.getCoord(posX, posY);				
+					//coordXY = GameBoardView.getTileCoord(posX, posY);
 					entity.setX(coordXY[0]);
 					entity.setY(coordXY[1]);
 					
