@@ -16,21 +16,24 @@
 
 package com.dev.pygmy.game;
 
-import android.graphics.Point;
-
 public class Tile {
 	final private String TAG = "Tile";
 	
 	int[] positionPixel;
+	int tileSize;
 	
 	public Tile(int x1, int y1, int tileSize) {
-		positionPixel = new int[4];
+		positionPixel = new int[2];
 		positionPixel[0] = x1;
 		positionPixel[1] = y1;
-		positionPixel[2] = tileSize;
+		this.tileSize = tileSize;
 	}
 	
 	public int[] getCoord() {
 		return positionPixel;
+	}
+	
+	public int getTileSize() {
+		return tileSize;
 	}
 }
