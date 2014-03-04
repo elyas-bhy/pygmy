@@ -73,12 +73,12 @@ public class EntityView extends View {
 			int posX = 0;
 			int posY = 0;
 			int[] coordXY;
+			
 			for (GameEntity entity : entities) {
 				if (entity != null) {
 					posX = entity.getBoundingPosition()[0];
 					posY = entity.getBoundingPosition()[1];
-					coordXY = GameBoardView.getCoord(posX, posY);				
-					//coordXY = GameBoardView.getTileCoord(posX, posY);
+					coordXY = GameBoardView.getTileCoord(posX, posY).getCoord();
 					entity.setX(coordXY[0]);
 					entity.setY(coordXY[1]);
 					
@@ -119,6 +119,7 @@ public class EntityView extends View {
 							X < entity.getX()+50 &&
 								Y > entity.getY() && 
 									Y < entity.getY()+50) {
+						//save source tile
 						entityID = entity.getId();
 						break;
 					}
@@ -129,6 +130,8 @@ public class EntityView extends View {
 		// touch drag with the entity
 		case MotionEvent.ACTION_MOVE:
 			// move the entities the same as the finger
+			
+			// detect current tile + feedback
 			if (entityID > 0) {
 				//entities[entityID].setX(X-25);
 				//entities[entityID].setY(Y-25);

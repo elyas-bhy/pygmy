@@ -34,15 +34,14 @@ public class GameBoardView extends View {
 
 	private String TAG = "GameBoardView";
 
-	private int nbCase;
-	private int caseDimension1;
-	private int caseDimension2;
+	private int numberOfTiles;
+	private int numberOfRows;
+	private int numberOfColumns;
 	private Paint color1 = null;
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
 	private static int[][] rectCoord;
-	private static int[][][] tabCoord;
 	private static Map<Point, Tile> mapTileCoord;
 
 	/**
@@ -60,12 +59,11 @@ public class GameBoardView extends View {
 	public GameBoardView(Context context, Map<String,Object> params) {
 		super(context);
 
-		nbCase = (Integer) params.get("numberRows");
-		caseDimension1 = nbCase;
-		caseDimension2 = (Integer) params.get("numberColumns");
+		numberOfTiles = (Integer) params.get("numberRows");
+		numberOfRows = numberOfTiles;
+		numberOfColumns = (Integer) params.get("numberColumns");
 		
-		rectCoord = new int[nbCase*(nbCase+1)][4];
-		tabCoord = new int[caseDimension1][caseDimension2][4];
+		rectCoord = new int[numberOfTiles*(numberOfTiles+1)][4];
 
 		color1 = new Paint();
 		color2 = new Paint();
@@ -83,10 +81,12 @@ public class GameBoardView extends View {
 		return rectCoord;
 	}
 	
-	public static int[] getCoord(int x, int y) {
-		return tabCoord[x][y];
-	}
-	
+	/**
+	 * 
+	 * @param row
+	 * @param column
+	 * @return a Tile 
+	 */
 	public static Tile getTileCoord(int row, int column) {
 		return mapTileCoord.get(new Point(row, column));
 	}
@@ -94,9 +94,9 @@ public class GameBoardView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.d(TAG, "onDraw");
-		int dim1 = nbCase;
-		int dim2 = nbCase;
-		draw_checkerboard(canvas, dim1, dim2);
+		int dim1 = numberOfTiles;
+		int dim2 = numberOfTiles;
+		drawCheckerboard(canvas, dim1, dim2);
 	}
 
 	private void draw_hexcase(Canvas canvas, int case_size, int coord_x, int coord_y){
@@ -216,7 +216,7 @@ public class GameBoardView extends View {
 		}
 	}
 
-	private void draw_checkerboard(Canvas canvas, int dim1, int dim2) {
+	private void drawCheckerboard(Canvas canvas, int dim1, int dim2) {
 
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
@@ -227,14 +227,13 @@ public class GameBoardView extends View {
 		int width = getWidth();
 		int height = getHeight();
 
-		int case_size = 0, offset = 0, coord_y = 0, coord_x = 0;
-		// Minimum size in width and length
+		int tileSize = 0, offset = 0, coordY = 0, coordX = 0;
 		// Minimum size in width and length
 
 		// One case distance
-		case_size = Math.min(width / (width_case+2), height / (height_case+2));
+		tileSize = Math.min(width / (width_case+2), height / (height_case+2));
 		// Marge based to case_size
-		offset = case_size / 3;
+		offset = tileSize / 3;
 
 		int id_case = 0;
 		for(int y = 0; y < width_case +1 ; ++y) {
@@ -242,40 +241,40 @@ public class GameBoardView extends View {
 				for(int x = 0 ; x < height_case +1; ++x) {
 					if(x != 0){
 
-						coord_y = y*case_size+offset;
-						coord_x = x*case_size+offset;
+						coordY = y*tileSize+offset;
+						coordX = x*tileSize+offset;
 						if (y == 1)
-							canvas.drawText(Integer.toString(x), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+							canvas.drawText(Integer.toString(x), 
+									tileSize/2-colorBlack.getTextSize()/2+offset, 
+									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
+									colorBlack);		
 
-						// (0,1) top left corner, (2,3) bottom right corner
-						tabCoord[x-1][y-1][0] = coord_x;
-						tabCoord[x-1][y-1][1] = coord_y;
-						tabCoord[x-1][y-1][2] = coord_x + case_size;
-						tabCoord[x-1][y-1][3] = coord_y + case_size;
-						
 						mapTileCoord.put(new Point(x-1, y-1),
-										 new Tile(coord_x, coord_y,
-												  coord_x + case_size,
-												  coord_y + case_size));
+										 new Tile(coordX, coordY,
+												  tileSize));
 						
-						canvas.drawRect(coord_x, coord_y,
-										coord_x + case_size,
-										coord_y + case_size,
+						canvas.drawRect(coordX, coordY,
+										coordX + tileSize,
+										coordY + tileSize,
 										((y + x)%2 != 0)?color1:color2);
 						
 						id_case++;
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+y)), y*case_size+(case_size/2)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);		
-				canvas.drawText(Integer.toString(y), case_size/2-colorBlack.getTextSize()/2+offset, y*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+				canvas.drawText(Character.toString((char)('A'-1+y)), 
+						y*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
+						tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);		
+				canvas.drawText(Integer.toString(y), 
+						tileSize/2-colorBlack.getTextSize()/2+offset, 
+						y*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
 			}
 		}
 
 		// Draw checkerboard's outline
-		int small_distance = case_size+offset;
-		int long_distance_height = case_size*(height_case+1)+offset;
-		int long_distance_width = case_size*(width_case+1)+offset;
+		int small_distance = tileSize+offset;
+		int long_distance_height = tileSize*(height_case+1)+offset;
+		int long_distance_width = tileSize*(width_case+1)+offset;
 		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, colorBlack);
 		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, colorBlack);
 		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, colorBlack);

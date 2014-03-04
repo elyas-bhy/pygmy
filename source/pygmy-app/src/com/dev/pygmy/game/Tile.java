@@ -23,22 +23,14 @@ public class Tile {
 	
 	int[] positionPixel;
 	
-	// (0,1) top left corner, (2,3) bottom right corner
-	Point topLeft;
-	Point bottomRight;
-	
-	public Tile(int x1, int y1, int x2, int y2) {
+	public Tile(int x1, int y1, int tileSize) {
 		positionPixel = new int[4];
 		positionPixel[0] = x1;
 		positionPixel[1] = y1;
-		positionPixel[2] = x2;
-		positionPixel[3] = y2;
-		
-		topLeft = new Point(x1, y1);
-		bottomRight = new Point(x2, y2);
+		positionPixel[2] = tileSize;
 	}
 	
-	public int[] getCoord(int x, int y) {
+	public int[] getCoord() {
 		return positionPixel;
 	}
 }
