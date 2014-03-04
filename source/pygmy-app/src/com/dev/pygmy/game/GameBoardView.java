@@ -88,7 +88,7 @@ public class GameBoardView extends View {
 	 * @return a Tile 
 	 */
 	public static Tile getTileCoord(int row, int column) {
-		return mapTileCoord.get(new Point(row, column));
+		return mapTileCoord.get(new Point(column, row));
 	}
 
 	@Override
