@@ -17,11 +17,9 @@
 package com.dev.pygmy.game;
 
 import java.util.Collection;
-import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +27,6 @@ import android.view.View;
 import com.client.pygmy.PygmyGameImpl;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
-import com.lib.pygmy.GameUniverse;
 
 /**
  * This class represents the view which shows the 

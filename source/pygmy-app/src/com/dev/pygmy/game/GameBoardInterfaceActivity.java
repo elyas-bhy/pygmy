@@ -52,14 +52,14 @@ public class GameBoardInterfaceActivity extends Activity {
 			Class<?> clazz = Class.forName("com.client.pygmy.PygmyGameImpl");
 			Constructor<?> constructor = clazz.getConstructor(Resources.class);
 			game = (PygmyGameImpl) constructor.newInstance(getResources());
-			game.initGame();
-			game.start();
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
 		
 		// Gets parameters of the game board.
 		if (game != null) {
+			game.initGame();
+			game.start();
 			Map<String, Object> gameParams = game.getParameters();
 
 			gameBoardView = new GameBoardView(getApplicationContext(), gameParams);
