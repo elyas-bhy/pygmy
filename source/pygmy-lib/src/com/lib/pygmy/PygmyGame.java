@@ -7,8 +7,6 @@ import android.graphics.Canvas;
 import com.lib.pygmy.base.ObservableValue;
 
 public interface PygmyGame {
-
-	public PygmyGame getGame();
 	
 	public PygmyGameContext getContext();
 	
@@ -24,6 +22,8 @@ public interface PygmyGame {
 
 	public ObservableValue<Boolean> endOfGame();
 	
+	public List<GameLevel> getLevels();
+	
 	public void setLevels(List<GameLevel> levels);
 
 	public Player getCurrentPlayer();
@@ -35,4 +35,5 @@ public interface PygmyGame {
 	public void setBoardDimensions(int rows, int columns);
 
 	public void nextPlayer();
+
 }

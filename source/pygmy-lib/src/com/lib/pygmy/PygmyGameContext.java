@@ -3,22 +3,30 @@ package com.lib.pygmy;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.res.Resources;
+
 public class PygmyGameContext {
 
+	private Resources res;
 	private PygmyGame game;
 	private PygmyGameLevel currentLevel;
 	
 	private List<Player> players;
 	private int currentPlayer;
 	
-	public PygmyGameContext(PygmyGame game) {
+	public PygmyGameContext(PygmyGame game, Resources resources) {
 		this.game = game;
+		this.res = resources;
 		this.players = new ArrayList<Player>();
 		this.currentPlayer = 0;
 	}
 	
 	public PygmyGame getGame() {
 		return game;
+	}
+	
+	public Resources getResources() {
+		return res;
 	}
 
 	public List<Player> getPlayers() {
@@ -31,8 +39,9 @@ public class PygmyGameContext {
 		players.add(new Player());
 	}
 	
-	public PygmyGameLevel getCurrentLevel() {
-		return currentLevel;
+	public GameLevel getCurrentLevel() {
+		//return currentLevel;
+		return game.getLevels().get(0);
 	}
 	
 	public Player getCurrentPlayer() {

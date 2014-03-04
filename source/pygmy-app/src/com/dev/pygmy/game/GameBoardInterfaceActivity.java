@@ -16,63 +16,69 @@
 
 package com.dev.pygmy.game;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.client.pygmy.PygmyGameImpl;
 import com.dev.pygmy.R;
-import com.dev.pygmy.R.color;
 
 /**
  * This class represents the whole game board including their pieces/entities.
  */
-@SuppressLint("ResourceAsColor")
 public class GameBoardInterfaceActivity extends Activity {
 
-	static final String TAG = "Pygmy";
-	
+	static final String TAG = "GameBoardInterfaceActivity";
+
 	private GameBoardView gameBoardView = null;
 	private EntityView entityView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		FrameLayout mainLayout = createMainLayout();
 		setContentView(mainLayout);
-		
-		/*
-		String gameChosen = "Chess"; // Here the game chosen by user
-		Class<?> game = Class.forName("com.dev.pygmy.game."+gameChosen);
-		Constructor<?> constructor = game.getConstructor(Context.class);
-		Object instance = constructor.newInstance(this);
-		*/
-		// FIXME: Change this with introspection like above
-		Chess game = new Chess(this);
+
+		PygmyGameImpl game = null;
+		try {
+			Class<?> clazz = Class.forName("com.client.pygmy.PygmyGameImpl");
+			Constructor<?> constructor = clazz.getConstructor(Resources.class);
+			game = (PygmyGameImpl) constructor.newInstance(getResources());
+			game.initGame();
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
 		
 		// Gets parameters of the game board.
-		HashMap<String, Object> gameParameters = game.getParameters();
-		 
-		gameBoardView = new GameBoardView(getApplicationContext(), gameParameters);
-		mainLayout.addView(gameBoardView);
-		
-		entityView = new EntityView(this, gameParameters);
-		mainLayout.addView(entityView);
+		if (game != null) {
+			HashMap<String, Object> gameParams = game.getParameters();
+
+			gameBoardView = new GameBoardView(getApplicationContext(), gameParams);
+			mainLayout.addView(gameBoardView);
+			
+			entityView = new EntityView(this, game);
+			mainLayout.addView(entityView);
+		} else {
+			mainLayout.addView(findViewById(R.id.creation_error));
+		}
 	}
-	
+
 	private FrameLayout createMainLayout() {
 		FrameLayout mainLayout = new FrameLayout(this);
 		LayoutParams gerenalLayoutParams = new LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		mainLayout.setLayoutParams(gerenalLayoutParams);
-		mainLayout.setBackgroundColor(R.color.blue);
-		
+		mainLayout.setBackgroundColor(getResources().getColor(R.color.blue));
+
 		return mainLayout;
 	}
 }

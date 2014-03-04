@@ -23,6 +23,11 @@ import android.graphics.Bitmap;
  * @author Pygmy
  */
 public interface Entity {
+	
+	/**
+	 * @return the initial position of the entity on the board.
+	 */
+	public int[] getBoundingPosition();
 
 	/**
 	 * Sets the X position of the image of the entity on the board 
@@ -49,7 +54,7 @@ public interface Entity {
 	/**
 	 * Returns the identifier of the entity
 	 */
-	public abstract int getID();
+	public abstract int getId();
 
 	/**
 	 * Returns the image file of the entity

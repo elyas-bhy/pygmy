@@ -1,8 +1,8 @@
 package com.lib.pygmy;
 
+import java.util.Map;
+
 import android.graphics.Point;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * stores all the gameframework.game entities of a gameframework.game level:
@@ -15,9 +15,7 @@ public interface GameUniverse {
 
 	public void removeGameEntity(GameEntity gameEntity);
 
-	public Iterator<GameEntity> gameEntities();
-
-	public ConcurrentHashMap<Point,GameEntity> getGameEntities();
+	public Map<Point,GameEntity> getGameEntities();
 
 	public void processMove(GameMove move);
 

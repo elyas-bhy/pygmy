@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.graphics.Canvas;
 
-import com.lib.pygmy.base.MoveStrategyKeyboard;
 import com.lib.pygmy.base.ObservableValue;
 
 /**
@@ -30,7 +29,7 @@ public abstract class PygmyGameLevel implements GameLevel {
 		canvas = game.getCanvas();
 
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
-		universe = new GameUniverseDefaultImpl(overlapProcessor);
+		universe = new PygmyGameUniverse(overlapProcessor);
 		overlapRules.setUniverse(universe);
 
 		overlapProcessor.setOverlapRules(overlapRules);
@@ -54,6 +53,11 @@ public abstract class PygmyGameLevel implements GameLevel {
 	@Override
 	public GameMap getMap() {
 		return gameMap;
+	}
+	
+	@Override
+	public GameUniverse getUniverse() {
+		return universe;
 	}
 
 	@Override
@@ -83,13 +87,6 @@ public abstract class PygmyGameLevel implements GameLevel {
 
 	public void addEntity(GameEntity entity) {
 		universe.addGameEntity(entity);
-	}
-
-	// Adds a movable entity to the level
-	public void addMovableEntity(MovableEntity entity) {
-		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard(entity, this);
-		//canvas.addKeyListener(keyStr);
-		addEntity(entity);
 	}
 	
 	public void tryMove(GameMove move) {

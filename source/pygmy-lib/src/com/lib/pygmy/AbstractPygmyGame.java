@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 
 import com.lib.pygmy.base.ObservableValue;
@@ -17,8 +18,6 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 	protected static final int SPRITE_SIZE = 16;
 	protected int rows = 31;
 	protected int columns = 28;
-	private int maxPlayers = 4;
-	private int minPlayers = 1;
 	
 	private PygmyGameContext context;
 	private PygmyGameLevel currentPlayedLevel = null;
@@ -30,8 +29,8 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 	protected ObservableValue<Boolean> endOfGame = null;
 
 
-	public AbstractPygmyGame() {
-		context = new PygmyGameContext(this);
+	public AbstractPygmyGame(Resources resources) {
+		context = new PygmyGameContext(this, resources);
 	}
 
 	public void createGUI() {
@@ -47,10 +46,8 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
 			endOfGame.addObserver(this);
-			currentPlayedLevel = (PygmyGameLevel) level;
-			levelNumber++;
-			//currentLevelValue.setText(Integer.toString(levelNumber));
 		}
+		gameLevels.get(0).start();
 	}
 
 	public ObservableValue<Boolean> endOfGame() {
@@ -65,6 +62,11 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 			}
 		}
 	}
+	
+	@Override
+	public List<GameLevel> getLevels() {
+		return gameLevels;
+	}
 
 	@Override
 	public void setLevels(List<GameLevel> levels) {
@@ -73,8 +75,6 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 
 	@Override
 	public void setPlayers(int minPlayers, int maxPlayers) {
-		this.maxPlayers = maxPlayers;
-		this.minPlayers = minPlayers;
 		context.setPlayers(minPlayers, maxPlayers);
 		createGUI();
 	}
@@ -104,8 +104,7 @@ public abstract class AbstractPygmyGame implements PygmyGame, Observer {
 		this.rows = rows;
 		this.columns = columns;
 	}
-
-	@Override
+	
 	public PygmyGame getGame() {
 		return this;
 	}

@@ -1,31 +1,27 @@
 package com.lib.pygmy;
 
-import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Point;
 
 import com.lib.pygmy.base.Overlappable;
 
-public class GameUniverseDefaultImpl implements GameUniverse {
+public class PygmyGameUniverse implements GameUniverse {
 	
-	private ConcurrentHashMap<Point,GameEntity> gameEntities;
+	private Map<Point,GameEntity> gameEntities;
 	private OverlapProcessor overlapProcessor;
 	
-	public GameUniverseDefaultImpl() {
+	public PygmyGameUniverse() {
 		gameEntities = new ConcurrentHashMap<Point,GameEntity>();
 	}
 
-	public GameUniverseDefaultImpl(OverlapProcessor olp) {
+	public PygmyGameUniverse(OverlapProcessor olp) {
 		this();
 		overlapProcessor = olp;
 	}
 	
-	public Iterator<GameEntity> gameEntities() {
-		return gameEntities.values().iterator();
-	}
-	
-	public ConcurrentHashMap<Point,GameEntity> getGameEntities() {
+	public Map<Point,GameEntity> getGameEntities() {
 		return gameEntities;
 	}
 

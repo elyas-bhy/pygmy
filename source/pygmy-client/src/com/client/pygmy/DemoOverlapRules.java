@@ -1,26 +1,17 @@
 package com.client.pygmy;
 
-import com.lib.pygmy.base.Overlap;
+import java.util.Vector;
+
 import com.lib.pygmy.AbstractOverlapRulesApplier;
 import com.lib.pygmy.GameUniverse;
-
-import java.awt.Point;
-import java.util.Vector;
+import com.lib.pygmy.base.Overlap;
 
 public class DemoOverlapRules extends AbstractOverlapRulesApplier {
 	
 	protected GameUniverse universe;
 
-	// Time duration during which pacman is invulnerable and during which ghosts
-	// can be eaten (in number of cycles)
-	static final int INVULNERABLE_DURATION = 60;
-	protected Point pacManStartPos;
-	protected Point ghostStartPos;
-	protected boolean managePacmanDeath;
-
-	public DemoOverlapRules(Point pacPos, Point gPos) {
-		pacManStartPos = (Point) pacPos.clone();
-		ghostStartPos = (Point) gPos.clone();
+	public DemoOverlapRules() {
+		
 	}
 
 	public void setUniverse(GameUniverse universe) {
@@ -29,7 +20,6 @@ public class DemoOverlapRules extends AbstractOverlapRulesApplier {
 
 	@Override
 	public void applyOverlapRules(Vector<Overlap> overlappables) {
-		managePacmanDeath = true;
 		super.applyOverlapRules(overlappables);
 	}
 	

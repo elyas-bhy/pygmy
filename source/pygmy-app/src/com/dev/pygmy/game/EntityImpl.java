@@ -28,20 +28,25 @@ public class EntityImpl implements Entity {
 	private int coordY = 0; 		// the y coordinate at the canvas
 	private int id; 				// gives every entity his own id
 	private static int count = 1;
+	private int [] tilePosition;	// position (x,y) of a 
 
-	public EntityImpl(Context context, int drawable) {
+	public EntityImpl(Context context, int drawable, int row, int column) {
+		tilePosition = new int[2];
+		tilePosition[0] = row;
+		tilePosition[1] = column;
+		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(context.getResources(), drawable); 
+		img = BitmapFactory.decodeResource(context.getResources(), drawable);
 		id=count;
 		count++;
 	}
-	
-	public EntityImpl(Context context, int id, int drawable) {
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(context.getResources(), drawable); 
-		this.id=id;
+
+	/* (non-Javadoc)
+	 * @see com.dev.pygmy.Entity#getBoundingPosition()
+	 */
+	public int[] getBoundingPosition() {
+		return tilePosition;
 	}
 
 	public static int getCount() {
@@ -84,7 +89,7 @@ public class EntityImpl implements Entity {
 	 * @see com.dev.pygmy.Entity#getID()
 	 */
 	@Override
-	public int getID() {
+	public int getId() {
 		return id;
 	}
 

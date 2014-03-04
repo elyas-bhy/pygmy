@@ -16,21 +16,30 @@
 
 package com.dev.pygmy.game;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.client.pygmy.PygmyGameImpl;
+import com.lib.pygmy.GameEntity;
+import com.lib.pygmy.GameLevel;
+import com.lib.pygmy.GameUniverse;
+
 /**
- * This class represents the view which shows the pieces of the board game on the screen.
+ * This class represents the view which shows the 
+ * pieces of the board game on the screen.
  */
 public class EntityView extends View {
-	private String TAG="EntityView";
-	private Entity[] entities;		// array that holds the entities
-	private int entityID = 0;		// variable to know what entity is being dragged
+	
+	private String TAG = "EntityView";
+	private Collection<GameEntity> entities;	// array that holds the entities
+	private int entityID = 0;				// variable to know what entity is being dragged
 	private boolean initial = true;
 
 	/**
@@ -47,37 +56,49 @@ public class EntityView extends View {
 	 * @param gameParameters	Parameters to set the board according to 
 	 * 							the game chosen by user. 
 	 */
-	public EntityView(Context context, HashMap<String, Object> gameParameters) {
+	public EntityView(Context context, PygmyGameImpl game) {
 		super(context);
 		Log.d(TAG, "Constructor");
-		setFocusable(true); //necessary for getting the touch events
+		setFocusable(true); // Necessary for getting the touch events
 
-		// Initialise game
-		entities = (Entity[])gameParameters.get("entities");
+		// Initialize game
+		GameLevel level = game.getContext().getCurrentLevel();
+		GameUniverse universe = level.getUniverse();
+		Map<Point,GameEntity> map = universe.getGameEntities();
+		entities = level.getUniverse().getGameEntities().values();
 	}
 
 	@Override 
 	protected void onDraw(Canvas canvas) {
-		//canvas.drawColor(0xFFCCCCCC);     //if you want another background color
-
 		// setting the start point for the entities
 		if (initial) {
 			initial = false;
-			// FIXME: fix this bad hack, getRectCoord is a static method.
-			int [][] coordXY = GameBoardView.getRectCoord();
-
-			for (int id=1; id<entities.length; id++) {
-				if (entities[id] != null) {
-					entities[id].setX(coordXY[id][0]);
-					entities[id].setY(coordXY[id][1]);
+			
+			int posX = 0;
+			int posY = 0;
+			int[] coordXY;
+			for (GameEntity entity : entities) {
+				if (entity != null) {
+					posX = entity.getBoundingPosition()[0];
+					posY = entity.getBoundingPosition()[1];
+					coordXY = GameBoardView.getCoord(posX, posY);				
+					entity.setX(coordXY[0]);
+					entity.setY(coordXY[1]);
+					
+//					Log.d(TAG, "X : "+posX);
+//					Log.d(TAG, "Y : "+posY);
+//					Log.d(TAG, "coordX : "+coordXY[0]);
+//					Log.d(TAG, "coordY : "+coordXY[1]);
+//					Log.d(TAG, "coordX+offset : "+coordXY[2]);
+//					Log.d(TAG, "coordY+offset : "+coordXY[3]);
 				}
 			}
 		}
 
 		//draw the entity on the canvas
-		for (Entity ent : entities) {
-			if (ent != null) {
-				canvas.drawBitmap(ent.getBitmap(), ent.getX(), ent.getY(), null);
+		for (GameEntity entity : entities) {
+			if (entity != null) {
+				canvas.drawBitmap(entity.getBitmap(), entity.getX(), entity.getY(), null);
 			}
 		}
 	}
@@ -91,27 +112,29 @@ public class EntityView extends View {
 
 		switch (eventaction) { 
 
-		case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on an entity
+		// touch down so check if the finger is on an entity
+		case MotionEvent.ACTION_DOWN: 
 			entityID = 0;
-			for (Entity ent : entities) {
+			for (GameEntity entity : entities) {
 				// check all the bounds of the entity
-				if (ent != null) {
-					if (X > ent.getX() && 
-							X < ent.getX()+50 &&
-								Y > ent.getY() && 
-									Y < ent.getY()+50) {
-						entityID = ent.getID();
+				if (entity != null) {
+					if (X > entity.getX() && 
+							X < entity.getX()+50 &&
+								Y > entity.getY() && 
+									Y < entity.getY()+50) {
+						entityID = entity.getId();
 						break;
 					}
 				}
 			}
 			break;
 
-		case MotionEvent.ACTION_MOVE:   // touch drag with the entity
+		// touch drag with the entity
+		case MotionEvent.ACTION_MOVE:
 			// move the entities the same as the finger
 			if (entityID > 0) {
-				entities[entityID].setX(X-25);
-				entities[entityID].setY(Y-25);
+				//entities[entityID].setX(X-25);
+				//entities[entityID].setY(Y-25);
 			}
 
 			break; 

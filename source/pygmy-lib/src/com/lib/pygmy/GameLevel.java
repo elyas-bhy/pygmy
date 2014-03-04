@@ -12,6 +12,8 @@ public interface GameLevel {
 
 	public GameMap getMap();
 	
+	public GameUniverse getUniverse();
+	
 	public Canvas getCanvas();
 	
 	public PygmyGameContext getContext();
@@ -21,8 +23,6 @@ public interface GameLevel {
 	public void addGameRule(GameRule rule);
 
 	public void addEntity(GameEntity entity);
-
-	public void addMovableEntity(MovableEntity entity);
 
 	public void tryMove(GameMove move);
 
