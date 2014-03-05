@@ -55,4 +55,8 @@ public class PygmyGameContext {
 		currentPlayer = (currentPlayer + 1) % players.size();
 	}
 	
+	public void onPlayerMove(GameMove move) {
+		currentLevel.tryMove(move);
+	}
+	
 }

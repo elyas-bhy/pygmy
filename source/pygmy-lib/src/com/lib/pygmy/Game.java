@@ -12,6 +12,8 @@ public interface Game {
 	
 	public void nextPlayer();
 	
+	public void onPlayerMove(GameMove move);
+	
 	public PygmyGameContext getContext();
 	
 	public List<Player> getPlayers();

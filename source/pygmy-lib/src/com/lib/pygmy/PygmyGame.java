@@ -42,6 +42,11 @@ public abstract class PygmyGame implements Game, Observer {
 	public void nextPlayer() {
 		context.nextPlayer();
 	}
+	
+	@Override
+	public void onPlayerMove(GameMove move) {
+		context.onPlayerMove(move);
+	}
 
 	@Override
 	public PygmyGameContext getContext() {
