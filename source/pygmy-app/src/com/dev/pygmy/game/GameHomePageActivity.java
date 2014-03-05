@@ -1,6 +1,19 @@
-/**
- * 
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.dev.pygmy.game;
 
 import java.io.BufferedReader;
@@ -35,105 +48,93 @@ import android.widget.TextView;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
-
 public class GameHomePageActivity extends Activity {
-
-	ListView lvList;
-	final static int TOAST_DELAY = 2000;
-	TextView titleV, resumeV;
 	
+	private final String TAG = "Pygmy";
+
+	private ListView listView;
+	final static int TOAST_DELAY = 2000;
+	private TextView titleView, summaryView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gamehomepage);
-
-		// Make sure we're running on Honeycomb or higher to use ActionBar APIs
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			// Show the Up button in the action bar.
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-		
-		new getServerDataGame().execute();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		new GameFetchTask().execute();
 	}
-	
-	class getServerDataGame extends AsyncTask<String, String, Void>{
 
-	    InputStream is = null ;
-	    String result = "";
-	    
-	    // TEST AFFICHAGE UN JEU EN PARTICULIER
-	    int i = 1;
-	    String id_game = String.valueOf(i);
-	    
+	private class GameFetchTask extends AsyncTask<Void, Void, Void> {
+
+		private InputStream is;
+		private String result;
+		private String gameId;
+		
 		@Override
-		protected Void doInBackground(String... params) {
-			String gamesListURL = 
+		protected void onPreExecute() {
+			is = null;
+			result = "";
+			gameId = "1"; // TEST AFFICHAGE UN JEU EN PARTICULIER
+		}
+
+		@Override
+		protected Void doInBackground(Void... v) {
+			String url = 
 					"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesInfo.php";
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(gamesListURL);
+			HttpPost httpPost = new HttpPost(url);
 
-		        ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-		        param.add(new BasicNameValuePair("id_game", id_game));
+			ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+			param.add(new BasicNameValuePair("id_game", gameId));
 
-			    try {
+			try {
 				httpPost.setEntity(new UrlEncodedFormEntity(param));
 
 				HttpResponse httpResponse = httpClient.execute(httpPost);
 				HttpEntity httpEntity = httpResponse.getEntity();
 
-				//read content
-				is =  httpEntity.getContent();					
-
-				} catch (Exception e) {
-
-				Log.e("log_tag", "Error in http connection "+e.toString());
-				}
-			try {
-			    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-				StringBuilder sb = new StringBuilder();
-				String line = "";
-				while((line=br.readLine())!=null)
-				{
-				   sb.append(line+"\n");
-				}
-					is.close();
-					result=sb.toString();				
-
-						} catch (Exception e) {
-							Log.e("log_tag", "Error converting result "+e.toString());
-						}
-
-					return null;
-
-				}
-		
-		protected void onPostExecute(Void v) {
-
-			try {
-				JSONArray Jarray = new JSONArray(result);
-				for(int i=0;i<Jarray.length();i++)
-				{
-				JSONObject Jasonobject = null;
-				titleV = (TextView)findViewById(R.id.name_game);
-				resumeV = (TextView)findViewById(R.id.name_resume);
-				Jasonobject = Jarray.getJSONObject(i);
-
-				String title = Jasonobject.getString("name");
-				String resume = Jasonobject.getString("resume");
-			    titleV.append(title+"\t\t"+"\n");
-			    resumeV.append(resume+"\t\t"+"\n");
-
-				}
+				// Read content
+				is = httpEntity.getContent();
 
 			} catch (Exception e) {
-				Log.e("log_tag", "Error parsing data "+e.toString());
+				Log.e(TAG, "Error in HTTP connection: " + e.getMessage());
+			}
+			try {
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
+				StringBuilder sb = new StringBuilder();
+				String line = "";
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString();
+			} catch (Exception e) {
+				Log.e(TAG, "Error converting result: " + e.getMessage());
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void v) {
+			JSONObject json = null;
+			titleView = (TextView) findViewById(R.id.name_game);
+			summaryView = (TextView) findViewById(R.id.name_resume);
+			
+			try {
+				JSONArray array = new JSONArray(result);
+				for (int i = 0; i < array.length(); i++) {
+					json = array.getJSONObject(i);
+					String title = json.getString("name");
+					String summary = json.getString("resume");
+					titleView.append(title + "\t\t" + "\n");
+					summaryView.append(summary + "\t\t" + "\n");
+				}
+			} catch (Exception e) {
+				Log.e(TAG, "Error parsing data: " + e.getMessage());
 			}
 		}
 	}
-	
-	
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -157,18 +158,18 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onPlayClicked(View view) {
-		// TO DO
+		// TODO
 	}
 
 	public void onInviteClicked(View view) {
-		// TO DO
+		// TODO
 	}
 
 	public void onRandomClicked(View view) {
-		// TO DO
+		// TODO
 	}
 
 	public void onReportClicked(View view) {
-		// TO DO
+		// TODO
 	}
 }
