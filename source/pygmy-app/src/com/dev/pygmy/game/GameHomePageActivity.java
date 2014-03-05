@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,7 +31,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
@@ -39,6 +42,7 @@ import com.dev.pygmy.SettingsActivity;
 public class GameHomePageActivity extends Activity {
 
 	ListView lvList;
+	boolean rep = false;
 	final static int TOAST_DELAY = 2000;
 	TextView titleV, resumeV;
 	
@@ -62,19 +66,63 @@ public class GameHomePageActivity extends Activity {
 	    InputStream is = null ;
 	    String result = "";
 	    
-	    // TEST AFFICHAGE UN JEU EN PARTICULIER
-	    int i = 1;
-	    String id_game = String.valueOf(i);
+	    // TO CHANGE WITH VALUE OF GAME SELECTED //
 	    
-		@Override
+	    String name = "Pygmy Game";
+	    ///////////////////////////////////////////
+	    
+	    @Override
 		protected Void doInBackground(String... params) {
-			String gamesListURL = 
+			String gamesInfoURL = 
 					"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesInfo.php";
+			
+			String reportURL = 
+					"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/report.php";
+			
+			Spinner spin = (Spinner) findViewById(R.id.spinner);
+			String valToSet = spin.getSelectedItem().toString();
+			
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(gamesListURL);
+			
+			if(rep){
+				HttpPost httpPost = new HttpPost(reportURL);
+				ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+		        param.add(new BasicNameValuePair("report", valToSet));
+		        param.add(new BasicNameValuePair("name", name));
+		        
+		        try {
+					httpPost.setEntity(new UrlEncodedFormEntity(param));
+
+					HttpResponse httpResponse = httpClient.execute(httpPost);
+					HttpEntity httpEntity = httpResponse.getEntity();
+
+					//read content
+					is =  httpEntity.getContent();					
+
+					} catch (Exception e) {
+
+					Log.e("log_tag", "Error in http connection "+e.toString());
+					}
+				try {
+				    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+					StringBuilder sb = new StringBuilder();
+					String line = "";
+					while((line=br.readLine())!=null)
+					{
+					   sb.append(line+"\n");
+					}
+						is.close();
+						result=sb.toString();				
+
+							} catch (Exception e) {
+								Log.e("log_tag", "Error converting result "+e.toString());
+							}
+			}
+			else{
+				HttpPost httpPost = new HttpPost(gamesInfoURL);
 
 		        ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-		        param.add(new BasicNameValuePair("id_game", id_game));
+		        param.add(new BasicNameValuePair("name", name));
 
 			    try {
 				httpPost.setEntity(new UrlEncodedFormEntity(param));
@@ -103,6 +151,7 @@ public class GameHomePageActivity extends Activity {
 						} catch (Exception e) {
 							Log.e("log_tag", "Error converting result "+e.toString());
 						}
+			}
 
 					return null;
 
@@ -169,6 +218,13 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onReportClicked(View view) {
-		// TO DO
+		
+		rep = true;
+		new getServerDataGame().execute();
+		
+		Context context = getApplicationContext();
+		Toast reportMessage = Toast.makeText(context, "Report Done", TOAST_DELAY);
+		reportMessage.show();
+		
 	}
 }
