@@ -19,12 +19,16 @@ package com.dev.pygmy.game;
 import java.util.Collection;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.client.pygmy.PygmyGameImpl;
+import com.dev.pygmy.R;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 
@@ -36,8 +40,9 @@ public class EntityView extends View {
 	
 	private String TAG = "EntityView";
 	private Collection<GameEntity> entities;	// array that holds the entities
-	private int entityID = 0;				// variable to know what entity is being dragged
+	private GameEntity entityDragged = null;				// variable to know what entity is being dragged
 	private boolean initial = true;
+	private int tileSize;
 
 	/**
 	 * Default constructor.
@@ -58,7 +63,7 @@ public class EntityView extends View {
 		Log.d(TAG, "Constructor");
 		setFocusable(true); // Necessary for getting the touch events
 
-		// Initialize game
+		// Initialise game
 		GameLevel level = game.getContext().getCurrentLevel();
 		entities = level.getUniverse().getGameEntities().values();
 		Log.d(TAG, entities.toString());
@@ -72,22 +77,15 @@ public class EntityView extends View {
 			
 			int posX = 0;
 			int posY = 0;
-			int[] coordXY;
+			Point coordXY;
 			
 			for (GameEntity entity : entities) {
 				if (entity != null) {
 					posX = entity.getBoundingPosition()[0];
 					posY = entity.getBoundingPosition()[1];
 					coordXY = GameBoardView.getTileCoord(posX, posY).getCoord();
-					entity.setX(coordXY[0]);
-					entity.setY(coordXY[1]);
-					
-//					Log.d(TAG, "X : "+posX);
-//					Log.d(TAG, "Y : "+posY);
-//					Log.d(TAG, "coordX : "+coordXY[0]);
-//					Log.d(TAG, "coordY : "+coordXY[1]);
-//					Log.d(TAG, "coordX+offset : "+coordXY[2]);
-//					Log.d(TAG, "coordY+offset : "+coordXY[3]);
+					entity.setX(coordXY.x);
+					entity.setY(coordXY.y);
 				}
 			}
 		}
@@ -111,16 +109,17 @@ public class EntityView extends View {
 
 		// touch down so check if the finger is on an entity
 		case MotionEvent.ACTION_DOWN: 
-			entityID = 0;
 			for (GameEntity entity : entities) {
 				// check all the bounds of the entity
 				if (entity != null) {
+					tileSize = GameBoardView.getTileCoord(entity.getPosition().x, 
+							entity.getPosition().y).getTileSquareSize();
 					if (X > entity.getX() && 
-							X < entity.getX()+50 &&
+							X < entity.getX()+tileSize &&
 								Y > entity.getY() && 
-									Y < entity.getY()+50) {
-						//save source tile
-						entityID = entity.getId();
+									Y < entity.getY()+tileSize) {
+						// Get what entity is being dragged.
+						entityDragged = entity;
 						break;
 					}
 				}
@@ -130,16 +129,16 @@ public class EntityView extends View {
 		// touch drag with the entity
 		case MotionEvent.ACTION_MOVE:
 			// move the entities the same as the finger
-			
-			// detect current tile + feedback
-			if (entityID > 0) {
-				//entities[entityID].setX(X-25);
-				//entities[entityID].setY(Y-25);
+			if (entityDragged != null) {
+				entityDragged.setX(X-(tileSize/2));
+				entityDragged.setY(Y-(tileSize/2));
 			}
 
 			break; 
 
 		case MotionEvent.ACTION_UP:
+			// TODO: visible(false) for image used to selected tile
+			// TODO: isLegalMove(move)
 			break; 
 		} 
 		// redraw the canvas
