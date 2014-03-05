@@ -12,7 +12,4 @@ public class Player {
 		return id;
 	}
 	
-	public boolean play(GameMove move) {
-		return true;
-	}
 }
