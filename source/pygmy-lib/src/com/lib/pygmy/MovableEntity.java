@@ -3,12 +3,15 @@ package com.lib.pygmy;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.util.Log;
 
 import com.lib.pygmy.base.Drawable;
 import com.lib.pygmy.base.Overlappable;
 
 public abstract class MovableEntity extends GameMovable implements Drawable,
 		GameEntity, Overlappable {
+	
+	private String TAG = "MovableEntity";
 
 	private Bitmap img; 			// the image of the entity
 	private int coordX = 0; 		// the x coordinate at the canvas
@@ -31,6 +34,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inJustDecodeBounds = true;
 		img = BitmapFactory.decodeResource(level.getContext().getResources(), drawable);
+		img = Bitmap.createScaledBitmap(img, 70, 70, false);
 		id = count++;
 	}
 
