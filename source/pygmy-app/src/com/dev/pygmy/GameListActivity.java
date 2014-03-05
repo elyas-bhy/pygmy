@@ -62,7 +62,7 @@ public class GameListActivity extends Activity {
 					int position, long id) {
 				// TODO Launch selected game
 				Toast.makeText(GameListActivity.this, 
-						"You Clicked at " + gameName[+position], Toast.LENGTH_SHORT).show();
+						"You clicked at " + gameName[+position], Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

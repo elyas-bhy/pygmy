@@ -37,7 +37,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,12 +44,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
 public class GameHomePageActivity extends Activity {
-
-	private final String TAG = "Pygmy";
+	
 	private final static int TOAST_DELAY = 2000;
 
 	private boolean rep = false;
@@ -106,7 +105,7 @@ public class GameHomePageActivity extends Activity {
 					is = httpEntity.getContent();
 
 				} catch (Exception e) {
-					Log.e(TAG, "Error in HTTP connection: " + e.getMessage());
+					PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
 				}
 				
 				try {
@@ -120,7 +119,7 @@ public class GameHomePageActivity extends Activity {
 					result = sb.toString();
 
 				} catch (Exception e) {
-					Log.e(TAG, "Error converting result: " + e.getMessage());
+					PygmyApp.logE("Error converting result: " + e.getMessage());
 				}
 				
 			} else {
@@ -139,7 +138,7 @@ public class GameHomePageActivity extends Activity {
 					is = httpEntity.getContent();
 
 				} catch (Exception e) {
-					Log.e(TAG, "Error in HTTP connection: " + e.getMessage());
+					PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
 				}
 				try {
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -152,7 +151,7 @@ public class GameHomePageActivity extends Activity {
 					result = sb.toString();
 
 				} catch (Exception e) {
-					Log.e(TAG, "Error converting result: " + e.getMessage());
+					PygmyApp.logE("Error converting result: " + e.getMessage());
 				}
 			}
 			return null;
@@ -172,7 +171,7 @@ public class GameHomePageActivity extends Activity {
 				}
 
 			} catch (Exception e) {
-				Log.e(TAG, "Error parsing data: " + e.getMessage());
+				PygmyApp.logE("Error parsing data: " + e.getMessage());
 			}
 		}
 	}

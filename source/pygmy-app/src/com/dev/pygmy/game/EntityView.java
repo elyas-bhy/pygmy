@@ -20,7 +20,6 @@ import java.util.Collection;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -34,9 +33,8 @@ import com.lib.pygmy.GameLevel;
  */
 public class EntityView extends View {
 	
-	private String TAG = "EntityView";
-	private Collection<GameEntity> entities;	// array that holds the entities
-	private int entityID = 0;				// variable to know what entity is being dragged
+	private Collection<GameEntity> entities;  // array that holds the entities
+	private int entityID = 0;				  // variable to know what entity is being dragged
 	private boolean initial = true;
 
 	/**
@@ -49,19 +47,16 @@ public class EntityView extends View {
 
 	/**
 	 * Constructs the view with the entities (pieces) of the board game.
-	 * @param context			Context parent.
-	 * @param gameParameters	Parameters to set the board according to 
-	 * 							the game chosen by user. 
+	 * @param context		Context parent.
+	 * @param game			Reference to the game context 
 	 */
 	public EntityView(Context context, PygmyGameImpl game) {
 		super(context);
-		Log.d(TAG, "Constructor");
 		setFocusable(true); // Necessary for getting the touch events
 
 		// Initialize game
 		GameLevel level = game.getContext().getCurrentLevel();
 		entities = level.getUniverse().getGameEntities().values();
-		Log.d(TAG, entities.toString());
 	}
 
 	@Override 

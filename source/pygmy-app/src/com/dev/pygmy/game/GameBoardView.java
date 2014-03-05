@@ -24,16 +24,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.View;
+
+import com.dev.pygmy.PygmyApp;
 
 /**
  * 	This class represents the grid of the board.
  */
 public class GameBoardView extends View {
-
-	private String TAG = "GameBoardView";
-
+	
 	private int numberOfTiles;
 	private int numberOfRows;
 	private int numberOfColumns;
@@ -93,7 +92,7 @@ public class GameBoardView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		Log.d(TAG, "onDraw");
+		PygmyApp.logD("onDraw");
 		int dim1 = numberOfTiles;
 		int dim2 = numberOfTiles;
 		drawCheckerboard(canvas, dim1, dim2);

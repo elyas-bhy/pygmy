@@ -28,7 +28,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,8 +43,8 @@ import com.dev.pygmy.game.GameBoardInterfaceActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
-import com.dev.pygmy.util.TurnData;
 import com.dev.pygmy.util.ImageDownloader;
+import com.dev.pygmy.util.TurnData;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -75,7 +74,6 @@ import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
  */
 public class MainActivity extends BaseGameActivity implements
 		TurnBasedMultiplayerListener {
-	public static final String TAG = "DrawingActivity";
 
 	// Local convenience pointers
 	public TextView mDataView;
@@ -475,7 +473,7 @@ public class MainActivity extends BaseGameActivity implements
 				updateMatch(match);
 			}
 
-			Log.d(TAG, "Match = " + match);
+			PygmyApp.logD("Match = " + match);
 		} else if (request == RC_SELECT_PLAYERS) {
 			// Returned from 'Select players to Invite' dialog
 
@@ -725,12 +723,10 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public void onTurnBasedMatchRemoved(String matchId) {
 		Toast.makeText(this, "A match was removed.", TOAST_DELAY).show();
-
 	}
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,
 			int stringId) {
-
 		showWarning("Warning", getResources().getString(stringId));
 	}
 
@@ -779,7 +775,7 @@ public class MainActivity extends BaseGameActivity implements
 			break;
 		default:
 			showErrorMessage(match, statusCode, R.string.unexpected_status);
-			Log.d(TAG, "Did not have warning or string to deal with: "
+			PygmyApp.logD("Did not have warning or string to deal with: "
 					+ statusCode);
 		}
 

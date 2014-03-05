@@ -20,7 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class SettingsPrefs {
+public class Persistence {
 	
 	public static final String PREF_SOUND_CHECK = "pref_check_sound";
 	public static final String PREF_NOTIF_CHECK = "pref_check_notif";
@@ -30,7 +30,7 @@ public class SettingsPrefs {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor editor;
 	
-	public SettingsPrefs(Context context) {
+	public Persistence(Context context) {
 		settings = PreferenceManager.getDefaultSharedPreferences(context);
 		editor = settings.edit();
 	}
