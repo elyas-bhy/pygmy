@@ -154,6 +154,7 @@ public class MainActivity extends BaseGameActivity implements
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -173,6 +174,9 @@ public class MainActivity extends BaseGameActivity implements
 				}
 				if (position == 2) {
 					startActivity(new Intent(MainActivity.this, GameBoardInterfaceActivity.class));
+				}
+				if (position == 3) {
+					startActivity(new Intent(MainActivity.this, GameListActivity.class));
 				}
 				
 			}

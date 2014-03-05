@@ -48,6 +48,12 @@
                 android:value="com.dev.pygmy.MainActivity" />
         </activity>
         
+        <activity android:name="com.dev.pygmy.GameListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dev.pygmy.MainActivity" />
+        </activity>
+        
         <activity android:name="com.dev.pygmy.game.GameBoardInterfaceActivity" />
     </application>
 
