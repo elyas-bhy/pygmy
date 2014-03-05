@@ -16,24 +16,64 @@
 
 package com.dev.pygmy.game;
 
+import android.graphics.Point;
+
 public class Tile {
 	final private String TAG = "Tile";
 	
-	int[] positionPixel;
-	int tileSize;
+	Point positionPixel;
+	Point tileDimensions;
 	
-	public Tile(int x1, int y1, int tileSize) {
-		positionPixel = new int[2];
-		positionPixel[0] = x1;
-		positionPixel[1] = y1;
-		this.tileSize = tileSize;
+	/**
+	 * Saves coordinates in pixels of a square tile.
+	 * @param posX	position X in pixels.
+	 * @param posY	position Y in pixels.
+	 * @param tileSquareSize	size of any side of the square.
+	 */
+	public Tile(int posX, int posY, int tileSquareSize) {
+		positionPixel = new Point();
+		positionPixel.x = posX;
+		positionPixel.y = posY;
+		
+		tileDimensions = new Point();
+		tileDimensions.x = tileSquareSize;
 	}
 	
-	public int[] getCoord() {
+	/**
+	 * Saves coordinates in pixels of a rectangular tile.
+	 * @param posX	position X in pixels.
+	 * @param posY  position Y in pixels.
+	 * @param tileRectangleDimensionX	size of the horizontal side.
+	 * @param tileRectangleDimensionY	size of the vertical side;
+	 */
+	public Tile(int posX, int posY, int tileRectangleDimensionX, int tileRectangleDimensionY) {
+		positionPixel = new Point();
+		positionPixel.x = posX;
+		positionPixel.y = posY;
+		
+		tileDimensions = new Point();
+		tileDimensions.x = tileRectangleDimensionX;
+		tileDimensions.y = tileRectangleDimensionY;
+	}
+	
+	/**
+	 * @return coordinates (x,y) in pixels for a tile.
+	 */
+	public Point getCoord() {
 		return positionPixel;
 	}
 	
-	public int getTileSize() {
-		return tileSize;
+	/**
+	 * @return the size of a side of a tile with a square shape.
+	 */
+	public int getTileSquareSize() {
+		return tileDimensions.x;
+	}
+	
+	/**
+	 * @return the dimensions of a tile with a rectangular shape.
+	 */
+	public Point getTileRectangleDimensions() {
+		return tileDimensions;
 	}
 }
