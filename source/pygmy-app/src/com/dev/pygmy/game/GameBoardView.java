@@ -34,14 +34,13 @@ public class GameBoardView extends View {
 
 	private String TAG = "GameBoardView";
 
-	private int numberOfTiles;
 	private int numberOfRows;
 	private int numberOfColumns;
+	private int boardType;
 	private Paint color1 = null;
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
-	private static int[][] rectCoord;
 	private static Map<Point, Tile> mapTileCoord;
 
 	/**
@@ -59,11 +58,9 @@ public class GameBoardView extends View {
 	public GameBoardView(Context context, Map<String,Object> params) {
 		super(context);
 
-		numberOfTiles = (Integer) params.get("numberRows");
-		numberOfRows = numberOfTiles;
+		numberOfRows = (Integer) params.get("numberRows");
 		numberOfColumns = (Integer) params.get("numberColumns");
-
-		rectCoord = new int[numberOfTiles*(numberOfTiles+1)][4];
+		boardType = (Integer) params.get("boardType");
 
 		color1 = new Paint();
 		color2 = new Paint();
@@ -71,14 +68,6 @@ public class GameBoardView extends View {
 		color2.setColor(Color.WHITE);
 		mapTileCoord = new HashMap<Point, Tile>();
 		colorBlack = new Paint();
-	}
-
-	/**
-	 * @return A multidimensional array with the coordinates of each square 
-	 * of the board.
-	 */
-	public static int[][] getRectCoord() {
-		return rectCoord;
 	}
 
 		
@@ -95,12 +84,23 @@ public class GameBoardView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.d(TAG, "onDraw");
-		int dim1 = numberOfTiles;
-		int dim2 = numberOfTiles;
-		//drawCheckerboard(canvas, dim1, dim2, color1, color2);
-		//draw_grid(canvas, dim1, dim2);
-		draw_hexgrid(canvas, dim1, dim2);
-		//printTabCoord();
+		int dim1 = numberOfRows;
+		int dim2 = numberOfColumns;
+		
+		switch (boardType) {
+		case 0:
+			drawCheckerboard(canvas, dim1, dim2, color1, color2);
+			break;
+		case 1:
+			draw_grid(canvas, dim1, dim2);
+			break;
+		case 2:
+			draw_hexgrid(canvas, dim1, dim2);
+			break;
+		default:
+			System.err.println("Error : Board's type do not exist.");
+			break;
+		}
 	}
 
 	private void draw_hexcase(Canvas canvas, int case_size, int coord_x, int coord_y){
@@ -160,12 +160,12 @@ public class GameBoardView extends View {
 						Tile tile = null;new Tile(coord_x,coord_y, case_size);
 						if(y%2 == 0){
 							draw_hexcase(canvas, case_size, coord_y, coord_x + half);
-							tile = new Tile(coord_x + half, coord_y, case_size);
+							tile = new Tile(coord_x + half, coord_y, case_size-half);
 							
 						}
 						else { 
 							draw_hexcase(canvas, case_size, coord_y, coord_x);
-							tile = new Tile(coord_x,coord_y, case_size);
+							tile = new Tile(coord_x,coord_y, case_size-half);
 						}
 						mapTileCoord.put(new Point(x-1, y-1), tile);
 						
@@ -199,7 +199,6 @@ public class GameBoardView extends View {
 		int long_distance_height = case_size*(height_case+1)+offset;
 		int long_distance_width = case_size*(width_case+1)+offset;
 
-		int ent = 0;
 		for(int y = 0; y <= width_case +1 ; ++y) {
 			if (y != 0){
 				for(int x = 0 ; x <= height_case +1; ++x) 
@@ -207,20 +206,9 @@ public class GameBoardView extends View {
 						coord_y = y*case_size+offset;
 						coord_x = x*case_size+offset;
 
-						if(y < width_case+1  && x <= height_case+1 ){
-							System.out.println("ent = " + ent + " x : " + x + " y :" + y);
-							rectCoord[ent][0] = coord_x-case_size;
-							rectCoord[ent][1] = coord_y;
-							rectCoord[ent][2] = coord_x;
-							rectCoord[ent][3] = coord_y + case_size;
-							++ent;
-						}
-
 						
 						if(y < width_case +1 && x < height_case +1)
 							mapTileCoord.put(new Point(x-1,y-1), new Tile(coord_x, coord_y, case_size));
-						
-						
 
 						// Draw case
 						canvas.drawLine(coord_y, small_distance, coord_y, long_distance_height, colorBlack);

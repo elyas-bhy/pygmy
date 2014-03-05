@@ -24,6 +24,7 @@ public class PygmyGameImpl extends AbstractPygmyGame {
 		parameters.put("numberRows", 8);
 		parameters.put("numberColumns", 8);
 		parameters.put("numberPieces", 32);
+		parameters.put("boardType", 0);
 		return parameters;
 	}
 
