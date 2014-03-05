@@ -35,14 +35,12 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dev.pygmy.R;
@@ -51,9 +49,8 @@ import com.dev.pygmy.SettingsActivity;
 public class GameHomePageActivity extends Activity {
 	
 	private final String TAG = "Pygmy";
-
-	private ListView listView;
 	final static int TOAST_DELAY = 2000;
+	
 	private TextView titleView, summaryView;
 
 	@Override
