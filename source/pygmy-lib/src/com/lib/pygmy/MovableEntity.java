@@ -3,7 +3,6 @@ package com.lib.pygmy;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.util.Log;
 
 import com.lib.pygmy.base.Drawable;
 import com.lib.pygmy.base.Overlappable;
@@ -11,8 +10,6 @@ import com.lib.pygmy.base.Overlappable;
 public abstract class MovableEntity extends GameMovable implements Drawable,
 		GameEntity, Overlappable {
 	
-	private String TAG = "MovableEntity";
-
 	private Bitmap img; 			// the image of the entity
 	private int coordX = 0; 		// the x coordinate at the canvas
 	private int coordY = 0; 		// the y coordinate at the canvas
@@ -39,7 +36,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dev.pygmy.Entity#getBoundingPosition()
+	 * @see com.dev.pygmy.GameEntity#getBoundingPosition()
 	 */
 	public int[] getBoundingPosition() {
 		return tilePosition;
@@ -65,7 +62,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.dev.pygmy.Entity#setX(int)
+	 * @see com.dev.pygmy.GameEntity#setX(int)
 	 */
 	@Override
 	public void setX(int x) {
@@ -75,7 +72,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.dev.pygmy.Entity#getX()
+	 * @see com.dev.pygmy.GameEntity#getX()
 	 */
 	@Override
 	public int getX() {
@@ -85,7 +82,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.dev.pygmy.Entity#setY(int)
+	 * @see com.dev.pygmy.GameEntity#setY(int)
 	 */
 	@Override
 	public void setY(int y) {
@@ -95,7 +92,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.dev.pygmy.Entity#getY()
+	 * @see com.dev.pygmy.GameEntity#getY()
 	 */
 	@Override
 	public int getY() {
@@ -105,7 +102,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.dev.pygmy.Entity#getID()
+	 * @see com.dev.pygmy.GameEntity#getID()
 	 */
 	@Override
 	public int getId() {
@@ -115,7 +112,7 @@ public abstract class MovableEntity extends GameMovable implements Drawable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.dev.pygmy.Entity#getBitmap()
+	 * @see com.dev.pygmy.GameEntity#getBitmap()
 	 */
 	@Override
 	public Bitmap getBitmap() {
