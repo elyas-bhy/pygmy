@@ -8,20 +8,20 @@ import android.content.res.Resources;
 public class PygmyGameContext {
 
 	private Resources res;
-	private PygmyGame game;
-	private PygmyGameLevel currentLevel;
+	private Game game;
+	private GameLevel currentLevel;
 	
 	private List<Player> players;
 	private int currentPlayer;
 	
-	public PygmyGameContext(PygmyGame game, Resources resources) {
+	public PygmyGameContext(Game game, Resources resources) {
 		this.game = game;
 		this.res = resources;
 		this.players = new ArrayList<Player>();
 		this.currentPlayer = 0;
 	}
 	
-	public PygmyGame getGame() {
+	public Game getGame() {
 		return game;
 	}
 	
@@ -35,13 +35,16 @@ public class PygmyGameContext {
 	
 	public void setPlayers(int minPlayers, int maxPlayers) {
 		players.clear();
-		players.add(new Player());
-		players.add(new Player());
+		players.add(new Player("1"));
+		players.add(new Player("2"));
 	}
 	
 	public GameLevel getCurrentLevel() {
-		//return currentLevel;
-		return game.getLevels().get(0);
+		return currentLevel;
+	}
+	
+	public void setCurrentLevel(GameLevel level) {
+		currentLevel = level;
 	}
 	
 	public Player getCurrentPlayer() {

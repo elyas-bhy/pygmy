@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class GameListActivity extends Activity {
-	
 	private ListView listView;
 
 	// Example change that with DB games infos

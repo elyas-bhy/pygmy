@@ -3,8 +3,6 @@ package com.lib.pygmy;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Canvas;
-
 import com.lib.pygmy.base.ObservableValue;
 
 /**
@@ -14,20 +12,17 @@ import com.lib.pygmy.base.ObservableValue;
 
 public abstract class PygmyGameLevel implements GameLevel {
 	
-	protected android.graphics.Canvas canvas;
-	
 	protected GameMap gameMap;
 	protected GameUniverse universe;
 	protected ObservableValue<Boolean> endOfGame;
 
-	protected final PygmyGame game;
+	protected final Game game;
 	protected List<GameRule> gameRules;
 
-	public PygmyGameLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
+	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules) {
 		this.game = game;
 		this.gameRules = new ArrayList<GameRule>();
-		canvas = game.getCanvas();
-
+		
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 		universe = new PygmyGameUniverse(overlapProcessor);
 		overlapRules.setUniverse(universe);
@@ -40,7 +35,6 @@ public abstract class PygmyGameLevel implements GameLevel {
 	public void start() {
 		endOfGame = game.endOfGame();
 		init();
-		//gameBoard.paint();
 	}
 	
 	public abstract void init();
@@ -58,11 +52,6 @@ public abstract class PygmyGameLevel implements GameLevel {
 	@Override
 	public GameUniverse getUniverse() {
 		return universe;
-	}
-
-	@Override
-	public Canvas getCanvas() {
-		return canvas;
 	}
 	
 	@Override
@@ -106,7 +95,6 @@ public abstract class PygmyGameLevel implements GameLevel {
 	private void makeMove(GameMove move) {
 		getCurrentPlayer().play(move);
 		universe.processMove(move);
-		//gameBoard.paint();
 		game.nextPlayer();
 	}
 

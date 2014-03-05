@@ -1,39 +1,104 @@
 package com.lib.pygmy;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-import android.graphics.Canvas;
+import android.content.res.Resources;
 
 import com.lib.pygmy.base.ObservableValue;
 
-public interface PygmyGame {
+/**
+ * Create a basic game application
+ */
+public abstract class PygmyGame implements Game, Observer {
 	
-	public PygmyGameContext getContext();
+	private String title = "Pygmy Game";
+	private int rows = 8;
+	private int columns = 8;
+	protected ObservableValue<Boolean> endOfGame = null;
 	
-	public void initGame();
+	private PygmyGameContext context;
+	private GameLevel currentPlayedLevel = null;
+	private List<GameLevel> gameLevels;
 	
-	public void createGUI();
-	
-	public List<Player> getPlayers();
+	public PygmyGame(Resources resources) {
+		context = new PygmyGameContext(this, resources);
+	}
 
-	public Canvas getCanvas();
+	@Override
+	public abstract void initGame();
 
-	public void start();
+	public void start() {
+		endOfGame = new ObservableValue<Boolean>(false);
+		endOfGame.addObserver(this);
+		
+		GameLevel level = gameLevels.get(0);
+		context.setCurrentLevel(level);
+		level.start();
+	}
 
-	public ObservableValue<Boolean> endOfGame();
+	@Override
+	public void nextPlayer() {
+		context.nextPlayer();
+	}
+
+	@Override
+	public PygmyGameContext getContext() {
+		return context;
+	}
 	
-	public List<GameLevel> getLevels();
+	@Override
+	public List<Player> getPlayers() {
+		return context.getPlayers();
+	}
+
+	@Override
+	public void setPlayers(int minPlayers, int maxPlayers) {
+		context.setPlayers(minPlayers, maxPlayers);
+	}
+
+	@Override
+	public Player getCurrentPlayer() {
+		return context.getCurrentPlayer();
+	}
 	
-	public void setLevels(List<GameLevel> levels);
+	@Override
+	public List<GameLevel> getLevels() {
+		return gameLevels;
+	}
 
-	public Player getCurrentPlayer();
-
-	void setPlayers(int minPlayers, int maxPlayers);
+	@Override
+	public void setLevels(List<GameLevel> levels) {
+		gameLevels = levels;
+	}
 	
-	public void setTitle(String title);
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@Override
+	public void setBoardDimensions(int rows, int columns) {
+		this.rows = rows;
+		this.columns = columns;
+	}
+
+	public void update(Observable o, Object arg) {
+		if (o == endOfGame) {
+			if (endOfGame.getValue()) {
+				//informationValue.setText("You win");
+				currentPlayedLevel.end();
+			}
+		}
+	}
+
+	public ObservableValue<Boolean> endOfGame() {
+		return endOfGame;
+	}
+
+	public PygmyGame getGame() {
+		return this;
+	}
 	
-	public void setBoardDimensions(int rows, int columns);
-
-	public void nextPlayer();
-
 }

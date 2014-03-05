@@ -26,7 +26,6 @@ import com.lib.pygmy.PygmyGameLevel;
 
 public class DemoLevel extends PygmyGameLevel {
 	
-	final static String TAG = "Chess";
 	private HashMap<String, Object> parameters;
 
 	public DemoLevel(PygmyGame game, OverlapRulesApplier overlapRules) {

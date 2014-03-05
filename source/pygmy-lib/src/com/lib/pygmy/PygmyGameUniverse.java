@@ -16,9 +16,9 @@ public class PygmyGameUniverse implements GameUniverse {
 		gameEntities = new ConcurrentHashMap<Point,GameEntity>();
 	}
 
-	public PygmyGameUniverse(OverlapProcessor olp) {
+	public PygmyGameUniverse(OverlapProcessor processor) {
 		this();
-		overlapProcessor = olp;
+		overlapProcessor = processor;
 	}
 	
 	public Map<Point,GameEntity> getGameEntities() {

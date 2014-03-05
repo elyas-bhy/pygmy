@@ -6,13 +6,12 @@ import java.util.Map;
 
 import android.content.res.Resources;
 
-import com.lib.pygmy.AbstractPygmyGame;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
 
-public class PygmyGameImpl extends AbstractPygmyGame {
+public class PygmyGameImpl extends PygmyGame {
 
 	public PygmyGameImpl(Resources resources) {
 		super(resources);
