@@ -20,7 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -38,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.dev.pygmy.game.GameBoardInterfaceActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
@@ -171,12 +169,14 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 2) {
-					startActivity(new Intent(MainActivity.this, GameBoardInterfaceActivity.class));
+					startActivity(new Intent(MainActivity.this,
+							GameBoardInterfaceActivity.class));
 				}
 				if (position == 3) {
-					startActivity(new Intent(MainActivity.this, GameListActivity.class));
+					startActivity(new Intent(MainActivity.this,
+							GameListActivity.class));
 				}
-				
+
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
@@ -204,17 +204,18 @@ public class MainActivity extends BaseGameActivity implements
 				});
 	}
 
-	private void initGameButtons(){
+	private void initGameButtons() {
 		findViewById(R.id.game_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), GameBoardInterfaceActivity.class);
-		                startActivityForResult(myIntent, 0);
+						Intent myIntent = new Intent(v.getContext(),
+								GameBoardInterfaceActivity.class);
+						startActivityForResult(myIntent, 0);
 					}
 				});
 	}
-	
+
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
 	public void onCheckGamesClicked(View view) {
@@ -361,10 +362,10 @@ public class MainActivity extends BaseGameActivity implements
 		mDataView.setText(mTurnData.data);
 		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
 	}
-	
+
 	// Switch to profile view
 	public void setProfileView() {
-		//Initialisation
+		// Initialisation
 		URL imageUrl = null;
 		Person p = getPlusClient().getCurrentPerson();
 
