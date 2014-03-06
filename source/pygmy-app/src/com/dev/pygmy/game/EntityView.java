@@ -41,7 +41,13 @@ public class EntityView extends View {
 	private GameEntity draggedEntity = null;	// variable to know what entity is being dragged
 	
 	private boolean initial = true;
-	private int tileSize;
+	private int tileSize = 0;
+	private int offset = 0;
+	
+	
+	private int posibleColumn = 0;
+	private int posibleRow = 0;
+	private Point entityCurrentPosition = new Point();
 
 	/**
 	 * Default constructor.
@@ -91,16 +97,15 @@ public class EntityView extends View {
 				canvas.drawBitmap(entity.getBitmap(), entity.getPixelX(), entity.getPixelY(), null);
 			}
 		}
+		
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		int action = event.getAction();
-
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 
-		switch (action) { 
+		switch (event.getAction()) { 
 
 		// Touch down so check if the finger is on an entity
 		case MotionEvent.ACTION_DOWN: 
@@ -113,25 +118,58 @@ public class EntityView extends View {
 					 && y > entity.getPixelY() && y < entity.getPixelY() + tileSize) {
 						// Get what entity is being dragged.
 						draggedEntity = entity;
+						entityCurrentPosition.x = entity.getPixelX();
+						entityCurrentPosition.y = entity.getPixelY();
+						offset = tileSize/3;
 						break;
 					}
 				}
 			}
 			break;
 
-		// touch drag with the entity
+		// Touch drag with the entity
 		case MotionEvent.ACTION_MOVE:
-			// move the entities the same as the finger
+			// Move the entities the same as the finger
 			if (draggedEntity != null) {
+				
+				int nbRows = 8;
+				int nbColumns = 8;
+				// 72 .. 24
+				PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
+				
+				// 96 96 672 672
+				int minX = tileSize+offset;
+				int minY = tileSize+offset;
+				int maxX = minX + (tileSize * nbRows);
+				int maxY = minY + (tileSize * nbColumns);
+				
+				// Use the centre of the entity
+				posibleColumn = (x * nbColumns) / maxX;
+				posibleRow = (y * nbRows) / maxY;
+				
+				PygmyApp.logD("X*nbColumns: " + (x * nbColumns));
+				PygmyApp.logD("Y*nbRows: " + (y * nbRows));
+				PygmyApp.logD("X: " + x + " Y: " + y);
+				PygmyApp.logD("\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
+
 				draggedEntity.setPixelX(x - tileSize/2);
 				draggedEntity.setPixelY(y - tileSize/2);
+				
+				//TODO tile.setActive(); or SelectedTileView(canvas)
 			}
 
 			break;
 
 		case MotionEvent.ACTION_UP:
-			// TODO: visible(false) for image used to selected tile
-			// TODO: isLegalMove(move)
+			Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+			// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
+			//draggedEntity.setPixelX(p.x);
+			//draggedEntity.setPixelY(p.y);
+			// else 
+			//entityDragged.setX(entityCurrentPosition.x);
+			//entityDragged.setY(entityCurrentPosition.y);
+			
+			// TODO visible(false) for image used to selected tile
 			GameMove move = new GameMove();
 			move.setEntity(draggedEntity);
 			move.setMove(new Point(3,3));
@@ -142,7 +180,7 @@ public class EntityView extends View {
 			
 		default:
 			break;
-		}
+		} 
 		// Redraw the canvas
 		invalidate(); 
 		return true; 
