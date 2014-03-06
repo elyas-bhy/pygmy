@@ -16,6 +16,15 @@
 
 package com.dev.pygmy.game;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +36,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
@@ -41,14 +51,20 @@ public class GameHomePageActivity extends Activity {
 			"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/report.php";
 
 	private TextView titleView, summaryView;
+	
 	String gameName;
+	String filename;
+	
+	String filePath;
+	String destPath;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gamehomepage);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		
 		// Retrieve game selected in the list
 		Bundle extras;
 
@@ -56,16 +72,24 @@ public class GameHomePageActivity extends Activity {
 			extras = getIntent().getExtras();
 			if (extras == null) {
 				gameName = null;
+				filename = null;
 			} else {
 				gameName = extras.getString("gameName");
+				filename = extras.getString("filename");
 			}
 		}
+		
+		
+		filePath = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/"+filename;
+		destPath = getApplicationContext().getFilesDir().getPath()+"/"+filename;
 
 		spin = (Spinner) findViewById(R.id.spinner);
 		titleView = (TextView) findViewById(R.id.name_game);
 		summaryView = (TextView) findViewById(R.id.name_resume);
 
 		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName);
+
+
 	}
 
 	@Override
@@ -98,12 +122,43 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onRandomClicked(View view) {
-		// TODO
+		new Thread(new Runnable() {
+            public void run() {
+            	
+        		PygmyApp.logE("FILEPATH : "+filePath);
+        		PygmyApp.logE("DESTPATH : "+destPath);
+                 downloadFile(filePath, destPath);
+            }
+          }).start(); 
 	}
 
 	public void onReportClicked(View view) {
 
 		new LoadDataFromDatabase(spin, reportUrl, gameName);
 		Toast.makeText(this, "Report Done", TOAST_DELAY).show();
+	}
+	
+	public void downloadFile(String url, String dest){
+		 try {
+           File dest_file = new File(dest);
+           URL u = new URL(url);
+           URLConnection conn = u.openConnection();
+           int contentLength = conn.getContentLength();
+           DataInputStream stream = new DataInputStream(u.openStream());
+           byte[] buffer = new byte[contentLength];
+           stream.readFully(buffer);
+           stream.close();
+           DataOutputStream fos = new DataOutputStream(new FileOutputStream(dest_file));
+           fos.write(buffer);
+           fos.flush();
+           fos.close();
+            
+       } catch(FileNotFoundException e) {
+           
+           return; 
+       } catch (IOException e) {
+           
+           return; 
+       }
 	}
 }
