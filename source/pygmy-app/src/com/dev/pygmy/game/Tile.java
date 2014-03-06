@@ -16,21 +16,96 @@
 
 package com.dev.pygmy.game;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 
 public class Tile {
-	final private String TAG = "Tile";
+	Point positionPixel;
+	Point tileDimensions;
+	Paint color;
 	
-	int[] positionPixel;
-	
-	public Tile(int x1, int y1, int tileSize) {
-		positionPixel = new int[4];
-		positionPixel[0] = x1;
-		positionPixel[1] = y1;
-		positionPixel[2] = tileSize;
+	// FIXME: Delete this constructor before merge
+	public Tile(int posX, int posY, int tileSquare) {
+		positionPixel = new Point();
+		positionPixel.x = posX;
+		positionPixel.y = posY;
+		
+		tileDimensions = new Point();
+		tileDimensions.x = tileSquare;
 	}
 	
-	public int[] getCoord() {
+	/**
+	 * Saves coordinates in pixels of a rectangular tile.
+	 * @param posX	position X in pixels.
+	 * @param posY  position Y in pixels.
+	 * @param tileRectangleDimensionX	size of the horizontal side.
+	 * @param tileRectangleDimensionY	size of the vertical side;
+	 */
+	public Tile(int posX, int posY, int tileDimensionX, int tileDimensionY) {
+		positionPixel = new Point();
+		positionPixel.x = posX;
+		positionPixel.y = posY;
+		
+		tileDimensions = new Point();
+		tileDimensions.x = tileDimensionX;
+		tileDimensions.y = tileDimensionY;
+	}
+	
+	/**
+	 * @return coordinates (x,y) in pixels for a tile.
+	 */
+	public Point getCoord() {
 		return positionPixel;
+	}
+	
+	/**
+	 * @return the size of one side of a square tile.
+	 */
+	public int getTileSquareSize() {
+		return tileDimensions.x;
+	}
+	
+	/**
+	 * @return the dimensions of a tile with a rectangular shape.
+	 */
+	public Point getTileRectangleDimensions() {
+		return tileDimensions;
+	}
+	
+	public void setColor(Paint color) {
+		this.color = color;
+	}
+	
+	public void draw(Canvas canvas) {
+		canvas.drawRect(positionPixel.x, positionPixel.y,
+				positionPixel.x + tileDimensions.x,
+				positionPixel.y + tileDimensions.y,
+				color);
+	}
+	
+	public void drawOverlay(Canvas canvas) {
+		Paint color = new Paint();
+		color.setColor(Color.GREEN);
+		color.setStrokeWidth(4);
+
+		// Draw tile
+		canvas.drawRect(positionPixel.x, positionPixel.y, 
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
+
+		// Draw tile's outline
+		// top
+		canvas.drawLine(positionPixel.x, positionPixel.y, 
+				positionPixel.x+tileDimensions.x, positionPixel.y, color);
+		// bottom
+		canvas.drawLine(positionPixel.x, positionPixel.y+tileDimensions.y,
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
+		// left
+		canvas.drawLine(positionPixel.x, positionPixel.y, 
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
+		// right
+		canvas.drawLine(positionPixel.x+tileDimensions.x, positionPixel.y,
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
 	}
 }

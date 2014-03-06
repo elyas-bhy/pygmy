@@ -9,11 +9,11 @@ import com.lib.pygmy.base.Overlappable;
 
 public class PygmyGameUniverse implements GameUniverse {
 	
-	private Map<Point,GameEntity> gameEntities;
+	private Map<Point,GameEntity> entities;
 	private OverlapProcessor overlapProcessor;
 	
 	public PygmyGameUniverse() {
-		gameEntities = new ConcurrentHashMap<Point,GameEntity>();
+		entities = new ConcurrentHashMap<Point,GameEntity>();
 	}
 
 	public PygmyGameUniverse(OverlapProcessor processor) {
@@ -22,18 +22,18 @@ public class PygmyGameUniverse implements GameUniverse {
 	}
 	
 	public Map<Point,GameEntity> getGameEntities() {
-		return gameEntities;
+		return entities;
 	}
 
 	public synchronized void addGameEntity(GameEntity gameEntity) {
-		gameEntities.put(gameEntity.getPosition(), gameEntity);
+		entities.put(gameEntity.getPosition(), gameEntity);
 		if (gameEntity instanceof Overlappable) {
 			overlapProcessor.addOverlappable((Overlappable) gameEntity);
 		}
 	}
 
 	public synchronized void removeGameEntity(GameEntity gameEntity) {
-		gameEntities.remove(gameEntity);
+		entities.remove(gameEntity);
 		if (gameEntity instanceof Overlappable) {
 			overlapProcessor.removeOverlappable((Overlappable) gameEntity);
 		}

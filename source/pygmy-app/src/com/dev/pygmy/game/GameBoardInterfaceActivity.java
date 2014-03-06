@@ -17,33 +17,26 @@
 package com.dev.pygmy.game;
 
 import java.lang.reflect.Constructor;
-import java.util.Map;
 
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.client.pygmy.PygmyGameImpl;
 import com.dev.pygmy.PygmyApp;
-import com.dev.pygmy.R;
 
 /**
  * This class represents the whole game board including their pieces/entities.
  */
 public class GameBoardInterfaceActivity extends Activity {
 	
-	private GameBoardView gameBoardView;
-	private EntityView entityView;
+	private GameViewManager gameViewManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		FrameLayout mainLayout = createMainLayout();
-		setContentView(mainLayout);
+		gameViewManager = new GameViewManager(this);
 
 		PygmyGameImpl game = null;
 		try {
@@ -53,31 +46,7 @@ public class GameBoardInterfaceActivity extends Activity {
 		} catch (Exception e) {
 			PygmyApp.logE(e.getMessage());
 		}
-		
-		// Gets parameters of the game board.
-		if (game != null) {
-			game.initGame();
-			game.start();
-			Map<String, Object> gameParams = game.getParameters();
-
-			gameBoardView = new GameBoardView(getApplicationContext(), gameParams);
-			mainLayout.addView(gameBoardView);
-			
-			entityView = new EntityView(this, game);
-			mainLayout.addView(entityView);
-		} else {
-			mainLayout.addView(findViewById(R.id.creation_error));
-		}
-	}
-
-	private FrameLayout createMainLayout() {
-		FrameLayout mainLayout = new FrameLayout(this);
-		LayoutParams gerenalLayoutParams = new LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT);
-		mainLayout.setLayoutParams(gerenalLayoutParams);
-		mainLayout.setBackgroundColor(getResources().getColor(R.color.grey_metal));
-
-		return mainLayout;
+		gameViewManager.setGame(game);
+		setContentView(gameViewManager.getLayout());
 	}
 }

@@ -23,7 +23,7 @@ public abstract class PygmyGameLevel implements GameLevel {
 		this.game = game;
 		this.gameRules = new ArrayList<GameRule>();
 		
-		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
+		OverlapProcessor overlapProcessor = new OverlapProcessorImpl();
 		universe = new PygmyGameUniverse(overlapProcessor);
 		overlapRules.setUniverse(universe);
 

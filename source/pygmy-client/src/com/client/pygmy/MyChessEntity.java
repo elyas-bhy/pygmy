@@ -5,11 +5,11 @@ package com.client.pygmy;
 import android.graphics.Point;
 
 import com.lib.pygmy.GameMove;
-import com.lib.pygmy.MovableEntity;
 import com.lib.pygmy.Player;
+import com.lib.pygmy.PygmyGameEntity;
 import com.lib.pygmy.PygmyGameLevel;
 
-public class MyChessEntity extends MovableEntity {
+public class MyChessEntity extends PygmyGameEntity {
 
 	public MyChessEntity(PygmyGameLevel level, Player player, int resId, int x, int y) {
 		super(level, player, resId, new Point(x, y));

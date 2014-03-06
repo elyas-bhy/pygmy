@@ -108,7 +108,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		initSlidingMenu();
 		initSigninButtons();
-		initGameButtons();
 		mDataView = ((TextView) findViewById(R.id.data_view));
 		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
 	}
@@ -200,18 +199,6 @@ public class MainActivity extends BaseGameActivity implements
 						beginUserInitiatedSignIn();
 						findViewById(R.id.sign_in_button).setVisibility(
 								View.GONE);
-					}
-				});
-	}
-
-	private void initGameButtons() {
-		findViewById(R.id.game_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(),
-								GameBoardInterfaceActivity.class);
-						startActivityForResult(myIntent, 0);
 					}
 				});
 	}

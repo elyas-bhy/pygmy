@@ -15,43 +15,27 @@ public interface GameEntity {
 	 */
 	public PygmyGameContext getContext();
 	
-	/**
-	 * @return the initial position of the entity on the board.
-	 */
-	public int[] getBoundingPosition();
-
-	/**
-	 * Returns the current position
-	 * @return
-	 */
 	public Point getPosition();
 	
-	/**
-	 * Sets the X position of the image of the entity on the board 
-	 * @param posX
-	 */
-	public void setX(int posX);
-
-	/**
-	 * Returns the X position of the entity
-	 */
-	public int getX();
-
-	/**
-	 * Sets the Y position of the image of the entity on the board 
-	 * @param posY
-	 */
-	public void setY(int posY);
-
-	/**
-	 * Returns the Y position of the entity
-	 */
-	public int getY();
-
-	/**
-	 * Returns the identifier of the entity
-	 */
-	public int getId();
+	public void setPosition(Point p);
+	
+	public int getPixelX();
+	
+	public void setPixelX(int x);
+	
+	public int getPixelY();
+	
+	public void setPixelY(int y);
+	
+	public Player getPlayer();
+	
+	public void setPlayer(Player player);
+	
+	public void oneStepMove(Point p);
+	
+	public boolean isLegalMove(GameMove move);
+	
+	public void oneStepMoveAddedBehavior();
 
 	/**
 	 * Returns the image file of the entity

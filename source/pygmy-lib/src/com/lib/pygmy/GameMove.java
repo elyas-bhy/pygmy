@@ -4,18 +4,18 @@ import android.graphics.Point;
 
 public class GameMove {
 	
-	private GameMovable entity;
+	private GameEntity entity;
 	private Point move;
 	
 	public GameMove() {
 		
 	}
 
-	public GameMovable getEntity() {
+	public GameEntity getEntity() {
 		return entity;
 	}
 
-	public void setEntity(GameMovable entity) {
+	public void setEntity(GameEntity entity) {
 		this.entity = entity;
 	}
 
