@@ -101,6 +101,17 @@ public class EntityView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
+		
+		int nbRows = 8;
+		int nbColumns = 8;
+		// tileSize=72 .. offset=24
+		//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
+		
+		// 96 96 672 672
+		int minX = tileSize+offset;
+		int minY = tileSize+offset;
+		int maxX = minX + (tileSize * nbRows);
+		int maxY = minY + (tileSize * nbColumns);
 
 		switch (event.getAction()) { 
 
@@ -131,28 +142,18 @@ public class EntityView extends View {
 				
 				GameViewManager.redrawOverlay();
 				
-				int nbRows = 8;
-				int nbColumns = 8;
-				// tileSize=72 .. offset=24
-				//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
-				
-				// 96 96 672 672
-				int minX = tileSize+offset;
-				int minY = tileSize+offset;
-				int maxX = minX + (tileSize * nbRows);
-				int maxY = minY + (tileSize * nbColumns);
-				
 				// Use the centre of the entity
 				posibleColumn = (x * nbColumns) / maxX;
 				posibleRow = (y * nbRows) / maxY;
 				
-				PygmyApp.logD("X*nbColumns: " + (x * nbColumns));
-				PygmyApp.logD("Y*nbRows: " + (y * nbRows));
 				PygmyApp.logD("X: " + x + " Y: " + y);
 				PygmyApp.logD("\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
 
-				draggedEntity.setPixelX(x - tileSize/2);
-				draggedEntity.setPixelY(y - tileSize/2);
+				if (minX < x && x < maxX && minY < y && y < maxY) {
+					draggedEntity.setPixelX(x - tileSize/2);
+					draggedEntity.setPixelY(y - tileSize/2);
+				}
+				PygmyApp.logD("tileSize: "+tileSize);
 				
 				//TODO tile.setActive(); or SelectedTileView(canvas)
 			}
@@ -160,13 +161,15 @@ public class EntityView extends View {
 			break;
 
 		case MotionEvent.ACTION_UP:
-			Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
-			// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
-			draggedEntity.setPixelX(p.x);
-			draggedEntity.setPixelY(p.y);
-			// else 
-			//entityDragged.setX(entityCurrentPosition.x);
-			//entityDragged.setY(entityCurrentPosition.y);
+			if (minX < x && x < maxX && minY < y && y < maxY) {
+				Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+				// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
+				draggedEntity.setPixelX(p.x);
+				draggedEntity.setPixelY(p.y);
+			} else {
+				draggedEntity.setPixelX(entityCurrentPosition.x);
+				draggedEntity.setPixelY(entityCurrentPosition.y);
+			}
 			
 			// TODO visible(false) for image used to selected tile
 			GameMove move = new GameMove();
