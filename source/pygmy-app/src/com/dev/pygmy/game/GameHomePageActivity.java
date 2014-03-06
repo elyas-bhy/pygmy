@@ -16,25 +16,8 @@
 
 package com.dev.pygmy.game;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -44,136 +27,45 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
 public class GameHomePageActivity extends Activity {
-	
-	private final static int TOAST_DELAY = 2000;
 
-	private boolean rep = false;
+	private final static int TOAST_DELAY = 2000;
+	Spinner spin;
+
+	public String gamesInfoUrl = 
+			"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesInfo.php";
+	public String reportUrl = 
+			"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/report.php";
+
 	private TextView titleView, summaryView;
+	String gameName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gamehomepage);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
+		// Retrieve game selected in the list
+		Bundle extras;
+
+		if (savedInstanceState == null) {
+			extras = getIntent().getExtras();
+			if (extras == null) {
+				gameName = null;
+			} else {
+				gameName = extras.getString("gameName");
+			}
+		}
+
+		spin = (Spinner) findViewById(R.id.spinner);
 		titleView = (TextView) findViewById(R.id.name_game);
 		summaryView = (TextView) findViewById(R.id.name_resume);
-		new GameFetchTask().execute();
-	}
 
-	private class GameFetchTask extends AsyncTask<String, String, Void> {
-		
-		private final String gamesInfoUrl = 
-				"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesInfo.php";
-		private final String reportUrl = 
-				"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/report.php";
-
-		private InputStream is = null;
-		private String result = "";
-		private String gameName = "Pygmy Game";  // Replace with selected game
-		
-		@Override
-		protected void onPreExecute() {
-			
-		}
-
-		@Override
-		protected Void doInBackground(String... params) {
-			Spinner spin = (Spinner) findViewById(R.id.spinner);
-			String item = spin.getSelectedItem().toString();
-
-			HttpClient httpClient = new DefaultHttpClient();
-
-			if (rep) {
-				HttpPost httpPost = new HttpPost(reportUrl);
-				ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-				param.add(new BasicNameValuePair("report", item));
-				param.add(new BasicNameValuePair("name", gameName));
-
-				try {
-					httpPost.setEntity(new UrlEncodedFormEntity(param));
-
-					HttpResponse httpResponse = httpClient.execute(httpPost);
-					HttpEntity httpEntity = httpResponse.getEntity();
-
-					// read content
-					is = httpEntity.getContent();
-
-				} catch (Exception e) {
-					PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
-				}
-				
-				try {
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					StringBuilder sb = new StringBuilder();
-					String line = "";
-					while ((line = br.readLine()) != null) {
-						sb.append(line + "\n");
-					}
-					is.close();
-					result = sb.toString();
-
-				} catch (Exception e) {
-					PygmyApp.logE("Error converting result: " + e.getMessage());
-				}
-				
-			} else {
-				HttpPost httpPost = new HttpPost(gamesInfoUrl);
-
-				ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-				param.add(new BasicNameValuePair("name", gameName));
-
-				try {
-					httpPost.setEntity(new UrlEncodedFormEntity(param));
-
-					HttpResponse httpResponse = httpClient.execute(httpPost);
-					HttpEntity httpEntity = httpResponse.getEntity();
-
-					// Read content
-					is = httpEntity.getContent();
-
-				} catch (Exception e) {
-					PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
-				}
-				try {
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					StringBuilder sb = new StringBuilder();
-					String line = "";
-					while ((line = br.readLine()) != null) {
-						sb.append(line + "\n");
-					}
-					is.close();
-					result = sb.toString();
-
-				} catch (Exception e) {
-					PygmyApp.logE("Error converting result: " + e.getMessage());
-				}
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void v) {
-			JSONObject json;
-			try {
-				JSONArray array = new JSONArray(result);
-				for (int i = 0; i < array.length(); i++) {
-					json = array.getJSONObject(i);
-					String title = json.getString("name");
-					String resume = json.getString("resume");
-					titleView.append(title + "\t\t" + "\n");
-					summaryView.append(resume + "\t\t" + "\n");
-				}
-
-			} catch (Exception e) {
-				PygmyApp.logE("Error parsing data: " + e.getMessage());
-			}
-		}
+		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName);
 	}
 
 	@Override
@@ -210,8 +102,8 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onReportClicked(View view) {
-		rep = true;
-		new GameFetchTask().execute();
+
+		new LoadDataFromDatabase(spin, reportUrl, gameName);
 		Toast.makeText(this, "Report Done", TOAST_DELAY).show();
 	}
 }

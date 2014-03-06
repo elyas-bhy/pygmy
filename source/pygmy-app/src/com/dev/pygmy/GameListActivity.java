@@ -16,34 +16,39 @@
 
 package com.dev.pygmy;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.dev.pygmy.PygmyApp;
+import com.dev.pygmy.game.GameHomePageActivity;
 
 public class GameListActivity extends Activity {
-	
+
 	private ListView listView;
 
-	// Example change that with DB games infos
-	// Icon can be an URL, as use in profile picture.
-	private String[] gameName = { "Jeux 1", "Jeux 2", "Jeux 3", "Jeux 4", 
-			"Jeux 5", "Jeux 6", "Jeux 7" };
-	
-	private String[] info = { "By Bastien : Cliking as many as you can.",
-			"By Bastien : Cliking as many as you can.",
-			"By Bastien : Cliking as many as you can.",
-			"By Bastien : Cliking as many as you can.",
-			"By Bastien : Cliking as many as you can.",
-			"By Bastien : Cliking as many as you can.",
-			"By Bastien : Cliking as many as you can." };
-	
-	private Integer[] imageId = { R.drawable.logo_home_page, R.drawable.logo_home_page,
-			R.drawable.logo_home_page, R.drawable.logo_home_page,
-			R.drawable.logo_home_page, R.drawable.logo_home_page,
-			R.drawable.logo_home_page };
+	ArrayList<String> gameName = new ArrayList<String>();
+	ArrayList<String> info = new ArrayList<String>();
+	ArrayList<String> imageId = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +56,94 @@ public class GameListActivity extends Activity {
 		setContentView(R.layout.game_list);
 
 		// Creating list
-		GameListAdapter myadapter = new GameListAdapter(GameListActivity.this,
-				gameName, imageId, info);
 		listView = (ListView) findViewById(R.id.list);
-		listView.setAdapter(myadapter);
+
+		new getServerListGame().execute();
 
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Launch selected game
-				Toast.makeText(GameListActivity.this, 
-						"You clicked at " + gameName[+position], Toast.LENGTH_SHORT).show();
+
+				Intent intent = new Intent(getApplicationContext(),
+						GameHomePageActivity.class);
+				intent.putExtra("gameName", gameName.get(+position));
+				startActivity(intent);
 			}
 		});
 	}
+
+	class getServerListGame extends AsyncTask<String, String, Void> {
+
+		InputStream is = null;
+		String result = "";
+
+		@Override
+		protected Void doInBackground(String... params) {
+			String gamesListURL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesList.php";
+
+			HttpClient httpClient = new DefaultHttpClient();
+
+			HttpPost httpPost = new HttpPost(gamesListURL);
+
+			ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+
+			try {
+				httpPost.setEntity(new UrlEncodedFormEntity(param));
+
+				HttpResponse httpResponse = httpClient.execute(httpPost);
+				HttpEntity httpEntity = httpResponse.getEntity();
+
+				// read content
+				is = httpEntity.getContent();
+
+			} catch (Exception e) {
+
+				PygmyApp.logE("Error in http connection " + e.toString());
+			}
+			try {
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(is));
+				StringBuilder sb = new StringBuilder();
+				String line = "";
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString();
+
+			} catch (Exception e) {
+				PygmyApp.logE("Error converting result " + e.toString());
+			}
+
+			return null;
+
+		}
+
+		protected void onPostExecute(Void v) {
+
+			try {
+				JSONArray Jarray = new JSONArray(result);
+				for (int i = 0; i < Jarray.length(); i++) {
+					JSONObject Jasonobject = null;
+					Jasonobject = Jarray.getJSONObject(i);
+
+					String title = Jasonobject.getString("name");
+					gameName.add(title);
+
+					String resume = Jasonobject.getString("resume");
+					info.add(resume);
+
+					GameListAdapter adapter = new GameListAdapter(
+							GameListActivity.this, gameName, info, imageId);
+
+					listView.setAdapter(adapter);
+				}
+
+			} catch (Exception e) {
+				PygmyApp.logE("Error parsing data " + e.toString());
+			}
+		}
+	}
+
 }
