@@ -16,27 +16,23 @@
 
 package com.dev.pygmy.game;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 
 public class Tile {
-	final private String TAG = "Tile";
-	
 	Point positionPixel;
 	Point tileDimensions;
+	Paint color;
 	
-	/**
-	 * Saves coordinates in pixels of a square tile.
-	 * @param posX	position X in pixels.
-	 * @param posY	position Y in pixels.
-	 * @param tileSquareSize	size of any side of the square.
-	 */
-	public Tile(int posX, int posY, int tileSquareSize) {
+	// FIXME: Delete this constructor before merge
+	public Tile(int posX, int posY, int tileSquare) {
 		positionPixel = new Point();
 		positionPixel.x = posX;
 		positionPixel.y = posY;
 		
 		tileDimensions = new Point();
-		tileDimensions.x = tileSquareSize;
+		tileDimensions.x = tileSquare;
 	}
 	
 	/**
@@ -46,14 +42,14 @@ public class Tile {
 	 * @param tileRectangleDimensionX	size of the horizontal side.
 	 * @param tileRectangleDimensionY	size of the vertical side;
 	 */
-	public Tile(int posX, int posY, int tileRectangleDimensionX, int tileRectangleDimensionY) {
+	public Tile(int posX, int posY, int tileDimensionX, int tileDimensionY) {
 		positionPixel = new Point();
 		positionPixel.x = posX;
 		positionPixel.y = posY;
 		
 		tileDimensions = new Point();
-		tileDimensions.x = tileRectangleDimensionX;
-		tileDimensions.y = tileRectangleDimensionY;
+		tileDimensions.x = tileDimensionX;
+		tileDimensions.y = tileDimensionY;
 	}
 	
 	/**
@@ -64,7 +60,7 @@ public class Tile {
 	}
 	
 	/**
-	 * @return the size of a side of a tile with a square shape.
+	 * @return the size of one side of a square tile.
 	 */
 	public int getTileSquareSize() {
 		return tileDimensions.x;
@@ -75,5 +71,16 @@ public class Tile {
 	 */
 	public Point getTileRectangleDimensions() {
 		return tileDimensions;
+	}
+	
+	public void setColor(Paint color) {
+		this.color = color;
+	}
+	
+	public void draw(Canvas canvas) {
+		canvas.drawRect(positionPixel.x, positionPixel.y,
+				positionPixel.x + tileDimensions.x,
+				positionPixel.y + tileDimensions.y,
+				color);
 	}
 }

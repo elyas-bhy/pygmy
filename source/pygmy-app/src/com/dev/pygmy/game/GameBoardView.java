@@ -73,9 +73,9 @@ public class GameBoardView extends View {
 		
 	/**
 	 * 
-	 * @param row
-	 * @param column
-	 * @return a Tile 
+	 * @param row		Relative position on Y
+	 * @param column	Relative position on X
+	 * @return the Tile according to coordinates (column, row)
 	 */
 	public static Tile getTileCoord(int row, int column) {
 		return mapTileCoord.get(new Point(column, row));
@@ -156,7 +156,7 @@ public class GameBoardView extends View {
 					if (x != 0){
 						coord_x = x*case_size+offset;
 						coord_y = (y+1)*(case_size-colision);
-						
+						// FIXME use new Tile(int, int, int, int, int)
 						Tile tile = null;new Tile(coord_x,coord_y, case_size);
 						if(y%2 == 0){
 							draw_hexcase(canvas, case_size, coord_y, coord_x + half);
@@ -206,7 +206,7 @@ public class GameBoardView extends View {
 						coord_y = y*case_size+offset;
 						coord_x = x*case_size+offset;
 
-						
+						// FIXME use new Tile(int, int, int, int, int)
 						if(y < width_case +1 && x < height_case +1)
 							mapTileCoord.put(new Point(x-1,y-1), new Tile(coord_x, coord_y, case_size));
 
@@ -255,15 +255,10 @@ public class GameBoardView extends View {
 									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
 									colorBlack);		
 
-						mapTileCoord.put(new Point(x-1, y-1),
-										 new Tile(coordX, coordY,
-												  tileSize));
-
-						canvas.drawRect(coordX, coordY,
-										coordX + tileSize,
-										coordY + tileSize,
-										((y + x)%2 != 0)?color1:color2);
-
+						Tile t = new Tile(coordX, coordY, tileSize, tileSize);
+						t.setColor(((y + x)%2 != 0)?color1:color2);
+						mapTileCoord.put(new Point(x-1, y-1), t);
+						t.draw(canvas);
 					}
 				}
 				canvas.drawText(Character.toString((char)('A'-1+y)), 

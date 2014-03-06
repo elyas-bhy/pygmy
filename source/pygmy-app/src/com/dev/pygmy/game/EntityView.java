@@ -19,8 +19,6 @@ package com.dev.pygmy.game;
 import java.util.Collection;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.Log;
@@ -28,7 +26,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.client.pygmy.PygmyGameImpl;
-import com.dev.pygmy.R;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 
@@ -42,7 +39,13 @@ public class EntityView extends View {
 	private Collection<GameEntity> entities;	// array that holds the entities
 	private GameEntity entityDragged = null;				// variable to know what entity is being dragged
 	private boolean initial = true;
-	private int tileSize;
+	private int tileSize = 0;
+	private int offset = 0;
+	
+	
+	private int posibleColumn = 0;
+	private int posibleRow = 0;
+	private Point entityCurrentPosition = new Point();
 
 	/**
 	 * Default constructor.
@@ -96,6 +99,7 @@ public class EntityView extends View {
 				canvas.drawBitmap(entity.getBitmap(), entity.getX(), entity.getY(), null);
 			}
 		}
+		
 	}
 
 	@Override
@@ -104,6 +108,8 @@ public class EntityView extends View {
 
 		int X = (int)event.getX();
 		int Y = (int)event.getY();
+		
+		//SelectedTileView.draw(canvas, Y, topLeft, bottomRight);
 
 		switch (eventaction) { 
 
@@ -120,6 +126,9 @@ public class EntityView extends View {
 									Y < entity.getY()+tileSize) {
 						// Get what entity is being dragged.
 						entityDragged = entity;
+						entityCurrentPosition.x = entity.getX();
+						entityCurrentPosition.y = entity.getY();
+						offset = tileSize/3;
 						break;
 					}
 				}
@@ -130,15 +139,47 @@ public class EntityView extends View {
 		case MotionEvent.ACTION_MOVE:
 			// move the entities the same as the finger
 			if (entityDragged != null) {
-				entityDragged.setX(X-(tileSize/2));
-				entityDragged.setY(Y-(tileSize/2));
+				
+				int nbRows = 8;
+				int nbColumns = 8;
+				// 72 .. 24
+				Log.d(TAG, "tileSize: "+tileSize+" offset: "+offset);
+				
+				// 96 96 672 672
+				int minX = tileSize+offset;
+				int minY = tileSize+offset;
+				int maxX = minX+(tileSize*nbRows);
+				int maxY = minY+(tileSize*nbColumns);
+				
+				// Use the centre of the entity
+				posibleColumn = (X * nbColumns)/maxX;
+				posibleRow = (Y * nbRows)/maxY;
+				
+				Log.d(TAG, "X*nbColumns: "+(X*nbColumns));
+				Log.d(TAG, "Y*nbRows: "+(Y*nbRows));
+				Log.d(TAG, "X: "+X+" Y: "+Y);
+				Log.d(TAG, "\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
+				
+				int moveX = X-(tileSize/2);
+				int moveY = Y-(tileSize/2);
+				entityDragged.setX(moveX);
+				entityDragged.setY(moveY);
+				
+				//TODO tile.setActive(); or SelectedTileView(canvas)
 			}
 
 			break; 
 
 		case MotionEvent.ACTION_UP:
-			// TODO: visible(false) for image used to selected tile
-			// TODO: isLegalMove(move)
+			Point move = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+			// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
+			entityDragged.setX(move.x);
+			entityDragged.setY(move.y);
+			// else 
+//			entityDragged.setX(entityCurrentPosition.x);
+//			entityDragged.setY(entityCurrentPosition.y);
+			
+			// TODO visible(false) for image used to selected tile
 			break; 
 		} 
 		// redraw the canvas
