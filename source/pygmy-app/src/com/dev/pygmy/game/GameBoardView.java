@@ -26,8 +26,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.View;
 
-import com.dev.pygmy.PygmyApp;
-
 /**
  * 	This class represents the grid of the board.
  */

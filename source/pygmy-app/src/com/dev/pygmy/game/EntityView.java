@@ -77,10 +77,7 @@ public class EntityView extends View {
 		if (initial) {
 			initial = false;
 			
-			int posX = 0;
-			int posY = 0;
 			Point coordXY;
-			
 			for (GameEntity entity : entities) {
 				if (entity != null) {
 					Point p = entity.getPosition();
@@ -132,10 +129,12 @@ public class EntityView extends View {
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
 				
+				GameViewManager.redrawOverlay();
+				
 				int nbRows = 8;
 				int nbColumns = 8;
-				// 72 .. 24
-				PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
+				// tileSize=72 .. offset=24
+				//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
 				
 				// 96 96 672 672
 				int minX = tileSize+offset;
@@ -163,8 +162,8 @@ public class EntityView extends View {
 		case MotionEvent.ACTION_UP:
 			Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
 			// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
-			//draggedEntity.setPixelX(p.x);
-			//draggedEntity.setPixelY(p.y);
+			draggedEntity.setPixelX(p.x);
+			draggedEntity.setPixelY(p.y);
 			// else 
 			//entityDragged.setX(entityCurrentPosition.x);
 			//entityDragged.setY(entityCurrentPosition.y);
@@ -174,7 +173,7 @@ public class EntityView extends View {
 			move.setEntity(draggedEntity);
 			move.setMove(new Point(3,3));
 			PygmyApp.logD("src: " + draggedEntity.getPosition());
-			game.onPlayerMove(move);
+			//game.onPlayerMove(move);
 			PygmyApp.logD("dst: " + draggedEntity.getPosition());
 			break;
 			

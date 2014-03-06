@@ -17,6 +17,7 @@
 package com.dev.pygmy.game;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
@@ -82,5 +83,29 @@ public class Tile {
 				positionPixel.x + tileDimensions.x,
 				positionPixel.y + tileDimensions.y,
 				color);
+	}
+	
+	public void drawOverlay(Canvas canvas) {
+		Paint color = new Paint();
+		color.setColor(Color.GREEN);
+		color.setStrokeWidth(4);
+
+		// Draw tile
+		canvas.drawRect(positionPixel.x, positionPixel.y, 
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
+
+		// Draw tile's outline
+		// top
+		canvas.drawLine(positionPixel.x, positionPixel.y, 
+				positionPixel.x+tileDimensions.x, positionPixel.y, color);
+		// bottom
+		canvas.drawLine(positionPixel.x, positionPixel.y+tileDimensions.y,
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
+		// left
+		canvas.drawLine(positionPixel.x, positionPixel.y, 
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
+		// right
+		canvas.drawLine(positionPixel.x+tileDimensions.x, positionPixel.y,
+				positionPixel.x+tileDimensions.x, positionPixel.y+tileDimensions.y, color);
 	}
 }
