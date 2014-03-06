@@ -49,6 +49,7 @@ public class GameListActivity extends Activity {
 	ArrayList<String> gameName = new ArrayList<String>();
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
+	ArrayList<String> fileName = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class GameListActivity extends Activity {
 				Intent intent = new Intent(getApplicationContext(),
 						GameHomePageActivity.class);
 				intent.putExtra("gameName", gameName.get(+position));
+				intent.putExtra("filename", fileName.get(+position));
 				startActivity(intent);
 			}
 		});
@@ -133,6 +135,9 @@ public class GameListActivity extends Activity {
 
 					String resume = Jasonobject.getString("resume");
 					info.add(resume);
+					
+					String file = Jasonobject.getString("filename");
+					fileName.add(file);
 
 					GameListAdapter adapter = new GameListAdapter(
 							GameListActivity.this, gameName, info, imageId);

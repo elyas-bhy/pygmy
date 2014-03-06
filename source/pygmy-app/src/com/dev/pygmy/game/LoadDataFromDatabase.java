@@ -3,7 +3,6 @@ package com.dev.pygmy.game;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -18,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.dev.pygmy.PygmyApp;
-import com.dev.pygmy.R;
 
 import android.os.AsyncTask;
 import android.widget.Spinner;
@@ -31,6 +29,8 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 	private final String databaseUrl;
 	private final String gameName;
 	private boolean report = false;
+	public String title;
+	public String resume;
 
 	public LoadDataFromDatabase(Spinner sp, String url, String game) {
 		this.spin = sp;
@@ -105,8 +105,8 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 			JSONArray array = new JSONArray(result);
 			for (int i = 0; i < array.length(); i++) {
 				json = array.getJSONObject(i);
-				String title = json.getString("name");
-				String resume = json.getString("resume");
+				title = json.getString("name");
+				resume = json.getString("resume");
 				titleView.append(title + "\t\t" + "\n");
 				summaryView.append(resume + "\t\t" + "\n");
 			}
