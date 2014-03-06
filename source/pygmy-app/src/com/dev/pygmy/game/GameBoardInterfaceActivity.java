@@ -23,22 +23,20 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.client.pygmy.PygmyGameImpl;
+import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 
 /**
  * This class represents the whole game board including their pieces/entities.
  */
 public class GameBoardInterfaceActivity extends Activity {
-
-	static final String TAG = "GameBoardInterfaceActivity";
-
-	private GameBoardView gameBoardView = null;
-	private EntityView entityView = null;
+	
+	private GameBoardView gameBoardView;
+	private EntityView entityView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,7 @@ public class GameBoardInterfaceActivity extends Activity {
 			Constructor<?> constructor = clazz.getConstructor(Resources.class);
 			game = (PygmyGameImpl) constructor.newInstance(getResources());
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			PygmyApp.logE(e.getMessage());
 		}
 		
 		// Gets parameters of the game board.

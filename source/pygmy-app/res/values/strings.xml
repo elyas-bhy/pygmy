@@ -20,20 +20,19 @@
     <string name="check_games">Check games</string>
     <string name="start_match">Start Match</string>
     <string name="turn_counter">Turn counter</string>
-    
     <string name="menu_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="Night">Night</string>
     <string name="Day">Day</string>
-    
+
     <!-- Preferences -->
     <string name="pref_sound">Sound</string>
     <string name="pref_vib">Vibrate</string>
     <string name="pref_notif">Notifications</string>
     <string name="pref_des">Design</string>
     <string name="pref_gen">General</string>
-    
-        <!-- Game Homepage -->
+
+    <!-- Game Homepage -->
     <string name="play">Play</string>
     <string name="invite">Invite</string>
     <string name="random">Random</string>
@@ -42,11 +41,11 @@
     <string name="cond1">Nothing to report</string>
     <string name="cond2">Game not working</string>
     <string name="cond3">Wrong content</string>
-    
+
     <!-- Navbar values -->
     <string name="home">Home</string>
     <string name="profile">Profile</string>
-    
+
     <!-- Profile view values -->
     <string name="name_profile"></string>
     <string name="language_profile"></string>
@@ -54,4 +53,10 @@
     <string name="offline">Offline</string>
     <string name="board">Board</string>
     <string name="loading_error">Internal error : Could not load game</string>
+
+    <!-- Game list valus -->
+    <string name="games">Games</string>
+    <string name="description"></string>
+    <string name="empty"></string>
+
 </resources>

@@ -5,7 +5,7 @@ import android.view.KeyEvent;
 
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
-import com.lib.pygmy.MovableEntity;
+import com.lib.pygmy.PygmyGameEntity;
 
 /**
  * {@link MoveStrategy} which listens to the keyboard and answers new
@@ -15,9 +15,9 @@ public class MoveStrategyKeyboard implements MoveStrategy {
 	protected Direction speedVector = new DirectionDefaultImpl(new Point(0, 0));
 
 	private GameLevel ml;
-	private MovableEntity me;
+	private PygmyGameEntity me;
 
-	public MoveStrategyKeyboard(MovableEntity me, GameLevel ml) {
+	public MoveStrategyKeyboard(PygmyGameEntity me, GameLevel ml) {
 		this.me = me;
 		this.ml = ml;
 	}
