@@ -139,39 +139,48 @@ public class EntityView extends View {
 		case MotionEvent.ACTION_MOVE:
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
-				
-				GameViewManager.redrawOverlay();
-				
-				// Use the centre of the entity
-				posibleColumn = (x * nbColumns) / maxX;
-				posibleRow = (y * nbRows) / maxY;
-				
-				PygmyApp.logD("X: " + x + " Y: " + y);
-				PygmyApp.logD("\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
-
 				if (minX < x && x < maxX && minY < y && y < maxY) {
+					// Find the tile which is being flying by the entity.
+					posibleColumn = (x * nbColumns) / maxX;
+					posibleRow = (y * nbRows) / maxY;
+					
+					// Show the future position of the entity.
+					GameViewManager.redrawOverlay();
+					Point coordXY = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+					GameViewManager.getTile().setDimensions(coordXY.x, coordXY.y, tileSize, tileSize);
+
+					// Move entity
 					draggedEntity.setPixelX(x - tileSize/2);
 					draggedEntity.setPixelY(y - tileSize/2);
-				}
-				PygmyApp.logD("tileSize: "+tileSize);
+
+					PygmyApp.logD("X: " + x + " Y: " + y);
+					PygmyApp.logD("\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
+					PygmyApp.logD("tileSize: "+tileSize);
 				
-				//TODO tile.setActive(); or SelectedTileView(canvas)
+				}
 			}
 
 			break;
 
 		case MotionEvent.ACTION_UP:
+			// TileOverlay image has disappear.
+			GameViewManager.getTile().setDimensions(0, 0, 0, 0);
+			GameViewManager.redrawOverlay();
+			
+			// The entity cannot be outside of the board.
 			if (minX < x && x < maxX && minY < y && y < maxY) {
 				Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+				
+				// Accept new position if the move is legal.
 				// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
 				draggedEntity.setPixelX(p.x);
 				draggedEntity.setPixelY(p.y);
 			} else {
+				// else return to the old position.
 				draggedEntity.setPixelX(entityCurrentPosition.x);
 				draggedEntity.setPixelY(entityCurrentPosition.y);
 			}
 			
-			// TODO visible(false) for image used to selected tile
 			GameMove move = new GameMove();
 			move.setEntity(draggedEntity);
 			move.setMove(new Point(3,3));
@@ -186,6 +195,5 @@ public class EntityView extends View {
 		// Redraw the canvas
 		invalidate(); 
 		return true; 
-
 	}
 }

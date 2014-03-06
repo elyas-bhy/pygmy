@@ -79,4 +79,8 @@ public class GameViewManager {
 	public static void redrawOverlay() {
 		tileOverlayView.invalidate();
 	}
+	
+	public static TileOverlayView getTile() {
+		return tileOverlayView;
+	}
 }

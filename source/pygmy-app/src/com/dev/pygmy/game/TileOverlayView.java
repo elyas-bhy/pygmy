@@ -34,6 +34,7 @@ public class TileOverlayView extends View {
 	 */
 	public TileOverlayView(Context context) {
 		super(context);
+		tile = new Tile(0,0,0,0);
 	}
 	
 	@Override
@@ -47,5 +48,9 @@ public class TileOverlayView extends View {
 		if (tile != null) {
 			tile.drawOverlay(canvas);
 		}
+	}
+	
+	public void setDimensions(int posX, int posY, int sizeX, int sizeY) {
+		tile.setDimensions(posX, posY, sizeX, sizeY);
 	}
 }
