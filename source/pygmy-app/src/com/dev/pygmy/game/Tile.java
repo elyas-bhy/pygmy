@@ -22,71 +22,65 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 public class Tile {
-	Point positionPixel;
-	Point tileSize;
-	Paint color;
 	
-	public Tile() {
-		positionPixel = new Point();
-		tileSize = new Point();
-	}
-	
-	// FIXME: Delete this constructor before merge
-	public Tile(int posX, int posY, int tileSquare) {
-		positionPixel = new Point();
-		positionPixel.x = posX;
-		positionPixel.y = posY;
-		
-		tileSize = new Point();
-		tileSize.x = tileSquare;
-	}
+	private Point coordinates;
+	private Paint color;
+	private int width;
+	private int height;
 	
 	/**
 	 * Saves coordinates in pixels of a rectangular tile.
-	 * @param posX	position X in pixels.
-	 * @param posY  position Y in pixels.
-	 * @param tileRectangleDimensionX	size of the horizontal side.
-	 * @param tileRectangleDimensionY	size of the vertical side;
+	 * @param posX	 position X in pixels
+	 * @param posY   position Y in pixels
+	 * @param width	 width of the tile
+	 * @param height height of the tile
 	 */
-	public Tile(int posX, int posY, int tileSizeX, int tileSizeY) {
-		positionPixel = new Point();
-		positionPixel.x = posX;
-		positionPixel.y = posY;
-		
-		tileSize = new Point();
-		tileSize.x = tileSizeX;
-		tileSize.y = tileSizeY;
+	public Tile(int posX, int posY, int width, int height) {
+		this.coordinates = new Point(posX, posY);
+		this.width = width;
+		this.height = height;
+	}
+	
+	public Tile(int posX, int posY, int size) {
+		this(posX, posY, size, size);
 	}
 	
 	/**
 	 * @return coordinates (x,y) in pixels for a tile.
 	 */
-	public Point getCoord() {
-		return positionPixel;
+	public Point getCoordinates() {
+		return coordinates;
+	}
+
+	/**
+	 * @return the width of the tile.
+	 */
+	public int getWidth() {
+		return width;
 	}
 	
 	/**
-	 * @return the size of one side of a square tile.
+	 * @return the height of the tile.
 	 */
-	public int getTileSquareSize() {
-		return tileSize.x;
+	public int getHeight() {
+		return height;
 	}
 	
 	/**
 	 * @return the dimensions of a tile with a rectangular shape.
 	 */
-	public Point getTileRectangleDimensions() {
-		return tileSize;
-	}
+	/*public Point getTileRectangleDimensions() {
+		return size;
+	}*/
 	
 	public void setColor(Paint color) {
 		this.color = color;
 	}
 	
 	public void draw(Canvas canvas) {
-		canvas.drawRect(positionPixel.x, positionPixel.y,
-				positionPixel.x + tileSize.x,
-				positionPixel.y + tileSize.y,
+		canvas.drawRect(coordinates.x, coordinates.y,
+				coordinates.x + width,
+				coordinates.y + height,
 				color);
 	}
 	
@@ -97,23 +91,23 @@ public class Tile {
 
 		// Draw tile's outline
 		// top
-		canvas.drawLine(positionPixel.x, positionPixel.y, 
-				positionPixel.x+tileSize.x, positionPixel.y, color);
+		canvas.drawLine(coordinates.x, coordinates.y, 
+				coordinates.x + width, coordinates.y, color);
 		// bottom
-		canvas.drawLine(positionPixel.x, positionPixel.y+tileSize.y,
-				positionPixel.x+tileSize.x, positionPixel.y+tileSize.y, color);
+		canvas.drawLine(coordinates.x, coordinates.y + height,
+				coordinates.x + width, coordinates.y + height, color);
 		// left
-		canvas.drawLine(positionPixel.x, positionPixel.y, 
-				positionPixel.x, positionPixel.y+tileSize.y, color);
+		canvas.drawLine(coordinates.x, coordinates.y, 
+				coordinates.x, coordinates.y + height, color);
 		// right
-		canvas.drawLine(positionPixel.x+tileSize.x, positionPixel.y,
-				positionPixel.x+tileSize.x, positionPixel.y+tileSize.y, color);
+		canvas.drawLine(coordinates.x + width, coordinates.y,
+				coordinates.x + width, coordinates.y + height, color);
 	}
 	
-	public void setDimensions(int posX, int posY, int sizeX, int sizeY) {
-		positionPixel.x = posX;
-		positionPixel.y = posY;
-		tileSize.x = sizeX;
-		tileSize.y = sizeY;
+	public void setDimensions(int posX, int posY, int width, int height) {
+		coordinates.x = posX;
+		coordinates.y = posY;
+		this.width = width;
+		this.height = height;
 	}
 }
