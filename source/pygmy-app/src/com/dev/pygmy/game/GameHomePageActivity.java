@@ -52,6 +52,7 @@ public class GameHomePageActivity extends Activity {
 
 	private TextView titleView, summaryView;
 	
+	int id;
 	String gameName;
 	String filename;
 	
@@ -72,17 +73,24 @@ public class GameHomePageActivity extends Activity {
 		if (savedInstanceState == null) {
 			extras = getIntent().getExtras();
 			if (extras == null) {
+				id = 0;
 				gameName = null;
 				filename = null;
 			} else {
+				id = extras.getInt("id");
 				gameName = extras.getString("gameName");
 				filename = extras.getString("filename");
 			}
 		}
 		
+		// create a folder (gameName) in the pygmy files repository
+		File gameFolder = new File(getFilesDir().getPath()+"/"+gameName);
+		gameFolder.mkdirs();
 		
-		filePath = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/"+filename;
-		destPath = getApplicationContext().getFilesDir().getPath()+"/"+filename;
+		// path of the file we want to download
+		filePath = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/"+gameName+"/"+filename;
+		
+		destPath = gameFolder+"/"+filename;
 
 		spin = (Spinner) findViewById(R.id.spinner);
 		titleView = (TextView) findViewById(R.id.name_game);

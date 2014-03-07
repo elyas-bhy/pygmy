@@ -16,6 +16,8 @@
 
 package com.dev.pygmy.game;
 
+import com.lib.pygmy.view.Tile;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.view.View;
@@ -50,7 +52,7 @@ public class TileOverlayView extends View {
 		}
 	}
 	
-	public void setDimensions(int posX, int posY, int sizeX, int sizeY) {
-		tile.setDimensions(posX, posY, sizeX, sizeY);
+	public void setCoordinates(int posX, int posY, int sizeX, int sizeY) {
+		tile.setCoordinates(posX, posY, sizeX, sizeY);
 	}
 }

@@ -73,11 +73,16 @@ public class GameViewManager {
 		return mainLayout;
 	}
 	
+	public static void resetOverlay() {
+		getOverlay().setCoordinates(0, 0, 0, 0);
+		redrawOverlay();
+	}
+	
 	public static void redrawOverlay() {
 		tileOverlayView.invalidate();
 	}
 	
-	public static TileOverlayView getTile() {
+	public static TileOverlayView getOverlay() {
 		return tileOverlayView;
 	}
 }

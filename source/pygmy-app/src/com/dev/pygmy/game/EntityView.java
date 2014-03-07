@@ -29,6 +29,7 @@ import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
+import com.lib.pygmy.view.Tile;
 
 /**
  * This class represents the view which shows the 
@@ -46,7 +47,7 @@ public class EntityView extends View {
 	
 	private int targetColumn = 0;
 	private int targetRow = 0;
-	private Point entityCurrentPosition = new Point();
+	private Tile entityCurrentPosition;
 
 	/**
 	 * Default constructor.
@@ -69,31 +70,35 @@ public class EntityView extends View {
 		GameLevel level = game.getContext().getCurrentLevel();
 		entities = level.getUniverse().getGameEntities().values();
 	}
+	
+	private void initTiles() {
+		Tile tile;
+		Point p;
+		for (GameEntity entity : entities) {
+			if (entity != null) {
+				p = entity.getCurrentTile().getPosition();
+				tile = GameBoardView.getTileAt(p.x, p.y);
+				entity.setCurrentTile(tile);
+			}
+		}
+	}
 
 	@Override 
 	protected void onDraw(Canvas canvas) {
 		// Setting the start point for the entities
 		if (initial) {
 			initial = false;
-			
-			Point coordXY;
-			for (GameEntity entity : entities) {
-				if (entity != null) {
-					Point p = entity.getPosition();
-					coordXY = GameBoardView.getTileCoord(p.x, p.y).getCoord();
-					entity.setPixelX(coordXY.x);
-					entity.setPixelY(coordXY.y);
-				}
-			}
+			initTiles();
 		}
 
 		// Draw the entity on the canvas
+		Point coords;
 		for (GameEntity entity : entities) {
 			if (entity != null) {
-				canvas.drawBitmap(entity.getBitmap(), entity.getPixelX(), entity.getPixelY(), null);
+				coords = entity.getCurrentTile().getCoordinates();
+				canvas.drawBitmap(entity.getBitmap(), coords.x, coords.y, null);
 			}
 		}
-		
 	}
 
 	@Override
@@ -104,8 +109,8 @@ public class EntityView extends View {
 		int nbRows = GameBoardView.getNumberOfRows();
 		int nbColumns = GameBoardView.getNumberOfColumns();
 		
-		int minX = tileSize+offset;
-		int minY = tileSize+offset;
+		int minX = tileSize + offset;
+		int minY = tileSize + offset;
 		int maxX = minX + (tileSize * nbRows);
 		int maxY = minY + (tileSize * nbColumns);
 
@@ -113,17 +118,20 @@ public class EntityView extends View {
 
 		// The finger is on an entity
 		case MotionEvent.ACTION_DOWN: 
+			Point coords;
+			Tile tile;
 			for (GameEntity entity : entities) {
 				// Check all the bounds of the entity
 				if (entity != null) {
-					Point p = entity.getPosition();
-					tileSize = GameBoardView.getTileCoord(p.x, p.y).getTileSquareSize();
-					if (x > entity.getPixelX() && x < entity.getPixelX() + tileSize 
-					 && y > entity.getPixelY() && y < entity.getPixelY() + tileSize) {
+					tile = entity.getCurrentTile();
+					coords = tile.getCoordinates();
+					tileSize = tile.getWidth();
+					
+					if (x > coords.x && x < coords.x + tileSize 
+					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
 						draggedEntity = entity;
-						entityCurrentPosition.x = entity.getPixelX();
-						entityCurrentPosition.y = entity.getPixelY();
+						entityCurrentPosition = entity.getCurrentTile();
 						offset = tileSize/3;
 						break;
 					}
@@ -136,7 +144,7 @@ public class EntityView extends View {
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
 				if (minX < x && x < maxX && minY < y && y < maxY) {
-					// Find the tile which is being flying by the entity.
+					//Identify the hovered tile
 					float eventX = event.getX();
 					float eventY = event.getY();
 					float mx=(eventX * nbColumns) / maxX;
@@ -151,45 +159,35 @@ public class EntityView extends View {
 					if ((int)my == 1) {
 						targetRow = (int)my;
 					} 
+
+					Tile nextTile = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
 					
-					// Show the future position of the entity.
+					// Show the future position of the entity
 					GameViewManager.redrawOverlay();
-					Point coordXY = GameBoardView.getTileCoord(targetColumn-1, targetRow-1).getCoord();
-					GameViewManager.getTile().setDimensions(coordXY.x, coordXY.y, tileSize, tileSize);
+					GameViewManager.getOverlay()
+							.setCoordinates(nextTile.getCoordinates().x, 
+											nextTile.getCoordinates().y, tileSize, tileSize);
 
 					// Move entity
-					draggedEntity.setPixelX(x - tileSize/2);
-					draggedEntity.setPixelY(y - tileSize/2);
+					draggedEntity.setCurrentTile(nextTile);
+//					draggedEntity.setPixelX(x - tileSize/2);
+//					draggedEntity.setPixelY(y - tileSize/2);
 				}
 			}
 			break;
 
 		// The finger has left the screen.
 		case MotionEvent.ACTION_UP:
-			// TileOverlay has disappear.
-			GameViewManager.getTile().setDimensions(0, 0, 0, 0);
-			GameViewManager.redrawOverlay();
+			GameViewManager.resetOverlay();
 			
-			// The entity cannot be outside of the board.
+			// Entity should not go outside of the board
 			if (minX < x && x < maxX && minY < y && y < maxY) {
-				Point p = GameBoardView.getTileCoord(targetColumn-1, targetRow-1).getCoord();
-				
-				// Accept new position if the move is legal.
-				// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
-				draggedEntity.setPixelX(p.x);
-				draggedEntity.setPixelY(p.y);
+				Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
+				GameMove move = new GameMove(draggedEntity, dst);
+				game.onPlayerMove(move);
 			} else {
-				// else return to the old position.
-				draggedEntity.setPixelX(entityCurrentPosition.x);
-				draggedEntity.setPixelY(entityCurrentPosition.y);
+				draggedEntity.setCurrentTile(entityCurrentPosition);
 			}
-			
-			GameMove move = new GameMove();
-			move.setEntity(draggedEntity);
-			move.setMove(new Point(3,3));
-			PygmyApp.logD("src: " + draggedEntity.getPosition());
-			//game.onPlayerMove(move);
-			PygmyApp.logD("dst: " + draggedEntity.getPosition());
 			break;
 			
 		default:
