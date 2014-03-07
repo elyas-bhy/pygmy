@@ -113,8 +113,8 @@ public class EntityView extends View {
 		//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
 		
 		// 96 96 672 672
-		int minX = tileSize+offset;
-		int minY = tileSize+offset;
+		int minX = tileSize + offset;
+		int minY = tileSize + offset;
 		int maxX = minX + (tileSize * nbRows);
 		int maxY = minY + (tileSize * nbColumns);
 
@@ -148,13 +148,13 @@ public class EntityView extends View {
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
 				if (minX < x && x < maxX && minY < y && y < maxY) {
-					// Find the tile which is being flying by the entity.
-					possibleColumn = (x * nbColumns) / maxX;
+					// Identify the hovered tile
 					possibleRow = (y * nbRows) / maxY;
-					
-					// Show the future position of the entity.
-					GameViewManager.redrawOverlay();
+					possibleColumn = (x * nbColumns) / maxX;
 					Tile nextTile = GameBoardView.getTileAt(possibleRow-1, possibleColumn-1);
+					
+					// Show the future position of the entity
+					GameViewManager.redrawOverlay();
 					GameViewManager.getOverlay()
 							.setCoordinates(nextTile.getCoordinates().x, 
 											nextTile.getCoordinates().y, tileSize, tileSize);
@@ -163,7 +163,7 @@ public class EntityView extends View {
 					draggedEntity.setCurrentTile(nextTile);
 
 					PygmyApp.logD("X: " + x + " Y: " + y);
-					PygmyApp.logD("\t	currentPos (X, Y)-->("+possibleColumn +", "+possibleRow+")");
+					PygmyApp.logD("\t	currentPos (X, Y)-->("+possibleRow +", "+possibleColumn+")");
 					PygmyApp.logD("tileSize: "+tileSize);
 				}
 			}
@@ -171,17 +171,12 @@ public class EntityView extends View {
 			break;
 
 		case MotionEvent.ACTION_UP:
-			// TileOverlay image has disappear.
-			GameViewManager.getOverlay().setCoordinates(0, 0, 0, 0);
-			GameViewManager.redrawOverlay();
+			GameViewManager.resetOverlay();
 			
-			// The entity cannot be outside of the board.
+			// Entity should not go outside of the board
 			if (minX < x && x < maxX && minY < y && y < maxY) {
 				Tile dst = GameBoardView.getTileAt(possibleRow-1, possibleColumn-1);
-
-				GameMove move = new GameMove();
-				move.setEntity(draggedEntity);
-				move.setMove(dst);
+				GameMove move = new GameMove(draggedEntity, dst);
 				game.onPlayerMove(move);
 			} else {
 				draggedEntity.setCurrentTile(entityCurrentPosition);

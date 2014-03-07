@@ -7,8 +7,9 @@ public class GameMove {
 	private GameEntity entity;
 	private Tile move;
 	
-	public GameMove() {
-		
+	public GameMove(GameEntity entity, Tile move) {
+		this.entity = entity;
+		this.move = move;
 	}
 
 	public GameEntity getEntity() {
