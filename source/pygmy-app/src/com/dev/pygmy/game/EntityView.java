@@ -78,7 +78,7 @@ public class EntityView extends View {
 		for (GameEntity entity : entities) {
 			if (entity != null) {
 				p = entity.getCurrentTile().getPosition();
-				tile = GameBoardView.getTileCoord(p.x, p.y);
+				tile = GameBoardView.getTileAt(p.x, p.y);
 				entity.setCurrentTile(tile);
 			}
 		}
@@ -154,7 +154,7 @@ public class EntityView extends View {
 					
 					// Show the future position of the entity.
 					GameViewManager.redrawOverlay();
-					Tile nextTile = GameBoardView.getTileCoord(possibleColumn-1, possibleRow-1);
+					Tile nextTile = GameBoardView.getTileAt(possibleRow-1, possibleColumn-1);
 					GameViewManager.getOverlay()
 							.setCoordinates(nextTile.getCoordinates().x, 
 											nextTile.getCoordinates().y, tileSize, tileSize);
@@ -177,7 +177,7 @@ public class EntityView extends View {
 			
 			// The entity cannot be outside of the board.
 			if (minX < x && x < maxX && minY < y && y < maxY) {
-				Tile dst = GameBoardView.getTileCoord(possibleColumn-1, possibleRow-1);
+				Tile dst = GameBoardView.getTileAt(possibleRow-1, possibleColumn-1);
 
 				GameMove move = new GameMove();
 				move.setEntity(draggedEntity);
