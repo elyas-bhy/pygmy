@@ -31,9 +31,8 @@ import android.view.View;
  */
 public class GameBoardView extends View {
 	
-	private int numberOfTiles;
-	private int numberOfRows;
-	private int numberOfColumns;
+	private static int numberOfRows;
+	private static int numberOfColumns;
 	private int boardType;
 	private Paint color1 = null;
 	private Paint color2 = null;
@@ -77,6 +76,20 @@ public class GameBoardView extends View {
 	 */
 	public static Tile getTileCoord(int row, int column) {
 		return mapTileCoord.get(new Point(column, row));
+	}
+	
+	/**
+	 * @return the number of rows of the board.
+	 */
+	public static int getNumberOfRows() {
+		return numberOfRows;
+	}
+	
+	/**
+	 * @return the number of columns of the board.
+	 */
+	public static int getNumberOfColumns() {
+		return numberOfColumns;
 	}
 
 	@Override

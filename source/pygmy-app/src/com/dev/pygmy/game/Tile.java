@@ -93,7 +93,7 @@ public class Tile {
 	public void drawOverlay(Canvas canvas) {
 		Paint color = new Paint();
 		color.setColor(Color.GREEN);
-		color.setStrokeWidth(5);
+		color.setStrokeWidth((int)(tileSize.x*6.5)/100);
 
 		// Draw tile's outline
 		// top

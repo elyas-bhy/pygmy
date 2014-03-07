@@ -44,9 +44,8 @@ public class EntityView extends View {
 	private int tileSize = 0;
 	private int offset = 0;
 	
-	
-	private int posibleColumn = 0;
-	private int posibleRow = 0;
+	private int targetColumn = 0;
+	private int targetRow = 0;
 	private Point entityCurrentPosition = new Point();
 
 	/**
@@ -102,12 +101,9 @@ public class EntityView extends View {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 		
-		int nbRows = 8;
-		int nbColumns = 8;
-		// tileSize=72 .. offset=24
-		//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
+		int nbRows = GameBoardView.getNumberOfRows();
+		int nbColumns = GameBoardView.getNumberOfColumns();
 		
-		// 96 96 672 672
 		int minX = tileSize+offset;
 		int minY = tileSize+offset;
 		int maxX = minX + (tileSize * nbRows);
@@ -115,7 +111,7 @@ public class EntityView extends View {
 
 		switch (event.getAction()) { 
 
-		// Touch down so check if the finger is on an entity
+		// The finger is on an entity
 		case MotionEvent.ACTION_DOWN: 
 			for (GameEntity entity : entities) {
 				// Check all the bounds of the entity
@@ -141,35 +137,42 @@ public class EntityView extends View {
 			if (draggedEntity != null) {
 				if (minX < x && x < maxX && minY < y && y < maxY) {
 					// Find the tile which is being flying by the entity.
-					posibleColumn = (x * nbColumns) / maxX;
-					posibleRow = (y * nbRows) / maxY;
+					float eventX = event.getX();
+					float eventY = event.getY();
+					float mx=(eventX * nbColumns) / maxX;
+					float my=(eventY * nbRows) / maxY;
+					
+					targetColumn = Math.round(mx);
+					targetRow = Math.round(my);
+
+					if ((int)mx == 1) {
+						targetColumn = (int)mx;
+					}
+					if ((int)my == 1) {
+						targetRow = (int)my;
+					} 
 					
 					// Show the future position of the entity.
 					GameViewManager.redrawOverlay();
-					Point coordXY = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+					Point coordXY = GameBoardView.getTileCoord(targetColumn-1, targetRow-1).getCoord();
 					GameViewManager.getTile().setDimensions(coordXY.x, coordXY.y, tileSize, tileSize);
 
 					// Move entity
 					draggedEntity.setPixelX(x - tileSize/2);
 					draggedEntity.setPixelY(y - tileSize/2);
-
-					PygmyApp.logD("X: " + x + " Y: " + y);
-					PygmyApp.logD("\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
-					PygmyApp.logD("tileSize: "+tileSize);
-				
 				}
 			}
-
 			break;
 
+		// The finger has left the screen.
 		case MotionEvent.ACTION_UP:
-			// TileOverlay image has disappear.
+			// TileOverlay has disappear.
 			GameViewManager.getTile().setDimensions(0, 0, 0, 0);
 			GameViewManager.redrawOverlay();
 			
 			// The entity cannot be outside of the board.
 			if (minX < x && x < maxX && minY < y && y < maxY) {
-				Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+				Point p = GameBoardView.getTileCoord(targetColumn-1, targetRow-1).getCoord();
 				
 				// Accept new position if the move is legal.
 				// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
