@@ -16,7 +16,11 @@
 
 package com.dev.pygmy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,19 +31,19 @@ import android.widget.TextView;
 public class GameListAdapter extends ArrayAdapter<String> {
 	
 	private final Activity activity;
-	private final String[] gameName;
-	private final String[] gamesInfo;
-	private final Integer[] gameIcon;
-
-	public GameListAdapter(Activity context, String[] web, Integer[] gameIcon,
-			String[] gamesInfo) {
-		super(context, R.layout.game_list_item, web);
-		this.activity = context;
-		this.gameName = web;
-		this.gameIcon = gameIcon;
-		this.gamesInfo = gamesInfo;
-
+	ArrayList<String> gamesName;
+	ArrayList<String> gamesInfo;
+	ArrayList<String> gamesIcon;
+	
+	public GameListAdapter(Activity context,
+			ArrayList<String> gameName, ArrayList<String> gamesInfo, ArrayList<String> gameIcon) {
+			super(context, R.layout.game_list_item, gameName);
+			this.activity = context;
+			this.gamesName = gameName;
+			this.gamesInfo = gamesInfo;
+			this.gamesIcon = gameIcon;
 	}
+
 
 	@Override
 	public View getView(int pos, View view, ViewGroup parent) {
@@ -49,12 +53,16 @@ public class GameListAdapter extends ArrayAdapter<String> {
 		// Getting view ids
 		TextView gameNameText = (TextView) row.findViewById(R.id.game_name);
 		TextView gameInfoText = (TextView) row.findViewById(R.id.game_dev_descr);
-		ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
+		
+		// If we want to add icon to a game
+		//ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
 
 		// Setting infos on views
-		gameNameText.setText(gameName[pos]);
-		gameIconImage.setImageResource(gameIcon[pos]);
-		gameInfoText.setText(gamesInfo[pos]);
+		gameNameText.setText(gamesName.get(pos));
+		gameInfoText.setText(gamesInfo.get(pos));
+		
+		// If we want to add icon to a game
+		//gameIconImage.setImageResource(gamesIcon.get(pos));
 		return row;
 	}
 }

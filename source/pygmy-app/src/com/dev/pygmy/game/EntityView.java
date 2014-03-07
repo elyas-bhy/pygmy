@@ -20,12 +20,15 @@ import java.util.Collection;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.client.pygmy.PygmyGameImpl;
+import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
+import com.lib.pygmy.GameMove;
 
 /**
  * This class represents the view which shows the 
@@ -33,9 +36,18 @@ import com.lib.pygmy.GameLevel;
  */
 public class EntityView extends View {
 	
-	private Collection<GameEntity> entities;  // array that holds the entities
-	private int entityID = 0;				  // variable to know what entity is being dragged
+	private PygmyGameImpl game;
+	private Collection<GameEntity> entities;	// array that holds the entities
+	private GameEntity draggedEntity = null;	// variable to know what entity is being dragged
+	
 	private boolean initial = true;
+	private int tileSize = 0;
+	private int offset = 0;
+	
+	
+	private int posibleColumn = 0;
+	private int posibleRow = 0;
+	private Point entityCurrentPosition = new Point();
 
 	/**
 	 * Default constructor.
@@ -54,92 +66,134 @@ public class EntityView extends View {
 		super(context);
 		setFocusable(true); // Necessary for getting the touch events
 
-		// Initialize game
+		this.game = game;
 		GameLevel level = game.getContext().getCurrentLevel();
 		entities = level.getUniverse().getGameEntities().values();
 	}
 
 	@Override 
 	protected void onDraw(Canvas canvas) {
-		// setting the start point for the entities
+		// Setting the start point for the entities
 		if (initial) {
 			initial = false;
 			
-			int posX = 0;
-			int posY = 0;
-			int[] coordXY;
-			
+			Point coordXY;
 			for (GameEntity entity : entities) {
 				if (entity != null) {
-					posX = entity.getBoundingPosition()[0];
-					posY = entity.getBoundingPosition()[1];
-					coordXY = GameBoardView.getTileCoord(posX, posY).getCoord();
-					entity.setX(coordXY[0]);
-					entity.setY(coordXY[1]);
-					
-//					Log.d(TAG, "X : "+posX);
-//					Log.d(TAG, "Y : "+posY);
-//					Log.d(TAG, "coordX : "+coordXY[0]);
-//					Log.d(TAG, "coordY : "+coordXY[1]);
-//					Log.d(TAG, "coordX+offset : "+coordXY[2]);
-//					Log.d(TAG, "coordY+offset : "+coordXY[3]);
+					Point p = entity.getPosition();
+					coordXY = GameBoardView.getTileCoord(p.x, p.y).getCoord();
+					entity.setPixelX(coordXY.x);
+					entity.setPixelY(coordXY.y);
 				}
 			}
 		}
 
-		//draw the entity on the canvas
+		// Draw the entity on the canvas
 		for (GameEntity entity : entities) {
 			if (entity != null) {
-				canvas.drawBitmap(entity.getBitmap(), entity.getX(), entity.getY(), null);
+				canvas.drawBitmap(entity.getBitmap(), entity.getPixelX(), entity.getPixelY(), null);
 			}
 		}
+		
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		int eventaction = event.getAction();
+		int x = (int) event.getX();
+		int y = (int) event.getY();
+		
+		int nbRows = 8;
+		int nbColumns = 8;
+		// tileSize=72 .. offset=24
+		//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
+		
+		// 96 96 672 672
+		int minX = tileSize+offset;
+		int minY = tileSize+offset;
+		int maxX = minX + (tileSize * nbRows);
+		int maxY = minY + (tileSize * nbColumns);
 
-		int X = (int)event.getX();
-		int Y = (int)event.getY();
+		switch (event.getAction()) { 
 
-		switch (eventaction) { 
-
-		// touch down so check if the finger is on an entity
+		// Touch down so check if the finger is on an entity
 		case MotionEvent.ACTION_DOWN: 
-			entityID = 0;
 			for (GameEntity entity : entities) {
-				// check all the bounds of the entity
+				// Check all the bounds of the entity
 				if (entity != null) {
-					if (X > entity.getX() && 
-							X < entity.getX()+50 &&
-								Y > entity.getY() && 
-									Y < entity.getY()+50) {
-						//save source tile
-						entityID = entity.getId();
+					Point p = entity.getPosition();
+					tileSize = GameBoardView.getTileCoord(p.x, p.y).getTileSquareSize();
+					if (x > entity.getPixelX() && x < entity.getPixelX() + tileSize 
+					 && y > entity.getPixelY() && y < entity.getPixelY() + tileSize) {
+						// Get what entity is being dragged.
+						draggedEntity = entity;
+						entityCurrentPosition.x = entity.getPixelX();
+						entityCurrentPosition.y = entity.getPixelY();
+						offset = tileSize/3;
 						break;
 					}
 				}
 			}
 			break;
 
-		// touch drag with the entity
+		// Touch drag with the entity
 		case MotionEvent.ACTION_MOVE:
-			// move the entities the same as the finger
-			
-			// detect current tile + feedback
-			if (entityID > 0) {
-				//entities[entityID].setX(X-25);
-				//entities[entityID].setY(Y-25);
+			// Move the entities the same as the finger
+			if (draggedEntity != null) {
+				if (minX < x && x < maxX && minY < y && y < maxY) {
+					// Find the tile which is being flying by the entity.
+					posibleColumn = (x * nbColumns) / maxX;
+					posibleRow = (y * nbRows) / maxY;
+					
+					// Show the future position of the entity.
+					GameViewManager.redrawOverlay();
+					Point coordXY = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+					GameViewManager.getTile().setDimensions(coordXY.x, coordXY.y, tileSize, tileSize);
+
+					// Move entity
+					draggedEntity.setPixelX(x - tileSize/2);
+					draggedEntity.setPixelY(y - tileSize/2);
+
+					PygmyApp.logD("X: " + x + " Y: " + y);
+					PygmyApp.logD("\t	currentPos (X, Y)-->("+posibleColumn +", "+posibleRow+")");
+					PygmyApp.logD("tileSize: "+tileSize);
+				
+				}
 			}
 
-			break; 
+			break;
 
 		case MotionEvent.ACTION_UP:
-			break; 
+			// TileOverlay image has disappear.
+			GameViewManager.getTile().setDimensions(0, 0, 0, 0);
+			GameViewManager.redrawOverlay();
+			
+			// The entity cannot be outside of the board.
+			if (minX < x && x < maxX && minY < y && y < maxY) {
+				Point p = GameBoardView.getTileCoord(posibleColumn-1, posibleRow-1).getCoord();
+				
+				// Accept new position if the move is legal.
+				// TODO if (((MovableEntity)entityDragged).isLegalMove(move))
+				draggedEntity.setPixelX(p.x);
+				draggedEntity.setPixelY(p.y);
+			} else {
+				// else return to the old position.
+				draggedEntity.setPixelX(entityCurrentPosition.x);
+				draggedEntity.setPixelY(entityCurrentPosition.y);
+			}
+			
+			GameMove move = new GameMove();
+			move.setEntity(draggedEntity);
+			move.setMove(new Point(3,3));
+			PygmyApp.logD("src: " + draggedEntity.getPosition());
+			//game.onPlayerMove(move);
+			PygmyApp.logD("dst: " + draggedEntity.getPosition());
+			break;
+			
+		default:
+			break;
 		} 
-		// redraw the canvas
+		// Redraw the canvas
 		invalidate(); 
 		return true; 
-
 	}
 }

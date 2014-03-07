@@ -50,8 +50,8 @@
             android:layout_height="40dp"
             android:layout_alignLeft="@+id/inviteButton"
             android:layout_below="@+id/playButton"
-            android:onClick="onRandomClicked"
-            android:text="@string/random"
+            android:onClick="onDownloadClicked"
+            android:text="@string/download"
             android:textSize="12sp" />
 
         <Button

@@ -40,7 +40,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.game.GameBoardInterfaceActivity;
+import com.dev.pygmy.game.GameBoardActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -120,7 +120,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		initSlidingMenu();
 		initSigninButtons();
-		//initGameButtons();
+
 		mDataView = ((TextView) findViewById(R.id.data_view));
 		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
 	}
@@ -181,12 +181,13 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 2) {
-					startActivity(new Intent(MainActivity.this, GameBoardInterfaceActivity.class));
+					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
 				if (position == 3) {
-					startActivity(new Intent(MainActivity.this, GameListActivity.class));
+					startActivity(new Intent(MainActivity.this,
+							GameListActivity.class));
 				}
-				
+
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
@@ -214,8 +215,7 @@ public class MainActivity extends BaseGameActivity implements
 				});
 	}
 
-	
-	
+
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
 	public void onCheckGamesClicked(View view) {
@@ -362,10 +362,10 @@ public class MainActivity extends BaseGameActivity implements
 		mDataView.setText(mTurnData.data);
 		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
 	}
-	
+
 	// Switch to profile view
 	public void setProfileView() {
-		//Initialisation
+		// Initialisation
 		URL imageUrl = null;
 		Person p = getPlusClient().getCurrentPerson();
 

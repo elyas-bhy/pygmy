@@ -26,8 +26,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.View;
 
-import com.dev.pygmy.PygmyApp;
-
 /**
  * 	This class represents the grid of the board.
  */
@@ -36,11 +34,11 @@ public class GameBoardView extends View {
 	private int numberOfTiles;
 	private int numberOfRows;
 	private int numberOfColumns;
+	private int boardType;
 	private Paint color1 = null;
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
-	private static int[][] rectCoord;
 	private static Map<Point, Tile> mapTileCoord;
 
 	/**
@@ -58,11 +56,9 @@ public class GameBoardView extends View {
 	public GameBoardView(Context context, Map<String,Object> params) {
 		super(context);
 
-		numberOfTiles = (Integer) params.get("numberRows");
-		numberOfRows = numberOfTiles;
+		numberOfRows = (Integer) params.get("numberRows");
 		numberOfColumns = (Integer) params.get("numberColumns");
-		
-		rectCoord = new int[numberOfTiles*(numberOfTiles+1)][4];
+		boardType = (Integer) params.get("boardType");
 
 		color1 = new Paint();
 		color2 = new Paint();
@@ -72,19 +68,12 @@ public class GameBoardView extends View {
 		colorBlack = new Paint();
 	}
 
-	/**
-	 * @return A multidimensional array with the coordinates of each square 
-	 * of the board.
-	 */
-	public static int[][] getRectCoord() {
-		return rectCoord;
-	}
-	
+		
 	/**
 	 * 
-	 * @param row
-	 * @param column
-	 * @return a Tile 
+	 * @param row		Relative position on Y
+	 * @param column	Relative position on X
+	 * @return the Tile according to coordinates (column, row)
 	 */
 	public static Tile getTileCoord(int row, int column) {
 		return mapTileCoord.get(new Point(column, row));
@@ -92,10 +81,23 @@ public class GameBoardView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		PygmyApp.logD("onDraw");
-		int dim1 = numberOfTiles;
-		int dim2 = numberOfTiles;
-		drawCheckerboard(canvas, dim1, dim2);
+		int dim1 = numberOfRows;
+		int dim2 = numberOfColumns;
+		
+		switch (boardType) {
+		case 0:
+			drawCheckerboard(canvas, dim1, dim2, color1, color2);
+			break;
+		case 1:
+			draw_grid(canvas, dim1, dim2);
+			break;
+		case 2:
+			draw_hexgrid(canvas, dim1, dim2);
+			break;
+		default:
+			System.err.println("Error : Board's type do not exist.");
+			break;
+		}
 	}
 
 	private void draw_hexcase(Canvas canvas, int case_size, int coord_x, int coord_y){
@@ -133,7 +135,7 @@ public class GameBoardView extends View {
 		int width = getWidth();
 		int height = getHeight();
 
-		int case_size = 0, offset = 0, coord_j = 0;
+		int case_size = 0, offset = 0, coord_x = 0, coord_y;
 
 		// One case distance
 		case_size = Math.min(width / (width_case+2), height / (height_case+2));
@@ -145,21 +147,31 @@ public class GameBoardView extends View {
 		int colision = case_size / 4;
 		int half = case_size /2;
 
-		for(int i = 0; i < width_case +1 ; ++i) {
-			if (i != 0){
-				for(int j = 0 ; j < height_case +1; ++j) 
-					if (j != 0){
-						coord_j = j*case_size+offset;
-						if(i%2 == 0)
-							draw_hexcase(canvas, case_size, (i+1)*(case_size-colision), coord_j+half);
-						else 
-							draw_hexcase(canvas, case_size, (i+1)*(case_size-colision), coord_j);
-						if (i == 1 && j != height_case+1)
-							canvas.drawText(Integer.toString(j), case_size/2-colorBlack.getTextSize()/2+offset, j*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+		for(int y = 0; y < width_case +1 ; ++y) {
+			if (y != 0){
+				for(int x = 0 ; x < height_case +1; ++x) 
+					if (x != 0){
+						coord_x = x*case_size+offset;
+						coord_y = (y+1)*(case_size-colision);
+						// FIXME use new Tile(int, int, int, int, int)
+						Tile tile = null;new Tile(coord_x,coord_y, case_size);
+						if(y%2 == 0){
+							draw_hexcase(canvas, case_size, coord_y, coord_x + half);
+							tile = new Tile(coord_x + half, coord_y, case_size-half);
+							
+						}
+						else { 
+							draw_hexcase(canvas, case_size, coord_y, coord_x);
+							tile = new Tile(coord_x,coord_y, case_size-half);
+						}
+						mapTileCoord.put(new Point(x-1, y-1), tile);
+						
+						if (y == 1 && x != height_case+1)
+							canvas.drawText(Integer.toString(x), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
 					}
-				if (i != width_case+1)
-					canvas.drawText(Character.toString((char)('A'-1+i)), (i+1)*(case_size-colision)+(case_size/4)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);
+				if (y != width_case+1)
+					canvas.drawText(Character.toString((char)('A'-1+y)), (y+1)*(case_size-colision)+(case_size/4)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);
 
 			}
 		}
@@ -184,29 +196,22 @@ public class GameBoardView extends View {
 		int long_distance_height = case_size*(height_case+1)+offset;
 		int long_distance_width = case_size*(width_case+1)+offset;
 
-		int ent = 0;
 		for(int y = 0; y <= width_case +1 ; ++y) {
 			if (y != 0){
-				for(int x = 0 ; x <= height_case +1; ++x, ++ent) 
+				for(int x = 0 ; x <= height_case +1; ++x) 
 					if (x != 0){
 						coord_y = y*case_size+offset;
 						coord_x = x*case_size+offset;
-						
-						rectCoord[ent][0] = coord_x + offset;
-						rectCoord[ent][1] = coord_y + offset;
-						rectCoord[ent][2] = coord_x + case_size + offset;
-						rectCoord[ent][3] = coord_y + case_size + offset;
 
-						/*tabCoord[ent][0] = coord_x;
-						tabCoord[ent][1] = coord_y;
-						tabCoord[ent][2] = coord_x + case_size;
-						tabCoord[ent][3] = coord_y + case_size;*/
-						
+						// FIXME use new Tile(int, int, int, int, int)
+						if(y < width_case +1 && x < height_case +1)
+							mapTileCoord.put(new Point(x-1,y-1), new Tile(coord_x, coord_y, case_size));
+
 						// Draw case
 						canvas.drawLine(coord_y, small_distance, coord_y, long_distance_height, colorBlack);
 						canvas.drawLine(small_distance, coord_x, long_distance_width, coord_x, colorBlack);
 						if (y == 1 && x != height_case+1)
-							canvas.drawText(Integer.toString(y), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+							canvas.drawText(Integer.toString(x), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
 					}
 				if (y != width_case+1)
@@ -215,7 +220,7 @@ public class GameBoardView extends View {
 		}
 	}
 
-	private void drawCheckerboard(Canvas canvas, int dim1, int dim2) {
+	private void drawCheckerboard(Canvas canvas, int dim1, int dim2, Paint color1, Paint color2) {
 
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
@@ -234,7 +239,6 @@ public class GameBoardView extends View {
 		// Marge based to case_size
 		offset = tileSize / 3;
 
-		int id_case = 0;
 		for(int y = 0; y < width_case +1 ; ++y) {
 			if(y != 0){
 				for(int x = 0 ; x < height_case +1; ++x) {
@@ -248,16 +252,10 @@ public class GameBoardView extends View {
 									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
 									colorBlack);		
 
-						mapTileCoord.put(new Point(x-1, y-1),
-										 new Tile(coordX, coordY,
-												  tileSize));
-						
-						canvas.drawRect(coordX, coordY,
-										coordX + tileSize,
-										coordY + tileSize,
-										((y + x)%2 != 0)?color1:color2);
-						
-						id_case++;
+						Tile t = new Tile(coordX, coordY, tileSize, tileSize);
+						t.setColor(((y + x)%2 != 0)?color1:color2);
+						mapTileCoord.put(new Point(x-1, y-1), t);
+						t.draw(canvas);
 					}
 				}
 				canvas.drawText(Character.toString((char)('A'-1+y)), 

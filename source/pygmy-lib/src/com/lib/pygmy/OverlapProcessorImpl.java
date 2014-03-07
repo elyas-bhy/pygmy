@@ -7,7 +7,7 @@ import com.lib.pygmy.base.Overlappable;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class OverlapProcessorDefaultImpl implements OverlapProcessor {
+public class OverlapProcessorImpl implements OverlapProcessor {
 
 	/**
 	 * These two lists contain all overlappables for which we want to compute
@@ -20,7 +20,7 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 	private OverlapRulesApplier overlapRules;
 	private GameUniverse universe;
 
-	public OverlapProcessorDefaultImpl() {
+	public OverlapProcessorImpl() {
 		overlappablesNonMovable = new ConcurrentLinkedQueue<Overlappable>();
 		overlappablesMovable = new ConcurrentLinkedQueue<Overlappable>();
 	}
@@ -51,7 +51,7 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 	}
 
 	public void processOverlap(GameMove move) {
-		GameMovable entity = move.getEntity();
+		GameEntity entity = move.getEntity();
 		universe.getGameEntities().remove(entity.getPosition());
 		entity.oneStepMove(move.getMove());
 		GameEntity dst = universe.getGameEntities().get(entity.getPosition());
@@ -60,6 +60,6 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 			overlaps.add(new Overlap((Overlappable)entity, (Overlappable)dst));
 			overlapRules.applyOverlapRules(overlaps);
 		}
-		universe.getGameEntities().put(entity.getPosition(), (GameEntity)entity);
+		universe.getGameEntities().put(entity.getPosition(), entity);
 	}
 }

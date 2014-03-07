@@ -1,6 +1,5 @@
 package com.lib.pygmy;
 
-import android.graphics.Canvas;
 
 public interface GameLevel {
 
@@ -13,8 +12,6 @@ public interface GameLevel {
 	public GameMap getMap();
 	
 	public GameUniverse getUniverse();
-	
-	public Canvas getCanvas();
 	
 	public PygmyGameContext getContext();
 

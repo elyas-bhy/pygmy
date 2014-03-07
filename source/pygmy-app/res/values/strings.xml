@@ -35,12 +35,12 @@
     <!-- Game Homepage -->
     <string name="play">Play</string>
     <string name="invite">Invite</string>
-    <string name="random">Random</string>
+    <string name="download">Download</string>
     <string name="v_report">Valid report</string>
     <string name="name_report">Report the game</string>
-    <string name="cond1">Nothing to report</string>
+    <string name="cond1">Incoherent content</string>
     <string name="cond2">Game not working</string>
-    <string name="cond3">Wrong content</string>
+    <string name="cond3">Offensive content</string>
 
     <!-- Navbar values -->
     <string name="home">Home</string>
