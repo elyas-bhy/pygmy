@@ -39,7 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.game.GameBoardInterfaceActivity;
+import com.dev.pygmy.game.GameBoardActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -170,7 +170,7 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 2) {
-					startActivity(new Intent(MainActivity.this, GameBoardInterfaceActivity.class));
+					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
 				if (position == 3) {
 					startActivity(new Intent(MainActivity.this, GameListActivity.class));

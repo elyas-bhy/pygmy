@@ -28,15 +28,17 @@ import com.dev.pygmy.R;
 
 public class GameViewManager {
 	
-	private FrameLayout mainLayout;
+	private Activity context;
 	private PygmyGameImpl game;
+	private FrameLayout mainLayout;
+	
 	private GameBoardView gameBoardView;
 	private EntityView entityView;
 	private static TileOverlayView tileOverlayView;
-	private Activity context;
 	
-	public GameViewManager(Activity context) {
+	public GameViewManager(Activity context, PygmyGameImpl game) {
 		this.context = context;
+		this.game = game;
 		mainLayout = createMainLayout();
 	}
 	
@@ -49,10 +51,6 @@ public class GameViewManager {
 		mainLayout.setBackgroundColor(context.getResources().getColor(R.color.grey_metal));
 
 		return mainLayout;
-	}
-	
-	public void setGame(PygmyGameImpl game) {
-		this.game = game;
 	}
 	
 	public FrameLayout getLayout() {
@@ -72,7 +70,6 @@ public class GameViewManager {
 		} else {
 			mainLayout.addView(context.findViewById(R.id.creation_error));
 		}
-
 		return mainLayout;
 	}
 	
