@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-   	<LinearLayout
+    <LinearLayout
         android:id="@+id/login_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -35,19 +35,17 @@
 
         <Button
             android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:background="@drawable/gplus_signin_logo"
-            android:src="@drawable/gplus_signin_logo" >
+            android:src="@drawable/gplus_signin_logo">
         </Button>
 
         <Button
             android:id="@+id/offline_button"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_large"
+            android:layout_height="50dp"
             android:text="@string/offline" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -252,31 +250,39 @@
 
             <LinearLayout style="@style/game_list_profile" >
 
-                <TextView
-                    android:id="@+id/game_one"
-                    style="@style/text_game_list_profile"
-                    android:text="@string/games_played_profile" />
+                <ImageView
+                    android:id="@+id/game_icon_profile"
+                    android:src="@drawable/logo_home_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="2dip"
+                    android:contentDescription="@string/description" />
 
                 <TextView
                     android:id="@+id/score_one"
                     style="@style/text_game_list_profile"
-                    android:text="@string/games_played_profile" />
+                    android:text="@string/score" />
             </LinearLayout>
 
             <!-- "MOST PLAYED 2 -->
-
+            
             <LinearLayout style="@style/game_list_profile" >
 
-                <TextView
-                    android:id="@+id/game_two"
-                    style="@style/text_game_list_profile"
-                    android:text="@string/games_played_profile" />
+                <ImageView
+                    android:id="@+id/game_icon_profile_two"
+                    android:src="@drawable/logo_home_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="2dip"
+                    android:contentDescription="@string/description" />
 
                 <TextView
-                    android:id="@+id/scoreètwo"
+                    android:id="@+id/score_two"
                     style="@style/text_game_list_profile"
-                    android:text="@string/games_played_profile" />
+                    android:text="@string/score" />
             </LinearLayout>
+
+           
         </LinearLayout>
     </LinearLayout>
 

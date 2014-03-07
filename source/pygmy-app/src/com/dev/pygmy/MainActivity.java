@@ -120,7 +120,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		initSlidingMenu();
 		initSigninButtons();
-		
+		//initGameButtons();
 		mDataView = ((TextView) findViewById(R.id.data_view));
 		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
 	}
@@ -383,7 +383,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		// Setting text and image in views
 		((TextView) findViewById(R.id.name_profile)).setText(name);
-		((TextView) findViewById(R.id.game_one)).setText("First game");
 		((TextView) findViewById(R.id.nat_profile)).setText(nationality);
 		ImageView a = (ImageView) findViewById(R.id.image_profile);
 		final ImageDownloader mDownload = new ImageDownloader();
