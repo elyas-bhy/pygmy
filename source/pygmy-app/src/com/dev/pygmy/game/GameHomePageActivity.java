@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -36,7 +37,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
@@ -58,6 +58,7 @@ public class GameHomePageActivity extends Activity {
 	String filePath;
 	String destPath;
 	
+	ProgressDialog dialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,15 +122,14 @@ public class GameHomePageActivity extends Activity {
 		// TODO
 	}
 
-	public void onRandomClicked(View view) {
+	public void onDownloadClicked(View view) {
+		dialog = ProgressDialog.show(GameHomePageActivity.this, "", "Downloading game...", true);
 		new Thread(new Runnable() {
             public void run() {
-            	
-        		PygmyApp.logE("FILEPATH : "+filePath);
-        		PygmyApp.logE("DESTPATH : "+destPath);
                  downloadFile(filePath, destPath);
             }
           }).start(); 
+		Toast.makeText(this, "Download Done", TOAST_DELAY).show();
 	}
 
 	public void onReportClicked(View view) {
@@ -140,6 +140,7 @@ public class GameHomePageActivity extends Activity {
 	
 	public void downloadFile(String url, String dest){
 		 try {
+		   // retrieve files .jar on the server with url and save this on the device
            File dest_file = new File(dest);
            URL u = new URL(url);
            URLConnection conn = u.openConnection();
@@ -153,12 +154,22 @@ public class GameHomePageActivity extends Activity {
            fos.flush();
            fos.close();
             
-       } catch(FileNotFoundException e) {
+          hideProgressIndicator();
            
-           return; 
-       } catch (IOException e) {
-           
-           return; 
-       }
+         } catch(FileNotFoundException e) {
+            hideProgressIndicator();
+             return; 
+         } catch (IOException e) {
+             hideProgressIndicator();
+             return; 
+         }
 	}
+	
+	void hideProgressIndicator(){
+        runOnUiThread(new Runnable() {
+            public void run() {
+                dialog.dismiss();
+            }
+        }); 
+    }
 }

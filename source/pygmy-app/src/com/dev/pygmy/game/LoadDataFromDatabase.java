@@ -67,6 +67,7 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 			param.add(new BasicNameValuePair("report", item));
 		}
 
+		// sent variable gameName to the script php
 		param.add(new BasicNameValuePair("name", gameName));
 
 		try {
@@ -100,6 +101,8 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 	}
 
 	protected void onPostExecute(Void v) {
+		
+		// retrieve results of the script php 
 		JSONObject json;
 		try {
 			JSONArray array = new JSONArray(result);
