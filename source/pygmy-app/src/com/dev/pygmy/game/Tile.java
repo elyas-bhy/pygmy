@@ -93,11 +93,7 @@ public class Tile {
 	public void drawOverlay(Canvas canvas) {
 		Paint color = new Paint();
 		color.setColor(Color.GREEN);
-		color.setStrokeWidth(4);
-
-		// Draw tile
-		canvas.drawRect(positionPixel.x, positionPixel.y, 
-				positionPixel.x+tileSize.x, positionPixel.y+tileSize.y, color);
+		color.setStrokeWidth(5);
 
 		// Draw tile's outline
 		// top
@@ -108,7 +104,7 @@ public class Tile {
 				positionPixel.x+tileSize.x, positionPixel.y+tileSize.y, color);
 		// left
 		canvas.drawLine(positionPixel.x, positionPixel.y, 
-				positionPixel.x+tileSize.x, positionPixel.y+tileSize.y, color);
+				positionPixel.x, positionPixel.y+tileSize.y, color);
 		// right
 		canvas.drawLine(positionPixel.x+tileSize.x, positionPixel.y,
 				positionPixel.x+tileSize.x, positionPixel.y+tileSize.y, color);
