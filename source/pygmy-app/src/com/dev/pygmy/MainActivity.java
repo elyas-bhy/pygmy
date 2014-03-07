@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -37,7 +38,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.dev.pygmy.game.GameBoardInterfaceActivity;
+
+import com.dev.pygmy.game.GameBoardActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -168,8 +170,7 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 2) {
-					startActivity(new Intent(MainActivity.this,
-							GameBoardInterfaceActivity.class));
+					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
 				if (position == 3) {
 					startActivity(new Intent(MainActivity.this,

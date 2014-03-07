@@ -28,15 +28,13 @@ import com.dev.pygmy.PygmyApp;
 /**
  * This class represents the whole game board including their pieces/entities.
  */
-public class GameBoardInterfaceActivity extends Activity {
+public class GameBoardActivity extends Activity {
 	
 	private GameViewManager gameViewManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		gameViewManager = new GameViewManager(this);
 
 		PygmyGameImpl game = null;
 		try {
@@ -46,7 +44,7 @@ public class GameBoardInterfaceActivity extends Activity {
 		} catch (Exception e) {
 			PygmyApp.logE(e.getMessage());
 		}
-		gameViewManager.setGame(game);
+		gameViewManager = new GameViewManager(this, game);
 		setContentView(gameViewManager.getLayout());
 	}
 }
