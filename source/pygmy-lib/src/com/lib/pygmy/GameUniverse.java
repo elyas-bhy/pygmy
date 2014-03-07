@@ -2,7 +2,7 @@ package com.lib.pygmy;
 
 import java.util.Map;
 
-import android.graphics.Point;
+import com.lib.pygmy.view.Tile;
 
 /**
  * stores all the gameframework.game entities of a gameframework.game level:
@@ -15,7 +15,7 @@ public interface GameUniverse {
 
 	public void removeGameEntity(GameEntity gameEntity);
 
-	public Map<Point,GameEntity> getGameEntities();
+	public Map<Tile,GameEntity> getGameEntities();
 
 	public void processMove(GameMove move);
 

@@ -1,8 +1,8 @@
 package com.lib.pygmy.base;
 
-import android.graphics.Point;
+import com.lib.pygmy.view.Tile;
 
 public interface Overlappable {
 	
-	public Point getPosition();
+	public Tile getCurrentTile();
 }

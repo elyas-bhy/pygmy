@@ -1,7 +1,8 @@
 package com.lib.pygmy;
 
 import android.graphics.Bitmap;
-import android.graphics.Point;
+
+import com.lib.pygmy.view.Tile;
 
 /**
  * Interface of board game pieces (entities)
@@ -15,23 +16,15 @@ public interface GameEntity {
 	 */
 	public PygmyGameContext getContext();
 	
-	public Point getPosition();
+	public Tile getCurrentTile();
 	
-	public void setPosition(Point p);
-	
-	public int getPixelX();
-	
-	public void setPixelX(int x);
-	
-	public int getPixelY();
-	
-	public void setPixelY(int y);
+	public void setCurrentTile(Tile tile);
 	
 	public Player getPlayer();
 	
 	public void setPlayer(Player player);
 	
-	public void oneStepMove(Point p);
+	public void oneStepMove(GameMove move);
 	
 	public boolean isLegalMove(GameMove move);
 	

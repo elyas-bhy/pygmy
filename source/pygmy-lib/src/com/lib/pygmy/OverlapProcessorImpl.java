@@ -52,14 +52,14 @@ public class OverlapProcessorImpl implements OverlapProcessor {
 
 	public void processOverlap(GameMove move) {
 		GameEntity entity = move.getEntity();
-		universe.getGameEntities().remove(entity.getPosition());
-		entity.oneStepMove(move.getMove());
-		GameEntity dst = universe.getGameEntities().get(entity.getPosition());
+		universe.getGameEntities().remove(entity.getCurrentTile());
+		entity.oneStepMove(move);
+		GameEntity dst = universe.getGameEntities().get(entity.getCurrentTile());
 		if (entity instanceof Overlappable && dst instanceof Overlappable) {
 			Vector<Overlap> overlaps = new Vector<Overlap>();
 			overlaps.add(new Overlap((Overlappable)entity, (Overlappable)dst));
 			overlapRules.applyOverlapRules(overlaps);
 		}
-		universe.getGameEntities().put(entity.getPosition(), entity);
+		universe.getGameEntities().put(entity.getCurrentTile(), entity);
 	}
 }

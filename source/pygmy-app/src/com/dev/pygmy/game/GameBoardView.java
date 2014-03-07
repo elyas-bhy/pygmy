@@ -26,12 +26,13 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.View;
 
+import com.lib.pygmy.view.Tile;
+
 /**
  * 	This class represents the grid of the board.
  */
 public class GameBoardView extends View {
 	
-	private int numberOfTiles;
 	private int numberOfRows;
 	private int numberOfColumns;
 	private int boardType;
@@ -64,19 +65,18 @@ public class GameBoardView extends View {
 		color2 = new Paint();
 		color1.setColor(Color.CYAN);
 		color2.setColor(Color.WHITE);
-		mapTileCoord = new HashMap<Point, Tile>();
+		mapTileCoord = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
 	}
-
-		
+	
 	/**
 	 * 
 	 * @param row		Relative position on Y
 	 * @param column	Relative position on X
 	 * @return the Tile according to coordinates (column, row)
 	 */
-	public static Tile getTileCoord(int row, int column) {
-		return mapTileCoord.get(new Point(column, row));
+	public static Tile getTileAt(int row, int column) {
+		return mapTileCoord.get(new Point(row, column));
 	}
 
 	@Override
@@ -224,54 +224,53 @@ public class GameBoardView extends View {
 
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
-		int width_case = Math.min(dim1, dim2);
-		int height_case = Math.max(dim1, dim2);
-
+		int tileWidth = Math.min(dim1, dim2);
+		int tileHeight = Math.max(dim1, dim2);
 
 		int width = getWidth();
 		int height = getHeight();
 
-		int tileSize = 0, offset = 0, coordY = 0, coordX = 0;
+		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
 		// Minimum size in width and length
 
-		// One case distance
-		tileSize = Math.min(width / (width_case+2), height / (height_case+2));
-		// Marge based to case_size
+		tileSize = Math.min(width / (tileWidth+2), height / (tileHeight+2));
 		offset = tileSize / 3;
 
-		for(int y = 0; y < width_case +1 ; ++y) {
-			if(y != 0){
-				for(int x = 0 ; x < height_case +1; ++x) {
-					if(x != 0){
+		for (int x = 0; x < tileWidth +1 ; ++x) {
+			if (x != 0) {
+				for(int y = 0; y < tileHeight +1; ++y) {
+					if (y != 0) {
 
-						coordY = y*tileSize+offset;
-						coordX = x*tileSize+offset;
-						if (y == 1)
-							canvas.drawText(Integer.toString(x), 
+						coordX = x * tileSize + offset;
+						coordY = y * tileSize + offset;
+						if (x == 1) {
+							canvas.drawText(Integer.toString(y), 
 									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
-									colorBlack);		
+									y*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
+									colorBlack);	
+						}
 
-						Tile t = new Tile(coordX, coordY, tileSize, tileSize);
-						t.setColor(((y + x)%2 != 0)?color1:color2);
+						Tile t = new Tile(coordY, coordX, tileSize);
+						t.setPosition(new Point(x-1, y-1));
+						t.setColor(((x + y)%2 != 0) ? color1:color2);
 						mapTileCoord.put(new Point(x-1, y-1), t);
 						t.draw(canvas);
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+y)), 
-						y*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
+				canvas.drawText(Character.toString((char)('A'-1+x)), 
+						x*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
 						tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);		
-				canvas.drawText(Integer.toString(y), 
+				canvas.drawText(Integer.toString(x), 
 						tileSize/2-colorBlack.getTextSize()/2+offset, 
-						y*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
+						x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
 			}
 		}
 
 		// Draw checkerboard's outline
 		int small_distance = tileSize+offset;
-		int long_distance_height = tileSize*(height_case+1)+offset;
-		int long_distance_width = tileSize*(width_case+1)+offset;
+		int long_distance_height = tileSize*(tileHeight+1)+offset;
+		int long_distance_width = tileSize*(tileWidth+1)+offset;
 		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, colorBlack);
 		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, colorBlack);
 		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, colorBlack);
