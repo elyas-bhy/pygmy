@@ -46,6 +46,7 @@ public class GameListActivity extends Activity {
 
 	private ListView listView;
 
+	ArrayList<Integer> idGame = new ArrayList<Integer>();
 	ArrayList<String> gameName = new ArrayList<String>();
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
@@ -68,6 +69,7 @@ public class GameListActivity extends Activity {
 
 				Intent intent = new Intent(getApplicationContext(),
 						GameHomePageActivity.class);
+				intent.putExtra("id", idGame.get(+position));
 				intent.putExtra("gameName", gameName.get(+position));
 				intent.putExtra("filename", fileName.get(+position));
 				startActivity(intent);
@@ -129,6 +131,9 @@ public class GameListActivity extends Activity {
 				for (int i = 0; i < Jarray.length(); i++) {
 					JSONObject Jasonobject = null;
 					Jasonobject = Jarray.getJSONObject(i);
+					
+					int id = Jasonobject.getInt("id_game");
+					idGame.add(id);
 
 					String title = Jasonobject.getString("name");
 					gameName.add(title);
