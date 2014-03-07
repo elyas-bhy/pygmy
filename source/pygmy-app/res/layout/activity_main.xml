@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <LinearLayout
+   	<LinearLayout
         android:id="@+id/login_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -19,6 +19,13 @@
 
         <!-- sign-in button -->
 
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:src="@drawable/logo_home_page" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,41 +33,20 @@
             android:text="@string/welcome_to_pygmy"
             android:textAppearance="@style/GuessWordText" />
 
-        <ImageView
-            android:id="@+id/logo_image"
+        <Button
+            android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_medium"
-            android:src="@drawable/logo_home_page" />
+            android:layout_height="80dp"
+            android:background="@drawable/gplus_signin_logo"
+            android:src="@drawable/gplus_signin_logo" >
+        </Button>
 
-        <Button 
-            android:id="@+id/offline_button" 
+        <Button
+            android:id="@+id/offline_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_large"
             android:text="@string/offline" />
-
-        <Button
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_sign_in"
-            android:src="@drawable/signin_white_normal" >
-        </Button>
-
-        <!--
-       <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" >
-        </com.google.android.gms.common.SignInButton>
-        -->
-        <Button
-            android:id="@+id/game_button"
-            android:layout_width="200dp"
-            android:text="@string/gamehelper_unknown_error"
-            android:layout_height="wrap_content" >
-        </Button>
 
     </LinearLayout>
 
@@ -253,7 +239,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="3dp"
-            android:background="@android:color/black" />
+            android:background="@color/orange" />
 
         <LinearLayout style="@style/box_profile" >
 

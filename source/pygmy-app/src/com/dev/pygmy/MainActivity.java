@@ -32,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -104,13 +105,22 @@ public class MainActivity extends BaseGameActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
+		animation.setDuration(1400);
+		animation.setFillAfter(false);
+		//animation.setAnimationListener(new MyAnimationListener());
+
+		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
+		
+		imageview.startAnimation(animation);
 
 		// Load preferences
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		initSlidingMenu();
 		initSigninButtons();
-		initGameButtons();
+		
 		mDataView = ((TextView) findViewById(R.id.data_view));
 		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
 	}
@@ -204,16 +214,7 @@ public class MainActivity extends BaseGameActivity implements
 				});
 	}
 
-	private void initGameButtons(){
-		findViewById(R.id.game_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), GameBoardInterfaceActivity.class);
-		                startActivityForResult(myIntent, 0);
-					}
-				});
-	}
+	
 	
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
