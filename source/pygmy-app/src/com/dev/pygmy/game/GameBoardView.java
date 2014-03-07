@@ -26,6 +26,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.View;
 
+import com.lib.pygmy.view.Tile;
+
 /**
  * 	This class represents the grid of the board.
  */
@@ -252,7 +254,8 @@ public class GameBoardView extends View {
 									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
 									colorBlack);		
 
-						Tile t = new Tile(coordX, coordY, tileSize, tileSize);
+						Tile t = new Tile(coordX, coordY, tileSize);
+						t.setPosition(new Point(x-1,y-1));
 						t.setColor(((y + x)%2 != 0)?color1:color2);
 						mapTileCoord.put(new Point(x-1, y-1), t);
 						t.draw(canvas);

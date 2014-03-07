@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy.game;
+package com.lib.pygmy.view;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,6 +23,7 @@ import android.graphics.Point;
 
 public class Tile {
 	
+	private Point position;
 	private Point coordinates;
 	private Paint color;
 	private int width;
@@ -45,11 +46,26 @@ public class Tile {
 		this(posX, posY, size, size);
 	}
 	
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+
 	/**
 	 * @return coordinates (x,y) in pixels for a tile.
 	 */
 	public Point getCoordinates() {
 		return coordinates;
+	}
+	
+	public void setCoordinates(int posX, int posY, int width, int height) {
+		coordinates.x = posX;
+		coordinates.y = posY;
+		this.width = width;
+		this.height = height;
 	}
 
 	/**
@@ -104,10 +120,4 @@ public class Tile {
 				coordinates.x + width, coordinates.y + height, color);
 	}
 	
-	public void setDimensions(int posX, int posY, int width, int height) {
-		coordinates.x = posX;
-		coordinates.y = posY;
-		this.width = width;
-		this.height = height;
-	}
 }

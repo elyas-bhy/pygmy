@@ -6,22 +6,22 @@ import android.graphics.Point;
 
 import com.lib.pygmy.base.Drawable;
 import com.lib.pygmy.base.Overlappable;
+import com.lib.pygmy.view.Tile;
 
 public abstract class PygmyGameEntity implements GameEntity,
 		Drawable, Overlappable {
 
 	private Player player;
-	private Point position = new Point();
-	private int pixelX;
-	private int pixelY;
+	private Tile tile;
  
-	private Bitmap img; 		// the image of the entity
+	private Bitmap img;
 	private PygmyGameLevel level;
 
 	public PygmyGameEntity(PygmyGameLevel level, Player player, int drawable, Point pos) {
 		this.level = level;
-		this.position = pos;
 		this.player = player;
+		this.tile = new Tile(0,0,0);
+		tile.setPosition(pos);
 		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inJustDecodeBounds = true;
@@ -30,34 +30,13 @@ public abstract class PygmyGameEntity implements GameEntity,
 	}
 
 	@Override
-	public Point getPosition() {
-		return position;
+	public Tile getCurrentTile() {
+		return tile;
 	}
 	
 	@Override
-	public void setPosition(Point p) {
-		position.x = p.x;
-		position.y = p.y;
-	}
-
-	@Override
-	public int getPixelX() {
-		return pixelX;
-	}
-
-	@Override
-	public void setPixelX(int x) {
-		this.pixelX = x;
-	}
-	
-	@Override
-	public void setPixelY(int y) {
-		this.pixelY = y;
-	}
-	
-	@Override
-	public int getPixelY() {
-		return pixelY;
+	public void setCurrentTile(Tile tile) {
+		this.tile = tile;
 	}
 	
 	@Override
@@ -71,8 +50,8 @@ public abstract class PygmyGameEntity implements GameEntity,
 	}
 
 	@Override
-	public void oneStepMove(Point p) {
-		setPosition(p);
+	public void oneStepMove(GameMove move) {
+		setCurrentTile(move.getMove());
 		oneStepMoveAddedBehavior();
 	}
 

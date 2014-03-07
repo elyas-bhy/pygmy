@@ -22,9 +22,7 @@ public class MyChessEntity extends PygmyGameEntity {
 	
 	@Override
 	public boolean isLegalMove(GameMove move) {
-		System.out.println(this.getPosition().toString());
-		//capacityOK?
-		//checkPath...
+		System.out.println(this.getCurrentTile().getPosition().toString());
 		return true;
 	}
 

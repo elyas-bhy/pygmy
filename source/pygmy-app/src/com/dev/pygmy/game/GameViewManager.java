@@ -77,7 +77,7 @@ public class GameViewManager {
 		tileOverlayView.invalidate();
 	}
 	
-	public static TileOverlayView getTile() {
+	public static TileOverlayView getOverlay() {
 		return tileOverlayView;
 	}
 }

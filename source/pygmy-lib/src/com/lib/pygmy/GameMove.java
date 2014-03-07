@@ -1,11 +1,11 @@
 package com.lib.pygmy;
 
-import android.graphics.Point;
+import com.lib.pygmy.view.Tile;
 
 public class GameMove {
 	
 	private GameEntity entity;
-	private Point move;
+	private Tile move;
 	
 	public GameMove() {
 		
@@ -19,11 +19,11 @@ public class GameMove {
 		this.entity = entity;
 	}
 
-	public Point getMove() {
+	public Tile getMove() {
 		return move;
 	}
 
-	public void setMove(Point move) {
+	public void setMove(Tile move) {
 		this.move = move;
 	}
 

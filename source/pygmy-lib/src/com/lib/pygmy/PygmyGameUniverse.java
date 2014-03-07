@@ -6,14 +6,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.graphics.Point;
 
 import com.lib.pygmy.base.Overlappable;
+import com.lib.pygmy.view.Tile;
 
 public class PygmyGameUniverse implements GameUniverse {
 	
-	private Map<Point,GameEntity> entities;
+	private Map<Tile,GameEntity> entities;
 	private OverlapProcessor overlapProcessor;
 	
 	public PygmyGameUniverse() {
-		entities = new ConcurrentHashMap<Point,GameEntity>();
+		entities = new ConcurrentHashMap<Tile,GameEntity>();
 	}
 
 	public PygmyGameUniverse(OverlapProcessor processor) {
@@ -21,18 +22,19 @@ public class PygmyGameUniverse implements GameUniverse {
 		overlapProcessor = processor;
 	}
 	
-	public Map<Point,GameEntity> getGameEntities() {
+	public Map<Tile,GameEntity> getGameEntities() {
 		return entities;
 	}
 
 	public synchronized void addGameEntity(GameEntity gameEntity) {
-		entities.put(gameEntity.getPosition(), gameEntity);
+		entities.put(gameEntity.getCurrentTile(), gameEntity);
 		if (gameEntity instanceof Overlappable) {
 			overlapProcessor.addOverlappable((Overlappable) gameEntity);
 		}
 	}
 
 	public synchronized void removeGameEntity(GameEntity gameEntity) {
+		// TODO remove entry by key
 		entities.remove(gameEntity);
 		if (gameEntity instanceof Overlappable) {
 			overlapProcessor.removeOverlappable((Overlappable) gameEntity);
