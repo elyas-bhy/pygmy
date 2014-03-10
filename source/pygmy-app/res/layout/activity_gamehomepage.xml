@@ -45,7 +45,7 @@
             android:textAppearance="@style/HelpText.Caption" />
 
         <Button
-            android:id="@+id/randomButton"
+            android:id="@+id/downloadButton"
             android:layout_width="130dp"
             android:layout_height="40dp"
             android:layout_alignLeft="@+id/inviteButton"
@@ -58,7 +58,7 @@
             android:id="@+id/inviteButton"
             android:layout_width="130dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/randomButton"
+            android:layout_below="@+id/downloadButton"
             android:layout_centerHorizontal="true"
             android:onClick="onInviteClicked"
             android:text="@string/invite"

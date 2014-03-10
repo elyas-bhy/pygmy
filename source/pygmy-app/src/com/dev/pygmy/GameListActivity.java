@@ -51,6 +51,7 @@ public class GameListActivity extends Activity {
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
 	ArrayList<String> fileName = new ArrayList<String>();
+	ArrayList<Integer> gameVersion = new ArrayList<Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class GameListActivity extends Activity {
 				intent.putExtra("id", idGame.get(+position));
 				intent.putExtra("gameName", gameName.get(+position));
 				intent.putExtra("filename", fileName.get(+position));
+				intent.putExtra("version", gameVersion.get(+position));
 				startActivity(intent);
 			}
 		});
@@ -143,6 +145,9 @@ public class GameListActivity extends Activity {
 					
 					String file = Jasonobject.getString("filename");
 					fileName.add(file);
+					
+					int version = Jasonobject.getInt("version");
+					gameVersion.add(version);
 
 					GameListAdapter adapter = new GameListAdapter(
 							GameListActivity.this, gameName, info, imageId);
