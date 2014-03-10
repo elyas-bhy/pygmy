@@ -281,6 +281,28 @@
                     style="@style/text_game_list_profile"
                     android:text="@string/score" />
             </LinearLayout>
+            
+            <!--  LAST PLAYED  -->
+            <TextView
+                android:id="@+id/last_games_profile"
+                style="@style/game_profile"
+                android:text="@string/last_played_profile" />
+            
+            <LinearLayout style="@style/game_list_profile" >
+
+                <ImageView
+                    android:id="@+id/game_icon_profile_last"
+                    android:src="@drawable/logo_home_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="2dip"
+                    android:contentDescription="@string/description" />
+
+                <TextView
+                    android:id="@+id/last_played"
+                    style="@style/text_game_list_profile"
+                    android:text="@string/score" />
+            </LinearLayout>
 
            
         </LinearLayout>

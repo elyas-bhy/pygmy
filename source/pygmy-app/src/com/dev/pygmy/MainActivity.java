@@ -109,7 +109,7 @@ public class MainActivity extends BaseGameActivity implements
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
 		animation.setDuration(1400);
 		animation.setFillAfter(false);
-		//animation.setAnimationListener(new MyAnimationListener());
+		
 
 		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
 		
@@ -123,6 +123,8 @@ public class MainActivity extends BaseGameActivity implements
 
 		mDataView = ((TextView) findViewById(R.id.data_view));
 		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
+		
+
 	}
 
 	@Override
@@ -163,6 +165,8 @@ public class MainActivity extends BaseGameActivity implements
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.start_match));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -186,6 +190,13 @@ public class MainActivity extends BaseGameActivity implements
 				if (position == 3) {
 					startActivity(new Intent(MainActivity.this,
 							GameListActivity.class));
+				}
+				if (position == 4) {
+					signOut();
+					setViewVisibility();
+				}
+				if (position == 4) {
+					setViewVisibility();
 				}
 
 			}
@@ -301,7 +312,7 @@ public class MainActivity extends BaseGameActivity implements
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
-
+			findViewById(R.id.screen_profile).setVisibility(View.GONE);
 			if (mAlertDialog != null) {
 				mAlertDialog.dismiss();
 			}
@@ -353,6 +364,9 @@ public class MainActivity extends BaseGameActivity implements
 		// will replace notifications you would get otherwise. You do *NOT* have
 		// to register a MatchUpdateListener.
 		getGamesClient().registerMatchUpdateListener(this);
+		
+		setProfileView();
+		
 	}
 
 	// Switch to gameplay view.
@@ -365,6 +379,10 @@ public class MainActivity extends BaseGameActivity implements
 
 	// Switch to profile view
 	public void setProfileView() {
+		if (!isSignedIn()) {
+			setViewVisibility();		
+		}
+		else {
 		// Initialisation
 		URL imageUrl = null;
 		Person p = getPlusClient().getCurrentPerson();
@@ -389,6 +407,7 @@ public class MainActivity extends BaseGameActivity implements
 		mDownload.download(imageUrl.toString(), a);
 
 		findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
+		}
 	}
 
 	// Helpful dialogs

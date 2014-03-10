@@ -50,6 +50,7 @@
     <string name="name_profile"></string>
     <string name="language_profile"></string>
     <string name="games_played_profile">Most played games</string>
+    <string name="last_played_profile">Last played game</string>
     <string name="offline">Offline</string>
     <string name="board">Board</string>
     <string name="loading_error">Internal error : Could not load game</string>
