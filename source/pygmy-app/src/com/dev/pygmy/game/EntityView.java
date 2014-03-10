@@ -168,9 +168,8 @@ public class EntityView extends View {
 											nextTile.getCoordinates().y, tileSize, tileSize);
 
 					// Move entity
-					draggedEntity.setCurrentTile(nextTile);
-//					draggedEntity.setPixelX(x - tileSize/2);
-//					draggedEntity.setPixelY(y - tileSize/2);
+					draggedEntity.getCurrentTile().setCoordinates(
+							(x - tileSize/2), (y - tileSize/2), 0, 0);
 				}
 			}
 			break;
