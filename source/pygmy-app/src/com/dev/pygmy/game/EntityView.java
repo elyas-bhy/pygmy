@@ -25,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.client.pygmy.PygmyGameImpl;
+import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
@@ -130,7 +131,7 @@ public class EntityView extends View {
 					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
 						draggedEntity = entity;
-						entityCurrentPosition = entity.getCurrentTile();
+						entityCurrentPosition = tile;
 						offset = tileSize/3;
 						break;
 					}
@@ -168,8 +169,7 @@ public class EntityView extends View {
 											nextTile.getCoordinates().y, tileSize, tileSize);
 
 					// Move entity
-					draggedEntity.getCurrentTile().setCoordinates(
-							(x - tileSize/2), (y - tileSize/2), 0, 0);
+					draggedEntity.setCurrentTile(new Tile((x - tileSize/2), (y - tileSize/2), 0));
 				}
 			}
 			break;
@@ -177,15 +177,18 @@ public class EntityView extends View {
 		// The finger has left the screen.
 		case MotionEvent.ACTION_UP:
 			GameViewManager.resetOverlay();
-			
-			// Entity should not go outside of the board
-			if (minX < x && x < maxX && minY < y && y < maxY) {
-				Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
-				GameMove move = new GameMove(draggedEntity, dst);
-				game.onPlayerMove(move);
-			} else {
+
+			if (draggedEntity != null && entityCurrentPosition != null) {
+				// Entity should not go outside of the board
 				draggedEntity.setCurrentTile(entityCurrentPosition);
+				if (minX < x && x < maxX && minY < y && y < maxY && targetRow > 0 && targetColumn > 0) {
+					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
+					GameMove move = new GameMove(draggedEntity, dst);
+					game.onPlayerMove(move);
+				}
 			}
+			entityCurrentPosition = null;
+			draggedEntity = null;
 			break;
 			
 		default:
