@@ -169,32 +169,8 @@
                 android:text=""
                 android:textAppearance="@style/HelpText.Caption" />
 
-            <Button
-                android:id="@+id/sign_out_button"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_out" />
-
-            <Button
-                android:id="@+id/startMatchButton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:onClick="onStartMatchClicked"
-                android:text="@string/start_match" />
-
-            <Button
-                android:id="@+id/checkGamesButton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:onClick="onCheckGamesClicked"
-                android:text="@string/check_games" />
-
-            <Button
-                android:id="@+id/quickMatchButon"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:onClick="onQuickMatchClicked"
-                android:text="@string/quick_match" />
+            
+           
         </LinearLayout>
     </RelativeLayout>
 

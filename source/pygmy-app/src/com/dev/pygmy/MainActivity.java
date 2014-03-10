@@ -167,6 +167,8 @@ public class MainActivity extends BaseGameActivity implements
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.start_match));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.quick_match));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.check_games));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -195,8 +197,16 @@ public class MainActivity extends BaseGameActivity implements
 					signOut();
 					setViewVisibility();
 				}
-				if (position == 4) {
-					setViewVisibility();
+				if (position == 5) {
+					onStartMatchClicked(findViewById(R.id.matchup_layout));
+				}
+				if (position == 6) {
+					onQuickMatchClicked(findViewById(R.id.matchup_layout));
+					findViewById(R.id.screen_profile).setVisibility(View.GONE);
+				}
+				if (position == 7) {
+					onCheckGamesClicked(findViewById(R.id.matchup_layout));
+					
 				}
 
 			}
@@ -205,14 +215,6 @@ public class MainActivity extends BaseGameActivity implements
 	}
 
 	private void initSigninButtons() {
-		findViewById(R.id.sign_out_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						signOut();
-						setViewVisibility();
-					}
-				});
 
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
