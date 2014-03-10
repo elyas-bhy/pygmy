@@ -70,18 +70,23 @@ session_start();
 		
 		<?php
 					error_reporting(E_ALL ^ E_NOTICE);
-				//	$host = "dbserver"; //dbserver
-				//	$user = "njouanla";  //njouanla
-				//	$password = "pygmyproject"; //pygmyproject
 					$conn = mysql_connect($host,$user,$password) or die ("Error. You are not registered");
 					mysql_select_db("njouanla") or die ("DB PB");
 					
-					$query = "SELECT name FROM game WHERE username = '".htmlspecialchars(addslashes($_SESSION['Login']))."';";
+					$query = "SELECT name, version FROM game WHERE username = '".htmlspecialchars(addslashes($_SESSION['Login']))."';";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result)) {
 
 					$title = $row['name'];
-					echo ' '.$title.' <br>';
+					$version = $row['version'];
+					echo ' '.$title.'  |  Version : '.$version.'.0 <br>';
+					?>
+					<form method="post" action="Version.php?game=<?php echo $row['name']; ?>">
+					<input type="submit" name="submit" value="New Version">
+					</form>
+				
+					<?php
+					echo '<br>';
 			}
 					
 					
