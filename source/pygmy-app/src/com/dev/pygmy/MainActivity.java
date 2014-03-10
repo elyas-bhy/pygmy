@@ -93,7 +93,7 @@ public class MainActivity extends BaseGameActivity implements
 	public boolean isDoingTurn = false;
 
 	// This is the current match we're in; null if not loaded
-	public TurnBasedMatch mMatch;
+	private TurnBasedMatch mMatch;
 
 	// This is the current match data after being unpersisted.
 	// Do not retain references to match data once you have

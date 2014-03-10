@@ -39,8 +39,8 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 
 	@Override
-	public void nextPlayer() {
-		context.nextPlayer();
+	public void nextPlayer(String state) {
+		context.nextPlayer(state);
 	}
 	
 	@Override
@@ -76,6 +76,11 @@ public abstract class PygmyGame implements Game, Observer {
 	@Override
 	public void setLevels(List<GameLevel> levels) {
 		gameLevels = levels;
+	}
+	
+	@Override
+	public GameLevel getCurrentLevel() {
+		return context.getCurrentLevel();
 	}
 	
 	@Override

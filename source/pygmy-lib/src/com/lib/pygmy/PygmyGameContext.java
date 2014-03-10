@@ -51,7 +51,7 @@ public class PygmyGameContext {
 		return players.get(currentPlayer);
 	}
 	
-	public void nextPlayer() {
+	public void nextPlayer(String state) {
 		currentPlayer = (currentPlayer + 1) % players.size();
 	}
 	

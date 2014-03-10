@@ -19,6 +19,8 @@ package com.client.pygmy;
 import java.util.HashMap;
 import java.util.List;
 
+import com.client.pygmy.entity.MyChessEntity;
+import com.client.pygmy.entity.Pawn;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
@@ -64,7 +66,7 @@ public class DemoLevel extends PygmyGameLevel {
 		addEntity(new MyChessEntity(this, p1, R.drawable.black_rook, 0, 7));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new MyChessEntity(this, p1, R.drawable.black_pawn, 1, i));
+			addEntity(new Pawn(this, p1, R.drawable.black_pawn, 1, i));
 		}
 		
 		// declare each white piece (entity) with the Entity class
@@ -78,7 +80,7 @@ public class DemoLevel extends PygmyGameLevel {
 		addEntity(new MyChessEntity(this, p2, R.drawable.white_rook, 7, 7));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new MyChessEntity(this, p2, R.drawable.white_pawn, 6, i));
+			addEntity(new Pawn(this, p2, R.drawable.white_pawn, 6, i));
 		}
 	}
 	

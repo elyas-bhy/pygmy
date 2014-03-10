@@ -10,7 +10,7 @@ public interface Game {
 	
 	public void start();
 	
-	public void nextPlayer();
+	public void nextPlayer(String state);
 	
 	public void onPlayerMove(GameMove move);
 	
@@ -25,6 +25,8 @@ public interface Game {
 	public List<GameLevel> getLevels();
 	
 	public void setLevels(List<GameLevel> levels);
+	
+	public GameLevel getCurrentLevel();
 	
 	public void setTitle(String title);
 	
