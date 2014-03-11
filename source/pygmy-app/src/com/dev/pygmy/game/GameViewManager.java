@@ -39,7 +39,6 @@ public class GameViewManager {
 	public GameViewManager(Activity context, PygmyGameImpl game) {
 		this.context = context;
 		this.game = game;
-		mainLayout = createMainLayout();
 	}
 	
 	private FrameLayout createMainLayout() {
@@ -54,6 +53,11 @@ public class GameViewManager {
 	}
 	
 	public FrameLayout getLayout() {
+		if (mainLayout != null) {
+			return mainLayout;
+		}
+		
+		mainLayout = createMainLayout();
 		// Gets parameters of the game board.
 		if (game != null) {
 			game.initGame();
