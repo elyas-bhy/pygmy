@@ -26,13 +26,14 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.View;
 
+import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.view.Tile;
 
 /**
  * 	This class represents the grid of the board.
  */
 public class GameBoardView extends View {
-	
+
 	private static int numberOfRows;
 	private static int numberOfColumns;
 	private int boardType;
@@ -68,7 +69,7 @@ public class GameBoardView extends View {
 		mapTileCoord = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
 	}
-	
+
 	/**
 	 * 
 	 * @param row		Relative position on Y
@@ -78,14 +79,14 @@ public class GameBoardView extends View {
 	public static Tile getTileAt(int row, int column) {
 		return mapTileCoord.get(new Point(row, column));
 	}
-	
+
 	/**
 	 * @return the number of rows of the board.
 	 */
 	public static int getNumberOfRows() {
 		return numberOfRows;
 	}
-	
+
 	/**
 	 * @return the number of columns of the board.
 	 */
@@ -95,151 +96,160 @@ public class GameBoardView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		int dim1 = numberOfRows;
-		int dim2 = numberOfColumns;
-		
+
 		switch (boardType) {
 		case 0:
-			drawCheckerboard(canvas, dim1, dim2, color1, color2);
+			drawCheckerboard(canvas);
 			break;
 		case 1:
-			draw_grid(canvas, dim1, dim2);
+			drawGrid(canvas);
 			break;
 		case 2:
-			draw_hexgrid(canvas, dim1, dim2);
+			drawHexGrid(canvas);
 			break;
 		default:
-			System.err.println("Error : Board's type do not exist.");
+			PygmyApp.logE("Error : Board's type do not exist.");
 			break;
 		}
 	}
 
-	private void draw_hexcase(Canvas canvas, int case_size, int coord_x, int coord_y){
+	private void drawHexbox(Canvas canvas, int tileSize, int coordX, int coordY) {
 
-		// Distance difference between carre and hexa
-		int dist = case_size / 4;
-		// Half case's size
-		int half = case_size /2;
+		// Distance difference between square and hexa
+		int dist = tileSize / 4;
+		// Half tile's size
+		int half = tileSize / 2;
 
 		// Left Up
-		canvas.drawLine(coord_x + dist, coord_y, coord_x, coord_y + half, colorBlack);
+		canvas.drawLine(coordX + dist, coordY, coordX, coordY + half, colorBlack);
 		// Up
-		canvas.drawLine(coord_x + dist, coord_y, coord_x + case_size - dist, coord_y, colorBlack);
+		canvas.drawLine(coordX + dist, coordY, coordX + tileSize - dist, coordY, colorBlack);
 		// Down
-		canvas.drawLine(coord_x + case_size - dist, coord_y + case_size, coord_x + dist, coord_y + case_size, colorBlack);
+		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, coordX + dist, coordY + tileSize, colorBlack);
 		// Right Down
-		canvas.drawLine(coord_x + case_size, coord_y + half, coord_x + case_size - dist, coord_y + case_size, colorBlack);
+		canvas.drawLine(coordX + tileSize, coordY + half, coordX + tileSize - dist, coordY + tileSize, colorBlack);
 		// Left Down
-		canvas.drawLine(coord_x, coord_y + half, coord_x + dist, coord_y + case_size, colorBlack);
+		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
 		// Right Up
-		canvas.drawLine(coord_x + case_size - dist, coord_y, coord_x + case_size, coord_y + half, colorBlack);
+		canvas.drawLine(coordX + tileSize - dist, coordY, coordX + tileSize, coordY + half, colorBlack);
 
 	}
 
-	private void draw_hexgrid(Canvas canvas, int dim1, int dim2){
+	private void drawHexGrid(Canvas canvas) {
 
-		int width_case = Math.min(dim1, dim2);
-		int height_case = Math.max(dim1, dim2);
+		int widthBox = Math.min(numberOfRows, numberOfColumns);
+		int heightBox = Math.max(numberOfRows, numberOfColumns);
 
 		// Max Size Width
-		int width_size = dim1;
+		int widthSize = numberOfRows;
 		// Max Size Height
-		int height_size = dim2;
+		int heightSize = numberOfColumns;
 
 		int width = getWidth();
 		int height = getHeight();
 
-		int case_size = 0, offset = 0, coord_x = 0, coord_y;
+		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
 
-		// One case distance
-		case_size = Math.min(width / (width_case+2), height / (height_case+2));
-		if(case_size*1.2 < width_size-case_size/3*1.2 && case_size*1.2 < height_size-case_size/3*1.2)
-			case_size *= 1.2;
-		// Marge based to case_size
-		offset = case_size / 3;
+		// One tile distance
+		tileSize = Math.min(width / (widthBox + 2), height / (heightBox+2));
+		if(tileSize*1.2 < widthSize - tileSize / 3*1.2 && tileSize*1.2 < heightSize-tileSize/3*1.2) {
+			tileSize *= 1.2;
+		}
 
-		int colision = case_size / 4;
-		int half = case_size /2;
+		// Margin based to tileSize
+		offset = tileSize / 3;
 
-		for(int y = 0; y < width_case +1 ; ++y) {
+		int colision = tileSize / 4;
+		int half = tileSize / 2;
+
+		for(int y = 0; y < widthBox +1 ; ++y) {
 			if (y != 0){
-				for(int x = 0 ; x < height_case +1; ++x) 
-					if (x != 0){
-						coord_x = x*case_size+offset;
-						coord_y = (y+1)*(case_size-colision);
-						// FIXME use new Tile(int, int, int, int, int)
-						Tile tile = null;new Tile(coord_x,coord_y, case_size);
-						if(y%2 == 0){
-							draw_hexcase(canvas, case_size, coord_y, coord_x + half);
-							tile = new Tile(coord_x + half, coord_y, case_size-half);
-							
-						}
-						else { 
-							draw_hexcase(canvas, case_size, coord_y, coord_x);
-							tile = new Tile(coord_x,coord_y, case_size-half);
+				for(int x = 0 ; x < heightBox +1; ++x) {
+					if (x != 0) {
+						coordX = x*tileSize+offset;
+						coordY = (y+1)*(tileSize-colision);
+
+						Tile tile = null;new Tile(coordX,coordY, tileSize);
+						if(y%2 == 0) {
+							drawHexbox(canvas, tileSize, coordY, coordX + half);
+							tile = new Tile(coordX + half, coordY, tileSize-half);
+						} else { 
+							drawHexbox(canvas, tileSize, coordY, coordX);
+							tile = new Tile(coordX,coordY, tileSize-half);
 						}
 						mapTileCoord.put(new Point(x-1, y-1), tile);
-						
-						if (y == 1 && x != height_case+1)
-							canvas.drawText(Integer.toString(x), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
 
+						if (y == 1 && x != heightBox+1) {
+							canvas.drawText(Integer.toString(x), 
+									tileSize/2-colorBlack.getTextSize()/2+offset, 
+									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
+									colorBlack);
+						}
 					}
-				if (y != width_case+1)
-					canvas.drawText(Character.toString((char)('A'-1+y)), (y+1)*(case_size-colision)+(case_size/4)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);
-
+				}
+				if (y != widthBox+1) {
+					canvas.drawText(Character.toString((char)('A'-1+y)), 
+							(y+1)*(tileSize-colision)+(tileSize/4)-colorBlack.getTextSize()/2+offset,
+							tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
+				}
 			}
 		}
 	}
 
-	private void draw_grid(Canvas canvas, int dim1, int dim2){
+	private void drawGrid(Canvas canvas) {
 
-		int width_case = Math.min(dim1, dim2);
-		int height_case = Math.max(dim1, dim2);
+		int widthBox = Math.min(numberOfRows, numberOfColumns);
+		int heightBox = Math.max(numberOfRows, numberOfColumns);
 
 		int width = getWidth();
 		int height = getHeight();
 
-		int case_size = 0, offset = 0, coord_y = 0, coord_x = 0;
+		int tileSize = 0, offset = 0, coordY = 0, coordX = 0;
 
-		// One case distance
-		case_size = Math.min(width / (width_case+2), height / (height_case+2));
-		// Marge based to case_size
-		offset = case_size / 3;
+		// One tile distance
+		tileSize = Math.min(width / (widthBox+2), height / (heightBox+2));
+		// Margin based to tileSize
+		offset = tileSize / 3;
 
-		int small_distance = case_size+offset;
-		int long_distance_height = case_size*(height_case+1)+offset;
-		int long_distance_width = case_size*(width_case+1)+offset;
+		int smallDistance = tileSize+offset;
+		int longDistanceHeight = tileSize*(heightBox+1)+offset;
+		int longDistanceWidth = tileSize*(widthBox+1)+offset;
 
-		for(int y = 0; y <= width_case +1 ; ++y) {
-			if (y != 0){
-				for(int x = 0 ; x <= height_case +1; ++x) 
-					if (x != 0){
-						coord_y = y*case_size+offset;
-						coord_x = x*case_size+offset;
+		for(int y = 0; y <= widthBox +1 ; ++y) {
+			if (y != 0) {
+				for(int x = 0 ; x <= heightBox +1; ++x) {
+					if (x != 0) {
+						coordY = y*tileSize+offset;
+						coordX = x*tileSize+offset;
 
-						// FIXME use new Tile(int, int, int, int, int)
-						if(y < width_case +1 && x < height_case +1)
-							mapTileCoord.put(new Point(x-1,y-1), new Tile(coord_x, coord_y, case_size));
+						if(y < widthBox +1 && x < heightBox +1)
+							mapTileCoord.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
 
 						// Draw case
-						canvas.drawLine(coord_y, small_distance, coord_y, long_distance_height, colorBlack);
-						canvas.drawLine(small_distance, coord_x, long_distance_width, coord_x, colorBlack);
-						if (y == 1 && x != height_case+1)
-							canvas.drawText(Integer.toString(x), case_size/2-colorBlack.getTextSize()/2+offset, x*case_size+(case_size/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
-
+						canvas.drawLine(coordY, smallDistance, coordY, longDistanceHeight, colorBlack);
+						canvas.drawLine(smallDistance, coordX, longDistanceWidth, coordX, colorBlack);
+						if (y == 1 && x != heightBox+1)
+							canvas.drawText(Integer.toString(x), 
+									tileSize/2-colorBlack.getTextSize()/2+offset, 
+									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
+									colorBlack);		
 					}
-				if (y != width_case+1)
-					canvas.drawText(Character.toString((char)('A'-1+y)), y*case_size+(case_size/2)-colorBlack.getTextSize()/2+offset, case_size/2+colorBlack.getTextSize()/2+offset, colorBlack);
+				}
+				if (y != widthBox+1) {
+					canvas.drawText(Character.toString((char)('A'-1+y)), 
+							y*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
+							tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
+				}
 			}
 		}
 	}
 
-	private void drawCheckerboard(Canvas canvas, int dim1, int dim2, Paint color1, Paint color2) {
+	private void drawCheckerboard(Canvas canvas) {
 
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
-		int tileWidth = Math.min(dim1, dim2);
-		int tileHeight = Math.max(dim1, dim2);
+		int tileWidth = Math.min(numberOfRows, numberOfColumns);
+		int tileHeight = Math.max(numberOfRows, numberOfColumns);
 
 		int width = getWidth();
 		int height = getHeight();
@@ -282,12 +292,12 @@ public class GameBoardView extends View {
 		}
 
 		// Draw checkerboard's outline
-		int small_distance = tileSize+offset;
-		int long_distance_height = tileSize*(tileHeight+1)+offset;
-		int long_distance_width = tileSize*(tileWidth+1)+offset;
-		canvas.drawLine(small_distance, small_distance, small_distance, long_distance_height, colorBlack);
-		canvas.drawLine(small_distance, small_distance, long_distance_width, small_distance, colorBlack);
-		canvas.drawLine(long_distance_width, long_distance_height, long_distance_width, small_distance, colorBlack);
-		canvas.drawLine(long_distance_width, long_distance_height, small_distance, long_distance_height, colorBlack);
+		int smallDistance = tileSize+offset;
+		int longDistanceHeight = tileSize*(tileHeight+1)+offset;
+		int longDistanceWidth = tileSize*(tileWidth+1)+offset;
+		canvas.drawLine(smallDistance, smallDistance, smallDistance, longDistanceHeight, colorBlack);
+		canvas.drawLine(smallDistance, smallDistance, longDistanceWidth, smallDistance, colorBlack);
+		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
+		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
 	}
 }
