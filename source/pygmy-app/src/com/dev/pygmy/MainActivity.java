@@ -26,6 +26,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -106,17 +107,18 @@ public class MainActivity extends BaseGameActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
 		animation.setDuration(1400);
 		animation.setFillAfter(false);
+		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
+		imageview.startAnimation(animation);
 		
 
-		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
-		
-		imageview.startAnimation(animation);
 
 		// Load preferences
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
 
 		initSlidingMenu();
 		initSigninButtons();
@@ -170,6 +172,7 @@ public class MainActivity extends BaseGameActivity implements
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.quick_match));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.check_games));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
+	
 
 		// Assign adapter to slidemenu list view
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -272,6 +275,7 @@ public class MainActivity extends BaseGameActivity implements
 		getGamesClient().cancelTurnBasedMatch(this, mMatch.getMatchId());
 		isDoingTurn = false;
 		setViewVisibility();
+	
 	}
 
 	// Leave the game during your turn. Note that there is a separate
@@ -318,6 +322,8 @@ public class MainActivity extends BaseGameActivity implements
 		if (!isSignedIn()) {
 			findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+			findViewById(R.id.offline_button).setVisibility(View.VISIBLE);
+			findViewById(R.id.welcome).setVisibility(View.VISIBLE);
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
 			findViewById(R.id.screen_profile).setVisibility(View.GONE);

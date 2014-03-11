@@ -138,6 +138,11 @@ public class GameListActivity extends Activity {
 					
 					String file = Jasonobject.getString("filename");
 					fileName.add(file);
+					
+					String icon=null;
+					//Default icon
+					if (icon == null)
+						imageId.add("http://upload.wikimedia.org/wikipedia/commons/thumb/archive/3/35/20080131162213!Orange_question_mark.svg/120px-Orange_question_mark.svg.png");
 
 					GameListAdapter adapter = new GameListAdapter(
 							GameListActivity.this, gameName, info, imageId);

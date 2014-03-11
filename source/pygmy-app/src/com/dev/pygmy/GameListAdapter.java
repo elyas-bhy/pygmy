@@ -17,16 +17,16 @@
 package com.dev.pygmy;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dev.pygmy.util.ImageDownloader;
 
 public class GameListAdapter extends ArrayAdapter<String> {
 	
@@ -54,15 +54,17 @@ public class GameListAdapter extends ArrayAdapter<String> {
 		TextView gameNameText = (TextView) row.findViewById(R.id.game_name);
 		TextView gameInfoText = (TextView) row.findViewById(R.id.game_dev_descr);
 		
-		// If we want to add icon to a game
-		//ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
-
+		
+		
 		// Setting infos on views
 		gameNameText.setText(gamesName.get(pos));
 		gameInfoText.setText(gamesInfo.get(pos));
 		
 		// If we want to add icon to a game
-		//gameIconImage.setImageResource(gamesIcon.get(pos));
+		ImageView a = (ImageView) row.findViewById(R.id.game_icon);
+		final ImageDownloader mDownload = new ImageDownloader();
+		mDownload.download(gamesIcon.get(pos), a);
+		
 		return row;
 	}
 }

@@ -40,6 +40,8 @@ import android.widget.Toast;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
+
+
 public class GameHomePageActivity extends Activity {
 
 	private final static int TOAST_DELAY = 2000;
@@ -172,4 +174,5 @@ public class GameHomePageActivity extends Activity {
             }
         }); 
     }
+	
 }

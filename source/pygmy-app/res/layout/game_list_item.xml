@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/game_icon"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginRight="6dip"
         android:contentDescription="@string/description" />
@@ -23,14 +23,16 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:text="@string/empty"
-            android:textSize="20sp" />
+            android:textSize="18sp" 
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/game_dev_descr"
             android:layout_width="fill_parent"
             android:layout_height="20dp"
             android:text="@string/empty"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="italic" />
     </LinearLayout>
 
 </LinearLayout>

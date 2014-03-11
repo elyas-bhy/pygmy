@@ -73,7 +73,7 @@
             android:onClick="onInviteClicked"
             android:text="@string/invite"
             android:textSize="12sp" />
-
+      
         <Button
             android:id="@+id/playButton"
             android:layout_width="200dp"
