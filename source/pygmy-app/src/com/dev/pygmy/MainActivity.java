@@ -226,6 +226,10 @@ public class MainActivity extends BaseGameActivity implements
 						beginUserInitiatedSignIn();
 						findViewById(R.id.sign_in_button).setVisibility(
 								View.GONE);
+						findViewById(R.id.offline_button).setVisibility(
+								View.GONE);
+						findViewById(R.id.welcome).setVisibility(
+								View.GONE);
 					}
 				});
 	}
