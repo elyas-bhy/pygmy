@@ -68,15 +68,27 @@
     <style name="HelpText.Caption">
         <item name="android:textSize">@dimen/font_size_small</item>
     </style>
+    
+    
+    <style name="gametextname">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="gametextdescr">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
 
     <style name="Button" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:textColor">#FF000000</item>
+        <item name="android:textColor">@color/white_light</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:textSize">24sp</item>
         <item name="android:padding">12dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
     
     <style name="screen_profile">
@@ -93,7 +105,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">#f0f0f0</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">40dp</item>
+        <item name="android:padding">20dp</item>
     </style>
     
      <style name="text_profile">
@@ -101,7 +113,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/BlurbColor</item>
+        <item name="android:textColor">@color/black</item>
     </style>
     
     <style name="game_profile">
@@ -109,16 +121,14 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/BlurbColor</item>
+        <item name="android:textColor">@color/black</item>
     </style>
     
     <style name="image_profile">
-        <item name="android:layout_width">100dp</item>
-        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">140dp</item>
+        <item name="android:layout_height">140dp</item>
         <item name="android:layout_weight">0</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">#000000</item>
-		<item name="android:padding">3dp</item>
      </style>
     
      <style name="game_list_profile">
@@ -135,7 +145,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/BlurbColor</item>
+        <item name="android:textColor">@color/black</item>
     </style>
     
     <style name="name_profile" parent="@style/Blurb">

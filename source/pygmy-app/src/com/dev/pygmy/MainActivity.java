@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -88,6 +89,14 @@ public class MainActivity extends BaseGameActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		gameHelper = new GameHelper(this);
+		
+		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
+		animation.setDuration(1400);
+		animation.setFillAfter(false);
+		
+
+		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
+		imageview.startAnimation(animation);
 
 		// Load preferences
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -134,6 +143,10 @@ public class MainActivity extends BaseGameActivity implements
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.start_match));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.quick_match));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.check_games));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -157,6 +170,23 @@ public class MainActivity extends BaseGameActivity implements
 				if (position == 3) {
 					startActivity(new Intent(MainActivity.this, GameListActivity.class));
 				}
+				if (position == 4) {
+					signOut();
+					setViewVisibility();
+				}
+				if (position == 5) {
+					onStartMatchClicked(findViewById(R.id.matchup_layout));
+				}
+				if (position == 6) {
+					onQuickMatchClicked(findViewById(R.id.matchup_layout));
+					findViewById(R.id.screen_profile).setVisibility(View.GONE);
+				}
+				if (position == 7) {
+					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
+					onCheckGamesClicked(findViewById(R.id.matchup_layout));
+					
+					
+				}
 
 			}
 		});
@@ -164,14 +194,6 @@ public class MainActivity extends BaseGameActivity implements
 	}
 
 	private void initSigninButtons() {
-		findViewById(R.id.sign_out_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						signOut();
-						setViewVisibility();
-					}
-				});
 
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
@@ -181,9 +203,14 @@ public class MainActivity extends BaseGameActivity implements
 						beginUserInitiatedSignIn();
 						findViewById(R.id.sign_in_button).setVisibility(
 								View.GONE);
+						findViewById(R.id.offline_button).setVisibility(
+								View.GONE);
+						findViewById(R.id.welcome).setVisibility(
+								View.GONE);
 					}
 				});
 	}
+
 
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
@@ -305,35 +332,41 @@ public class MainActivity extends BaseGameActivity implements
 		// will replace notifications you would get otherwise. You do *NOT* have
 		// to register a MatchUpdateListener.
 		getGamesClient().registerMatchUpdateListener(this);
+		
+		setProfileView();
+		
 	}
 
 	// Switch to profile view
 	private void setProfileView() {
-		// Initialisation
-		URL imageUrl = null;
-		Person p = getPlusClient().getCurrentPerson();
+		if (!isSignedIn()) {
+			setViewVisibility();		
+		} else {
+			// Initialisation
+			URL imageUrl = null;
+			Person p = getPlusClient().getCurrentPerson();
 
-		// To display
-		String name = p.getDisplayName();
-		String nationality = p.getLanguage().toUpperCase();
+			// To display
+			String name = p.getDisplayName();
+			String nationality = p.getLanguage().toUpperCase();
 
-		// Getting URL
-		try {
-			imageUrl = new URL(p.getImage().getUrl());
+			// Getting URL
+			try {
+				imageUrl = new URL(p.getImage().getUrl());
 
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+
+			// Setting text and image in views
+			((TextView) findViewById(R.id.name_profile)).setText(name);
+			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
+			ImageView a = (ImageView) findViewById(R.id.image_profile);
+			final ImageDownloader mDownload = new ImageDownloader();
+			mDownload.download(imageUrl.toString(), a);
+
+			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 		}
-
-		// Setting text and image in views
-		((TextView) findViewById(R.id.name_profile)).setText(name);
-		((TextView) findViewById(R.id.game_one)).setText("First game");
-		((TextView) findViewById(R.id.nat_profile)).setText(nationality);
-		ImageView a = (ImageView) findViewById(R.id.image_profile);
-		final ImageDownloader mDownload = new ImageDownloader();
-		mDownload.download(imageUrl.toString(), a);
-
-		findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 	}
 
 	// Helper dialogs
