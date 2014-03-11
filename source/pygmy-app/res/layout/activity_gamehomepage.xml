@@ -25,24 +25,34 @@
             tools:ignore="UselessParent" >
         </LinearLayout>
 
+      <ImageView
+            android:id="@+id/logo_image_gamepage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dip"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_home_page" />
+
         <TextView
             android:id="@+id/name_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/margin_small"
+            android:layout_marginTop="5dip"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/logo_image_gamepage"
             android:text=""
-            android:textAppearance="@style/HelpText.Caption" />
+	        android:textAppearance="@style/gametextname" />
 
         <TextView
             android:id="@+id/name_resume"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/name_game"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/margin_small"
+            android:layout_marginBottom="2dip"
+            android:layout_marginTop="2dip"
             android:text=""
-            android:textAppearance="@style/HelpText.Caption" />
+            android:textAppearance="@style/gametextdescr" />
 
         <Button
             android:id="@+id/randomButton"
@@ -71,6 +81,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/secret_layout"
             android:onClick="onPlayClicked"
+            android:layout_below="@id/name_resume"
+            android:layout_marginTop="4dip"
             android:text="@string/play"
             android:textSize="30sp" />
 

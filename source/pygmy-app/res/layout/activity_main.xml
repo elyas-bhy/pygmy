@@ -23,6 +23,7 @@
             android:id="@+id/logo_image"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/margin_medium"
             android:src="@drawable/logo_home_page" />
 

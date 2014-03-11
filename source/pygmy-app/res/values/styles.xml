@@ -68,6 +68,17 @@
     <style name="HelpText.Caption">
         <item name="android:textSize">@dimen/font_size_small</item>
     </style>
+    
+    
+    <style name="gametextname">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="gametextdescr">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
 
     <style name="Button" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button</item>

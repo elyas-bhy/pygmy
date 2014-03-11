@@ -205,7 +205,9 @@ public class MainActivity extends BaseGameActivity implements
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 				}
 				if (position == 7) {
+					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
 					onCheckGamesClicked(findViewById(R.id.matchup_layout));
+					
 					
 				}
 
@@ -297,7 +299,7 @@ public class MainActivity extends BaseGameActivity implements
 		mTurnData.turnCounter += 1;
 		mTurnData.data = mDataView.getText().toString();
 
-		showSpinner();
+//		showSpinner();
 
 		getGamesClient().takeTurn(this, mMatch.getMatchId(),
 				mTurnData.persist(), nextParticipantId);
