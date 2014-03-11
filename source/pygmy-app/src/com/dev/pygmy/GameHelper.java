@@ -12,7 +12,6 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 public class GameHelper {
 	
 	private MainActivity context;
-
 	private AlertDialog mAlertDialog;
 
 	// Should I be showing the turn API?
@@ -202,10 +201,8 @@ public class GameHelper {
 			}
 		});
 
-		// create alert dialog
+		// Create alert dialog & show it
 		mAlertDialog = alertDialogBuilder.create();
-
-		// show it
 		mAlertDialog.show();
 	}
 
@@ -256,7 +253,6 @@ public class GameHelper {
 			PygmyApp.logD("Did not have warning or string to deal with: "
 					+ statusCode);
 		}
-
 		return false;
 	}
 
@@ -269,7 +265,6 @@ public class GameHelper {
 		}
 
 		isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
-
 		if (isDoingTurn) {
 			updateMatch(match);
 			return;
@@ -326,4 +321,5 @@ public class GameHelper {
 	public boolean isDoingTurn() {
 		return isDoingTurn;
 	}
+	
 }
