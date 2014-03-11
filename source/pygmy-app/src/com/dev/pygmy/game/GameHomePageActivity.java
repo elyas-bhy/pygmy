@@ -38,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
@@ -46,8 +47,7 @@ public class GameHomePageActivity extends Activity {
 	private final static int TOAST_DELAY = 2000;
 	Spinner spin;
 
-	Button dwnld;
-	Button play;
+	Button button;
 
 	public String gamesInfoUrl = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesInfo.php";
 	public String reportUrl = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/report.php";
@@ -57,11 +57,13 @@ public class GameHomePageActivity extends Activity {
 	int id;
 	String gameName;
 	String filename;
-	int version;
+	String version;
 
 	String filePath;
 	String destPath;
 	String destPathVersion;
+
+	boolean download = false;
 
 	ProgressDialog dialog = null;
 
@@ -71,8 +73,7 @@ public class GameHomePageActivity extends Activity {
 		setContentView(R.layout.activity_gamehomepage);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		dwnld = (Button) findViewById(R.id.downloadButton);
-		play = (Button) findViewById(R.id.playButton);
+		button = (Button) findViewById(R.id.play_downloadButton);
 
 		// Retrieve informations of the game selected
 		Bundle extras;
@@ -83,20 +84,21 @@ public class GameHomePageActivity extends Activity {
 				id = 0;
 				gameName = null;
 				filename = null;
-				version = 0;
+				version = null;
 			} else {
 				id = extras.getInt("id");
 				gameName = extras.getString("gameName");
 				filename = extras.getString("filename");
-				version = extras.getInt("version");
+				version = extras.getString("version");
 			}
 		}
 
 		File checkFile = new File(getFilesDir().getPath() + "/" + gameName);
 		File updateFileVersion = new File(getFilesDir().getPath() + "/"
 				+ gameName + "/" + version);
-		checkDownload(checkFile);
-		updateVersion(updateFileVersion, checkFile);
+		
+		// check if the game is already on the device or not
+		checkDownload(updateFileVersion, checkFile);
 
 		spin = (Spinner) findViewById(R.id.spinner);
 		titleView = (TextView) findViewById(R.id.name_game);
@@ -126,52 +128,50 @@ public class GameHomePageActivity extends Activity {
 		return true;
 	}
 
-	public void onPlayClicked(View view) {
-		// TODO
-	}
-
-	public void onInviteClicked(View view) {
-		// TODO
-	}
-
-	public void onDownloadClicked(View view) {
-
-		// create a folder (gameName) in the pygmy files repository
-		File gameFolder = new File(getFilesDir().getPath() + "/" + gameName);
-		gameFolder.mkdirs();
-
-		// create a folder to indicate the version of the game
-		File versionFolder = new File(getFilesDir().getPath() + "/" + gameName
-				+ "/" + version);
-		versionFolder.mkdirs();
-
-		// path of the file we want to download
-		filePath = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/"
-				+ gameName + "/" + filename;
-		destPath = gameFolder + "/" + filename;
-
-		// create an animation to show the progress of the download
-		dialog = ProgressDialog.show(GameHomePageActivity.this, "",
-				"Downloading game...", true);
-		new Thread(new Runnable() {
-			public void run() {
-				downloadFile(filePath, destPath);
-			}
-		}).start();
-		Toast.makeText(this, "Download Done", TOAST_DELAY).show();
-
-		// change the visibility of the buttons
-		play.setEnabled(true);
-		play.isClickable();
-		dwnld.setVisibility(View.GONE);
-	}
-
 	public void onReportClicked(View view) {
 
 		new LoadDataFromDatabase(spin, reportUrl, gameName);
 		Toast.makeText(this, "Report Done", TOAST_DELAY).show();
 	}
 
+	public void onPlayDownloadClicked(View view) {
+		if (!download) {
+			// create a folder (gameName) in the pygmy files repository
+			File gameFolder = new File(getFilesDir().getPath() + "/" + gameName);
+			gameFolder.mkdirs();
+
+			// create a folder to indicate the version of the game
+			File versionFolder = new File(getFilesDir().getPath() + "/"
+					+ gameName + "/" + version);
+			versionFolder.mkdirs();
+
+			// path of the file we want to download
+			filePath = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/"
+					+ gameName + "/" + filename;
+			destPath = gameFolder + "/" + version + "/" + filename;
+
+			// create an animation to show the progress of the download
+			dialog = ProgressDialog.show(GameHomePageActivity.this, "",
+					"Downloading game...", true);
+			new Thread(new Runnable() {
+				public void run() {
+					downloadFile(filePath, destPath);
+				}
+			}).start();
+			Toast.makeText(this, "Download Done", TOAST_DELAY).show();
+
+			download = true;
+
+			// change the visibility of the button
+			button.setText("Play");
+		} else {
+			// if PLAY is pressed
+			// TODO
+			Toast.makeText(this, "PLAY event", TOAST_DELAY).show();
+		}
+	}
+
+	// download .jar on the device
 	public void downloadFile(String url, String dest) {
 		try {
 			// retrieve files .jar on the server with url and save this on the
@@ -209,31 +209,18 @@ public class GameHomePageActivity extends Activity {
 		});
 	}
 
-	// check if the game is already installed on the device
-	public void checkDownload(File game) {
-		if (game.exists()) {
-			play.setEnabled(true);
-			play.isClickable();
-			dwnld.setVisibility(View.GONE);
-		} else {
-
-			play.setEnabled(false);
-			dwnld.setVisibility(View.VISIBLE);
-		}
-	}
-
 	// check if the most recent version of the game is installed on the device
-	public void updateVersion(File version, File gameFolder) {
-		if (version.exists()) {
-			play.setEnabled(true);
-			play.isClickable();
-			dwnld.setVisibility(View.GONE);
-		} else {
+	public void checkDownload(File version, File gameFolder) {
+		if (gameFolder.exists() && version.exists()) {
+			download = true;
+			button.setText("Play");
+		} else if (gameFolder.exists() && !version.exists()) {
 			deleteDirectory(gameFolder);
-			play.setEnabled(false);
-			dwnld.setVisibility(View.VISIBLE);
-
+			download = false;
+		} else {
+			download = false;
 		}
+
 	}
 
 	// delete old version of a game

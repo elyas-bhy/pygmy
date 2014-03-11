@@ -31,13 +31,16 @@ session_start();
 
 		
 		<div id="corps">
-			<div class="block">
+			<div id="connect">
 					<h1>Connexion</h1>
 					<form method="post" action="Connexion.php">
-					<p> Login : <input name="Login" type="text" /> </p>
-					<p> Mot de passe : <input name="Password" type="password" /> </p> 
-					<input name="Envoyer" type="submit" value="Envoyer" />
-					<input name="Rétablir" type="reset" value="Rétablir" /></form>
+						<table id="connect">
+						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						</table>
+						<p><input type="submit" value="Submit"/>
+						<input type="reset" value="Reset"/></p>
+					</form>
 
 					<a href="Register.php">Create another user</a>
 			</div>

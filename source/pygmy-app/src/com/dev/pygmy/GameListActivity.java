@@ -51,7 +51,7 @@ public class GameListActivity extends Activity {
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
 	ArrayList<String> fileName = new ArrayList<String>();
-	ArrayList<Integer> gameVersion = new ArrayList<Integer>();
+	ArrayList<String> gameVersion = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +146,7 @@ public class GameListActivity extends Activity {
 					String file = Jasonobject.getString("filename");
 					fileName.add(file);
 					
-					int version = Jasonobject.getInt("version");
+					String version = Jasonobject.getString("version");
 					gameVersion.add(version);
 
 					GameListAdapter adapter = new GameListAdapter(

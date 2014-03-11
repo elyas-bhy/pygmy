@@ -33,9 +33,9 @@ session_start();
 				<div id="menu">
 			<ul>
 				<li><a href="../index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Download.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Upload.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="PygmyLog.php">MY SETTINGS</a></li>
+				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
+				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
+				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
 			</ul>
 		</div>
 		
@@ -51,7 +51,7 @@ session_start();
 	
 		
 		<form method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>">
-						<p> Version (write the number 2, 3... 1.1, 1.2 not allowed) <input type="text" size="20" name="Version"/></p>
+						<p> Version (write the number) <input type="text" size="20" name="Version"/></p>
 						<p> /!\ Filename must be game.jar /!\ .</p>
 						<p><input type="file" name="code"></p>
 						<p><input type="submit" value="UPLOAD"/>

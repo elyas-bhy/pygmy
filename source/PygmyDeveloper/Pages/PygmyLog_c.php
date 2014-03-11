@@ -33,15 +33,18 @@ session_start();
 				<div id="menu">
 			<ul>
 				<li><a href="../index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Download.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Upload.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="PygmyLog.php">MY SETTINGS</a></li>
+				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
+				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
+				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
 			</ul>
 		</div>
 		
+		<?php
+			if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
+		?>
 		<div id="settings">
 		<p>
-		<?php
+			<?php
 			error_reporting(E_ALL ^ E_NOTICE);
 					$host = "dbserver"; //dbserver
 					$user = "njouanla";  //njouanla
@@ -79,10 +82,10 @@ session_start();
 
 					$title = $row['name'];
 					$version = $row['version'];
-					echo ' '.$title.'  |  Version : '.$version.'.0 <br>';
+					echo ' '.$title.'  |  Version : '.$version.' <br>';
 					?>
-					<form method="post" action="Version.php?game=<?php echo $row['name']; ?>">
-					<input type="submit" name="submit" value="New Version">
+					<form method="post" action="Version.php?game=<?php echo $row['name']; ?>"><br>
+					<input type="submit" name="submit" value="UPDATE">
 					</form>
 				
 					<?php
@@ -91,8 +94,16 @@ session_start();
 					
 					
 					mysql_close($conn);
+		}
+		
+		else
+					{
+					echo 'You need to log in.';
+					echo '<meta http-equiv="refresh" content="1; URL=ConnexionSite.php"> <br/>';
+					}
 		?>
-	</div>
+		
+		</div>
 <?php 
 include("../feet.html"); 
 ?> 
