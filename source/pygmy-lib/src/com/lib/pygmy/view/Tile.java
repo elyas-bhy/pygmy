@@ -67,6 +67,11 @@ public class Tile {
 		this.width = width;
 		this.height = height;
 	}
+	
+	public void setCoordinates(int posX, int posY) {
+		coordinates.x = posX;
+		coordinates.y = posY;
+	}
 
 	/**
 	 * @return the width of the tile.

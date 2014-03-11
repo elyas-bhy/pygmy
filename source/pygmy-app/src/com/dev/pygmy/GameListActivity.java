@@ -46,10 +46,12 @@ public class GameListActivity extends Activity {
 
 	private ListView listView;
 
+	ArrayList<Integer> idGame = new ArrayList<Integer>();
 	ArrayList<String> gameName = new ArrayList<String>();
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
 	ArrayList<String> fileName = new ArrayList<String>();
+	ArrayList<Integer> gameVersion = new ArrayList<Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,10 @@ public class GameListActivity extends Activity {
 
 				Intent intent = new Intent(getApplicationContext(),
 						GameHomePageActivity.class);
+				intent.putExtra("id", idGame.get(+position));
 				intent.putExtra("gameName", gameName.get(+position));
 				intent.putExtra("filename", fileName.get(+position));
+				intent.putExtra("version", gameVersion.get(+position));
 				startActivity(intent);
 			}
 		});
@@ -129,6 +133,9 @@ public class GameListActivity extends Activity {
 				for (int i = 0; i < Jarray.length(); i++) {
 					JSONObject Jasonobject = null;
 					Jasonobject = Jarray.getJSONObject(i);
+					
+					int id = Jasonobject.getInt("id_game");
+					idGame.add(id);
 
 					String title = Jasonobject.getString("name");
 					gameName.add(title);
@@ -138,6 +145,9 @@ public class GameListActivity extends Activity {
 					
 					String file = Jasonobject.getString("filename");
 					fileName.add(file);
+					
+					int version = Jasonobject.getInt("version");
+					gameVersion.add(version);
 
 					GameListAdapter adapter = new GameListAdapter(
 							GameListActivity.this, gameName, info, imageId);

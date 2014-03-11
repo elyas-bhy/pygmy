@@ -29,6 +29,7 @@ import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.Player;
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -45,9 +46,8 @@ public class EntityView extends View {
 	private int tileSize = 0;
 	private int offset = 0;
 	
-	
-	private int possibleColumn = 0;
-	private int possibleRow = 0;
+	private int targetColumn = 0;
+	private int targetRow = 0;
 	private Tile entityCurrentPosition;
 
 	/**
@@ -107,12 +107,9 @@ public class EntityView extends View {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 		
-		int nbRows = 8;
-		int nbColumns = 8;
-		// tileSize=72 .. offset=24
-		//PygmyApp.logD("tileSize: "+tileSize+" offset: "+offset);
+		int nbRows = GameBoardView.getNumberOfRows();
+		int nbColumns = GameBoardView.getNumberOfColumns();
 		
-		// 96 96 672 672
 		int minX = tileSize + offset;
 		int minY = tileSize + offset;
 		int maxX = minX + (tileSize * nbRows);
@@ -120,7 +117,7 @@ public class EntityView extends View {
 
 		switch (event.getAction()) { 
 
-		// Touch down so check if the finger is on an entity
+		// The finger is on an entity
 		case MotionEvent.ACTION_DOWN: 
 			Point coords;
 			Tile tile;
@@ -134,8 +131,16 @@ public class EntityView extends View {
 					if (x > coords.x && x < coords.x + tileSize 
 					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
+						Player entityPlayer= entity.getPlayer();
+						Player currentPlayer = game.getCurrentPlayer();
+						
+						if (entityPlayer.getId() != currentPlayer.getId()) {
+							PygmyApp.logD("It's not your turn!!");
+							return true;
+						}
+						
 						draggedEntity = entity;
-						entityCurrentPosition = entity.getCurrentTile();
+						entityCurrentPosition = tile;
 						offset = tileSize/3;
 						break;
 					}
@@ -148,10 +153,23 @@ public class EntityView extends View {
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
 				if (minX < x && x < maxX && minY < y && y < maxY) {
-					// Identify the hovered tile
-					possibleRow = (y * nbRows) / maxY;
-					possibleColumn = (x * nbColumns) / maxX;
-					Tile nextTile = GameBoardView.getTileAt(possibleRow-1, possibleColumn-1);
+					//Identify the hovered tile
+					float eventX = event.getX();
+					float eventY = event.getY();
+					float mx=(eventX * nbColumns) / maxX;
+					float my=(eventY * nbRows) / maxY;
+					
+					targetColumn = Math.round(mx);
+					targetRow = Math.round(my);
+
+					if ((int)mx == 1) {
+						targetColumn = (int)mx;
+					}
+					if ((int)my == 1) {
+						targetRow = (int)my;
+					} 
+
+					Tile nextTile = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
 					
 					// Show the future position of the entity
 					GameViewManager.redrawOverlay();
@@ -160,27 +178,27 @@ public class EntityView extends View {
 											nextTile.getCoordinates().y, tileSize, tileSize);
 
 					// Move entity
-					draggedEntity.setCurrentTile(nextTile);
-
-					PygmyApp.logD("X: " + x + " Y: " + y);
-					PygmyApp.logD("\t	currentPos (X, Y)-->("+possibleRow +", "+possibleColumn+")");
-					PygmyApp.logD("tileSize: "+tileSize);
+					draggedEntity.setCurrentTile(new Tile((x - tileSize/2), (y - tileSize/2), 0));
 				}
 			}
-
 			break;
 
+		// The finger has left the screen.
 		case MotionEvent.ACTION_UP:
 			GameViewManager.resetOverlay();
-			
-			// Entity should not go outside of the board
-			if (minX < x && x < maxX && minY < y && y < maxY) {
-				Tile dst = GameBoardView.getTileAt(possibleRow-1, possibleColumn-1);
-				GameMove move = new GameMove(draggedEntity, dst);
-				game.onPlayerMove(move);
-			} else {
+
+			if (draggedEntity != null && entityCurrentPosition != null) {
+				// Entity should not go outside of the board
 				draggedEntity.setCurrentTile(entityCurrentPosition);
+				if (minX < x && x < maxX && minY < y 
+						&& y < maxY && targetRow > 0 && targetColumn > 0) {
+					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
+					GameMove move = new GameMove(draggedEntity, dst);
+					game.onPlayerMove(move);
+				}
 			}
+			entityCurrentPosition = null;
+			draggedEntity = null;
 			break;
 			
 		default:
