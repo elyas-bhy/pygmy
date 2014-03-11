@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -248,11 +249,12 @@ public class MainActivity extends BaseGameActivity implements
 
 	// Update the visibility based on what state we're in.
 	public void setViewVisibility() {
+		LinearLayout gameLayout = ((LinearLayout) findViewById(R.id.gameplay_layout));
 		if (!isSignedIn()) {
 			findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-			findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+			gameLayout.setVisibility(View.GONE);
 
 //			if (mAlertDialog != null) {
 //				mAlertDialog.dismiss();
@@ -266,10 +268,10 @@ public class MainActivity extends BaseGameActivity implements
 
 		if (gameHelper.isDoingTurn()) {
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-			findViewById(R.id.gameplay_layout).setVisibility(View.VISIBLE);
+			gameLayout.setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
-			findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+			gameLayout.setVisibility(View.GONE);
 		}
 	}
 
