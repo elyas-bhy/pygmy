@@ -22,8 +22,8 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 
-import com.client.pygmy.PygmyGameImpl;
 import com.dev.pygmy.PygmyApp;
+import com.lib.pygmy.PygmyGame;
 
 /**
  * This class represents the whole game board including their pieces/entities.
@@ -36,11 +36,11 @@ public class GameBoardActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		PygmyGameImpl game = null;
+		PygmyGame game = null;
 		try {
 			Class<?> clazz = Class.forName("com.client.pygmy.PygmyGameImpl");
 			Constructor<?> constructor = clazz.getConstructor(Resources.class);
-			game = (PygmyGameImpl) constructor.newInstance(getResources());
+			game = (PygmyGame) constructor.newInstance(getResources());
 		} catch (Exception e) {
 			PygmyApp.logE(e.getMessage());
 		}

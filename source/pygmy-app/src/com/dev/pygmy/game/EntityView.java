@@ -24,11 +24,11 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.client.pygmy.PygmyGameImpl;
 import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
+import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -37,7 +37,7 @@ import com.lib.pygmy.view.Tile;
  */
 public class EntityView extends View {
 	
-	private PygmyGameImpl game;
+	private PygmyGame game;
 	private Collection<GameEntity> entities;	// array that holds the entities
 	private GameEntity draggedEntity = null;	// variable to know what entity is being dragged
 	
@@ -63,7 +63,7 @@ public class EntityView extends View {
 	 * @param context		Context parent.
 	 * @param game			Reference to the game context 
 	 */
-	public EntityView(Context context, PygmyGameImpl game) {
+	public EntityView(Context context, PygmyGame game) {
 		super(context);
 		setFocusable(true); // Necessary for getting the touch events
 

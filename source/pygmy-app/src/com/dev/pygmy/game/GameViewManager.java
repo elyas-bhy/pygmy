@@ -23,20 +23,20 @@ import android.app.Activity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.client.pygmy.PygmyGameImpl;
 import com.dev.pygmy.R;
+import com.lib.pygmy.PygmyGame;
 
 public class GameViewManager {
 	
 	private Activity context;
-	private PygmyGameImpl game;
+	private PygmyGame game;
 	private FrameLayout mainLayout;
 	
 	private GameBoardView gameBoardView;
 	private EntityView entityView;
 	private static TileOverlayView tileOverlayView;
 	
-	public GameViewManager(Activity context, PygmyGameImpl game) {
+	public GameViewManager(Activity context, PygmyGame game) {
 		this.context = context;
 		this.game = game;
 	}
@@ -89,4 +89,5 @@ public class GameViewManager {
 	public static TileOverlayView getOverlay() {
 		return tileOverlayView;
 	}
+	
 }

@@ -1,6 +1,7 @@
 package com.lib.pygmy;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -111,4 +112,5 @@ public abstract class PygmyGame implements Game, Observer {
 		return this;
 	}
 	
+	public abstract Map<String,Object> getParameters();
 }
