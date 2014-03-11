@@ -29,6 +29,7 @@ import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
+import com.lib.pygmy.Player;
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -130,6 +131,14 @@ public class EntityView extends View {
 					if (x > coords.x && x < coords.x + tileSize 
 					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
+						Player entityPlayer= entity.getPlayer();
+						Player currentPlayer = game.getCurrentPlayer();
+						
+						if (entityPlayer.getId() != currentPlayer.getId()) {
+							PygmyApp.logD("It's not your turn!!");
+							return true;
+						}
+						
 						draggedEntity = entity;
 						entityCurrentPosition = tile;
 						offset = tileSize/3;
@@ -181,7 +190,8 @@ public class EntityView extends View {
 			if (draggedEntity != null && entityCurrentPosition != null) {
 				// Entity should not go outside of the board
 				draggedEntity.setCurrentTile(entityCurrentPosition);
-				if (minX < x && x < maxX && minY < y && y < maxY && targetRow > 0 && targetColumn > 0) {
+				if (minX < x && x < maxX && minY < y 
+						&& y < maxY && targetRow > 0 && targetColumn > 0) {
 					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
 					GameMove move = new GameMove(draggedEntity, dst);
 					game.onPlayerMove(move);
