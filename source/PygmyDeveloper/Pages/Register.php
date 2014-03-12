@@ -33,9 +33,11 @@ session_start();
 			<div class="block">
 					<h1>Register</h1>
 					<form method="post" action="RegisterDev.php">
-						<p> Login : <input type="text" size="20" name="Login" id="Login"/></p>
-						<p> Password : <input type="password" size="20" name="Password" id="Password"/></p>
-						<p> Email : <input type="email" size="50" name="Email" id="Email"/></p>
+						<table id="connect">
+						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						<tr><td><th class="left"><label>Email : </label></th><th><input type="email" size="50" name="Email" id="Email"/></th></td></tr>
+						</table>
 						<p><input type="submit" value="Submit"/>
 						<input type="reset" value="Reset"/></p>
 					</form>

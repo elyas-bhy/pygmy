@@ -33,20 +33,38 @@ session_start();
 				<div id="menu">
 					<ul>
 						<li><a href="../index.php" class="current">ACCUEIL</a></li>
-						<li><a href="Download.php" class="current">DOWNLOADS</a></li>
-						<li><a href="Upload.php">UPLOAD YOUR CODE</a></li>
-						<li><a href="PygmyLog.php">MY SETTINGS</a></li>
+						<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
+						<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
+						<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
 					</ul>
 				</div>
+		<div id="corps">
 		
+		<?php 
+				if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true)
+					{
+		?>
+					
+				
 		<div id="tab">
-		<TABLE BORDER="1"> 
+		<TABLE BORDER="1" id="dwld"> 
 			<TR> 
 			<TH> Pygmy </TH> 
-			<TD> <a href="../download/jeu.zip">PYGMY (Download me)</a> </TD> 
+			<TD> <a href="../download/game.jar">PYGMY (Download me)</a> </TD> 
 			</TR> 
 		</TABLE> 	
 		</div>	
+		<h1>
+		<?php
+			}
+				else
+					{
+					echo '<p>Access denied ! You need to log in. ';
+					echo '<meta http-equiv="refresh" content="1; URL=ConnexionSite.php"> <br/>';
+					}
+			?>
+			</h1>
+		</div>
 
 <?php 
 include("../feet.html"); 

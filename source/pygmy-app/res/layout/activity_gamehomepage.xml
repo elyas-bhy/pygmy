@@ -8,6 +8,7 @@
         android:id="@+id/matchup_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
@@ -25,24 +26,24 @@
             tools:ignore="UselessParent" >
         </LinearLayout>
 
-      <ImageView
+        <ImageView
             android:id="@+id/logo_image_gamepage"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="20dip"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dip"
             android:src="@drawable/logo_home_page" />
 
         <TextView
             android:id="@+id/name_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/logo_image_gamepage"
+            android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dip"
-            android:layout_centerInParent="true"
-            android:layout_below="@id/logo_image_gamepage"
             android:text=""
-	        android:textAppearance="@style/gametextname" />
+            android:textAppearance="@style/gametextname" />
 
         <TextView
             android:id="@+id/name_resume"
@@ -55,42 +56,10 @@
             android:textAppearance="@style/gametextdescr" />
 
         <Button
-            android:id="@+id/downloadButton"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:layout_alignLeft="@+id/inviteButton"
-            android:layout_below="@+id/playButton"
-            android:onClick="onDownloadClicked"
-            android:text="@string/download"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/inviteButton"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/downloadButton"
-            android:layout_centerHorizontal="true"
-            android:onClick="onInviteClicked"
-            android:text="@string/invite"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/playButton"
-            android:layout_width="200dp"
-            android:layout_height="65dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/secret_layout"
-            android:onClick="onPlayClicked"
-            android:layout_below="@id/name_resume"
-            android:layout_marginTop="4dip"
-            android:text="@string/play"
-            android:textSize="30sp" />
-
-        <Button
             android:id="@+id/reportButton"
             android:layout_width="130dp"
             android:layout_height="40dp"
-            android:layout_alignLeft="@+id/inviteButton"
+            android:layout_alignLeft="@+id/play_downloadButton"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="18dp"
             android:onClick="onReportClicked"
@@ -102,9 +71,19 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/reportButton"
-            android:layout_alignLeft="@+id/inviteButton"
+            android:layout_alignLeft="@+id/play_downloadButton"
             android:entries="@array/Conditions"
             android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/play_downloadButton"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:layout_alignTop="@+id/secret_layout"
+            android:layout_centerHorizontal="true"
+            android:onClick="onPlayDownloadClicked"
+            android:text="@string/download"
+            android:textSize="14sp" />
     </RelativeLayout>
 
 </RelativeLayout>

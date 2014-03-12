@@ -321,5 +321,9 @@ public class GameHelper {
 	public boolean isDoingTurn() {
 		return isDoingTurn;
 	}
+
+	public AlertDialog getDialog() {
+		return mAlertDialog;
+	}
 	
 }

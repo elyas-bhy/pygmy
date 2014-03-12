@@ -81,7 +81,7 @@ body
 	min-width:1024px;
 }
 
-<style type="text/css">
+
 a
 {
 	text-decoration:none;
@@ -90,11 +90,6 @@ a
 form .p
 {
 	font-weight: bold;
-}
-
-label
-{
-	text-align: left;
 }
 
 input
@@ -121,8 +116,6 @@ input[type=submit], input[type=reset]{
  input[type=submit]:hover, input[type=reset]:hover {
  background-color:#2E2E2E;
  }
-</style>
-
 
 .block
 {
@@ -295,6 +288,31 @@ input[type=submit], input[type=reset]{
 	color: #F9A322;
 }
 
+table#connect
+{
+	width: 315px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+table#upload
+{
+	width: 500px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+table#connect tr th.left
+{
+	width: 80px;
+	text-align: left;
+}
+
+table#upload tr th.left
+{
+	width: 210px;
+	text-align: left;
+}
 
 #footer
 {

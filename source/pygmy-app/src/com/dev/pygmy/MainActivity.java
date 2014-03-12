@@ -75,8 +75,10 @@ public class MainActivity extends BaseGameActivity implements
 		TurnBasedMultiplayerListener {
 
 	// For our intents
-	private final int RC_SELECT_PLAYERS = 10000;
-	private final int RC_LOOK_AT_MATCHES = 10001;
+	public static final int RC_SELECT_GAME = 10000;
+	public static final int RC_SELECT_PLAYERS = 10001;
+	public static final int RC_LOOK_AT_MATCHES = 10002;
+	public static final String EXTRA_GAME_PATH = "com.dev.pygmy.EXTRA_GAME_PATH";
 
 	// How long to show toasts.
 	private final int TOAST_DELAY = 2000;
@@ -93,7 +95,6 @@ public class MainActivity extends BaseGameActivity implements
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
 		animation.setDuration(1400);
 		animation.setFillAfter(false);
-		
 
 		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
 		imageview.startAnimation(animation);
@@ -168,7 +169,8 @@ public class MainActivity extends BaseGameActivity implements
 					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
 				if (position == 3) {
-					startActivity(new Intent(MainActivity.this, GameListActivity.class));
+					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
+					startActivityForResult(intent, RC_SELECT_GAME);
 				}
 				if (position == 4) {
 					signOut();
@@ -184,17 +186,13 @@ public class MainActivity extends BaseGameActivity implements
 				if (position == 7) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
 					onCheckGamesClicked(findViewById(R.id.matchup_layout));
-					
-					
 				}
-
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
 	}
 
 	private void initSigninButtons() {
-
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -210,7 +208,6 @@ public class MainActivity extends BaseGameActivity implements
 					}
 				});
 	}
-
 
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
@@ -228,15 +225,13 @@ public class MainActivity extends BaseGameActivity implements
 
 	// Create a one-on-one automatch game.
 	public void onQuickMatchClicked(View view) {
-
 		Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(1, 1, 0);
 
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 				.setAutoMatchCriteria(autoMatchCriteria).build();
-
-		showSpinner();
-
+		
 		// Kick the match off
+		showSpinner();
 		getGamesClient().createTurnBasedMatch(this, tbmc);
 	}
 
@@ -283,9 +278,9 @@ public class MainActivity extends BaseGameActivity implements
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameLayout.setVisibility(View.GONE);
 
-//			if (mAlertDialog != null) {
-//				mAlertDialog.dismiss();
-//			}
+			if (gameHelper.getDialog() != null) {
+				gameHelper.getDialog().dismiss();
+			}
 			return;
 		}
 
@@ -334,7 +329,6 @@ public class MainActivity extends BaseGameActivity implements
 		getGamesClient().registerMatchUpdateListener(this);
 		
 		setProfileView();
-		
 	}
 
 	// Switch to profile view
@@ -353,7 +347,6 @@ public class MainActivity extends BaseGameActivity implements
 			// Getting URL
 			try {
 				imageUrl = new URL(p.getImage().getUrl());
-
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
@@ -362,8 +355,8 @@ public class MainActivity extends BaseGameActivity implements
 			((TextView) findViewById(R.id.name_profile)).setText(name);
 			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
 			ImageView a = (ImageView) findViewById(R.id.image_profile);
-			final ImageDownloader mDownload = new ImageDownloader();
-			mDownload.download(imageUrl.toString(), a);
+			final ImageDownloader downloader = new ImageDownloader();
+			downloader.download(imageUrl.toString(), a);
 
 			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 		}
@@ -385,58 +378,64 @@ public class MainActivity extends BaseGameActivity implements
 		// It's VERY IMPORTANT for you to remember to call your superclass.
 		// BaseGameActivity will not work otherwise.
 		super.onActivityResult(request, response, data);
-
-		if (request == RC_LOOK_AT_MATCHES) {
-			// Returning from the 'Select Match' dialog
-
+		switch (request) {
+		
+		case RC_SELECT_GAME:
+			PygmyApp.logD("Result code:");
+			PygmyApp.logD("path: " + data.getStringExtra(EXTRA_GAME_PATH));
+			break;
+		
+		case RC_LOOK_AT_MATCHES:  // Returning from the 'Select Match' dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
 				return;
 			}
-
+			
 			TurnBasedMatch match = data
 					.getParcelableExtra(GamesClient.EXTRA_TURN_BASED_MATCH);
-
+			
 			if (match != null) {
 				updateMatch(match);
 			}
-
 			PygmyApp.logD("Match = " + match);
-		} else if (request == RC_SELECT_PLAYERS) {
-			// Returned from 'Select players to Invite' dialog
-
+			break;
+			
+		case RC_SELECT_PLAYERS:  // Returned from 'Select players to Invite' dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
 				return;
 			}
-
+			
 			// Get the invitee list
 			final ArrayList<String> invitees = data
 					.getStringArrayListExtra(GamesClient.EXTRA_PLAYERS);
-
+			
 			// Get automatch criteria
 			Bundle autoMatchCriteria = null;
-
+			
 			int minAutoMatchPlayers = data.getIntExtra(
 					GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 			int maxAutoMatchPlayers = data.getIntExtra(
 					GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-
+			
 			if (minAutoMatchPlayers > 0) {
 				autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
 						minAutoMatchPlayers, maxAutoMatchPlayers, 0);
 			} else {
 				autoMatchCriteria = null;
 			}
-
+			
 			TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 					.addInvitedPlayers(invitees)
 					.setAutoMatchCriteria(autoMatchCriteria).build();
-
+			
 			// Kick the match off
 			getGamesClient().createTurnBasedMatch(this, tbmc);
-
 			showSpinner();
+			break;
+			
+		default:
+			break;
 		}
 	}
 

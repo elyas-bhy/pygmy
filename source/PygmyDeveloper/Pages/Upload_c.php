@@ -33,25 +33,36 @@ session_start();
 				<div id="menu">
 			<ul>
 				<li><a href="../index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Download.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Upload.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="PygmyLog.php">MY SETTINGS</a></li>
+				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
+				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
+				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
 			</ul>
 		</div>
 		
 		<div id="corps">
-			
-		
+		<?php
+		if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
+		?>
 		<form method="post" enctype="multipart/form-data" action="UploadGame.php">
-						<p> Title : <input type="text" size="20" name="Title"/></p>
-						<p> Resume (200 characters) : <input type="text" size="200" name="Resume"/></p>
-						<p> Please upload a .jar file. /!\ Filename must be game.jar /!\ .</p>
-						<p><input type="file" name="code"></p>
-						<p><input type="submit" value="UPLOAD"/>
-						<input type="reset" value="RESET"/></p>
+			<table id="upload">
+			<tr><td><th class="left"><label>Title (no spaces) : </label></th><th><input type="text" size="20" name="Title"/></th></td></tr>
+			<tr><td><th class="left"><label>Description (200 characters) : </label></th><th><input type="text" size="200" name="Resume"</th></td></tr>
+			</table>
+			<p>Please upload a .jar file. /!\ Filename must be game.jar /!\ .</p>
+			<p><input type="file" name="code"></p>
+			<p><input type="submit" value="UPLOAD"/></p>
+			<input type="reset" value="RESET"/></p>
 					</form>
 					
 		</div>
+		<?php
+		}
+		else
+					{
+					echo 'You need to log in.';
+					echo '<meta http-equiv="refresh" content="1; URL=ConnexionSite.php"> <br/>';
+					}
+		?>
 
 <?php 
 include("../feet.html"); 

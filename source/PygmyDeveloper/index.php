@@ -33,9 +33,9 @@ session_start();
 				<div id="menu">
 			<ul>
 				<li><a href="index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Pages/Download.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Pages/Upload.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="Pages/PygmyLog.php">MY SETTINGS</a></li>
+				<li><a href="Pages/Download_c.php" class="current">DOWNLOADS</a></li>
+				<li><a href="Pages/Upload_c.php">UPLOAD YOUR CODE</a></li>
+				<li><a href="Pages/PygmyLog_c.php">MY SETTINGS</a></li>
 			</ul>
 		</div>
 
@@ -48,18 +48,23 @@ session_start();
 			<div class="package log">
 				<h1>Log In</h1>
 					<form method="post" action="Pages/Connexion.php">
-					<p> Login : <input name="Login" type="text" /> </p>
-					<p> Password : <input name="Password" type="password" /> </p> 
-					<input name="submit" type="submit" value="LOG IN"/>
-					<input name="reset" type="reset" value="RESET"/></form>
+						<table id="connect">
+						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						</table>
+						<p><input type="submit" value="SUBMIT"/>
+						<input type="reset" value="RESET"/></p>
+					</form>
 			</div>
 			
 			<div class="package register">
 				<h1>Sign In</h1>
 					<form method="post" action="Pages/RegisterDev.php">
-						<p> Login : <input type="text" size="20" name="Login"/></p>
-						<p> Password : <input type="password" size="20" name="Password"/></p>
-						<p> Email : <input type="email" size="50" name="Email"/></p>
+						<table id="connect">
+						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						<tr><td><th class="left"><label>Email : </label></th><th><input type="email" size="20" name="Email" id="Email"/></th></td></tr>
+						</table>
 						<p><input type="submit" value="SUBMIT"/>
 						<input type="reset" value="RESET"/></p>
 					</form>

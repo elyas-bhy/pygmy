@@ -51,7 +51,7 @@ public class GameListActivity extends Activity {
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
 	ArrayList<String> fileName = new ArrayList<String>();
-	ArrayList<Integer> gameVersion = new ArrayList<Integer>();
+	ArrayList<String> gameVersion = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +68,24 @@ public class GameListActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				Intent intent = new Intent(getApplicationContext(),
+				Intent intent = new Intent(GameListActivity.this,
 						GameHomePageActivity.class);
 				intent.putExtra("id", idGame.get(+position));
 				intent.putExtra("gameName", gameName.get(+position));
 				intent.putExtra("filename", fileName.get(+position));
 				intent.putExtra("version", gameVersion.get(+position));
-				startActivity(intent);
+				startActivityForResult(intent, MainActivity.RC_SELECT_GAME);
 			}
 		});
+	}
+	@Override
+	public void onActivityResult(int request, int response, Intent data) {
+		switch (request) {
+		case MainActivity.RC_SELECT_GAME:
+			setResult(MainActivity.RC_SELECT_GAME, data);
+			finish();
+			break;
+		}
 	}
 
 	class getServerListGame extends AsyncTask<String, String, Void> {
@@ -146,7 +155,7 @@ public class GameListActivity extends Activity {
 					String file = Jasonobject.getString("filename");
 					fileName.add(file);
 					
-					int version = Jasonobject.getInt("version");
+					String version = Jasonobject.getString("version");
 					gameVersion.add(version);
 
 					GameListAdapter adapter = new GameListAdapter(
