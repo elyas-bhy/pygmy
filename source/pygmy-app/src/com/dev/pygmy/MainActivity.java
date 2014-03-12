@@ -33,8 +33,8 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +85,9 @@ public class MainActivity extends BaseGameActivity implements
 	
 	private GameHelper gameHelper;
 	private SlidingMenu mSlidingMenu;
+	
+	// Tracks if we should initiate a new game
+	private boolean startGame = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +211,11 @@ public class MainActivity extends BaseGameActivity implements
 					}
 				});
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
 
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
@@ -219,7 +227,7 @@ public class MainActivity extends BaseGameActivity implements
 	// Open the create-game UI. You will get back an onActivityResult
 	// and figure out what to do.
 	public void onStartMatchClicked(View view) {
-		Intent intent = getGamesClient().getSelectPlayersIntent(1, 7, true);
+		Intent intent = getGamesClient().getSelectPlayersIntent(1, 2, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
 	}
 
@@ -271,12 +279,12 @@ public class MainActivity extends BaseGameActivity implements
 
 	// Update the visibility based on what state we're in.
 	public void setViewVisibility() {
-		LinearLayout gameLayout = ((LinearLayout) findViewById(R.id.gameplay_layout));
+		FrameLayout gameplayLayout = ((FrameLayout) findViewById(R.id.gameplay_layout));
 		if (!isSignedIn()) {
 			findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-			gameLayout.setVisibility(View.GONE);
+			gameplayLayout.setVisibility(View.GONE);
 
 			if (gameHelper.getDialog() != null) {
 				gameHelper.getDialog().dismiss();
@@ -287,13 +295,14 @@ public class MainActivity extends BaseGameActivity implements
 		((TextView) findViewById(R.id.name_field)).setText(getGamesClient()
 				.getCurrentPlayer().getDisplayName());
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
+		findViewById(R.id.screen_profile).setVisibility(View.GONE);
 
 		if (gameHelper.isDoingTurn()) {
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-			gameLayout.setVisibility(View.VISIBLE);
+			gameplayLayout.setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
-			gameLayout.setVisibility(View.GONE);
+			gameplayLayout.setVisibility(View.GONE);
 		}
 	}
 
@@ -301,7 +310,7 @@ public class MainActivity extends BaseGameActivity implements
 	public void onSignInFailed() {
 		setViewVisibility();
 	}
-
+	
 	@Override
 	public void onSignInSucceeded() {
 		if (mHelper.getTurnBasedMatch() != null) {
@@ -329,6 +338,12 @@ public class MainActivity extends BaseGameActivity implements
 		getGamesClient().registerMatchUpdateListener(this);
 		
 		setProfileView();
+		
+		if (startGame) {
+			startGame = false;
+			dismissSpinner();
+			onStartMatchClicked(null);
+		}
 	}
 
 	// Switch to profile view
@@ -381,8 +396,11 @@ public class MainActivity extends BaseGameActivity implements
 		switch (request) {
 		
 		case RC_SELECT_GAME:
-			PygmyApp.logD("Result code:");
-			PygmyApp.logD("path: " + data.getStringExtra(EXTRA_GAME_PATH));
+			if (data != null && data.hasExtra(EXTRA_GAME_PATH)) {
+				PygmyApp.logD("path: " + data.getStringExtra(EXTRA_GAME_PATH));
+				startGame = true;
+				showSpinner();
+			}
 			break;
 		
 		case RC_LOOK_AT_MATCHES:  // Returning from the 'Select Match' dialog
@@ -483,6 +501,7 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public void onTurnBasedMatchUpdated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
+		PygmyApp.logD("onTurnBasedMatchUpdated: " + statusCode);
 		gameHelper.onTurnBasedMatchUpdated(statusCode, match);
 		setViewVisibility();
 	}

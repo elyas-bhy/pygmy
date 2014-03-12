@@ -25,6 +25,7 @@ import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
+import com.lib.pygmy.Res;
 
 public class DemoLevel extends PygmyGameLevel {
 	
@@ -56,31 +57,31 @@ public class DemoLevel extends PygmyGameLevel {
 		addGameRule(new EndlessGameRule());
 
 		// declare each black piece (entity) with the Entity class
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_rook, 0, 0));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_knight, 0, 1));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_bishop, 0, 2));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_queen, 0, 3));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_king, 0, 4));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_bishop, 0, 5));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_knight, 0, 6));
-		addEntity(new MyChessEntity(this, p1, R.drawable.black_rook, 0, 7));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_rook, 0, 0));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_knight, 0, 1));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_bishop, 0, 2));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_queen, 0, 3));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_king, 0, 4));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_bishop, 0, 5));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_knight, 0, 6));
+		addEntity(new MyChessEntity(this, p1, Res.drawable.black_rook, 0, 7));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new Pawn(this, p1, R.drawable.black_pawn, 1, i));
+			addEntity(new Pawn(this, p1, Res.drawable.black_pawn, 1, i));
 		}
 		
 		// declare each white piece (entity) with the Entity class
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_rook, 7, 0));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_knight, 7, 1));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_bishop, 7, 2));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_queen, 7, 3));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_king, 7, 4));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_bishop, 7, 5));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_knight, 7, 6));
-		addEntity(new MyChessEntity(this, p2, R.drawable.white_rook, 7, 7));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_rook, 7, 0));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_knight, 7, 1));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_bishop, 7, 2));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_queen, 7, 3));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_king, 7, 4));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_bishop, 7, 5));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_knight, 7, 6));
+		addEntity(new MyChessEntity(this, p2, Res.drawable.white_rook, 7, 7));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new Pawn(this, p2, R.drawable.white_pawn, 6, i));
+			addEntity(new Pawn(this, p2, Res.drawable.white_pawn, 6, i));
 		}
 	}
 	

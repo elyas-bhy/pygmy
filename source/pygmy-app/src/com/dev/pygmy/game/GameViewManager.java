@@ -39,25 +39,11 @@ public class GameViewManager {
 	public GameViewManager(Activity context, PygmyGame game) {
 		this.context = context;
 		this.game = game;
+		this.mainLayout = (FrameLayout) context.findViewById(R.id.gameplay_layout);
 	}
 	
-	private FrameLayout createMainLayout() {
-		FrameLayout mainLayout = new FrameLayout(context);
-		LayoutParams gerenalLayoutParams = new LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT);
-		mainLayout.setLayoutParams(gerenalLayoutParams);
-		mainLayout.setBackgroundColor(context.getResources().getColor(R.color.grey_metal));
-
-		return mainLayout;
-	}
-	
-	public FrameLayout getLayout() {
-		if (mainLayout != null) {
-			return mainLayout;
-		}
+	public FrameLayout initLayout() {
 		
-		mainLayout = createMainLayout();
 		// Gets parameters of the game board.
 		if (game != null) {
 			game.initGame();

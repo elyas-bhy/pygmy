@@ -1,13 +1,20 @@
 package com.dev.pygmy;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 
+import com.dev.pygmy.game.GameViewManager;
 import com.dev.pygmy.util.TurnData;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.lib.pygmy.PygmyGame;
+
+import dalvik.system.DexClassLoader;
 
 public class GameHelper {
 	
@@ -23,7 +30,10 @@ public class GameHelper {
 	// This is the current match data after being unpersisted.
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
-	public TurnData mTurnData;
+	private TurnData mTurnData;
+	
+	// Manages all of the game's views
+	private GameViewManager mGameViewManager;
 	
 	public GameHelper(MainActivity context) {
 		this.mContext = context;
@@ -33,8 +43,26 @@ public class GameHelper {
 	public void setGameplayUI() {
 		isDoingTurn = true;
 		mContext.setViewVisibility();
-//		mDataView.setText(mTurnData.data);
-//		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
+		initGameViewManager();
+	}
+	
+	private void initGameViewManager() {
+		String jar = mContext.getFilesDir().getPath() + "/PygmyTestBeta2/2/game.jar";
+		DexClassLoader classLoader = new DexClassLoader(jar, 
+				mContext.getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath(), 
+				null, 
+				mContext.getClassLoader());
+		
+		PygmyGame game = null;
+		try {
+			Class<?> clazz = classLoader.loadClass("com.client.pygmy.PygmyGameImpl");
+			Constructor<?> constructor = clazz.getConstructor(Resources.class);
+			game = (PygmyGame) constructor.newInstance(mContext.getResources());
+		} catch (Exception e) {
+			PygmyApp.logE(e.getMessage());
+		}
+		this.mGameViewManager = new GameViewManager(mContext, game);
+		mGameViewManager.initLayout();
 	}
 
 	public void onDoneClicked() {

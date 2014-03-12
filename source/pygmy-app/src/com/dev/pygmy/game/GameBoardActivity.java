@@ -45,6 +45,6 @@ public class GameBoardActivity extends Activity {
 			PygmyApp.logE(e.getMessage());
 		}
 		mGameViewManager = new GameViewManager(this, game);
-		setContentView(mGameViewManager.getLayout());
+		//setContentView(mGameViewManager.getLayout());
 	}
 }
