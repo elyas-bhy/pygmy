@@ -30,7 +30,7 @@ import com.lib.pygmy.PygmyGame;
  */
 public class GameBoardActivity extends Activity {
 	
-	private GameViewManager gameViewManager;
+	private GameViewManager mGameViewManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class GameBoardActivity extends Activity {
 		} catch (Exception e) {
 			PygmyApp.logE(e.getMessage());
 		}
-		gameViewManager = new GameViewManager(this, game);
-		setContentView(gameViewManager.getLayout());
+		mGameViewManager = new GameViewManager(this, game);
+		setContentView(mGameViewManager.getLayout());
 	}
 }

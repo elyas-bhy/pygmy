@@ -28,6 +28,7 @@ import java.net.URLConnection;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -115,7 +116,7 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onPlayDownloadClicked(View view) {
-		final String destPath = getGameDirectory(version) + "/" + filename;
+		String destPath = getGameDirectory(version) + "/" + filename;
 		if (!downloaded) {
 			// Create a folder (gameName) in the pygmy files repository
 			File gameFolder = new File(getGameDirectory());
@@ -126,23 +127,8 @@ public class GameHomePageActivity extends Activity {
 			versionFolder.mkdirs();
 
 			// Path of the file we want to download
-			final String filePath = BASE_URL + "/files/" + gameName + "/" + filename;
-
-			// Create an animation to show the progress of the download
-			dialog = ProgressDialog.show(GameHomePageActivity.this, "",
-					"Downloading game...", true);
-			
-			new Thread(new Runnable() {
-				public void run() {
-					downloadFile(filePath, destPath);
-				}
-			}).start();
-			Toast.makeText(this, "Download Done", TOAST_DELAY).show();
-
-			downloaded = true;
-
-			// change the visibility of the button
-			button.setText("Play");
+			String filePath = BASE_URL + "/files/" + gameName + "/" + filename;
+			new GameDownloadTask().execute(filePath, destPath);
 		} else {
 			// Play is pressed
 			Intent data = new Intent();
@@ -151,41 +137,52 @@ public class GameHomePageActivity extends Activity {
 			finish();
 		}
 	}
-
-	// Downloads .jar file on the device
-	public void downloadFile(String url, String dest) {
-		try {
-			// Retrieve .jar files on the server with url and save this on the
-			// device
-			File destFile = new File(dest);
-			URL u = new URL(url);
-			URLConnection conn = u.openConnection();
-			int contentLength = conn.getContentLength();
-			DataInputStream stream = new DataInputStream(u.openStream());
-			byte[] buffer = new byte[contentLength];
-			stream.readFully(buffer);
-			stream.close();
-			DataOutputStream fos = new DataOutputStream(new FileOutputStream(destFile));
-			fos.write(buffer);
-			fos.flush();
-			fos.close();
-
-			hideProgressIndicator();
-		} catch (FileNotFoundException e) {
-			hideProgressIndicator();
-			return;
-		} catch (IOException e) {
-			hideProgressIndicator();
-			return;
+	
+	private class GameDownloadTask extends AsyncTask<String,Void,Void> {
+		
+		@Override
+		protected void onPreExecute() {
+			// Create an animation to show the progress of the download
+			dialog = ProgressDialog.show(GameHomePageActivity.this, "",
+					"Downloading game...", true);
 		}
-	}
 
-	private void hideProgressIndicator() {
-		runOnUiThread(new Runnable() {
-			public void run() {
+		@Override
+		protected Void doInBackground(String... urls) {
+			String url = urls[0];
+			String dest = urls[1];
+			try {
+				// Retrieve .jar files on the server with url and save this on the
+				// device
+				File destFile = new File(dest);
+				URL u = new URL(url);
+				URLConnection conn = u.openConnection();
+				int contentLength = conn.getContentLength();
+				DataInputStream stream = new DataInputStream(u.openStream());
+				byte[] buffer = new byte[contentLength];
+				stream.readFully(buffer);
+				stream.close();
+				DataOutputStream fos = new DataOutputStream(new FileOutputStream(destFile));
+				fos.write(buffer);
+				fos.flush();
+				fos.close();
+
+				dialog.dismiss();
+			} catch (FileNotFoundException e) {
+				dialog.dismiss();
+			} catch (IOException e) {
 				dialog.dismiss();
 			}
-		});
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			Toast.makeText(GameHomePageActivity.this, "Download Done", TOAST_DELAY).show();
+			downloaded = true;
+			// change the visibility of the button
+			button.setText("Play");
+		}
 	}
 
 	// check if the most recent version of the game is installed on the device

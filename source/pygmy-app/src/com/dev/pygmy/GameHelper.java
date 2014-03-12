@@ -11,7 +11,7 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 
 public class GameHelper {
 	
-	private MainActivity context;
+	private MainActivity mContext;
 	private AlertDialog mAlertDialog;
 
 	// Should I be showing the turn API?
@@ -26,13 +26,13 @@ public class GameHelper {
 	public TurnData mTurnData;
 	
 	public GameHelper(MainActivity context) {
-		this.context = context;
+		this.mContext = context;
 	}
 
 	// Switch to gameplay view.
 	public void setGameplayUI() {
 		isDoingTurn = true;
-		context.setViewVisibility();
+		mContext.setViewVisibility();
 //		mDataView.setText(mTurnData.data);
 //		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
 	}
@@ -44,7 +44,7 @@ public class GameHelper {
 		mTurnData.turnCounter += 1;
 //		mTurnData.data = mDataView.getText().toString();
 
-		context.getGamesClient().takeTurn(context, mMatch.getMatchId(),
+		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
 				mTurnData.persist(), nextParticipantId);
 
 		mTurnData = null;
@@ -60,7 +60,7 @@ public class GameHelper {
 	 */
 	public String getNextParticipantId() {
 
-		String myParticipantId = mMatch.getParticipantId(context.getGamesClient()
+		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());
 
 		ArrayList<String> participantIds = mMatch.getParticipantIds();
@@ -89,7 +89,7 @@ public class GameHelper {
 
 	public void onLeaveClicked() {
 		String nextParticipantId = getNextParticipantId();
-		context.getGamesClient().leaveTurnBasedMatchDuringTurn(context,
+		mContext.getGamesClient().leaveTurnBasedMatchDuringTurn(mContext,
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
@@ -100,27 +100,27 @@ public class GameHelper {
 
 		mMatch = match;
 
-		String myParticipantId = mMatch.getParticipantId(context.getGamesClient()
+		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());
 
 		// Taking this turn will cause turnBasedMatchUpdated
-		context.getGamesClient().takeTurn(context, match.getMatchId(),
+		mContext.getGamesClient().takeTurn(mContext, match.getMatchId(),
 				mTurnData.persist(), myParticipantId);
 	}
 
 	public void rematch() {
-		context.getGamesClient().rematchTurnBasedMatch(context, mMatch.getMatchId());
+		mContext.getGamesClient().rematchTurnBasedMatch(mContext, mMatch.getMatchId());
 		mMatch = null;
 		isDoingTurn = false;
 	}
 
 	public void onCancelClicked() {
-		context.getGamesClient().cancelTurnBasedMatch(context, mMatch.getMatchId());
+		mContext.getGamesClient().cancelTurnBasedMatch(mContext, mMatch.getMatchId());
 		isDoingTurn = false;
 	}
 
 	public void onFinishClicked() {
-		context.getGamesClient().finishTurnBasedMatch(context, mMatch.getMatchId());
+		mContext.getGamesClient().finishTurnBasedMatch(mContext, mMatch.getMatchId());
 		isDoingTurn = false;
 	}
 
@@ -181,12 +181,12 @@ public class GameHelper {
 		}
 
 		mTurnData = null;
-		context.setViewVisibility();
+		mContext.setViewVisibility();
 	}
 	
 	// Generic warning/info dialog
 	public void showWarning(String title, String message) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
 
 		// set title
 		alertDialogBuilder.setTitle(title).setMessage(message);
@@ -208,7 +208,7 @@ public class GameHelper {
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,
 			int stringId) {
-		showWarning("Warning", context.getResources().getString(stringId));
+		showWarning("Warning", mContext.getResources().getString(stringId));
 	}
 	
 	// Returns false if something went wrong, probably. This should handle
@@ -273,7 +273,7 @@ public class GameHelper {
 
 	// Rematch dialog
 	public void askForRematch() {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
 
 		alertDialogBuilder.setMessage("Do you want a rematch?");
 
@@ -283,7 +283,7 @@ public class GameHelper {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								context.rematch();
+								mContext.rematch();
 							}
 						})
 				.setNegativeButton("No.",
@@ -310,12 +310,12 @@ public class GameHelper {
 		}
 
 		if (match.getData() != null) {
-			// This is a game that has already started, so I'll just start
+			// This is a game that has already started, so just start it
 			updateMatch(match);
 			return;
 		}
 
-		context.startMatch(match);
+		mContext.startMatch(match);
 	}
 
 	public boolean isDoingTurn() {
