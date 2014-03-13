@@ -68,7 +68,7 @@ public class GameHelper {
 		
 		// Create the next turn
 		mTurnData.turnCounter += 1;
-//		mTurnData.data = mDataView.getText().toString();
+		//mTurnData.data = mDataView.getText().toString();
 
 		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
 				mTurnData.persist(), nextParticipantId);
@@ -124,6 +124,7 @@ public class GameHelper {
 		
 		mTurnData = new TurnData();
 		mTurnData.data = "First turn";
+		mTurnData.gamePath = gamePath ;
 
 		mMatch = match;
 

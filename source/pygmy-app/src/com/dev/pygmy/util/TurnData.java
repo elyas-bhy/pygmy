@@ -32,6 +32,7 @@ import com.dev.pygmy.PygmyApp;
  */
 public class TurnData {
 
+	public String gamePath="";
     public String data = "";
     public int turnCounter;
 
@@ -43,6 +44,7 @@ public class TurnData {
         JSONObject retVal = new JSONObject();
 
         try {
+        	retVal.put("gamePath", gamePath);
             retVal.put("data", data);
             retVal.put("turnCounter", turnCounter);
 
@@ -85,6 +87,9 @@ public class TurnData {
             }
             if (obj.has("turnCounter")) {
                 retVal.turnCounter = obj.getInt("turnCounter");
+            }
+            if (obj.has("gamePath")) {
+                retVal.gamePath = obj.getString("gamePath");
             }
 
         } catch (JSONException e) {
