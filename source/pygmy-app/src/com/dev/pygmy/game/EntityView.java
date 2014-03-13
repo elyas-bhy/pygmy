@@ -145,10 +145,10 @@ public class EntityView extends View {
 						Player entityPlayer= entity.getPlayer();
 						Player currentPlayer = game.getCurrentPlayer();
 						
-						if (entityPlayer.getId() != currentPlayer.getId()) {
-							PygmyApp.logD("It's not your turn!!");
-							return true;
-						}
+						//if (entityPlayer.getId() != currentPlayer.getId()) {
+							//PygmyApp.logD("It's not your turn!!");
+							//return true;
+						//}
 						
 						draggedEntity = entity;
 						entityCurrentPosition = tile;

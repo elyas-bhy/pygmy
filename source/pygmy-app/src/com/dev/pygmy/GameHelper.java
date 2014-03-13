@@ -38,6 +38,8 @@ public class GameHelper {
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
+		PygmyApp.logD("PATH"+mTurnData.gamePath);
+		initGameViewManager(mTurnData.gamePath);
 		isDoingTurn = true;
 		mContext.setViewVisibility();
 		mGameViewManager.updateData(mTurnData);
