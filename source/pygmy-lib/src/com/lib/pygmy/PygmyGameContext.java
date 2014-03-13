@@ -51,8 +51,21 @@ public class PygmyGameContext {
 		return players.get(currentPlayer);
 	}
 	
-	public void nextPlayer() {
+	public void nextPlayer(String state) {
 		currentPlayer = (currentPlayer + 1) % players.size();
+		
+//		showSpinner();
+//		String nextParticipantId = getNextParticipantId();
+//		// Create the next turn
+//		mTurnData.turnCounter += 1;
+//		mTurnData.data = state;
+//
+//		showSpinner();
+//
+//		getGamesClient().takeTurn(this, mMatch.getMatchId(),
+//				mTurnData.persist(), nextParticipantId);
+//
+//		mTurnData = null;
 	}
 	
 	public void onPlayerMove(GameMove move) {

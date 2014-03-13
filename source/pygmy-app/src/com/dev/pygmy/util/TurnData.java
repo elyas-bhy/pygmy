@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import com.dev.pygmy.PygmyApp;
 
 /**
  * Basic turn data. It's just a blank data string and a turn number counter.
@@ -31,8 +31,6 @@ import android.util.Log;
  * 
  */
 public class TurnData {
-
-    public static final String TAG = "EBTurn";
 
     public String data = "";
     public int turnCounter;
@@ -49,22 +47,21 @@ public class TurnData {
             retVal.put("turnCounter", turnCounter);
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         String st = retVal.toString();
 
-        Log.d(TAG, "==== PERSISTING\n" + st);
+        PygmyApp.logD("==== PERSISTING\n" + st);
 
         return st.getBytes(Charset.forName("UTF-16"));
     }
 
-    // Creates a new instance of SkeletonTurn.
-    static public TurnData unpersist(byte[] byteArray) {
+    // Creates a new instance of TurnData
+    public static TurnData unpersist(byte[] byteArray) {
 
         if (byteArray == null) {
-            Log.d(TAG, "Empty array---possible bug.");
+            PygmyApp.logD("Empty array---possible bug.");
             return new TurnData();
         }
 
@@ -76,7 +73,7 @@ public class TurnData {
             return null;
         }
 
-        Log.d(TAG, "====UNPERSIST \n" + st);
+        PygmyApp.logD("====UNPERSIST \n" + st);
 
         TurnData retVal = new TurnData();
 
@@ -91,7 +88,6 @@ public class TurnData {
             }
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

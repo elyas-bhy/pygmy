@@ -46,10 +46,12 @@ public class GameListActivity extends Activity {
 
 	private ListView listView;
 
+	ArrayList<Integer> gameId = new ArrayList<Integer>();
 	ArrayList<String> gameName = new ArrayList<String>();
 	ArrayList<String> info = new ArrayList<String>();
 	ArrayList<String> imageId = new ArrayList<String>();
 	ArrayList<String> fileName = new ArrayList<String>();
+	ArrayList<String> gameVersion = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,53 +61,58 @@ public class GameListActivity extends Activity {
 		// Creating list
 		listView = (ListView) findViewById(R.id.list);
 
-		new getServerListGame().execute();
+		new FetchGamesTask().execute();
 
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				Intent intent = new Intent(getApplicationContext(),
+				Intent intent = new Intent(GameListActivity.this,
 						GameHomePageActivity.class);
-				intent.putExtra("gameName", gameName.get(+position));
-				intent.putExtra("filename", fileName.get(+position));
-				startActivity(intent);
+				intent.putExtra("id", gameId.get(position));
+				intent.putExtra("gameName", gameName.get(position));
+				intent.putExtra("filename", fileName.get(position));
+				intent.putExtra("version", gameVersion.get(position));
+				startActivityForResult(intent, MainActivity.RC_SELECT_GAME);
 			}
 		});
 	}
+	
+	@Override
+	public void onActivityResult(int request, int response, Intent data) {
+		switch (request) {
+		case MainActivity.RC_SELECT_GAME:
+			setResult(MainActivity.RC_SELECT_GAME, data);
+			finish();
+			break;
+		}
+	}
 
-	class getServerListGame extends AsyncTask<String, String, Void> {
+	private class FetchGamesTask extends AsyncTask<String, String, Void> {
 
-		InputStream is = null;
-		String result = "";
+		private InputStream is;
+		private String result = "";
 
 		@Override
 		protected Void doInBackground(String... params) {
 			String gamesListURL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesList.php";
 
 			HttpClient httpClient = new DefaultHttpClient();
-
 			HttpPost httpPost = new HttpPost(gamesListURL);
-
 			ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
 			try {
 				httpPost.setEntity(new UrlEncodedFormEntity(param));
-
 				HttpResponse httpResponse = httpClient.execute(httpPost);
 				HttpEntity httpEntity = httpResponse.getEntity();
-
-				// read content
-				is = httpEntity.getContent();
-
+				is = httpEntity.getContent();  // Read content
 			} catch (Exception e) {
-
-				PygmyApp.logE("Error in http connection " + e.toString());
+				PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
 			}
+			
 			try {
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(is));
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 				StringBuilder sb = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
@@ -113,47 +120,45 @@ public class GameListActivity extends Activity {
 				}
 				is.close();
 				result = sb.toString();
-
 			} catch (Exception e) {
-				PygmyApp.logE("Error converting result " + e.toString());
+				PygmyApp.logE("Error converting result: " + e.getMessage());
 			}
 
 			return null;
-
 		}
 
+		@Override
 		protected void onPostExecute(Void v) {
-
 			try {
-				JSONArray Jarray = new JSONArray(result);
-				for (int i = 0; i < Jarray.length(); i++) {
-					JSONObject Jasonobject = null;
-					Jasonobject = Jarray.getJSONObject(i);
+				JSONArray array = new JSONArray(result);
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject json = null;
+					json = array.getJSONObject(i);
+					
+					int id = json.getInt("id_game");
+					gameId.add(id);
 
-					String title = Jasonobject.getString("name");
+					String title = json.getString("name");
 					gameName.add(title);
 
-					String resume = Jasonobject.getString("resume");
+					String resume = json.getString("resume");
 					info.add(resume);
 					
-					String file = Jasonobject.getString("filename");
+					String file = json.getString("filename");
 					fileName.add(file);
-					
-					String icon=null;
-					//Default icon
-					if (icon == null)
-						imageId.add("http://upload.wikimedia.org/wikipedia/commons/thumb/archive/3/35/20080131162213!Orange_question_mark.svg/120px-Orange_question_mark.svg.png");
+
+					String version = json.getString("version");
+					gameVersion.add(version);
 
 					GameListAdapter adapter = new GameListAdapter(
 							GameListActivity.this, gameName, info, imageId);
 
 					listView.setAdapter(adapter);
 				}
-
 			} catch (Exception e) {
-				PygmyApp.logE("Error parsing data " + e.toString());
+				PygmyApp.logE("Error parsing data: " + e.getMessage());
 			}
 		}
 	}
-
+	
 }

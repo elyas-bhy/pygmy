@@ -60,10 +60,6 @@ public class GameListAdapter extends ArrayAdapter<String> {
 		gameNameText.setText(gamesName.get(pos));
 		gameInfoText.setText(gamesInfo.get(pos));
 		
-		// If we want to add icon to a game
-		ImageView a = (ImageView) row.findViewById(R.id.game_icon);
-		final ImageDownloader mDownload = new ImageDownloader();
-		mDownload.download(gamesIcon.get(pos), a);
 		
 		return row;
 	}

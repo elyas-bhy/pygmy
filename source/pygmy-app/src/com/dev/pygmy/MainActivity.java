@@ -22,11 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -36,6 +33,7 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,7 +44,6 @@ import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
 import com.dev.pygmy.util.ImageDownloader;
-import com.dev.pygmy.util.TurnData;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -77,40 +74,32 @@ import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
 public class MainActivity extends BaseGameActivity implements
 		TurnBasedMultiplayerListener {
 
-	// Local convenience pointers
-	public TextView mDataView;
-	public TextView mTurnTextView;
-
-	private AlertDialog mAlertDialog;
-	private SlidingMenu mSlidingMenu;
-
 	// For our intents
-	final static int RC_SELECT_PLAYERS = 10000;
-	final static int RC_LOOK_AT_MATCHES = 10001;
+	public static final int RC_SELECT_GAME = 10000;
+	public static final int RC_SELECT_PLAYERS = 10001;
+	public static final int RC_LOOK_AT_MATCHES = 10002;
+	public static final String EXTRA_GAME_PATH = "com.dev.pygmy.EXTRA_GAME_PATH";
 
 	// How long to show toasts.
-	final static int TOAST_DELAY = 2000;
-
-	// Should I be showing the turn API?
-	public boolean isDoingTurn = false;
-
-	// This is the current match we're in; null if not loaded
-	public TurnBasedMatch mMatch;
-
-	// This is the current match data after being unpersisted.
-	// Do not retain references to match data once you have
-	// taken an action on the match, such as takeTurn()
-	public TurnData mTurnData;
+	private final int TOAST_DELAY = 2000;
+	
+	private GameHelper gameHelper;
+	private SlidingMenu mSlidingMenu;
+	
+	// Reference to the selected game's source
+	private String gamePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		gameHelper = new GameHelper(this);
 		
 		//Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
 		animation.setDuration(1400);
 		animation.setFillAfter(false);
+
 		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
 		imageview.startAnimation(animation);
 		
@@ -122,11 +111,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		initSlidingMenu();
 		initSigninButtons();
-
-		mDataView = ((TextView) findViewById(R.id.data_view));
-		mTurnTextView = ((TextView) findViewById(R.id.turn_counter_view));
-		
-
 	}
 
 	@Override
@@ -193,8 +177,8 @@ public class MainActivity extends BaseGameActivity implements
 					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
 				if (position == 3) {
-					startActivity(new Intent(MainActivity.this,
-							GameListActivity.class));
+					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
+					startActivityForResult(intent, RC_SELECT_GAME);
 				}
 				if (position == 4) {
 					signOut();
@@ -210,22 +194,18 @@ public class MainActivity extends BaseGameActivity implements
 				if (position == 7) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
 					onCheckGamesClicked(findViewById(R.id.matchup_layout));
-					
-					
 				}
-
 			}
 		});
 		mSlidingMenu.setMenu(slideMenu);
 	}
 
 	private void initSigninButtons() {
-
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						// start the asynchronous sign in flow
+						// Start the asynchronous sign in flow
 						beginUserInitiatedSignIn();
 						findViewById(R.id.sign_in_button).setVisibility(
 								View.GONE);
@@ -236,7 +216,11 @@ public class MainActivity extends BaseGameActivity implements
 					}
 				});
 	}
-
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
 
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
@@ -248,21 +232,19 @@ public class MainActivity extends BaseGameActivity implements
 	// Open the create-game UI. You will get back an onActivityResult
 	// and figure out what to do.
 	public void onStartMatchClicked(View view) {
-		Intent intent = getGamesClient().getSelectPlayersIntent(1, 7, true);
+		Intent intent = getGamesClient().getSelectPlayersIntent(1, 2, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
 	}
 
 	// Create a one-on-one automatch game.
 	public void onQuickMatchClicked(View view) {
-
 		Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(1, 1, 0);
 
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 				.setAutoMatchCriteria(autoMatchCriteria).build();
-
-		showSpinner();
-
+		
 		// Kick the match off
+		showSpinner();
 		getGamesClient().createTurnBasedMatch(this, tbmc);
 	}
 
@@ -272,8 +254,7 @@ public class MainActivity extends BaseGameActivity implements
 	// giving up on the view.
 	public void onCancelClicked(View view) {
 		showSpinner();
-		getGamesClient().cancelTurnBasedMatch(this, mMatch.getMatchId());
-		isDoingTurn = false;
+		gameHelper.onCancelClicked();
 		setViewVisibility();
 	
 	}
@@ -282,18 +263,14 @@ public class MainActivity extends BaseGameActivity implements
 	// GamesClient.leaveTurnBasedMatch() if you want to leave NOT on your turn.
 	public void onLeaveClicked(View view) {
 		showSpinner();
-		String nextParticipantId = getNextParticipantId();
-		getGamesClient().leaveTurnBasedMatchDuringTurn(this,
-				mMatch.getMatchId(), nextParticipantId);
+		gameHelper.onLeaveClicked();
 		setViewVisibility();
 	}
 
 	// Finish the game. Sometimes, this is your only choice.
 	public void onFinishClicked(View view) {
 		showSpinner();
-		getGamesClient().finishTurnBasedMatch(this, mMatch.getMatchId());
-
-		isDoingTurn = false;
+		gameHelper.onFinishClicked();
 		setViewVisibility();
 	}
 
@@ -301,34 +278,24 @@ public class MainActivity extends BaseGameActivity implements
 	// player.
 	public void onDoneClicked(View view) {
 		showSpinner();
-
-		String nextParticipantId = getNextParticipantId();
-		// Create the next turn
-		mTurnData.turnCounter += 1;
-		mTurnData.data = mDataView.getText().toString();
-
-//		showSpinner();
-
-		getGamesClient().takeTurn(this, mMatch.getMatchId(),
-				mTurnData.persist(), nextParticipantId);
-
-		mTurnData = null;
+		gameHelper.onDoneClicked();
 	}
 
 	// Sign-in, Sign out behavior
 
 	// Update the visibility based on what state we're in.
 	public void setViewVisibility() {
+		FrameLayout gameplayLayout = ((FrameLayout) findViewById(R.id.gameplay_layout));
 		if (!isSignedIn()) {
 			findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.offline_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.welcome).setVisibility(View.VISIBLE);
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-			findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
-			findViewById(R.id.screen_profile).setVisibility(View.GONE);
-			if (mAlertDialog != null) {
-				mAlertDialog.dismiss();
+			gameplayLayout.setVisibility(View.GONE);
+
+			if (gameHelper.getDialog() != null) {
+				gameHelper.getDialog().dismiss();
 			}
 			return;
 		}
@@ -336,13 +303,14 @@ public class MainActivity extends BaseGameActivity implements
 		((TextView) findViewById(R.id.name_field)).setText(getGamesClient()
 				.getCurrentPlayer().getDisplayName());
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
+		findViewById(R.id.screen_profile).setVisibility(View.GONE);
 
-		if (isDoingTurn) {
+		if (gameHelper.isDoingTurn()) {
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-			findViewById(R.id.gameplay_layout).setVisibility(View.VISIBLE);
+			gameplayLayout.setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
-			findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+			gameplayLayout.setVisibility(View.GONE);
 		}
 	}
 
@@ -350,16 +318,14 @@ public class MainActivity extends BaseGameActivity implements
 	public void onSignInFailed() {
 		setViewVisibility();
 	}
-
+	
 	@Override
 	public void onSignInSucceeded() {
 		if (mHelper.getTurnBasedMatch() != null) {
 			// GameHelper will cache any connection hint it gets. In this case,
 			// it can cache a TurnBasedMatch that it got from choosing a
-			// turn-based
-			// game notification. If that's the case, you should go straight
-			// into
-			// the game.
+			// turn-based game notification.
+			// If that's the case, you should go straight into the game.
 			updateMatch(mHelper.getTurnBasedMatch());
 			return;
 		}
@@ -381,167 +347,119 @@ public class MainActivity extends BaseGameActivity implements
 		
 		setProfileView();
 		
-	}
-
-	// Switch to gameplay view.
-	public void setGameplayUI() {
-		isDoingTurn = true;
-		setViewVisibility();
-		mDataView.setText(mTurnData.data);
-		mTurnTextView.setText("Turn " + mTurnData.turnCounter);
+		if (gamePath != null) {
+			dismissSpinner();
+			onStartMatchClicked(null);
+		}
 	}
 
 	// Switch to profile view
-	public void setProfileView() {
+	private void setProfileView() {
 		if (!isSignedIn()) {
 			setViewVisibility();		
-		}
-		else {
-		// Initialisation
-		URL imageUrl = null;
-		Person p = getPlusClient().getCurrentPerson();
+		} else {
+			// Initialisation
+			URL imageUrl = null;
+			Person p = getPlusClient().getCurrentPerson();
 
-		// To display
-		String name = p.getDisplayName();
-		String nationality = p.getLanguage().toUpperCase();
+			// To display
+			String name = p.getDisplayName();
+			String nationality = p.getLanguage().toUpperCase();
 
-		// getting url
-		try {
-			imageUrl = new URL(p.getImage().getUrl());
+			// Getting URL
+			try {
+				imageUrl = new URL(p.getImage().getUrl());
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
 
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+			// Setting text and image in views
+			((TextView) findViewById(R.id.name_profile)).setText(name);
+			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
+			ImageView a = (ImageView) findViewById(R.id.image_profile);
+			final ImageDownloader downloader = new ImageDownloader();
+			downloader.download(imageUrl.toString(), a);
 
-		// Setting text and image in views
-		((TextView) findViewById(R.id.name_profile)).setText(name);
-		((TextView) findViewById(R.id.nat_profile)).setText(nationality);
-		ImageView a = (ImageView) findViewById(R.id.image_profile);
-		final ImageDownloader mDownload = new ImageDownloader();
-		mDownload.download(imageUrl.toString(), a);
-
-		findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
+			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 		}
 	}
 
-	// Helpful dialogs
-
-	public void showSpinner() {
+	// Helper dialogs
+	private void showSpinner() {
 		findViewById(R.id.progressLayout).setVisibility(View.VISIBLE);
 	}
 
-	public void dismissSpinner() {
+	private void dismissSpinner() {
 		findViewById(R.id.progressLayout).setVisibility(View.GONE);
 	}
 
-	// Generic warning/info dialog
-	public void showWarning(String title, String message) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-		// set title
-		alertDialogBuilder.setTitle(title).setMessage(message);
-
-		// set dialog message
-		alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						// if this button is clicked, close
-						// current activity
-					}
-				});
-
-		// create alert dialog
-		mAlertDialog = alertDialogBuilder.create();
-
-		// show it
-		mAlertDialog.show();
-	}
-
-	// Rematch dialog
-	public void askForRematch() {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-		alertDialogBuilder.setMessage("Do you want a rematch?");
-
-		alertDialogBuilder
-				.setCancelable(false)
-				.setPositiveButton("Sure, rematch!",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								rematch();
-							}
-						})
-				.setNegativeButton("No.",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-							}
-						});
-
-		alertDialogBuilder.show();
-	}
-
-	// This function is what gets called when you return from either the Play
+	// This method is what gets called when you return from either the Play
 	// Games built-in inbox, or else the create game built-in interface.
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
 		// It's VERY IMPORTANT for you to remember to call your superclass.
 		// BaseGameActivity will not work otherwise.
 		super.onActivityResult(request, response, data);
-
-		if (request == RC_LOOK_AT_MATCHES) {
-			// Returning from the 'Select Match' dialog
-
+		switch (request) {
+		
+		case RC_SELECT_GAME:
+			if (data != null && data.hasExtra(EXTRA_GAME_PATH)) {
+				gamePath = data.getStringExtra(EXTRA_GAME_PATH);
+				showSpinner();
+			}
+			break;
+		
+		case RC_LOOK_AT_MATCHES:  // Returning from the 'Select Match' dialog
 			if (response != Activity.RESULT_OK) {
-				// user canceled
+				// User canceled
 				return;
 			}
-
+			
 			TurnBasedMatch match = data
 					.getParcelableExtra(GamesClient.EXTRA_TURN_BASED_MATCH);
-
+			
 			if (match != null) {
 				updateMatch(match);
 			}
-
 			PygmyApp.logD("Match = " + match);
-		} else if (request == RC_SELECT_PLAYERS) {
-			// Returned from 'Select players to Invite' dialog
-
+			break;
+			
+		case RC_SELECT_PLAYERS:  // Returned from 'Select players to Invite' dialog
 			if (response != Activity.RESULT_OK) {
-				// user canceled
+				// User canceled
 				return;
 			}
-
-			// get the invitee list
+			
+			// Get the invitee list
 			final ArrayList<String> invitees = data
 					.getStringArrayListExtra(GamesClient.EXTRA_PLAYERS);
-
-			// get automatch criteria
+			
+			// Get automatch criteria
 			Bundle autoMatchCriteria = null;
-
+			
 			int minAutoMatchPlayers = data.getIntExtra(
 					GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 			int maxAutoMatchPlayers = data.getIntExtra(
 					GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-
+			
 			if (minAutoMatchPlayers > 0) {
 				autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
 						minAutoMatchPlayers, maxAutoMatchPlayers, 0);
 			} else {
 				autoMatchCriteria = null;
 			}
-
+			
 			TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 					.addInvitedPlayers(invitees)
 					.setAutoMatchCriteria(autoMatchCriteria).build();
-
+			
 			// Kick the match off
 			getGamesClient().createTurnBasedMatch(this, tbmc);
-
 			showSpinner();
+			break;
+			
+		default:
+			break;
 		}
 	}
 
@@ -552,178 +470,46 @@ public class MainActivity extends BaseGameActivity implements
 	// callback to OnTurnBasedMatchUpdated(), which will show the game
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
-		mTurnData = new TurnData();
-		// Some basic turn data
-		mTurnData.data = "First turn";
-
-		mMatch = match;
-
-		String myParticipantId = mMatch.getParticipantId(getGamesClient()
-				.getCurrentPlayerId());
-
 		showSpinner();
-
-		// Taking this turn will cause turnBasedMatchUpdated
-		getGamesClient().takeTurn(this, match.getMatchId(),
-				mTurnData.persist(), myParticipantId);
+		gameHelper.startMatch(match, gamePath);
+		gamePath = null;
 	}
 
 	// If you choose to rematch, then call it and wait for a response.
 	public void rematch() {
 		showSpinner();
-		getGamesClient().rematchTurnBasedMatch(this, mMatch.getMatchId());
-		mMatch = null;
-		isDoingTurn = false;
-	}
-
-	/**
-	 * Get the next participant. In this function, we assume that we are
-	 * round-robin, with all known players going before all automatch players.
-	 * This is not a requirement; players can go in any order. However, you can
-	 * take turns in any order.
-	 * 
-	 * @return participantId of next player, or null if automatching
-	 */
-	public String getNextParticipantId() {
-
-		String myParticipantId = mMatch.getParticipantId(getGamesClient()
-				.getCurrentPlayerId());
-
-		ArrayList<String> participantIds = mMatch.getParticipantIds();
-
-		int desiredIndex = -1;
-
-		for (int i = 0; i < participantIds.size(); i++) {
-			if (participantIds.get(i).equals(myParticipantId)) {
-				desiredIndex = i + 1;
-			}
-		}
-
-		if (desiredIndex < participantIds.size()) {
-			return participantIds.get(desiredIndex);
-		}
-
-		if (mMatch.getAvailableAutoMatchSlots() <= 0) {
-			// You've run out of automatch slots, so we start over.
-			return participantIds.get(0);
-		} else {
-			// You have not yet fully automatched, so null will find a new
-			// person to play against.
-			return null;
-		}
+		gameHelper.rematch();
 	}
 
 	// This is the main function that gets called when players choose a match
 	// from the inbox, or else create a match and want to start it.
 	public void updateMatch(TurnBasedMatch match) {
-		mMatch = match;
-
-		int status = match.getStatus();
-		int turnStatus = match.getTurnStatus();
-
-		switch (status) {
-		case TurnBasedMatch.MATCH_STATUS_CANCELED:
-			showWarning("Canceled!", "This game was canceled!");
-			return;
-		case TurnBasedMatch.MATCH_STATUS_EXPIRED:
-			showWarning("Expired!", "This game is expired.  So sad!");
-			return;
-		case TurnBasedMatch.MATCH_STATUS_AUTO_MATCHING:
-			showWarning("Waiting for auto-match...",
-					"We're still waiting for an automatch partner.");
-			return;
-		case TurnBasedMatch.MATCH_STATUS_COMPLETE:
-			if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
-				showWarning(
-						"Complete!",
-						"This game is over; someone finished it, and so did you!  There is nothing to be done.");
-				break;
-			}
-
-			// Note that in this state, you must still call "Finish" yourself,
-			// so we allow this to continue.
-			showWarning("Complete!",
-					"This game is over; someone finished it!  You can only finish it now.");
-		}
-
-		// OK, it's active. Check on turn status.
-		switch (turnStatus) {
-		case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
-			mTurnData = TurnData.unpersist(mMatch.getData());
-			setGameplayUI();
-			return;
-		case TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN:
-			// Should return results.
-			showWarning("Alas...", "It's not your turn.");
-			break;
-		case TurnBasedMatch.MATCH_TURN_STATUS_INVITED:
-			showWarning("Good inititative!",
-					"Still waiting for invitations.\n\nBe patient!");
-		}
-
-		mTurnData = null;
-
-		setViewVisibility();
+		gameHelper.updateMatch(match);
 	}
 
 	@Override
 	public void onTurnBasedMatchCanceled(int statusCode, String matchId) {
 		dismissSpinner();
-
-		if (!checkStatusCode(null, statusCode)) {
-			return;
-		}
-
-		isDoingTurn = false;
-
-		showWarning("Match",
-				"This match is canceled.  All other players will have their game ended.");
+		gameHelper.onTurnBasedMatchCanceled(statusCode, matchId);
 	}
 
 	@Override
 	public void onTurnBasedMatchInitiated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-
-		if (!checkStatusCode(match, statusCode)) {
-			return;
-		}
-
-		if (match.getData() != null) {
-			// This is a game that has already started, so I'll just start
-			updateMatch(match);
-			return;
-		}
-
-		startMatch(match);
+		gameHelper.onTurnBasedMatchInitiated(statusCode, match);
 	}
 
 	@Override
 	public void onTurnBasedMatchLeft(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		if (!checkStatusCode(match, statusCode)) {
-			return;
-		}
-		isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
-		showWarning("Left", "You've left this match.");
+		gameHelper.onTurnBasedMatchLeft(statusCode, match);
 	}
 
 	@Override
 	public void onTurnBasedMatchUpdated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		if (!checkStatusCode(match, statusCode)) {
-			return;
-		}
-		if (match.canRematch()) {
-			askForRematch();
-		}
-
-		isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
-
-		if (isDoingTurn) {
-			updateMatch(match);
-			return;
-		}
-
+		PygmyApp.logD("onTurnBasedMatchUpdated: " + statusCode);
+		gameHelper.onTurnBasedMatchUpdated(statusCode, match);
 		setViewVisibility();
 	}
 
@@ -757,61 +543,9 @@ public class MainActivity extends BaseGameActivity implements
 	public void onTurnBasedMatchRemoved(String matchId) {
 		Toast.makeText(this, "A match was removed.", TOAST_DELAY).show();
 	}
-
-	public void showErrorMessage(TurnBasedMatch match, int statusCode,
-			int stringId) {
-		showWarning("Warning", getResources().getString(stringId));
+	
+	public GamesClient getGamesClient() {
+		return super.getGamesClient();
 	}
-
-	// Returns false if something went wrong, probably. This should handle
-	// more cases, and probably report more accurate results.
-	private boolean checkStatusCode(TurnBasedMatch match, int statusCode) {
-		switch (statusCode) {
-		case GamesClient.STATUS_OK:
-			return true;
-		case GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED:
-			// This is OK; the action is stored by Google Play Services and will
-			// be dealt with later.
-			Toast.makeText(
-					this,
-					"Stored action for later.  (Please remove this toast before release.)",
-					TOAST_DELAY).show();
-			// NOTE: This toast is for informative reasons only; please remove
-			// it from your final application.
-			return true;
-		case GamesClient.STATUS_MULTIPLAYER_ERROR_NOT_TRUSTED_TESTER:
-			showErrorMessage(match, statusCode,
-					R.string.status_multiplayer_error_not_trusted_tester);
-			break;
-		case GamesClient.STATUS_MATCH_ERROR_ALREADY_REMATCHED:
-			showErrorMessage(match, statusCode,
-					R.string.match_error_already_rematched);
-			break;
-		case GamesClient.STATUS_NETWORK_ERROR_OPERATION_FAILED:
-			showErrorMessage(match, statusCode,
-					R.string.network_error_operation_failed);
-			break;
-		case GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED:
-			showErrorMessage(match, statusCode,
-					R.string.client_reconnect_required);
-			break;
-		case GamesClient.STATUS_INTERNAL_ERROR:
-			showErrorMessage(match, statusCode, R.string.internal_error);
-			break;
-		case GamesClient.STATUS_MATCH_ERROR_INACTIVE_MATCH:
-			showErrorMessage(match, statusCode,
-					R.string.match_error_inactive_match);
-			break;
-		case GamesClient.STATUS_MATCH_ERROR_LOCALLY_MODIFIED:
-			showErrorMessage(match, statusCode,
-					R.string.match_error_locally_modified);
-			break;
-		default:
-			showErrorMessage(match, statusCode, R.string.unexpected_status);
-			PygmyApp.logD("Did not have warning or string to deal with: "
-					+ statusCode);
-		}
-
-		return false;
-	}
+	
 }

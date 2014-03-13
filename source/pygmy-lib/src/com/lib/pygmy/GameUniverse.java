@@ -18,5 +18,7 @@ public interface GameUniverse {
 	public Map<Tile,GameEntity> getGameEntities();
 
 	public void processMove(GameMove move);
+	
+	public String getState();
 
 }

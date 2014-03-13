@@ -18,42 +18,30 @@ package com.dev.pygmy.game;
 
 import java.util.Map;
 
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.client.pygmy.PygmyGameImpl;
 import com.dev.pygmy.R;
+import com.lib.pygmy.PygmyGame;
 
 public class GameViewManager {
 	
 	private Activity context;
-	private PygmyGameImpl game;
+	private PygmyGame game;
 	private FrameLayout mainLayout;
 	
 	private GameBoardView gameBoardView;
 	private EntityView entityView;
 	private static TileOverlayView tileOverlayView;
 	
-	public GameViewManager(Activity context, PygmyGameImpl game) {
+	public GameViewManager(Activity context, PygmyGame game) {
 		this.context = context;
 		this.game = game;
-		mainLayout = createMainLayout();
+		this.mainLayout = (FrameLayout) context.findViewById(R.id.gameplay_layout);
 	}
 	
-	private FrameLayout createMainLayout() {
-		FrameLayout mainLayout = new FrameLayout(context);
-		LayoutParams gerenalLayoutParams = new LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT);
-		mainLayout.setLayoutParams(gerenalLayoutParams);
-		mainLayout.setBackgroundColor(context.getResources().getColor(R.color.grey_metal));
-
-		return mainLayout;
-	}
-	
-	public FrameLayout getLayout() {
+	public FrameLayout initLayout() {
+		
 		// Gets parameters of the game board.
 		if (game != null) {
 			game.initGame();
@@ -85,4 +73,5 @@ public class GameViewManager {
 	public static TileOverlayView getOverlay() {
 		return tileOverlayView;
 	}
+	
 }
