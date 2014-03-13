@@ -91,6 +91,7 @@ public class MainActivity extends BaseGameActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		gameHelper = new GameHelper(this);
