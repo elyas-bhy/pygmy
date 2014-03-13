@@ -14,18 +14,20 @@ public abstract class PygmyGameEntity implements GameEntity,
 	private Player player;
 	private Tile tile;
  
+	private int resId;
 	private Bitmap img;
 	private PygmyGameLevel level;
 
-	public PygmyGameEntity(PygmyGameLevel level, Player player, int drawable, Point pos) {
+	public PygmyGameEntity(PygmyGameLevel level, Player player, int resId, Point pos) {
 		this.level = level;
 		this.player = player;
+		this.resId = resId;
 		this.tile = new Tile(0,0,0);
 		tile.setPosition(pos);
 		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(level.getContext().getResources(), drawable);
+		img = BitmapFactory.decodeResource(level.getContext().getResources(), resId);
 		img = Bitmap.createScaledBitmap(img, 70, 70, false);
 	}
 
@@ -68,6 +70,11 @@ public abstract class PygmyGameEntity implements GameEntity,
 	@Override
 	public Bitmap getBitmap() {
 		return img;
+	}
+
+	@Override
+	public int getResourceId() {
+		return resId;
 	}
 
 	@Override

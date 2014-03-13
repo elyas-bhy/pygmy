@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		jar = getExternalFilesDir(null).getAbsolutePath() + "/plugin-dexed.jar";
+		jar = getExternalFilesDir(null).getAbsolutePath() + "/pygmy-client.jar";
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 		try {
 			Class<?> clazz = classLoader.loadClass("com.client.pygmy.PygmyGameImpl");
 			PygmyGame obj = (PygmyGame) clazz.newInstance();
-			Log.d(TAG, obj.getTitle());
+			Log.d(TAG, "FOO!");
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}

@@ -1,6 +1,4 @@
-package com.client.pygmy;
-
-// Create a movable entity for your game.
+package com.client.pygmy.entity;
 
 import android.graphics.Point;
 
@@ -9,9 +7,9 @@ import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGameEntity;
 import com.lib.pygmy.PygmyGameLevel;
 
-public class MyChessEntity extends PygmyGameEntity {
+public class Pawn extends PygmyGameEntity {
 
-	public MyChessEntity(PygmyGameLevel level, Player player, int resId, int x, int y) {
+	public Pawn(PygmyGameLevel level, Player player, int resId, int x, int y) {
 		super(level, player, resId, new Point(x, y));
 	}
 	

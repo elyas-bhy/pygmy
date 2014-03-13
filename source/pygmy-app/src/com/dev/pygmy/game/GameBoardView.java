@@ -283,11 +283,10 @@ public class GameBoardView extends View {
 				}
 				canvas.drawText(Character.toString((char)('A'-1+x)), 
 						x*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
-						tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);		
+						tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
 				canvas.drawText(Integer.toString(x), 
 						tileSize/2-colorBlack.getTextSize()/2+offset, 
-						x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);		
-
+						x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);
 			}
 		}
 

@@ -34,4 +34,6 @@ public interface GameEntity {
 	 * Returns the image file of the entity
 	 */
 	public Bitmap getBitmap();
+
+	public int getResourceId();
 }

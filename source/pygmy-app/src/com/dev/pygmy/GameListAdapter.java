@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 public class GameListAdapter extends ArrayAdapter<String> {
 	
 	private final Activity activity;
@@ -56,7 +57,6 @@ public class GameListAdapter extends ArrayAdapter<String> {
 		TextView gameNameText = (TextView) row.findViewById(R.id.game_name);
 		TextView gameInfoText = (TextView) row.findViewById(R.id.game_dev_descr);
 		
-		// If we want to add icon to a game
 		final ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
 
 		// Setting infos on views

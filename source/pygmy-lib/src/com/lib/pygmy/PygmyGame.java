@@ -1,6 +1,7 @@
 package com.lib.pygmy;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -39,8 +40,8 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 
 	@Override
-	public void nextPlayer() {
-		context.nextPlayer();
+	public void nextPlayer(String state) {
+		context.nextPlayer(state);
 	}
 	
 	@Override
@@ -79,6 +80,11 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 	
 	@Override
+	public GameLevel getCurrentLevel() {
+		return context.getCurrentLevel();
+	}
+	
+	@Override
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -106,4 +112,5 @@ public abstract class PygmyGame implements Game, Observer {
 		return this;
 	}
 	
+	public abstract Map<String,Object> getParameters();
 }

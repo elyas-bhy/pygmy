@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2014 Pygmy
+<!--
+     Copyright (C) 2014 Pygmy
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,22 +16,26 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-<!--     android:background="@drawable/navbar_list_bg_selector"> -->
-    
-<!--         android:contentDescription="@string/icon" -->
-    <ImageView 
+    android:orientation="horizontal" >
+
+    <!-- android:background="@drawable/navbar_list_bg_selector"> -->
+
+
+    <!-- android:contentDescription="@string/icon" -->
+
+    <ImageView
         android:id="@+id/navbar_list_item_entry_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center_vertical"
-        android:scaleType="centerInside"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:scaleType="centerInside" 
+        android:background="@drawable/slidemenu_image"/>
 
-    <CheckedTextView
+   	<CheckedTextView
         android:id="@+id/navbar_list_item_entry_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,8 +45,10 @@
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor="@color/white_stale"
-        android:textSize="19sp" />
-<!--         android:background="@drawable/slidemenu_selector" -->
-<!--         android:textColor="@drawable/navbar_list_text_selector" -->
+        android:textSize="19sp"
+		android:background="@drawable/slidemenu_selector" >
+        <!-- android:textColor="@drawable/navbar_list_text_selector" -->
+
+    </CheckedTextView>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.lib.pygmy;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lib.pygmy.base.ObservableValue;
 
@@ -10,7 +11,7 @@ public interface Game {
 	
 	public void start();
 	
-	public void nextPlayer();
+	public void nextPlayer(String state);
 	
 	public void onPlayerMove(GameMove move);
 	
@@ -26,10 +27,14 @@ public interface Game {
 	
 	public void setLevels(List<GameLevel> levels);
 	
+	public GameLevel getCurrentLevel();
+	
 	public void setTitle(String title);
 	
 	public void setBoardDimensions(int rows, int columns);
 	
 	public ObservableValue<Boolean> endOfGame();
+	
+	public Map<String,Object> getParameters();
 	
 }

@@ -94,7 +94,7 @@ public abstract class PygmyGameLevel implements GameLevel {
 
 	private void makeMove(GameMove move) {
 		universe.processMove(move);
-		game.nextPlayer();
+		game.nextPlayer(universe.getState());
 	}
 
 	public void end() {
