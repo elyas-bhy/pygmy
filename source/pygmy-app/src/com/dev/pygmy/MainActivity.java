@@ -148,7 +148,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
@@ -170,28 +169,28 @@ public class MainActivity extends BaseGameActivity implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				mSlidingMenu.showContent();
-				if (position == 1) {
+				if (position == 0) {
 					setProfileView();
 				}
-				if (position == 2) {
+				if (position == 1) {
 					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
-				if (position == 3) {
+				if (position == 2) {
 					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
-				if (position == 4) {
+				if (position == 3) {
 					signOut();
 					setViewVisibility();
 				}
-				if (position == 5) {
+				if (position == 4) {
 					onStartMatchClicked(findViewById(R.id.matchup_layout));
 				}
-				if (position == 6) {
+				if (position == 5) {
 					onQuickMatchClicked(findViewById(R.id.matchup_layout));
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 				}
-				if (position == 7) {
+				if (position == 6) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
 					onCheckGamesClicked(findViewById(R.id.matchup_layout));
 				}
@@ -287,6 +286,7 @@ public class MainActivity extends BaseGameActivity implements
 	public void setViewVisibility() {
 		FrameLayout gameplayLayout = ((FrameLayout) findViewById(R.id.gameplay_layout));
 		if (!isSignedIn()) {
+			findViewById(R.id.screen_profile).setVisibility(View.GONE);
 			findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.offline_button).setVisibility(View.VISIBLE);
