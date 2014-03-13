@@ -19,6 +19,8 @@ public interface GameUniverse {
 
 	public void processMove(GameMove move);
 	
+	public void updateData(TurnData data);
+	
 	public String getState();
 
 }

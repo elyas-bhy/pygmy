@@ -16,9 +16,9 @@ public abstract class PygmyGameEntity implements GameEntity,
  
 	private int resId;
 	private Bitmap img;
-	private PygmyGameLevel level;
+	private GameLevel level;
 
-	public PygmyGameEntity(PygmyGameLevel level, Player player, int resId, Point pos) {
+	public PygmyGameEntity(GameLevel level, Player player, Integer resId, Point pos) {
 		this.level = level;
 		this.player = player;
 		this.resId = resId;
