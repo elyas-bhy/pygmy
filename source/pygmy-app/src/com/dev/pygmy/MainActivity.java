@@ -73,7 +73,7 @@ import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
  * @author Wolff (wolff@google.com), 2013
  */
 public class MainActivity extends BaseGameActivity implements
-		TurnBasedMultiplayerListener {
+		TurnBasedMultiplayerListener, PygmyTurnListener {
 
 	// For our intents
 	public static final int RC_SELECT_GAME = 10000;
@@ -97,6 +97,7 @@ public class MainActivity extends BaseGameActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		gameHelper = new GameHelper(this);
@@ -154,7 +155,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.profile));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
@@ -176,28 +176,28 @@ public class MainActivity extends BaseGameActivity implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				mSlidingMenu.showContent();
-				if (position == 1) {
+				if (position == 0) {
 					setProfileView();
 				}
-				if (position == 2) {
+				if (position == 1) {
 					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
 				}
-				if (position == 3) {
+				if (position == 2) {
 					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
-				if (position == 4) {
+				if (position == 3) {
 					signOut();
 					setViewVisibility();
 				}
-				if (position == 5) {
+				if (position == 4) {
 					onStartMatchClicked(findViewById(R.id.matchup_layout));
 				}
-				if (position == 6) {
+				if (position == 5) {
 					onQuickMatchClicked(findViewById(R.id.matchup_layout));
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 				}
-				if (position == 7) {
+				if (position == 6) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
 					onCheckGamesClicked(findViewById(R.id.matchup_layout));
 				}
@@ -280,19 +280,13 @@ public class MainActivity extends BaseGameActivity implements
 		setViewVisibility();
 	}
 
-	// Upload your new gamestate, then take a turn, and pass it on to the next
-	// player.
-	public void onDoneClicked(View view) {
-		showSpinner();
-		gameHelper.onDoneClicked();
-	}
-
 	// Sign-in, Sign out behavior
 
 	// Update the visibility based on what state we're in.
 	public void setViewVisibility() {
 		FrameLayout gameplayLayout = ((FrameLayout) findViewById(R.id.gameplay_layout));
 		if (!isSignedIn()) {
+			findViewById(R.id.screen_profile).setVisibility(View.GONE);
 			findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 			findViewById(R.id.offline_button).setVisibility(View.VISIBLE);
@@ -520,7 +514,6 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public void onTurnBasedMatchUpdated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		PygmyApp.logD("onTurnBasedMatchUpdated: " + statusCode);
 		gameHelper.onTurnBasedMatchUpdated(statusCode, match);
 		setViewVisibility();
 	}
@@ -558,6 +551,12 @@ public class MainActivity extends BaseGameActivity implements
 	
 	public GamesClient getGamesClient() {
 		return super.getGamesClient();
+	}
+
+	@Override
+	public void onTurnTaken() {
+		showSpinner();
+		gameHelper.onTurnTaken();
 	}
 	
 }
