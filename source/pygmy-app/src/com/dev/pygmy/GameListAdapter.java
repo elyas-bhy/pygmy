@@ -16,11 +16,13 @@
 
 package com.dev.pygmy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+
+import com.dev.pygmy.util.ImageDownloader;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,14 +57,24 @@ public class GameListAdapter extends ArrayAdapter<String> {
 		TextView gameInfoText = (TextView) row.findViewById(R.id.game_dev_descr);
 		
 		// If we want to add icon to a game
-		//ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
+		final ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
 
 		// Setting infos on views
 		gameNameText.setText(gamesName.get(pos));
 		gameInfoText.setText(gamesInfo.get(pos));
 		
 		// If we want to add icon to a game
-		//gameIconImage.setImageResource(gamesIcon.get(pos));
+				URL imageUrl = null;
+				try {
+					imageUrl = new URL(gamesIcon.get(pos));
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+				
+				ImageDownloader mDownload = new ImageDownloader();
+				mDownload.download(imageUrl.toString(), gameIconImage);
+	
 		return row;
 	}
 }

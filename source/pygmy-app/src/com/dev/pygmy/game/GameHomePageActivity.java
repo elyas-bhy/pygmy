@@ -28,7 +28,9 @@ import java.net.URLConnection;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +40,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 
@@ -58,10 +59,14 @@ public class GameHomePageActivity extends Activity {
 	String gameName;
 	String filename;
 	String version;
+	int minPlayer;
+	int maxPlayer;
 
 	String filePath;
 	String destPath;
 	String destPathVersion;
+	
+	String LAST_GAME = "Last_Game";
 
 	boolean download = false;
 
@@ -80,17 +85,12 @@ public class GameHomePageActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			extras = getIntent().getExtras();
-			if (extras == null) {
-				id = 0;
-				gameName = null;
-				filename = null;
-				version = null;
-			} else {
-				id = extras.getInt("id");
-				gameName = extras.getString("gameName");
-				filename = extras.getString("filename");
-				version = extras.getString("version");
-			}
+			id = extras.getInt("id");
+			gameName = extras.getString("gameName");
+			filename = extras.getString("filename");
+			version = extras.getString("version");
+			minPlayer = extras.getInt("minPlayer");
+			maxPlayer = extras.getInt("maxPlayer");
 		}
 
 		File checkFile = new File(getFilesDir().getPath() + "/" + gameName);
@@ -167,6 +167,7 @@ public class GameHomePageActivity extends Activity {
 		} else {
 			// if PLAY is pressed
 			// TODO
+			putGamePreferences();
 			Toast.makeText(this, "PLAY event", TOAST_DELAY).show();
 		}
 	}
@@ -240,4 +241,11 @@ public class GameHomePageActivity extends Activity {
 		}
 		return (path.delete());
 	}
+	
+	public void putGamePreferences(){
+		SharedPreferences lastGame = getSharedPreferences (LAST_GAME, MODE_PRIVATE);
+		SharedPreferences.Editor editor = lastGame.edit();
+		editor.putString(LAST_GAME,  gameName).commit();
+		}
 }
+

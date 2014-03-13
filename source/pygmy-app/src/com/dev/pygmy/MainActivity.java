@@ -26,6 +26,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -99,6 +100,9 @@ public class MainActivity extends BaseGameActivity implements
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
 	public TurnData mTurnData;
+	
+	// For our preferences
+	final static String LAST_GAME = "Last_Game";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -368,10 +372,13 @@ public class MainActivity extends BaseGameActivity implements
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		String game;
+		SharedPreferences lastGame = getSharedPreferences (LAST_GAME, MODE_PRIVATE);
+		game = lastGame.getString(LAST_GAME,  "Never play before");
 
 		// Setting text and image in views
 		((TextView) findViewById(R.id.name_profile)).setText(name);
-		((TextView) findViewById(R.id.game_one)).setText("First game");
+		((TextView) findViewById(R.id.game_one)).setText(game);
 		((TextView) findViewById(R.id.nat_profile)).setText(nationality);
 		ImageView a = (ImageView) findViewById(R.id.image_profile);
 		final ImageDownloader mDownload = new ImageDownloader();

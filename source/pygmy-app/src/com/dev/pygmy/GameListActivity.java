@@ -49,9 +49,11 @@ public class GameListActivity extends Activity {
 	ArrayList<Integer> idGame = new ArrayList<Integer>();
 	ArrayList<String> gameName = new ArrayList<String>();
 	ArrayList<String> info = new ArrayList<String>();
-	ArrayList<String> imageId = new ArrayList<String>();
 	ArrayList<String> fileName = new ArrayList<String>();
 	ArrayList<String> gameVersion = new ArrayList<String>();
+	ArrayList<String> gameImage = new ArrayList<String>();
+	ArrayList<Integer> minPlayer = new ArrayList<Integer>();
+	ArrayList<Integer> maxPlayer = new ArrayList<Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,9 @@ public class GameListActivity extends Activity {
 				intent.putExtra("gameName", gameName.get(+position));
 				intent.putExtra("filename", fileName.get(+position));
 				intent.putExtra("version", gameVersion.get(+position));
+				intent.putExtra("image", gameImage.get(+position));
+				intent.putExtra("minPlayer", minPlayer.get(+position));
+				intent.putExtra("maxPlayer", maxPlayer.get(+position));
 				startActivity(intent);
 			}
 		});
@@ -148,9 +153,18 @@ public class GameListActivity extends Activity {
 					
 					String version = Jasonobject.getString("version");
 					gameVersion.add(version);
+					
+					String imageG = Jasonobject.getString("image");
+					gameImage.add(imageG);
+					
+					int minplayer = Jasonobject.getInt("min_player");
+					minPlayer.add(minplayer);
+					
+					int maxplayer = Jasonobject.getInt("max_player");
+					maxPlayer.add(maxplayer);
 
 					GameListAdapter adapter = new GameListAdapter(
-							GameListActivity.this, gameName, info, imageId);
+							GameListActivity.this, gameName, info, gameImage);
 
 					listView.setAdapter(adapter);
 				}

@@ -31,6 +31,7 @@
     <string name="pref_notif">Notifications</string>
     <string name="pref_des">Design</string>
     <string name="pref_gen">General</string>
+    <string name="pref_games">Games</string>
 
     <!-- Game Homepage -->
     <string name="play">Play</string>
