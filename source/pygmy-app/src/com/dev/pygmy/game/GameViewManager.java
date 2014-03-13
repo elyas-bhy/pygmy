@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 
 import com.dev.pygmy.R;
 import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.TurnData;
 
 public class GameViewManager {
 	
@@ -38,11 +39,10 @@ public class GameViewManager {
 		this.context = context;
 		this.game = game;
 		this.mainLayout = (FrameLayout) context.findViewById(R.id.gameplay_layout);
+		initViews();
 	}
 	
-	public FrameLayout initLayout() {
-		
-		// Gets parameters of the game board.
+	private void initViews() {
 		if (game != null) {
 			game.initGame();
 			game.start();
@@ -51,14 +51,19 @@ public class GameViewManager {
 			gameBoardView = new GameBoardView(context, gameParams);
 			tileOverlayView = new TileOverlayView(context);
 			entityView = new EntityView(context, game);
-			
+		}
+	}
+	
+	public void updateData(TurnData data) {
+		mainLayout.removeAllViews();
+		if (game != null) {
+			entityView.updateData(data);
 			mainLayout.addView(gameBoardView);
 			mainLayout.addView(tileOverlayView);
 			mainLayout.addView(entityView);
 		} else {
 			mainLayout.addView(context.findViewById(R.id.creation_error));
 		}
-		return mainLayout;
 	}
 	
 	public static void resetOverlay() {

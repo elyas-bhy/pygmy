@@ -72,7 +72,7 @@ import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
  * @author Wolff (wolff@google.com), 2013
  */
 public class MainActivity extends BaseGameActivity implements
-		TurnBasedMultiplayerListener {
+		TurnBasedMultiplayerListener, PygmyTurnListener {
 
 	// For our intents
 	public static final int RC_SELECT_GAME = 10000;
@@ -272,13 +272,6 @@ public class MainActivity extends BaseGameActivity implements
 		showSpinner();
 		gameHelper.onFinishClicked();
 		setViewVisibility();
-	}
-
-	// Upload your new gamestate, then take a turn, and pass it on to the next
-	// player.
-	public void onDoneClicked(View view) {
-		showSpinner();
-		gameHelper.onDoneClicked();
 	}
 
 	// Sign-in, Sign out behavior
@@ -509,7 +502,6 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public void onTurnBasedMatchUpdated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		PygmyApp.logD("onTurnBasedMatchUpdated: " + statusCode);
 		gameHelper.onTurnBasedMatchUpdated(statusCode, match);
 		setViewVisibility();
 	}
@@ -547,6 +539,12 @@ public class MainActivity extends BaseGameActivity implements
 	
 	public GamesClient getGamesClient() {
 		return super.getGamesClient();
+	}
+
+	@Override
+	public void onTurnTaken() {
+		showSpinner();
+		gameHelper.onTurnTaken();
 	}
 	
 }

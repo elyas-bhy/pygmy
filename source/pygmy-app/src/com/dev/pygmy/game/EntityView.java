@@ -18,6 +18,7 @@ package com.dev.pygmy.game;
 
 import java.util.Collection;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -25,11 +26,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
+import com.dev.pygmy.PygmyTurnListener;
 import com.lib.pygmy.GameEntity;
-import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
-import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.GameUniverse;
 import com.lib.pygmy.Player;
+import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.TurnData;
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -38,6 +41,7 @@ import com.lib.pygmy.view.Tile;
  */
 public class EntityView extends View {
 	
+	private Context context;
 	private PygmyGame game;
 	private Collection<GameEntity> entities;	// array that holds the entities
 	private GameEntity draggedEntity = null;	// variable to know what entity is being dragged
@@ -67,9 +71,16 @@ public class EntityView extends View {
 		super(context);
 		setFocusable(true); // Necessary for getting the touch events
 
+		this.context = context;
 		this.game = game;
-		GameLevel level = game.getContext().getCurrentLevel();
-		entities = level.getUniverse().getGameEntities().values();
+		GameUniverse universe = game.getCurrentLevel().getUniverse();
+		entities = universe.getGameEntities().values();
+	}
+	
+	public void updateData(TurnData data) {
+		GameUniverse universe = game.getCurrentLevel().getUniverse();
+		universe.updateData(data);
+		entities = universe.getGameEntities().values();
 	}
 	
 	private void initTiles() {
@@ -195,6 +206,9 @@ public class EntityView extends View {
 					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
 					GameMove move = new GameMove(draggedEntity, dst);
 					game.onPlayerMove(move);
+					if (context instanceof PygmyTurnListener) {
+						((PygmyTurnListener) context).onTurnTaken();
+					}
 				}
 			}
 			entityCurrentPosition = null;

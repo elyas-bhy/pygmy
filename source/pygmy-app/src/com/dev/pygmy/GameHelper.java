@@ -1,20 +1,16 @@
 package com.dev.pygmy;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 
 import com.dev.pygmy.game.GameViewManager;
-import com.dev.pygmy.util.TurnData;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
-
-import dalvik.system.DexClassLoader;
+import com.lib.pygmy.PygmyLoader;
+import com.lib.pygmy.TurnData;
 
 public class GameHelper {
 	
@@ -34,46 +30,23 @@ public class GameHelper {
 	
 	// Manages all of the game's views
 	private GameViewManager mGameViewManager;
+	private PygmyGame mGame;
 	
 	public GameHelper(MainActivity context) {
 		this.mContext = context;
 	}
 
-	// Switch to gameplay view.
+	// Switch to gameplay view
 	public void setGameplayUI() {
 		isDoingTurn = true;
 		mContext.setViewVisibility();
-		mGameViewManager.initLayout();
+		mGameViewManager.updateData(mTurnData);
 	}
 	
 	private void initGameViewManager(String gamePath) {
-		DexClassLoader classLoader = new DexClassLoader(gamePath, 
-				mContext.getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath(), 
-				null, 
-				mContext.getClassLoader());
-		
-		PygmyGame game = null;
-		try {
-			Class<?> clazz = classLoader.loadClass("com.client.pygmy.PygmyGameImpl");
-			Constructor<?> constructor = clazz.getConstructor(Resources.class);
-			game = (PygmyGame) constructor.newInstance(mContext.getResources());
-		} catch (Exception e) {
-			PygmyApp.logE(e.getMessage());
-		}
-		mGameViewManager = new GameViewManager(mContext, game);
-	}
+		mGame = PygmyLoader.loadGame(mContext, gamePath);
+		mGameViewManager = new GameViewManager(mContext, mGame);
 
-	public void onDoneClicked() {
-		String nextParticipantId = getNextParticipantId();
-		
-		// Create the next turn
-		mTurnData.turnCounter += 1;
-		//mTurnData.data = mDataView.getText().toString();
-
-		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
-				mTurnData.persist(), nextParticipantId);
-
-		mTurnData = null;
 	}
 	
 	/**
@@ -84,7 +57,7 @@ public class GameHelper {
 	 * 
 	 * @return participantId of next player, or null if automatching
 	 */
-	public String getNextParticipantId() {
+	private String getNextParticipantId() {
 
 		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());
@@ -123,8 +96,12 @@ public class GameHelper {
 		initGameViewManager(gamePath);
 		
 		mTurnData = new TurnData();
-		mTurnData.data = "First turn";
+
 		mTurnData.gamePath = gamePath ;
+
+		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+		mTurnData.turnCounter = 1;
+
 
 		mMatch = match;
 
@@ -352,6 +329,21 @@ public class GameHelper {
 
 	public AlertDialog getDialog() {
 		return mAlertDialog;
+	}
+	
+	// Upload your new gamestate, then take a turn, and pass it on to the next
+	// player.
+	public void onTurnTaken() {
+		String nextParticipantId = getNextParticipantId();
+		
+		// Create the next turn
+		mTurnData.turnCounter += 1;
+		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+
+		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
+				mTurnData.persist(), nextParticipantId);
+
+		mTurnData = null;
 	}
 	
 }
