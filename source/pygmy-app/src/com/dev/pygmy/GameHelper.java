@@ -43,12 +43,11 @@ public class GameHelper {
 	public void setGameplayUI() {
 		isDoingTurn = true;
 		mContext.setViewVisibility();
-		initGameViewManager();
+		mGameViewManager.initLayout();
 	}
 	
-	private void initGameViewManager() {
-		String jar = mContext.getFilesDir().getPath() + "/PygmyTestBeta2/2/game.jar";
-		DexClassLoader classLoader = new DexClassLoader(jar, 
+	private void initGameViewManager(String gamePath) {
+		DexClassLoader classLoader = new DexClassLoader(gamePath, 
 				mContext.getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath(), 
 				null, 
 				mContext.getClassLoader());
@@ -61,8 +60,7 @@ public class GameHelper {
 		} catch (Exception e) {
 			PygmyApp.logE(e.getMessage());
 		}
-		this.mGameViewManager = new GameViewManager(mContext, game);
-		mGameViewManager.initLayout();
+		mGameViewManager = new GameViewManager(mContext, game);
 	}
 
 	public void onDoneClicked() {
@@ -121,9 +119,10 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
-	public void startMatch(TurnBasedMatch match) {
+	public void startMatch(TurnBasedMatch match, String gamePath) {
+		initGameViewManager(gamePath);
+		
 		mTurnData = new TurnData();
-		// Some basic turn data
 		mTurnData.data = "First turn";
 
 		mMatch = match;

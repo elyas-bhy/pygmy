@@ -86,8 +86,8 @@ public class MainActivity extends BaseGameActivity implements
 	private GameHelper gameHelper;
 	private SlidingMenu mSlidingMenu;
 	
-	// Tracks if we should initiate a new game
-	private boolean startGame = false;
+	// Reference to the selected game's source
+	private String gamePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -339,8 +339,7 @@ public class MainActivity extends BaseGameActivity implements
 		
 		setProfileView();
 		
-		if (startGame) {
-			startGame = false;
+		if (gamePath != null) {
 			dismissSpinner();
 			onStartMatchClicked(null);
 		}
@@ -397,8 +396,7 @@ public class MainActivity extends BaseGameActivity implements
 		
 		case RC_SELECT_GAME:
 			if (data != null && data.hasExtra(EXTRA_GAME_PATH)) {
-				PygmyApp.logD("path: " + data.getStringExtra(EXTRA_GAME_PATH));
-				startGame = true;
+				gamePath = data.getStringExtra(EXTRA_GAME_PATH);
 				showSpinner();
 			}
 			break;
@@ -465,7 +463,8 @@ public class MainActivity extends BaseGameActivity implements
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
 		showSpinner();
-		gameHelper.startMatch(match);
+		gameHelper.startMatch(match, gamePath);
+		gamePath = null;
 	}
 
 	// If you choose to rematch, then call it and wait for a response.
