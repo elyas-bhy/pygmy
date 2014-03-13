@@ -6,11 +6,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.dev.pygmy.game.GameViewManager;
-import com.dev.pygmy.util.PygmyLoader;
-import com.dev.pygmy.util.TurnData;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.PygmyLoader;
+import com.lib.pygmy.TurnData;
 
 public class GameHelper {
 	
@@ -46,19 +46,6 @@ public class GameHelper {
 	private void initGameViewManager(String gamePath) {
 		mGame = PygmyLoader.loadGame(mContext, gamePath);
 		mGameViewManager = new GameViewManager(mContext, mGame);
-	}
-
-	public void onDoneClicked() {
-		String nextParticipantId = getNextParticipantId();
-		
-		// Create the next turn
-		mTurnData.turnCounter += 1;
-//		mTurnData.data = mDataView.getText().toString();
-
-		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
-				mTurnData.persist(), nextParticipantId);
-
-		mTurnData = null;
 	}
 	
 	/**
@@ -337,6 +324,21 @@ public class GameHelper {
 
 	public AlertDialog getDialog() {
 		return mAlertDialog;
+	}
+	
+	// Upload your new gamestate, then take a turn, and pass it on to the next
+	// player.
+	public void onTurnTaken() {
+		String nextParticipantId = getNextParticipantId();
+		
+		// Create the next turn
+		mTurnData.turnCounter += 1;
+		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+
+		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
+				mTurnData.persist(), nextParticipantId);
+
+		mTurnData = null;
 	}
 	
 }

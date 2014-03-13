@@ -22,8 +22,8 @@ import android.app.Activity;
 import android.widget.FrameLayout;
 
 import com.dev.pygmy.R;
-import com.dev.pygmy.util.TurnData;
 import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.TurnData;
 
 public class GameViewManager {
 	

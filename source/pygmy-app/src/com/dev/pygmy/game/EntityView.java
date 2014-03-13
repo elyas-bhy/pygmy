@@ -16,9 +16,9 @@
 
 package com.dev.pygmy.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -26,15 +26,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
-import com.dev.pygmy.util.TurnData;
+import com.dev.pygmy.PygmyTurnListener;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.GameUniverse;
 import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
-import com.lib.pygmy.PygmyGameEntity;
-import com.lib.pygmy.PygmyGameLevel;
-import com.lib.pygmy.R;
+import com.lib.pygmy.TurnData;
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -43,8 +41,9 @@ import com.lib.pygmy.view.Tile;
  */
 public class EntityView extends View {
 	
+	private Context context;
 	private PygmyGame game;
-	private List<GameEntity> entities;	// array that holds the entities
+	private Collection<GameEntity> entities;	// array that holds the entities
 	private GameEntity draggedEntity = null;	// variable to know what entity is being dragged
 	
 	private boolean initial = true;
@@ -72,31 +71,16 @@ public class EntityView extends View {
 		super(context);
 		setFocusable(true); // Necessary for getting the touch events
 
+		this.context = context;
 		this.game = game;
 		GameUniverse universe = game.getCurrentLevel().getUniverse();
-		entities = new ArrayList<GameEntity>();//universe.getGameEntities().values();
+		entities = universe.getGameEntities().values();
 	}
 	
 	public void updateData(TurnData data) {
 		GameUniverse universe = game.getCurrentLevel().getUniverse();
-		universe.addGameEntity(new PygmyGameEntity(
-				(PygmyGameLevel) game.getCurrentLevel(), 
-				game.getCurrentPlayer(), 
-				R.drawable.black_queen, 
-				new Point(data.turnCounter+1, data.turnCounter+1)) {
-			
-			@Override
-			public void oneStepMoveAddedBehavior() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public boolean isLegalMove(GameMove move) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
+		universe.updateData(data);
+		entities = universe.getGameEntities().values();
 	}
 	
 	private void initTiles() {
@@ -222,6 +206,9 @@ public class EntityView extends View {
 					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
 					GameMove move = new GameMove(draggedEntity, dst);
 					game.onPlayerMove(move);
+					if (context instanceof PygmyTurnListener) {
+						((PygmyTurnListener) context).onTurnTaken();
+					}
 				}
 			}
 			entityCurrentPosition = null;
