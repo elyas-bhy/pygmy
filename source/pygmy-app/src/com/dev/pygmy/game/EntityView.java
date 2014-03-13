@@ -18,7 +18,6 @@ package com.dev.pygmy.game;
 
 import java.util.Collection;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;

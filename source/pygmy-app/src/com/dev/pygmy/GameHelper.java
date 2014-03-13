@@ -38,6 +38,7 @@ public class GameHelper {
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
+		initGameViewManager(mTurnData.gamePath);
 		isDoingTurn = true;
 		mContext.setViewVisibility();
 		mGameViewManager.updateData(mTurnData);
@@ -46,7 +47,6 @@ public class GameHelper {
 	private void initGameViewManager(String gamePath) {
 		mGame = PygmyLoader.loadGame(mContext, gamePath);
 		mGameViewManager = new GameViewManager(mContext, mGame);
-
 	}
 	
 	/**
