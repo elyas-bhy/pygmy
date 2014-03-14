@@ -25,7 +25,6 @@ import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
 import com.lib.pygmy.EntityType;
 import com.lib.pygmy.OverlapRulesApplier;
-import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
 
@@ -51,9 +50,9 @@ public class DemoLevel extends PygmyGameLevel {
 	 */
 	@Override
 	public void init() {
-		List<Player> players = getContext().getGame().getPlayers();
-		Player p1 = players.get(0);
-		Player p2 = players.get(1);
+		List<String> playerIds = getContext().getGame().getPlayerIds();
+		String p1 = playerIds.get(0);
+		String p2 = playerIds.get(1);
 		
 		setDimensions(16, 16);
 		addGameRule(new EndlessGameRule());

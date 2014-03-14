@@ -1,5 +1,7 @@
 package com.lib.pygmy;
 
+import android.graphics.Bitmap;
+
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -18,9 +20,9 @@ public interface GameEntity {
 	
 	public void setCurrentTile(Tile tile);
 	
-	public Player getPlayer();
+	public String getPlayerId();
 	
-	public void setPlayer(Player player);
+	public void setPlayerId(String playerId);
 	
 	public void oneStepMove(GameMove move);
 	
@@ -28,5 +30,9 @@ public interface GameEntity {
 	
 	public void oneStepMoveAddedBehavior();
 
+	public Bitmap getBitmap();
+	
+	public void setBitmap(Bitmap bitmap);
+	
 	public EntityType getType();
 }

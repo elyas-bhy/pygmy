@@ -1,13 +1,12 @@
 package com.lib.pygmy;
 
-
 public interface GameLevel {
 
 	public void start();
 	
 	public void init();
 
-	public Player getCurrentPlayer();
+	public String getCurrentPlayerId();
 
 	public GameMap getMap();
 	

@@ -17,11 +17,11 @@ public interface Game {
 	
 	public PygmyGameContext getContext();
 	
-	public List<Player> getPlayers();
+	public List<String> getPlayerIds();
 	
-	public void setPlayers(List<Player> players);
+	public void setPlayerIds(List<String> playerIds);
 	
-	public Player getCurrentPlayer();
+	public String getCurrentPlayerId();
 
 	public List<GameLevel> getLevels();
 	

@@ -55,18 +55,18 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 	
 	@Override
-	public List<Player> getPlayers() {
-		return context.getPlayers();
+	public List<String> getPlayerIds() {
+		return context.getPlayerIds();
 	}
 
 	@Override
-	public void setPlayers(List<Player> players) {
-		context.setPlayers(players);
+	public void setPlayerIds(List<String> playerIds) {
+		context.setPlayers(playerIds);
 	}
 
 	@Override
-	public Player getCurrentPlayer() {
-		return context.getCurrentPlayer();
+	public String getCurrentPlayerId() {
+		return context.getCurrentPlayerId();
 	}
 	
 	@Override

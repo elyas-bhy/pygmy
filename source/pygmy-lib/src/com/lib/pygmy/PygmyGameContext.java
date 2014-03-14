@@ -11,13 +11,13 @@ public class PygmyGameContext {
 	private Game game;
 	private GameLevel currentLevel;
 	
-	private List<Player> players;
+	private List<String> playerIds;
 	private int currentPlayer;
 	
 	public PygmyGameContext(Game game, Resources resources) {
 		this.game = game;
 		this.res = resources;
-		this.players = new ArrayList<Player>();
+		this.playerIds = new ArrayList<String>();
 		this.currentPlayer = 0;
 	}
 	
@@ -29,13 +29,13 @@ public class PygmyGameContext {
 		return res;
 	}
 
-	public List<Player> getPlayers() {
-		return players;
+	public List<String> getPlayerIds() {
+		return playerIds;
 	}
 	
-	public void setPlayers(List<Player> players) {
-		this.players.clear();
-		this.players.addAll(players);
+	public void setPlayers(List<String> playerIds) {
+		this.playerIds.clear();
+		this.playerIds.addAll(playerIds);
 	}
 	
 	public GameLevel getCurrentLevel() {
@@ -46,12 +46,12 @@ public class PygmyGameContext {
 		currentLevel = level;
 	}
 	
-	public Player getCurrentPlayer() {
-		return players.get(currentPlayer);
+	public String getCurrentPlayerId() {
+		return playerIds.get(currentPlayer);
 	}
 	
 	public void nextPlayer(String state) {
-		currentPlayer = (currentPlayer + 1) % players.size();
+		currentPlayer = (currentPlayer + 1) % playerIds.size();
 		
 //		showSpinner();
 //		String nextParticipantId = getNextParticipantId();

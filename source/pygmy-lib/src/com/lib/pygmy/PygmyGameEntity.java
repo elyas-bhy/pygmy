@@ -11,15 +11,15 @@ public abstract class PygmyGameEntity implements GameEntity,
 		Drawable, Overlappable {
 
 	private GameLevel level;
-	private Player player;
+	private String playerId;
 	private Tile tile;
+	private Bitmap bitmap;
  
 	private EntityType type;
-	private transient Bitmap bitmap;
 
-	public PygmyGameEntity(GameLevel level, Player player, EntityType type, Point pos) {
+	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) {
 		this.level = level;
-		this.player = player;
+		this.playerId = playerId;
 		this.type = type;
 		this.tile = new Tile(0,0,0);
 		tile.setPosition(pos);
@@ -36,13 +36,13 @@ public abstract class PygmyGameEntity implements GameEntity,
 	}
 	
 	@Override
-	public Player getPlayer() {
-		return player;
+	public String getPlayerId() {
+		return playerId;
 	}
 	
 	@Override
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setPlayerId(String playerId) {
+		this.playerId = playerId;
 	}
 
 	@Override
@@ -59,6 +59,16 @@ public abstract class PygmyGameEntity implements GameEntity,
 	@Override
 	public PygmyGameContext getContext() {
 		return level.getContext();
+	}
+	
+	@Override
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+	
+	@Override
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	@Override
