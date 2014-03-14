@@ -70,12 +70,12 @@ public class PygmyGameUniverse implements GameUniverse {
 			DexClassLoader classLoader = PygmyLoader.getClassLoader();
 			Class<?> clazz = classLoader.loadClass(attrs[0]);
 			Constructor<?> constructor = clazz.getConstructor(
-					GameLevel.class, Player.class, Integer.class, Point.class);
+					GameLevel.class, Player.class, EntityType.class, Point.class);
 			
 			entity = (GameEntity) constructor.newInstance(
 							this.level, 
 							new Player(attrs[1]), 
-							Integer.parseInt(attrs[2]), 
+							EntityType.valueOf(attrs[2]), 
 							new Point(Integer.parseInt(attrs[3]), Integer.parseInt(attrs[4])));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,7 +94,7 @@ public class PygmyGameUniverse implements GameUniverse {
 			sb.append(":");
 			sb.append(entity.getPlayer().getId());
 			sb.append(":");
-			sb.append(entity.getResourceId());
+			sb.append(entity.getType());
 			sb.append(":");
 			sb.append(entity.getCurrentTile().getPosition().x);
 			sb.append(":");

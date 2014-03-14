@@ -96,12 +96,9 @@ public class GameHelper {
 		initGameViewManager(gamePath);
 		
 		mTurnData = new TurnData();
-
-		mTurnData.gamePath = gamePath ;
-
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+		mTurnData.gamePath = gamePath ;
 		mTurnData.turnCounter = 1;
-
 
 		mMatch = match;
 

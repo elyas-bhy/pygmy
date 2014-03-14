@@ -1,7 +1,6 @@
 package com.lib.pygmy;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
 import com.lib.pygmy.base.Drawable;
@@ -11,24 +10,19 @@ import com.lib.pygmy.view.Tile;
 public abstract class PygmyGameEntity implements GameEntity,
 		Drawable, Overlappable {
 
+	private GameLevel level;
 	private Player player;
 	private Tile tile;
  
-	private int resId;
-	private Bitmap img;
-	private GameLevel level;
+	private EntityType type;
+	private transient Bitmap bitmap;
 
-	public PygmyGameEntity(GameLevel level, Player player, Integer resId, Point pos) {
+	public PygmyGameEntity(GameLevel level, Player player, EntityType type, Point pos) {
 		this.level = level;
 		this.player = player;
-		this.resId = resId;
+		this.type = type;
 		this.tile = new Tile(0,0,0);
 		tile.setPosition(pos);
-		
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(level.getContext().getResources(), resId);
-		img = Bitmap.createScaledBitmap(img, 70, 70, false);
 	}
 
 	@Override
@@ -66,15 +60,10 @@ public abstract class PygmyGameEntity implements GameEntity,
 	public PygmyGameContext getContext() {
 		return level.getContext();
 	}
-	
-	@Override
-	public Bitmap getBitmap() {
-		return img;
-	}
 
 	@Override
-	public int getResourceId() {
-		return resId;
+	public EntityType getType() {
+		return type;
 	}
 
 	@Override

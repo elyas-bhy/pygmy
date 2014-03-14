@@ -35,8 +35,8 @@ public class PygmyGameContext {
 	
 	public void setPlayers(int minPlayers, int maxPlayers) {
 		players.clear();
+		players.add(new Player("0"));
 		players.add(new Player("1"));
-		players.add(new Player("2"));
 	}
 	
 	public GameLevel getCurrentLevel() {

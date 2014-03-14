@@ -1,7 +1,5 @@
 package com.lib.pygmy;
 
-import android.graphics.Bitmap;
-
 import com.lib.pygmy.view.Tile;
 
 /**
@@ -30,10 +28,5 @@ public interface GameEntity {
 	
 	public void oneStepMoveAddedBehavior();
 
-	/**
-	 * Returns the image file of the entity
-	 */
-	public Bitmap getBitmap();
-
-	public int getResourceId();
+	public EntityType getType();
 }

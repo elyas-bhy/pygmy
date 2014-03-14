@@ -23,11 +23,11 @@ import android.graphics.Point;
 
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
+import com.lib.pygmy.EntityType;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
-import com.lib.pygmy.Res;
 
 public class DemoLevel extends PygmyGameLevel {
 	
@@ -59,31 +59,31 @@ public class DemoLevel extends PygmyGameLevel {
 		addGameRule(new EndlessGameRule());
 
 		// declare each black piece (entity) with the Entity class
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_rook, new Point(0, 0)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_knight, new Point(0, 1)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_bishop, new Point(0, 2)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_queen, new Point(0, 3)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_king, new Point(0, 4)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_bishop, new Point(0, 5)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_knight, new Point(0, 6)));
-		addEntity(new MyChessEntity(this, p1, Res.drawable.black_rook, new Point(0, 7)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 0)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 1)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 2)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_QUEEN, new Point(0, 3)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KING, new Point(0, 4)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 5)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 6)));
+		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 7)));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new Pawn(this, p1, Res.drawable.black_pawn, new Point(1, i)));
+			addEntity(new Pawn(this, p1, EntityType.BLACK_PAWN, new Point(1, i)));
 		}
 		
 		// declare each white piece (entity) with the Entity class
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_rook, new Point(7, 0)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_knight, new Point(7, 1)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_bishop, new Point(7, 2)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_queen, new Point(7, 3)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_king, new Point(7, 4)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_bishop, new Point(7, 5)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_knight, new Point(7, 6)));
-		addEntity(new MyChessEntity(this, p2, Res.drawable.white_rook, new Point(7, 7)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 0)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 1)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 2)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_QUEEN, new Point(7, 3)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KING, new Point(7, 4)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 5)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 6)));
+		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 7)));
 
 		for (int i = 0; i < 8; i++) {
-			addEntity(new Pawn(this, p2, Res.drawable.white_pawn, new Point(6, i)));
+			addEntity(new Pawn(this, p2, EntityType.WHITE_PAWN, new Point(6, i)));
 		}
 	}
 	

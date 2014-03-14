@@ -19,13 +19,14 @@ package com.dev.pygmy.game;
 import java.util.Collection;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.PygmyTurnListener;
+import com.dev.pygmy.util.Utils;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.GameUniverse;
@@ -107,7 +108,8 @@ public class EntityView extends View {
 		for (GameEntity entity : entities) {
 			if (entity != null) {
 				coords = entity.getCurrentTile().getCoordinates();
-				canvas.drawBitmap(entity.getBitmap(), coords.x, coords.y, null);
+				Bitmap bitmap = Utils.getBitmapByType(context.getResources(), entity.getType());
+				canvas.drawBitmap(bitmap, coords.x, coords.y, null);
 			}
 		}
 	}
@@ -141,13 +143,13 @@ public class EntityView extends View {
 					if (x > coords.x && x < coords.x + tileSize 
 					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
-						Player entityPlayer= entity.getPlayer();
+						Player entityPlayer = entity.getPlayer();
 						Player currentPlayer = game.getCurrentPlayer();
 						
-						if (entityPlayer.getId() != currentPlayer.getId()) {
-							PygmyApp.logD("It's not your turn!!");
-							return true;
-						}
+//						if (entityPlayer.getId() != currentPlayer.getId()) {
+//							PygmyApp.logD("It's not your turn!!");
+//							return true;
+//						}
 						
 						draggedEntity = entity;
 						entityCurrentPosition = tile;
