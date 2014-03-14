@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,13 +40,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.dev.pygmy.MainActivity;
-
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
-
-
 
 public class GameHomePageActivity extends Activity {
 
@@ -98,7 +93,7 @@ public class GameHomePageActivity extends Activity {
 		titleView = (TextView) findViewById(R.id.name_game);
 		summaryView = (TextView) findViewById(R.id.name_resume);
 
-		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName);
+		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName).execute();
 	}
 
 	@Override
@@ -123,7 +118,7 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onReportClicked(View view) {
-		new LoadDataFromDatabase(spinner, reportUrl, gameName);
+		new LoadDataFromDatabase(spinner, reportUrl, gameName).execute();
 		Toast.makeText(this, "Report Done", TOAST_DELAY).show();
 	}
 

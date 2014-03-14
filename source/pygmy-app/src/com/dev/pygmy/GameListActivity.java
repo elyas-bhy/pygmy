@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,27 +42,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.game.GameHomePageActivity;
 
 public class GameListActivity extends Activity {
+	
+	protected final class GameHolder {
+		public Integer id;
+		public String name;
+		public String info;
+		public String fileName;
+		public String version;
+		public String image;
+		public Integer minPlayers;
+		public Integer maxPlayers;
+	}
 
 	private ListView listView;
-
-	ArrayList<Integer> gameId = new ArrayList<Integer>();
-	ArrayList<String> gameName = new ArrayList<String>();
-	ArrayList<String> info = new ArrayList<String>();
-	ArrayList<String> fileName = new ArrayList<String>();
-	ArrayList<String> gameVersion = new ArrayList<String>();
-	ArrayList<String> gameImage = new ArrayList<String>();
-	ArrayList<Integer> minPlayer = new ArrayList<Integer>();
-	ArrayList<Integer> maxPlayer = new ArrayList<Integer>();
+	private List<GameHolder> games;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_list);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		games = new ArrayList<GameHolder>();
 
 		// Creating list
 		listView = (ListView) findViewById(R.id.list);
@@ -72,16 +76,16 @@ public class GameListActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
-				Intent intent = new Intent(GameListActivity.this,
-						GameHomePageActivity.class);
-				intent.putExtra("id", gameId.get(position));
-				intent.putExtra("gameName", gameName.get(position));
-				intent.putExtra("filename", fileName.get(position));
-				intent.putExtra("version", gameVersion.get(position));
-				intent.putExtra("image", gameImage.get(+position));
-				intent.putExtra("minPlayer", minPlayer.get(+position));
-				intent.putExtra("maxPlayer", maxPlayer.get(+position));
+				Intent intent = new Intent(GameListActivity.this, GameHomePageActivity.class);
+				GameHolder game = games.get(position);
+				
+				intent.putExtra("id", game.id);
+				intent.putExtra("gameName", game.name);
+				intent.putExtra("filename", game.fileName);
+				intent.putExtra("version", game.version);
+				intent.putExtra("image", game.image);
+				intent.putExtra("minPlayer", game.minPlayers);
+				intent.putExtra("maxPlayer", game.maxPlayers);
 				startActivityForResult(intent, MainActivity.RC_SELECT_GAME);
 			}
 		});
@@ -139,36 +143,22 @@ public class GameListActivity extends Activity {
 		protected void onPostExecute(Void v) {
 			try {
 				JSONArray array = new JSONArray(result);
+				JSONObject json;
+				GameHolder game;
 				for (int i = 0; i < array.length(); i++) {
-					JSONObject json = null;
 					json = array.getJSONObject(i);
+					game = new GameHolder();
 					
-					int id = json.getInt("id_game");
-					gameId.add(id);
+					game.id = json.getInt("id_game");
+					game.name = json.getString("name");
+					game.info = json.getString("resume");
+					game.fileName = json.getString("filename");
+					game.version = json.getString("version");
+					game.image = json.getString("image");
+					game.minPlayers = json.getInt("min_player");
+					game.maxPlayers = json.getInt("max_player");
 
-					String title = json.getString("name");
-					gameName.add(title);
-
-					String resume = json.getString("resume");
-					info.add(resume);
-					
-					String file = json.getString("filename");
-					fileName.add(file);
-
-					String version = json.getString("version");
-					gameVersion.add(version);
-					
-					String imageG = json.getString("image");
-					gameImage.add(imageG);
-					
-					int minplayer = json.getInt("min_player");
-					minPlayer.add(minplayer);
-					
-					int maxplayer = json.getInt("max_player");
-					maxPlayer.add(maxplayer);
-
-					GameListAdapter adapter = new GameListAdapter(
-							GameListActivity.this, gameName, info, gameImage);
+					GameListAdapter adapter = new GameListAdapter(GameListActivity.this, games);
 
 					listView.setAdapter(adapter);
 				}

@@ -40,7 +40,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.game.GameBoardActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -88,7 +87,7 @@ public class MainActivity extends BaseGameActivity implements
 	// For our preferences
 	final static String LAST_GAME = "Last_Game";
 	
-	private GameHelper gameHelper;
+	private GameHelper mGameHelper;
 	private SlidingMenu mSlidingMenu;
 	
 	// Reference to the selected game's source
@@ -100,7 +99,7 @@ public class MainActivity extends BaseGameActivity implements
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		gameHelper = new GameHelper(this);
+		mGameHelper = new GameHelper(this);
 		
 		//Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
@@ -155,7 +154,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.start_match));
@@ -180,26 +178,23 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 1) {
-					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
-				}
-				if (position == 2) {
 					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
-				if (position == 3) {
+				if (position == 2) {
 					signOut();
 					setViewVisibility();
 				}
-				if (position == 4) {
-					onStartMatchClicked(findViewById(R.id.matchup_layout));
+				if (position == 3) {
+					onStartMatchClicked();
 				}
-				if (position == 5) {
+				if (position == 4) {
 					onQuickMatchClicked(findViewById(R.id.matchup_layout));
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 				}
-				if (position == 6) {
+				if (position == 5) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
-					onCheckGamesClicked(findViewById(R.id.matchup_layout));
+					onCheckGamesClicked();
 				}
 			}
 		});
@@ -230,14 +225,14 @@ public class MainActivity extends BaseGameActivity implements
 
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
-	public void onCheckGamesClicked(View view) {
+	private void onCheckGamesClicked() {
 		Intent intent = getGamesClient().getMatchInboxIntent();
 		startActivityForResult(intent, RC_LOOK_AT_MATCHES);
 	}
 
 	// Open the create-game UI. You will get back an onActivityResult
 	// and figure out what to do.
-	public void onStartMatchClicked(View view) {
+	private void onStartMatchClicked() {
 		Intent intent = getGamesClient().getSelectPlayersIntent(1, 2, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
 	}
@@ -260,23 +255,22 @@ public class MainActivity extends BaseGameActivity implements
 	// giving up on the view.
 	public void onCancelClicked(View view) {
 		showSpinner();
-		gameHelper.onCancelClicked();
+		mGameHelper.onCancelClicked();
 		setViewVisibility();
-	
 	}
 
 	// Leave the game during your turn. Note that there is a separate
 	// GamesClient.leaveTurnBasedMatch() if you want to leave NOT on your turn.
 	public void onLeaveClicked(View view) {
 		showSpinner();
-		gameHelper.onLeaveClicked();
+		mGameHelper.onLeaveClicked();
 		setViewVisibility();
 	}
 
 	// Finish the game. Sometimes, this is your only choice.
 	public void onFinishClicked(View view) {
 		showSpinner();
-		gameHelper.onFinishClicked();
+		mGameHelper.onFinishClicked();
 		setViewVisibility();
 	}
 
@@ -294,8 +288,8 @@ public class MainActivity extends BaseGameActivity implements
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.GONE);
 
-			if (gameHelper.getDialog() != null) {
-				gameHelper.getDialog().dismiss();
+			if (mGameHelper.getDialog() != null) {
+				mGameHelper.getDialog().dismiss();
 			}
 			return;
 		}
@@ -305,7 +299,7 @@ public class MainActivity extends BaseGameActivity implements
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
 		findViewById(R.id.screen_profile).setVisibility(View.GONE);
 
-		if (gameHelper.isDoingTurn()) {
+		if (mGameHelper.isDoingTurn()) {
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.VISIBLE);
 		} else {
@@ -349,7 +343,7 @@ public class MainActivity extends BaseGameActivity implements
 		
 		if (gamePath != null) {
 			dismissSpinner();
-			onStartMatchClicked(null);
+			onStartMatchClicked();
 		}
 	}
 
@@ -477,44 +471,44 @@ public class MainActivity extends BaseGameActivity implements
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
 		showSpinner();
-		gameHelper.startMatch(match, gamePath);
+		mGameHelper.startMatch(match, gamePath);
 		gamePath = null;
 	}
 
 	// If you choose to rematch, then call it and wait for a response.
 	public void rematch() {
 		showSpinner();
-		gameHelper.rematch();
+		mGameHelper.rematch();
 	}
 
 	// This is the main function that gets called when players choose a match
 	// from the inbox, or else create a match and want to start it.
 	public void updateMatch(TurnBasedMatch match) {
-		gameHelper.updateMatch(match);
+		mGameHelper.updateMatch(match);
 	}
 
 	@Override
 	public void onTurnBasedMatchCanceled(int statusCode, String matchId) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchCanceled(statusCode, matchId);
+		mGameHelper.onTurnBasedMatchCanceled(statusCode, matchId);
 	}
 
 	@Override
 	public void onTurnBasedMatchInitiated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchInitiated(statusCode, match);
+		mGameHelper.onTurnBasedMatchInitiated(statusCode, match);
 	}
 
 	@Override
 	public void onTurnBasedMatchLeft(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchLeft(statusCode, match);
+		mGameHelper.onTurnBasedMatchLeft(statusCode, match);
 	}
 
 	@Override
 	public void onTurnBasedMatchUpdated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchUpdated(statusCode, match);
+		mGameHelper.onTurnBasedMatchUpdated(statusCode, match);
 		setViewVisibility();
 	}
 
@@ -556,7 +550,7 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public void onTurnTaken() {
 		showSpinner();
-		gameHelper.onTurnTaken();
+		mGameHelper.onTurnTaken();
 	}
 	
 }
