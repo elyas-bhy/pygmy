@@ -7,7 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.graphics.Point;
 
 import com.lib.pygmy.base.Overlappable;
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.util.PygmyLoader;
+import com.lib.pygmy.util.TurnData;
 
 import dalvik.system.DexClassLoader;
 

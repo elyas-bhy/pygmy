@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lib.pygmy;
+package com.lib.pygmy.util;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;

@@ -5,7 +5,6 @@ import android.graphics.Point;
 
 import com.lib.pygmy.base.Drawable;
 import com.lib.pygmy.base.Overlappable;
-import com.lib.pygmy.view.Tile;
 
 public abstract class PygmyGameEntity implements GameEntity,
 		Drawable, Overlappable {

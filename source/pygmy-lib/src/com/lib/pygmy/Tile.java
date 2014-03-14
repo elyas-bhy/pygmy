@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lib.pygmy.view;
+package com.lib.pygmy;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -86,13 +86,6 @@ public class Tile {
 	public int getHeight() {
 		return height;
 	}
-	
-	/**
-	 * @return the dimensions of a tile with a rectangular shape.
-	 */
-	/*public Point getTileRectangleDimensions() {
-		return size;
-	}*/
 	
 	public void setColor(Paint color) {
 		this.color = color;

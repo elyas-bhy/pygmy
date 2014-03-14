@@ -9,8 +9,8 @@ import com.dev.pygmy.game.GameViewManager;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
-import com.lib.pygmy.PygmyLoader;
-import com.lib.pygmy.TurnData;
+import com.lib.pygmy.util.PygmyLoader;
+import com.lib.pygmy.util.TurnData;
 
 public class GameHelper {
 	

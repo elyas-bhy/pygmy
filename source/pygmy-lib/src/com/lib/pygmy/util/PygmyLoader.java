@@ -1,6 +1,8 @@
-package com.lib.pygmy;
+package com.lib.pygmy.util;
 
 import java.lang.reflect.Constructor;
+
+import com.lib.pygmy.PygmyGame;
 
 import android.app.Activity;
 import android.content.Context;

@@ -2,8 +2,6 @@ package com.lib.pygmy;
 
 import android.graphics.Bitmap;
 
-import com.lib.pygmy.view.Tile;
-
 /**
  * Interface of board game pieces (entities)
  * @author Pygmy

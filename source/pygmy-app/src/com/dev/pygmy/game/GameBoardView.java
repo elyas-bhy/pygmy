@@ -27,7 +27,7 @@ import android.graphics.Point;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.Tile;
 
 /**
  * 	This class represents the grid of the board.
@@ -41,7 +41,7 @@ public class GameBoardView extends View {
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
-	private static Map<Point, Tile> mapTileCoord;
+	private static Map<Point,Tile> mapTileCoord;
 
 	/**
 	 * Default constructor.

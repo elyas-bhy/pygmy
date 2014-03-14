@@ -32,8 +32,8 @@ import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.GameUniverse;
 import com.lib.pygmy.PygmyGame;
-import com.lib.pygmy.TurnData;
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.TurnData;
 
 /**
  * This class represents the view which shows the 

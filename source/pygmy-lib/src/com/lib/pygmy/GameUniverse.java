@@ -2,7 +2,7 @@ package com.lib.pygmy;
 
 import java.util.Map;
 
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.util.TurnData;
 
 /**
  * stores all the gameframework.game entities of a gameframework.game level:

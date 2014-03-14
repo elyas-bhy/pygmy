@@ -1,6 +1,6 @@
 package com.lib.pygmy.base;
 
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.Tile;
 
 public interface Overlappable {
 	
