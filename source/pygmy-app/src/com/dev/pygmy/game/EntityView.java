@@ -25,6 +25,7 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.PygmyTurnListener;
 import com.dev.pygmy.util.Utils;
 import com.lib.pygmy.GameEntity;
@@ -145,11 +146,11 @@ public class EntityView extends View {
 						// Get what entity is being dragged.
 						Player entityPlayer = entity.getPlayer();
 						Player currentPlayer = game.getCurrentPlayer();
-						
-//						if (entityPlayer.getId() != currentPlayer.getId()) {
-//							PygmyApp.logD("It's not your turn!!");
-//							return true;
-//						}
+
+						if (!entityPlayer.getId().equals(currentPlayer.getId())) {
+							PygmyApp.logD("It's not your turn!!");
+							return true;
+						}
 						
 						draggedEntity = entity;
 						entityCurrentPosition = tile;
@@ -168,8 +169,8 @@ public class EntityView extends View {
 					//Identify the hovered tile
 					float eventX = event.getX();
 					float eventY = event.getY();
-					float mx=(eventX * nbColumns) / maxX;
-					float my=(eventY * nbRows) / maxY;
+					float mx = (eventX * nbColumns) / maxX;
+					float my = (eventY * nbRows) / maxY;
 					
 					targetColumn = Math.round(mx);
 					targetRow = Math.round(my);

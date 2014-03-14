@@ -60,8 +60,8 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 
 	@Override
-	public void setPlayers(int minPlayers, int maxPlayers) {
-		context.setPlayers(minPlayers, maxPlayers);
+	public void setPlayers(List<Player> players) {
+		context.setPlayers(players);
 	}
 
 	@Override
@@ -82,17 +82,6 @@ public abstract class PygmyGame implements Game, Observer {
 	@Override
 	public GameLevel getCurrentLevel() {
 		return context.getCurrentLevel();
-	}
-	
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	@Override
-	public void setBoardDimensions(int rows, int columns) {
-		this.rows = rows;
-		this.columns = columns;
 	}
 
 	public void update(Observable o, Object arg) {

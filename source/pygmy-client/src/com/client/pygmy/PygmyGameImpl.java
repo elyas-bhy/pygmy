@@ -30,10 +30,6 @@ public class PygmyGameImpl extends PygmyGame {
 	@Override
 	public void initGame() {
 		PygmyGame game = getGame();
-		game.setPlayers(2, 4);
-		game.setBoardDimensions(6, 6);
-		game.setTitle("DemoGame");
-
 		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
 
 		OverlapRulesApplier rules = new DemoOverlapRules();

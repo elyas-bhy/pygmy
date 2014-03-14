@@ -19,7 +19,7 @@ public interface Game {
 	
 	public List<Player> getPlayers();
 	
-	void setPlayers(int minPlayers, int maxPlayers);
+	public void setPlayers(List<Player> players);
 	
 	public Player getCurrentPlayer();
 
@@ -28,10 +28,6 @@ public interface Game {
 	public void setLevels(List<GameLevel> levels);
 	
 	public GameLevel getCurrentLevel();
-	
-	public void setTitle(String title);
-	
-	public void setBoardDimensions(int rows, int columns);
 	
 	public ObservableValue<Boolean> endOfGame();
 	

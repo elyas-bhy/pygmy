@@ -1,6 +1,7 @@
 package com.dev.pygmy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import com.dev.pygmy.game.GameViewManager;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyLoader;
 import com.lib.pygmy.TurnData;
@@ -46,6 +48,14 @@ public class GameHelper {
 	
 	private void initGameViewManager(String gamePath) {
 		mGame = PygmyLoader.loadGame(mContext, gamePath);
+		
+		List<Player> players = new ArrayList<Player>();
+		for (String playerId : mMatch.getParticipantIds()) {
+			PygmyApp.logD("Adding player: " + playerId);
+			players.add(new Player(playerId));
+		}
+		mGame.setPlayers(players);
+		
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
 	
@@ -93,14 +103,13 @@ public class GameHelper {
 	}
 
 	public void startMatch(TurnBasedMatch match, String gamePath) {
+		mMatch = match;
 		initGameViewManager(gamePath);
 		
 		mTurnData = new TurnData();
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
 		mTurnData.gamePath = gamePath ;
 		mTurnData.turnCounter = 1;
-
-		mMatch = match;
 
 		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());

@@ -34,7 +34,7 @@ public class TurnData {
 	
 	private final static String TAG = "TurnData";
 
-	public String gamePath="";
+	public String gamePath = "";
     public String data = "";
     public int turnCounter;
 
