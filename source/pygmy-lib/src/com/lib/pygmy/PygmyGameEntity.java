@@ -1,7 +1,6 @@
 package com.lib.pygmy;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
 import com.lib.pygmy.base.Drawable;
@@ -11,24 +10,19 @@ import com.lib.pygmy.view.Tile;
 public abstract class PygmyGameEntity implements GameEntity,
 		Drawable, Overlappable {
 
-	private Player player;
+	private GameLevel level;
+	private String playerId;
 	private Tile tile;
+	private Bitmap bitmap;
  
-	private int resId;
-	private Bitmap img;
-	private PygmyGameLevel level;
+	private EntityType type;
 
-	public PygmyGameEntity(PygmyGameLevel level, Player player, int resId, Point pos) {
+	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) {
 		this.level = level;
-		this.player = player;
-		this.resId = resId;
+		this.playerId = playerId;
+		this.type = type;
 		this.tile = new Tile(0,0,0);
 		tile.setPosition(pos);
-		
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inJustDecodeBounds = true;
-		img = BitmapFactory.decodeResource(level.getContext().getResources(), resId);
-		img = Bitmap.createScaledBitmap(img, 70, 70, false);
 	}
 
 	@Override
@@ -42,13 +36,13 @@ public abstract class PygmyGameEntity implements GameEntity,
 	}
 	
 	@Override
-	public Player getPlayer() {
-		return player;
+	public String getPlayerId() {
+		return playerId;
 	}
 	
 	@Override
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setPlayerId(String playerId) {
+		this.playerId = playerId;
 	}
 
 	@Override
@@ -69,12 +63,17 @@ public abstract class PygmyGameEntity implements GameEntity,
 	
 	@Override
 	public Bitmap getBitmap() {
-		return img;
+		return bitmap;
+	}
+	
+	@Override
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	@Override
-	public int getResourceId() {
-		return resId;
+	public EntityType getType() {
+		return type;
 	}
 
 	@Override

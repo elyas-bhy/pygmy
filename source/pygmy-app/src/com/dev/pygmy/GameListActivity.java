@@ -35,6 +35,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -59,6 +61,7 @@ public class GameListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_list);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// Creating list
 		listView = (ListView) findViewById(R.id.list);
@@ -173,6 +176,18 @@ public class GameListActivity extends Activity {
 				PygmyApp.logE("Error parsing data: " + e.getMessage());
 			}
 		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		default:
+			break;
+		}
+		return false;
 	}
 	
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy.util;
+package com.lib.pygmy;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.dev.pygmy.PygmyApp;
+import android.util.Log;
 
 /**
  * Basic turn data. It's just a blank data string and a turn number counter.
@@ -31,7 +31,10 @@ import com.dev.pygmy.PygmyApp;
  * 
  */
 public class TurnData {
+	
+	private final static String TAG = "TurnData";
 
+	public String gamePath = "";
     public String data = "";
     public int turnCounter;
 
@@ -43,6 +46,7 @@ public class TurnData {
         JSONObject retVal = new JSONObject();
 
         try {
+        	retVal.put("gamePath", gamePath);
             retVal.put("data", data);
             retVal.put("turnCounter", turnCounter);
 
@@ -52,7 +56,7 @@ public class TurnData {
 
         String st = retVal.toString();
 
-        PygmyApp.logD("==== PERSISTING\n" + st);
+        Log.d(TAG, "==== PERSISTING\n" + st);
 
         return st.getBytes(Charset.forName("UTF-16"));
     }
@@ -61,7 +65,7 @@ public class TurnData {
     public static TurnData unpersist(byte[] byteArray) {
 
         if (byteArray == null) {
-            PygmyApp.logD("Empty array---possible bug.");
+            Log.d(TAG, "Empty array---possible bug.");
             return new TurnData();
         }
 
@@ -73,7 +77,7 @@ public class TurnData {
             return null;
         }
 
-        PygmyApp.logD("====UNPERSIST \n" + st);
+        Log.d(TAG, "====UNPERSIST \n" + st);
 
         TurnData retVal = new TurnData();
 
@@ -85,6 +89,9 @@ public class TurnData {
             }
             if (obj.has("turnCounter")) {
                 retVal.turnCounter = obj.getInt("turnCounter");
+            }
+            if (obj.has("gamePath")) {
+                retVal.gamePath = obj.getString("gamePath");
             }
 
         } catch (JSONException e) {
