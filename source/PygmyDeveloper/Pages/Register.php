@@ -32,7 +32,7 @@ session_start();
 		<div id="corps">
 			<div class="block">
 					<h1>Register</h1>
-					<form method="post" action="RegisterDev.php">
+					<form name="formulaire" method="post" action="RegisterDev.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>

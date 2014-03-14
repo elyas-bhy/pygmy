@@ -42,16 +42,36 @@ session_start();
 		<div id="corps">
 		
 		<?php	
-		if(!isset($_GET['game'])){
+		if(isset($_GET['game'])){
+
 			echo ' '.$_GET['game'].' <br>';
-		}
-		else
-			echo ' '.$_GET['game'].' <br>';
+
+					$host = "dbserver"; //dbserver
+					$user = "njouanla";  //njouanla
+					$password = "pygmyproject"; //pygmyproject
+					$conn = mysql_connect($host,$user,$password) or die ("Error. You are not registered");
+					mysql_select_db("njouanla") or die ("DB PB");
+
+					$query = "SELECT version, min_player, max_player FROM game WHERE name = '".$_GET['game']."';";
+					$result = mysql_query($query);
+					while ($row = mysql_fetch_array($result)) {
+
+					$version = $row['version'];
+					$min = $row['min_player'];
+					$max = $row['max_player'];
+					echo 'Version : '.$version.' <br>';
+					echo ' Players min : '.$min.' | Players max : '.$max.' <br>';
+			}
+}
 		?>
 	
 		
-		<form method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>">
-						<p> Version (write the number) <input type="text" size="20" name="Version"/></p>
+		<form name="formulaire" method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>">
+						<table id="upload">
+						<tr><td><th class="left"><label>Version (write the number) : </label></th><th><input type="text" size="20" name="Version"/></th></td></tr>
+						<tr><td><th class="left"><label>Min player : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
+						<tr><td><th class="left"><label>Max player : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
+						</table>
 						<p> /!\ Filename must be game.jar /!\ .</p>
 						<p><input type="file" name="code"></p>
 						<p><input type="submit" value="UPLOAD"/>

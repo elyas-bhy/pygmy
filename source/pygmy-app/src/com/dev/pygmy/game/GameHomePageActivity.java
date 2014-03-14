@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,29 +45,37 @@ import android.widget.Toast;
 import com.dev.pygmy.MainActivity;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
+import com.dev.pygmy.util.ImageDownloader;
 
 public class GameHomePageActivity extends Activity {
 
 	private final static int TOAST_DELAY = 2000;
-	
+
 	private final String BASE_URL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper";
 	private String gamesInfoUrl = BASE_URL + "/scripts/gamesInfo.php";
 	private String reportUrl = BASE_URL + "/scripts/report.php";
-	
+
 	private Spinner spinner;
 	private Button button;
 	private ProgressDialog dialog;
 	private TextView titleView, summaryView;
-	
-	String LAST_GAME = "Last_Game";
+
+	private String LAST_GAME = "Last_Game";
+	private String IMAGE = "Icon";
+	private String PREVIOUS_LAST_GAME = "Previous_Last_Game";
+	private String DEFAULT_IMAGE = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/Default/logo_home_page.png";
 
 	private int id;
 	private boolean downloaded = false;
 	private String gameName;
 	private String filename;
 	private String version;
+	private String image;
 	private int minPlayer;
 	private int maxPlayer;
+
+	private String previousGame;
+	private String previousImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,16 +92,34 @@ public class GameHomePageActivity extends Activity {
 			gameName = extras.getString("gameName");
 			filename = extras.getString("filename");
 			version = extras.getString("version");
+			image = extras.getString("image");
 			minPlayer = extras.getInt("minPlayer");
 			maxPlayer = extras.getInt("maxPlayer");
 		}
-		
+
+		SharedPreferences previousLastGame = getSharedPreferences(LAST_GAME,
+				MODE_PRIVATE);
+		previousGame = previousLastGame.getString(LAST_GAME, "Never play before");
+		previousImage = previousLastGame.getString(IMAGE, DEFAULT_IMAGE);
+
 		// Check if the game is already on the device or not
 		checkDownload();
 
 		spinner = (Spinner) findViewById(R.id.spinner);
 		titleView = (TextView) findViewById(R.id.name_game);
 		summaryView = (TextView) findViewById(R.id.name_resume);
+		
+		ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
+		URL imageUrl = null;
+		try {
+			imageUrl = new URL(image);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		ImageDownloader mDownload = new ImageDownloader();
+		mDownload.download(imageUrl.toString(), gameIconImage);
 
 		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName).execute();
 	}
@@ -145,9 +173,9 @@ public class GameHomePageActivity extends Activity {
 			finish();
 		}
 	}
-	
-	private class GameDownloadTask extends AsyncTask<String,Void,Void> {
-		
+
+	private class GameDownloadTask extends AsyncTask<String, Void, Void> {
+
 		@Override
 		protected void onPreExecute() {
 			// Create an animation to show the progress of the download
@@ -160,7 +188,8 @@ public class GameHomePageActivity extends Activity {
 			String url = urls[0];
 			String dest = urls[1];
 			try {
-				// Retrieve .jar files on the server with url and save this on the
+				// Retrieve .jar files on the server with url and save this on
+				// the
 				// device
 				File destFile = new File(dest);
 				URL u = new URL(url);
@@ -170,7 +199,8 @@ public class GameHomePageActivity extends Activity {
 				byte[] buffer = new byte[contentLength];
 				stream.readFully(buffer);
 				stream.close();
-				DataOutputStream fos = new DataOutputStream(new FileOutputStream(destFile));
+				DataOutputStream fos = new DataOutputStream(
+						new FileOutputStream(destFile));
 				fos.write(buffer);
 				fos.flush();
 				fos.close();
@@ -183,10 +213,11 @@ public class GameHomePageActivity extends Activity {
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Void result) {
-			Toast.makeText(GameHomePageActivity.this, "Download Done", TOAST_DELAY).show();
+			Toast.makeText(GameHomePageActivity.this, "Download Done",
+					TOAST_DELAY).show();
 			downloaded = true;
 			// change the visibility of the button
 			button.setText("Play");
@@ -197,7 +228,7 @@ public class GameHomePageActivity extends Activity {
 	private void checkDownload() {
 		File gameFolder = new File(getGameDirectory());
 		File versionFolder = new File(getGameDirectory(version));
-		
+
 		if (gameFolder.exists() && versionFolder.exists()) {
 			downloaded = true;
 			button.setText("Play");
@@ -208,11 +239,10 @@ public class GameHomePageActivity extends Activity {
 			downloaded = false;
 		}
 	}
-	
+
 	private String getGameDirectory() {
 		return getGameDirectory(null);
 	}
-	
 
 	private String getGameDirectory(String version) {
 		StringBuilder sb = new StringBuilder();
@@ -244,11 +274,17 @@ public class GameHomePageActivity extends Activity {
 		return (path.delete());
 	}
 
-	
-	public void putGamePreferences(){
-		SharedPreferences lastGame = getSharedPreferences (LAST_GAME, MODE_PRIVATE);
+	public void putGamePreferences() {
+		SharedPreferences lastGame = getSharedPreferences(LAST_GAME,
+				MODE_PRIVATE);
 		SharedPreferences.Editor editor = lastGame.edit();
-		editor.putString(LAST_GAME,  gameName).commit();
-		}
-}
+		editor.putString(LAST_GAME, gameName).commit();
+		editor.putString(IMAGE, image).commit();
 
+		SharedPreferences previousLastGame = getSharedPreferences(PREVIOUS_LAST_GAME,
+				MODE_PRIVATE);
+		SharedPreferences.Editor editor2 = previousLastGame.edit();
+		editor2.putString(PREVIOUS_LAST_GAME, previousGame).commit();
+		editor2.putString(IMAGE, previousImage).commit();
+	}
+}

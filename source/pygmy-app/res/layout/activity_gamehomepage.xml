@@ -31,8 +31,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dip"
-            android:src="@drawable/logo_home_page" />
+            android:layout_marginTop="20dip" />
 
         <TextView
             android:id="@+id/name_game"

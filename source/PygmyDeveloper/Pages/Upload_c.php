@@ -43,13 +43,17 @@ session_start();
 		<?php
 		if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
 		?>
-		<form method="post" enctype="multipart/form-data" action="UploadGame.php">
+		<form name="formulaire" method="post" enctype="multipart/form-data" action="UploadGame.php">
 			<table id="upload">
-			<tr><td><th class="left"><label>Title (no spaces) : </label></th><th><input type="text" size="20" name="Title"/></th></td></tr>
+			<tr><td><th class="left"><label>Title (no spaces)* : </label></th><th><input type="text" size="20" name="Title"/></th></td></tr>
 			<tr><td><th class="left"><label>Description (200 characters) : </label></th><th><input type="text" size="200" name="Resume"</th></td></tr>
+			<tr><td><th class="left"><label>Min player (default value 1) : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
+			<tr><td><th class="left"><label>Max player (default value 1) : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
 			</table>
 			<p>Please upload a .jar file. /!\ Filename must be game.jar /!\ .</p>
 			<p><input type="file" name="code"></p>
+			<p>Select an image for your game. (200ko max)</p>
+			<p><input type="file" name="image"></p>
 			<p><input type="submit" value="UPLOAD"/></p>
 			<input type="reset" value="RESET"/></p>
 					</form>
