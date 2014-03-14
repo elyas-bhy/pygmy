@@ -32,45 +32,54 @@ import com.dev.pygmy.GameListActivity.GameHolder;
 import com.dev.pygmy.util.ImageDownloader;
 
 
-public class GameListAdapter extends ArrayAdapter<String> {
+public class GameListAdapter extends ArrayAdapter<GameHolder> {
 	
 	private final Activity activity;
 	private List<GameHolder> games;
 	
+	private static class ViewHolder {
+		TextView name;
+		TextView desc;
+		ImageView icon;
+	}
+	
 	public GameListAdapter(Activity context, List<GameHolder> games) {
-			super(context, R.layout.game_list_item);//, games);
+			super(context, R.layout.game_list_item, games);
 			this.activity = context;
 			this.games = games;
 	}
 
 	@Override
-	public View getView(int pos, View view, ViewGroup parent) {
-		LayoutInflater inflater = activity.getLayoutInflater();
-		View row = inflater.inflate(R.layout.game_list_item, null, true);
-
-		// Getting view ids
-		TextView gameNameText = (TextView) row.findViewById(R.id.game_name);
-		TextView gameInfoText = (TextView) row.findViewById(R.id.game_dev_descr);
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View row = convertView;
+		ViewHolder viewHolder = null;
 		
-		final ImageView gameIconImage = (ImageView) row.findViewById(R.id.game_icon);
-
-		// Setting infos on views
-		GameHolder game = games.get(pos);
-		gameNameText.setText(game.name);
-		gameInfoText.setText(game.info);
+		if (row == null) {
+			LayoutInflater inflater = activity.getLayoutInflater();
+			row = inflater.inflate(R.layout.game_list_item, parent, false);
+			viewHolder = new ViewHolder();
+			viewHolder.name = (TextView) row.findViewById(R.id.game_name);
+			viewHolder.desc = (TextView) row.findViewById(R.id.game_dev_descr);
+			row.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) row.getTag();
+		}
 		
-		// If we want to add icon to a game
-				URL imageUrl = null;
-				try {
-					imageUrl = new URL(game.image);
+		GameHolder game = games.get(position);
+		viewHolder.name.setText(game.name);
+		viewHolder.desc.setText(game.info);
 
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-				
-				ImageDownloader mDownload = new ImageDownloader();
-				mDownload.download(imageUrl.toString(), gameIconImage);
-	
+		URL imageUrl = null;
+		try {
+			imageUrl = new URL(game.image);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		ImageDownloader downloader = new ImageDownloader();
+		downloader.download(imageUrl.toString(), viewHolder.icon);
 		return row;
 	}
+	
 }
