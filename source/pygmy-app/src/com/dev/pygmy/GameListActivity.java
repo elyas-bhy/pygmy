@@ -157,11 +157,11 @@ public class GameListActivity extends Activity {
 					game.image = json.getString("image");
 					game.minPlayers = json.getInt("min_player");
 					game.maxPlayers = json.getInt("max_player");
-
-					GameListAdapter adapter = new GameListAdapter(GameListActivity.this, games);
-
-					listView.setAdapter(adapter);
+					games.add(game);
 				}
+				
+				GameListAdapter adapter = new GameListAdapter(GameListActivity.this, games);
+				listView.setAdapter(adapter);
 			} catch (Exception e) {
 				PygmyApp.logE("Error parsing data: " + e.getMessage());
 			}

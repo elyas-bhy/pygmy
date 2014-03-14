@@ -31,40 +31,40 @@ import android.widget.TextView;
 import com.dev.pygmy.GameListActivity.GameHolder;
 import com.dev.pygmy.util.ImageDownloader;
 
-
 public class GameListAdapter extends ArrayAdapter<GameHolder> {
-	
+
 	private final Activity activity;
 	private List<GameHolder> games;
-	
+
 	private static class ViewHolder {
 		TextView name;
 		TextView desc;
 		ImageView icon;
 	}
-	
+
 	public GameListAdapter(Activity context, List<GameHolder> games) {
-			super(context, R.layout.game_list_item, games);
-			this.activity = context;
-			this.games = games;
+		super(context, R.layout.game_list_item, games);
+		this.activity = context;
+		this.games = games;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		ViewHolder viewHolder = null;
-		
+
 		if (row == null) {
 			LayoutInflater inflater = activity.getLayoutInflater();
-			row = inflater.inflate(R.layout.game_list_item, parent, false);
+			row = inflater.inflate(R.layout.game_list_item, null, true);
 			viewHolder = new ViewHolder();
 			viewHolder.name = (TextView) row.findViewById(R.id.game_name);
 			viewHolder.desc = (TextView) row.findViewById(R.id.game_dev_descr);
+			viewHolder.icon = (ImageView) row.findViewById(R.id.game_icon);
 			row.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) row.getTag();
 		}
-		
+
 		GameHolder game = games.get(position);
 		viewHolder.name.setText(game.name);
 		viewHolder.desc.setText(game.info);
@@ -81,5 +81,5 @@ public class GameListAdapter extends ArrayAdapter<GameHolder> {
 		downloader.download(imageUrl.toString(), viewHolder.icon);
 		return row;
 	}
-	
+
 }
