@@ -42,19 +42,43 @@ session_start();
 					$resume = $_REQUEST["Resume"];
 					$filename= "game.jar";
 					$user = $_SESSION['Login'];
+					$min_player = $_REQUEST["min"];
+					$max_player = $_REQUEST["max"];
 					
 					$check = "SELECT * FROM game WHERE name = '$title'";
 					$check_title = mysql_query($check);
+					
+					$maxsize = 200000;
+					$size = filesize($_FILES['image']['tmp_name']);
+					
+					if($size>$maxsize){
+						echo 'Image too big... <br>';
+						echo '<meta http-equiv="refresh" content="1; URL=Upload_c.php">';
+					}
+					elseif($max_player<$min_player){
+						echo 'Max must be bigger than min.';
+						echo '<meta http-equiv="refresh" content="1; URL=Upload_c.php">';
+					}
+					else{
 					
 					if (mysql_num_rows($check_title) == 0) 
 					{
 					
 					  $target = "../files/$title/";
+					  $targeti = "../gamesImages/$title/";
 					  $path = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/$title/";
+					  $pathi = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/$title/";
+					  
+					  
+					  
 					  if(is_dir($target) == false)
 					  @mkdir ($target, 0777, true); 
+					  if(is_dir($targeti) == false)
+					  @mkdir ($targeti, 0777, true);
 					  $target = $target . basename( $_FILES['code']['name']);
 					  $path = $path . basename( $_FILES['code']['name']);
+					  $targeti = $targeti . basename( $_FILES['image']['name']);
+					  $pathi = $pathi . basename( $_FILES['image']['name']);
 					
 					  $extensions = array('.jar');
 					  $extension = strrchr($_FILES['code']['name'], '.'); 
@@ -66,14 +90,23 @@ session_start();
 
 					    if(move_uploaded_file($_FILES['code']['tmp_name'], $target)){
 						
-					    echo "The file ". basename( $_FILES['code']['name']). " has been uploaded";	
+							echo "The file ". basename( $_FILES['code']['name']). " has been uploaded";	
+					    
+							if(move_uploaded_file($_FILES['image']['tmp_name'], $targeti)){
 					
-					    $query = "Insert into game(name,username, resume, filename, path) values('$title','$user','$resume','$filename', '$path')";
-					    mysql_query($query);
-					    }
+								$query = "Insert into game(name,username, resume, filename, min_player, max_player, path, image) values('$title','$user','$resume','$filename','$min_player', '$max_player', '$path', '$pathi')";
+								mysql_query($query);
+							
+							}
+							else{
+								$query = "Insert into game(name,username, resume, filename, min_player, max_player, path) values('$title','$user','$resume','$filename','$min_player', '$max_player', '$path')";
+								mysql_query($query);
+							}
+						}
 					  }	
 	
 					echo '<meta http-equiv="refresh" content="1; URL=PygmyLog_c.php"> <br/>';
+					
 					}
 					
 					else if(mysql_num_rows($check_filename) != 0)
@@ -86,6 +119,8 @@ session_start();
 					    echo 'This title is already taken.';
 					    echo '<meta http-equiv="refresh" content="1; URL=Upload_c.php">';
 					}
+				
+				}
 				
 					?>
 

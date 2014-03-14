@@ -40,7 +40,7 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@drawable/gplus_signin_logo"
-            android:src="@drawable/gplus_signin_logo">
+            android:src="@drawable/gplus_signin_logo" >
         </Button>
 
         <Button
@@ -56,15 +56,16 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
+        android:background="@color/grey_metal"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
-        android:background="@color/grey_metal"
         tools:context=".MainActivity" >
-<!--         android:paddingBottom="@dimen/activity_vertical_margin" -->
-<!--         android:paddingLeft="@dimen/activity_horizontal_margin" -->
-<!--         android:paddingRight="@dimen/activity_horizontal_margin" -->
-<!--         android:paddingTop="@dimen/activity_vertical_margin" -->
+
+        <!-- android:paddingBottom="@dimen/activity_vertical_margin" -->
+        <!-- android:paddingLeft="@dimen/activity_horizontal_margin" -->
+        <!-- android:paddingRight="@dimen/activity_horizontal_margin" -->
+        <!-- android:paddingTop="@dimen/activity_vertical_margin" -->
     </FrameLayout>
 
     <RelativeLayout
@@ -96,9 +97,7 @@
                 android:layout_margin="@dimen/margin_small"
                 android:text=""
                 android:textAppearance="@style/HelpText.Caption" />
-            
         </LinearLayout>
-        
     </RelativeLayout>
 
     <RelativeLayout
@@ -123,8 +122,6 @@
         style="@style/screen_profile" >
 
         <LinearLayout style="@style/box_profile" >
-            
-            
 
             <ImageView
                 android:id="@+id/image_profile"
@@ -146,70 +143,42 @@
 
         <LinearLayout style="@style/box_profile" >
 
-            <TextView
-                android:id="@+id/played_games_profile"
-                style="@style/game_profile"
-                android:text="@string/games_played_profile" />
+            <!-- LAST PLAYED -->
 
-            <!-- "MOST PLAYED 1 -->
-
-            <LinearLayout style="@style/game_list_profile" >
-
-                <ImageView
-                    android:id="@+id/game_icon_profile"
-                    android:src="@drawable/logo_home_page"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="2dip"
-                    android:contentDescription="@string/description" />
-
-                <TextView
-                    android:id="@+id/score_one"
-                    style="@style/text_game_list_profile"
-                    android:text="@string/score" />
-            </LinearLayout>
-
-            <!-- "MOST PLAYED 2 -->
-            
-            <LinearLayout style="@style/game_list_profile" >
-
-                <ImageView
-                    android:id="@+id/game_icon_profile_two"
-                    android:src="@drawable/logo_home_page"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="2dip"
-                    android:contentDescription="@string/description" />
-
-                <TextView
-                    android:id="@+id/score_two"
-                    style="@style/text_game_list_profile"
-                    android:text="@string/score" />
-            </LinearLayout>
-            
-            <!--  LAST PLAYED  -->
             <TextView
                 android:id="@+id/last_games_profile"
                 style="@style/game_profile"
                 android:text="@string/last_played_profile" />
-            
+
             <LinearLayout style="@style/game_list_profile" >
 
                 <ImageView
                     android:id="@+id/game_icon_profile_last"
-                    android:src="@drawable/logo_home_page"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="2dip"
-                    android:contentDescription="@string/description" />
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/logo_home_page" />
 
                 <TextView
                     android:id="@+id/last_played"
-                    style="@style/text_game_list_profile"
-                    android:text="@string/score" />
+                    style="@style/text_game_list_profile" />
             </LinearLayout>
 
-           
+            <LinearLayout style="@style/game_list_profile" >
+
+                <ImageView
+                    android:id="@+id/game_icon_profile_last2"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="2dip"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/logo_home_page" />
+
+                <TextView
+                    android:id="@+id/last_played2"
+                    style="@style/text_game_list_profile" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

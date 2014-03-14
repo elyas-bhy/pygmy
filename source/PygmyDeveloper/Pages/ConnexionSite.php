@@ -33,7 +33,7 @@ session_start();
 		<div id="corps">
 			<div id="connect">
 					<h1>Connexion</h1>
-					<form method="post" action="Connexion.php">
+					<form name="formulaire" method="post" action="Connexion.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>

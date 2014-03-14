@@ -76,13 +76,16 @@ session_start();
 					$conn = mysql_connect($host,$user,$password) or die ("Error. You are not registered");
 					mysql_select_db("njouanla") or die ("DB PB");
 					
-					$query = "SELECT name, version FROM game WHERE username = '".htmlspecialchars(addslashes($_SESSION['Login']))."';";
+					$query = "SELECT name, version, min_player, max_player FROM game WHERE username = '".htmlspecialchars(addslashes($_SESSION['Login']))."';";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result)) {
 
 					$title = $row['name'];
 					$version = $row['version'];
+					//$min = $row['min_player'];
+					//$max = $row['max_player'];
 					echo ' '.$title.'  |  Version : '.$version.' <br>';
+					//echo ' Players min : '.$min.' | Players max : '.$max.' <br>';
 					?>
 					<form method="post" action="Version.php?game=<?php echo $row['name']; ?>"><br>
 					<input type="submit" name="submit" value="UPDATE">
