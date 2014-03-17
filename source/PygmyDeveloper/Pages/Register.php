@@ -11,28 +11,19 @@ session_start();
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
 	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pygmy.css" /> 
+	   <script type="text/javascript">
+		<?php include 'js/chek_form.js'; ?>
+	   </script> 
    </head> 
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
+		<?php include '../header.php' ?>
 		
 		<div id="corps">
 			<div class="block">
 					<h1>Register</h1>
-					<form name="formulaire" method="post" action="RegisterDev.php">
+					<form name="formulaire" method="post" action="RegisterDev.php" onsubmit="return check_form_register()";>
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>

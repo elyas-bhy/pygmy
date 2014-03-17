@@ -12,32 +12,14 @@ session_start();
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
 	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+		<script type="text/javascript">
+		<?php include 'js/chek_form.js'; ?>
+	   </script> 
    </head> 
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
-		
-				<div id="menu">
-			<ul>
-				<li><a href="../index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
-			</ul>
-		</div>
+		<?php include '../header.php' ?>
 		
 		<div id="corps">
 		
@@ -66,7 +48,7 @@ session_start();
 		?>
 	
 		
-		<form name="formulaire" method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>">
+		<form name="formulaire" method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>" onsubmit="return check_form_version()";>
 						<table id="upload">
 						<tr><td><th class="left"><label>Version (write the number) : </label></th><th><input type="text" size="20" name="Version"/></th></td></tr>
 						<tr><td><th class="left"><label>Min player : </label></th><th><input type="text" size="10" name="min"</th></td></tr>

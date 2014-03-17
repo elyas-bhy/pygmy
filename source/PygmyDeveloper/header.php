@@ -17,10 +17,10 @@
 				<div id="login">
 					<p><?php
 						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Pages/Deconnexion.php">LOG OUT</a>';
+							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
 						}
 						else{
-							echo '<p><a href="Pages/ConnexionSite.php">LOG IN</a> | <a href="Pages/Register.php">REGISTER</a></p>';
+							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
 						}
 					?></p>				
 				</div>
@@ -28,10 +28,10 @@
 		
 				<div id="menu">
 			<ul>
-				<li><a href="index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Pages/Download_c.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Pages/Upload_c.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="Pages/PygmyLog_c.php">MY SETTINGS</a></li>
+				<li><a href="../index.php" class="current">ACCUEIL</a></li>
+				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
+				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
+				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
 			</ul>
 		</div>
 		</div>

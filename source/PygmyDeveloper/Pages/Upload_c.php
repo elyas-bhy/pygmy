@@ -12,41 +12,23 @@ session_start();
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
 	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+	   <script type="text/javascript">
+		<?php include 'js/chek_form.js'; ?>
+	   </script> 
    </head> 
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
-		
-				<div id="menu">
-			<ul>
-				<li><a href="../index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
-			</ul>
-		</div>
+		<?php include '../header.php' ?>
 		
 		<div id="corps">
 		<?php
 		if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
 		?>
-		<form name="formulaire" method="post" enctype="multipart/form-data" action="UploadGame.php">
+		<form name="formulaire" method="post" enctype="multipart/form-data" action="UploadGame.php" onsubmit="return check_form_upload()";>
 			<table id="upload">
 			<tr><td><th class="left"><label>Title (no spaces)* : </label></th><th><input type="text" size="20" name="Title"/></th></td></tr>
-			<tr><td><th class="left"><label>Description (200 characters) : </label></th><th><input type="text" size="200" name="Resume"</th></td></tr>
+			<tr><td><th class="left"><label>Description (size max 200)* : </label></th><th><textarea type="text" size="200" name="Resume"></textarea></textarea></th></td></tr>
 			<tr><td><th class="left"><label>Min player (default value 1) : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
 			<tr><td><th class="left"><label>Max player (default value 1) : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
 			</table>
@@ -56,14 +38,15 @@ session_start();
 			<p><input type="file" name="image"></p>
 			<p><input type="submit" value="UPLOAD"/></p>
 			<input type="reset" value="RESET"/></p>
-					</form>
+			<p>* You need to renseign this field.</p>
+			</form>
 					
 		</div>
 		<?php
 		}
 		else
 					{
-					echo 'You need to log in.';
+					echo '<h3>You need to log in.</h3>';
 					echo '<meta http-equiv="refresh" content="1; URL=ConnexionSite.php"> <br/>';
 					}
 		?>

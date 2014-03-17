@@ -11,14 +11,15 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 	   
+	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 	
+	   <script type="text/javascript">
+		<?php include 'Pages/js/chek_form.js'; ?>
+	   </script>   
    </head> 
 <body>
-	<div id="content">
-
-		<div id="banner">
-
-				<div id="login">
+	
+	<div id="banner">
+	<div id="login">
 					<p><?php
 						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
 							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Pages/Deconnexion.php">LOG OUT</a>';
@@ -47,7 +48,7 @@ session_start();
 			
 			<div class="package log">
 				<h1>Log In</h1>
-					<form name="formulaire" method="post" action="Pages/Connexion.php">
+					<form name="formulaire" method="post" action="Pages/Connexion.php" onSubmit="return check_form()";>
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
@@ -59,7 +60,7 @@ session_start();
 			
 			<div class="package register">
 				<h1>Sign In</h1>
-					<form method="post" name="formulaire" action="Pages/RegisterDev.php">
+					<form method="post" name="formulaire" action="Pages/RegisterDev.php" onsubmit="return check_form_register()";>
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
@@ -73,7 +74,7 @@ session_start();
 			
 		</div>
 		</div>
-		
+		</div>
 	</div>
 		
 		<?php 

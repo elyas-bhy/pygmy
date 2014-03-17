@@ -15,19 +15,7 @@ session_start();
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
+		<?php include '../header.php' ?>
 
 		
 		<div id="corps">
@@ -50,7 +38,7 @@ session_start();
 		&& $_POST['Login'] != ''
 		&& $_POST['Password'] != '')
 			{	
-			$query = "SELECT username, password, email FROM developer WHERE username = '".htmlspecialchars(addslashes($_POST['Login']))."' AND password = '".htmlspecialchars(addslashes($_POST['Password']))."';";
+			$query = "SELECT username, password, email FROM developer WHERE username = '".htmlspecialchars(addslashes($_POST['Login']))."' AND password = '".htmlspecialchars(addslashes(md5($_POST['Password'])))."';";
 		
 			$result = mysql_query($query);
 			
@@ -61,7 +49,7 @@ session_start();
 			$mail = $row['email'];
 			}
 
-			if($_POST['Login'] == $login && $_POST['Password'] == $password)
+			if($_POST['Login'] == $login && md5($_POST['Password']) == $password)
 				{
 					$islogged = true;
 
