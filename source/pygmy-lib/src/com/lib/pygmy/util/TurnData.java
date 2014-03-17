@@ -34,7 +34,10 @@ public class TurnData {
 	
 	private final static String TAG = "TurnData";
 
-	public String gamePath = "";
+
+	public String game="";
+	public String version="";
+	public String gamePath = "source/pygmy-lib/src/com/lib/pygmy/util/TurnData.java";
     public String data = "";
     public int turnCounter;
 
@@ -47,6 +50,8 @@ public class TurnData {
 
         try {
         	retVal.put("gamePath", gamePath);
+        	retVal.put("game", game);
+        	retVal.put("version", version);
             retVal.put("data", data);
             retVal.put("turnCounter", turnCounter);
 
@@ -92,6 +97,12 @@ public class TurnData {
             }
             if (obj.has("gamePath")) {
                 retVal.gamePath = obj.getString("gamePath");
+            }
+            if (obj.has("game")) {
+                retVal.game = obj.getString("game");
+            }
+            if (obj.has("version")) {
+                retVal.version = obj.getString("version");
             }
 
         } catch (JSONException e) {

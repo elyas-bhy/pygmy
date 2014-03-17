@@ -6,11 +6,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.dev.pygmy.game.GameViewManager;
+import com.dev.pygmy.util.Utils;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.util.PygmyLoader;
 import com.lib.pygmy.util.TurnData;
+
 
 public class GameHelper {
 	
@@ -38,15 +40,27 @@ public class GameHelper {
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
-		initGameViewManager(mTurnData.gamePath);
+		
+		PygmyApp.logD("UI " + mTurnData.game + mTurnData.version);
+		
+		initGameViewManager();
+
 		isDoingTurn = true;
 		mContext.setViewVisibility();
 		mGameViewManager.updateData(mTurnData);
 	}
 	
-	private void initGameViewManager(String gamePath) {
-		mGame = PygmyLoader.loadGame(mContext, gamePath);
+
+	private void initGameViewManager() {
+		
+		
+		mGame = PygmyLoader.loadGame(mContext, Utils.getGamePath(mContext,
+										mTurnData.game,
+										mTurnData.version));
+		
+		
 		mGame.setPlayerIds(mMatch.getParticipantIds());
+
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
 	
@@ -93,14 +107,19 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
-	public void startMatch(TurnBasedMatch match, String gamePath) {
+
+	public void startMatch(TurnBasedMatch match, String gameID,String gameVersion) {
 		mMatch = match;
-		initGameViewManager(gamePath);
 		
 		mTurnData = new TurnData();
+		mTurnData.game = gameID;
+		mTurnData.version = gameVersion;
+		initGameViewManager();
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
-		mTurnData.gamePath = gamePath ;
+		
 		mTurnData.turnCounter = 1;
+		
+	
 
 		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());
@@ -166,7 +185,8 @@ public class GameHelper {
 			showWarning("Complete!",
 					"This game is over; someone finished it!  You can only finish it now.");
 		}
-
+		
+		
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 		case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:

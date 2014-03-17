@@ -146,6 +146,7 @@ public class EntityView extends View {
 					if (x > coords.x && x < coords.x + tileSize 
 					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
+
 						String entityPlayerId = entity.getPlayerId();
 						String currentPlayerId = game.getCurrentPlayerId();
 
