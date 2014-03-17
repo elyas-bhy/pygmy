@@ -248,14 +248,13 @@ public class GameBoardView extends View {
 
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
-		int tileWidth = Math.min(numberOfRows, numberOfColumns);
-		int tileHeight = Math.max(numberOfRows, numberOfColumns);
+		int tileHeight = Math.min(numberOfRows, numberOfColumns);
+		int tileWidth = Math.max(numberOfRows, numberOfColumns);
 
 		int width = getWidth();
 		int height = getHeight();
 
 		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
-		// Minimum size in width and length
 
 		tileSize = Math.min(width / (tileWidth+2), height / (tileHeight+2));
 		offset = tileSize / 3;
