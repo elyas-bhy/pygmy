@@ -29,4 +29,5 @@ public interface Game {
 	public GameLevel getCurrentLevel();
 	
 	public ObservableValue<Boolean> endOfGame();
+		
 }

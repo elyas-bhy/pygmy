@@ -2,8 +2,6 @@ package com.client.pygmy;
 
 import java.util.ArrayList;
 
-import android.content.res.Resources;
-
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
@@ -11,10 +9,10 @@ import com.lib.pygmy.PygmyGameLevel;
 
 public class PygmyGameImpl extends PygmyGame {
 
-	public PygmyGameImpl(Resources resources) {
-		super(resources);
+	public PygmyGameImpl() {
+		super();
 	}
-	
+
 	@Override
 	public void initGame() {
 		PygmyGame game = getGame();

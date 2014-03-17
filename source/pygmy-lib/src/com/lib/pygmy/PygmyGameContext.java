@@ -3,30 +3,22 @@ package com.lib.pygmy;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.res.Resources;
-
 public class PygmyGameContext {
-
-	private Resources res;
+	
 	private Game game;
 	private GameLevel currentLevel;
 	
 	private List<String> playerIds;
 	private int currentPlayer;
 	
-	public PygmyGameContext(Game game, Resources resources) {
+	public PygmyGameContext(Game game) {
 		this.game = game;
-		this.res = resources;
 		this.playerIds = new ArrayList<String>();
 		this.currentPlayer = 0;
 	}
 	
 	public Game getGame() {
 		return game;
-	}
-	
-	public Resources getResources() {
-		return res;
 	}
 
 	public List<String> getPlayerIds() {

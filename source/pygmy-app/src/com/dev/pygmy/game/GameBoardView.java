@@ -45,7 +45,6 @@ public class GameBoardView extends View {
 	
 	private static Map<Point,Tile> mapTileCoord;
 
-
 	/**
 	 * Default constructor.
 	 */
@@ -56,11 +55,19 @@ public class GameBoardView extends View {
 	/**
 	 * 
 	 * @param context	Context parent.
-	 * @param params	A map with board parameters. 
+	 * @param game 		The current game.
 	 */
 	public GameBoardView(Context context, PygmyGame game) {
 		super(context);
 
+		numberOfRows = 8;  //(Integer) params.get("numberRows");
+		numberOfColumns = 8;  //(Integer) params.get("numberColumns");
+		boardType = 0;  //(Integer) params.get("boardType");
+
+		color1 = new Paint();
+		color2 = new Paint();
+		color1.setColor(Color.CYAN);
+		color2.setColor(Color.WHITE);
 		mapTileCoord = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
 
