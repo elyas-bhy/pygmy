@@ -99,10 +99,10 @@ public class TurnData {
                 retVal.gamePath = obj.getString("gamePath");
             }
             if (obj.has("game")) {
-                retVal.gamePath = obj.getString("gamePath");
+                retVal.game = obj.getString("game");
             }
             if (obj.has("version")) {
-                retVal.gamePath = obj.getString("gamePath");
+                retVal.version = obj.getString("version");
             }
 
         } catch (JSONException e) {

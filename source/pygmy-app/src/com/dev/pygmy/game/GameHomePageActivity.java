@@ -46,6 +46,7 @@ import com.dev.pygmy.MainActivity;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
 import com.dev.pygmy.util.ImageDownloader;
+import com.dev.pygmy.util.Utils;
 
 public class GameHomePageActivity extends Activity {
 
@@ -246,15 +247,7 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	private String getGameDirectory(String version) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getFilesDir().getPath());
-		sb.append("/");
-		sb.append(gameName);
-		if (version != null) {
-			sb.append("/");
-			sb.append(version);
-		}
-		return sb.toString();
+		return Utils.getGamePath(this, gameName, version);
 	}
 
 	// delete old version of a game

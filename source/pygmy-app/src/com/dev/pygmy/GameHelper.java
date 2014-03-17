@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.dev.pygmy.game.GameViewManager;
+import com.dev.pygmy.util.Utils;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
@@ -40,9 +41,9 @@ public class GameHelper {
 	// Switch to gameplay view
 	public void setGameplayUI() {
 		
-
+		PygmyApp.logD("UI " + mTurnData.game + mTurnData.version);
 		
-		initGameViewManager(mTurnData.gamePath, null);
+		initGameViewManager();
 
 		isDoingTurn = true;
 		mContext.setViewVisibility();
@@ -50,11 +51,14 @@ public class GameHelper {
 	}
 	
 
-	private void initGameViewManager(String gameID,String gameVersion) {
-		String path="";
-		path=mContext.getFilesDir().getPath()+"/"+gameID+"/"+gameVersion;
-
-		mGame = PygmyLoader.loadGame(mContext, path);
+	private void initGameViewManager() {
+		
+		
+		mGame = PygmyLoader.loadGame(mContext, Utils.getGamePath(mContext,
+										mTurnData.game,
+										mTurnData.version));
+		
+		
 		mGame.setPlayerIds(mMatch.getParticipantIds());
 
 		mGameViewManager = new GameViewManager(mContext, mGame);
@@ -105,16 +109,17 @@ public class GameHelper {
 
 
 	public void startMatch(TurnBasedMatch match, String gameID,String gameVersion) {
-		
 		mMatch = match;
-		initGameViewManager(gameVersion, gameVersion);
-
+		
 		mTurnData = new TurnData();
 		mTurnData.game = gameID;
-		
+		mTurnData.version = gameVersion;
+		initGameViewManager();
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
-		mTurnData.gamePath = gameID ;
+		
 		mTurnData.turnCounter = 1;
+		
+	
 
 		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());
@@ -180,7 +185,8 @@ public class GameHelper {
 			showWarning("Complete!",
 					"This game is over; someone finished it!  You can only finish it now.");
 		}
-
+		
+		
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 		case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:

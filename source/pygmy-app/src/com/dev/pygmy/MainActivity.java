@@ -518,7 +518,7 @@ public class MainActivity extends BaseGameActivity implements
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
 		showSpinner();
-		mGameHelper.startMatch(match, gameID,gameVersion);
+		mGameHelper.startMatch(match, gameID, gameVersion);
 		gameID = null;
 
 	}

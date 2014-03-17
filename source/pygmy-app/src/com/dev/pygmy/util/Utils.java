@@ -1,5 +1,6 @@
 package com.dev.pygmy.util;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,6 +62,21 @@ public class Utils {
 		}
 		
 		return bitmap;
+	}
+	
+	public static String getGamePath(Context mC, String gameID, String gameVersion) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(mC.getFilesDir().getPath());
+		sb.append("/");
+		sb.append(gameID);
+		sb.append("/");
+		sb.append(gameVersion);
+		sb.append("/");
+		sb.append("game.jar");
+		
+		return sb.toString();
+		
 	}
 
 }
