@@ -60,9 +60,9 @@ public class GameBoardView extends View {
 	public GameBoardView(Context context, PygmyGame game) {
 		super(context);
 
-		numberOfRows = 8;  //(Integer) params.get("numberRows");
-		numberOfColumns = 8;  //(Integer) params.get("numberColumns");
-		boardType = 0;  //(Integer) params.get("boardType");
+		numberOfRows = 8;
+		numberOfColumns = 8;
+		boardType = 0;
 
 		color1 = new Paint();
 		color2 = new Paint();
@@ -71,11 +71,11 @@ public class GameBoardView extends View {
 		mapTileCoord = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
 
-		numberOfRows = game.getCurrentLevel().getNumberRows();
-		numberOfColumns = game.getCurrentLevel().getNumberColumns();
-		boardType = game.getCurrentLevel().getBoardType();
-		color1 = game.getCurrentLevel().getColors().get(1);
-		color2 = game.getCurrentLevel().getColors().get(2);
+//		numberOfRows = game.getCurrentLevel().getNumberRows();
+//		numberOfColumns = game.getCurrentLevel().getNumberColumns();
+//		boardType = game.getCurrentLevel().getBoardType();
+//		color1 = game.getCurrentLevel().getColors().get(1);
+//		color2 = game.getCurrentLevel().getColors().get(2);
 		
 	}
 
