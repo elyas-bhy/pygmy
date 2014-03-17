@@ -6,7 +6,7 @@ import com.lib.pygmy.base.Overlappable;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-public abstract class AbstractOverlapRulesApplier implements
+public abstract class PygmyOverlapRulesApplier implements
 		OverlapRulesApplier {
 
 	public void applyOverlapRules(Vector<Overlap> overlaps) {

@@ -23,10 +23,10 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -42,7 +42,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.game.GameBoardActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -84,12 +83,18 @@ public class MainActivity extends BaseGameActivity implements
 	public static final String EXTRA_GAME_ID = "com.dev.pygmy.EXTRA_GAME_ID";
 	public static final String EXTRA_GAME_VERSION= "com.dev.pygmy.EXTRA_GAME_VERSION";
 
+	// For our preferences
+	final static String LAST_GAME = "Last_Game";
+	final static String PREVIOUS_LAST_GAME = "Previous_Last_Game";
+	final static String IMAGE = "Icon";
+	final static String DEFAULT_IMAGE = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/Default/logo_home_page.png";
+	
 	// How long to show toasts.
-	private final int TOAST_DELAY = 2000;
+	private final static int TOAST_DELAY = 2000;
 	
-	private GameHelper gameHelper;
+	private GameHelper mGameHelper;
 	private SlidingMenu mSlidingMenu;
-	
+
 	// Reference to the selected game's source
 	private String gameID;
 	private String gameVersion;
@@ -99,21 +104,18 @@ public class MainActivity extends BaseGameActivity implements
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		gameHelper = new GameHelper(this);
+		mGameHelper = new GameHelper(this);
 		
 		//Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
 		animation.setDuration(1400);
 		animation.setFillAfter(false);
 
-		ImageView imageview = (ImageView)findViewById(R.id.logo_image);
+		ImageView imageview = (ImageView) findViewById(R.id.logo_image);
 		imageview.startAnimation(animation);
-		
-
 
 		// Load preferences
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		
 
 		
 		initSigninButtons();
@@ -154,14 +156,16 @@ public class MainActivity extends BaseGameActivity implements
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.board));
 		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.sign_out));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.start_match));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.quick_match));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.check_games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
+				R.string.sign_out));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
+				R.string.start_match));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
+				R.string.quick_match));
+		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
+				R.string.check_games));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
-	
 
 		// Assign adapter to slidemenu list view
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -179,17 +183,14 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 1) {
-					startActivity(new Intent(MainActivity.this, GameBoardActivity.class));
-				}
-				if (position == 2) {
 					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
-				if (position == 3) {
+				if (position == 2) {
 					signOut();
 					setViewVisibility();
 				}
-				if (position == 4) {
+				if (position == 3) {
 					
 					
 					AlertDialog show = new AlertDialog.Builder(MainActivity.this)
@@ -204,14 +205,15 @@ public class MainActivity extends BaseGameActivity implements
 						.setNegativeButton("No",null).show();
 					
 					//onStartMatchClicked(findViewById(R.id.matchup_layout));
+
 				}
-				if (position == 5) {
+				if (position == 4) {
 					onQuickMatchClicked(findViewById(R.id.matchup_layout));
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 				}
-				if (position == 6) {
+				if (position == 5) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
-					onCheckGamesClicked(findViewById(R.id.matchup_layout));
+					onCheckGamesClicked();
 				}
 			}
 		});
@@ -229,12 +231,11 @@ public class MainActivity extends BaseGameActivity implements
 								View.GONE);
 						findViewById(R.id.offline_button).setVisibility(
 								View.GONE);
-						findViewById(R.id.welcome).setVisibility(
-								View.GONE);
+						findViewById(R.id.welcome).setVisibility(View.GONE);
 					}
 				});
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -242,14 +243,14 @@ public class MainActivity extends BaseGameActivity implements
 
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
-	public void onCheckGamesClicked(View view) {
+	private void onCheckGamesClicked() {
 		Intent intent = getGamesClient().getMatchInboxIntent();
 		startActivityForResult(intent, RC_LOOK_AT_MATCHES);
 	}
 
 	// Open the create-game UI. You will get back an onActivityResult
 	// and figure out what to do.
-	public void onStartMatchClicked(View view) {
+	private void onStartMatchClicked() {
 		Intent intent = getGamesClient().getSelectPlayersIntent(1, 2, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
 	}
@@ -260,7 +261,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 				.setAutoMatchCriteria(autoMatchCriteria).build();
-		
+
 		// Kick the match off
 		showSpinner();
 		getGamesClient().createTurnBasedMatch(this, tbmc);
@@ -272,23 +273,22 @@ public class MainActivity extends BaseGameActivity implements
 	// giving up on the view.
 	public void onCancelClicked(View view) {
 		showSpinner();
-		gameHelper.onCancelClicked();
+		mGameHelper.onCancelClicked();
 		setViewVisibility();
-	
 	}
 
 	// Leave the game during your turn. Note that there is a separate
 	// GamesClient.leaveTurnBasedMatch() if you want to leave NOT on your turn.
 	public void onLeaveClicked(View view) {
 		showSpinner();
-		gameHelper.onLeaveClicked();
+		mGameHelper.onLeaveClicked();
 		setViewVisibility();
 	}
 
 	// Finish the game. Sometimes, this is your only choice.
 	public void onFinishClicked(View view) {
 		showSpinner();
-		gameHelper.onFinishClicked();
+		mGameHelper.onFinishClicked();
 		setViewVisibility();
 	}
 
@@ -306,8 +306,8 @@ public class MainActivity extends BaseGameActivity implements
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.GONE);
 
-			if (gameHelper.getDialog() != null) {
-				gameHelper.getDialog().dismiss();
+			if (mGameHelper.getDialog() != null) {
+				mGameHelper.getDialog().dismiss();
 			}
 			return;
 		}
@@ -319,7 +319,7 @@ public class MainActivity extends BaseGameActivity implements
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
 		findViewById(R.id.screen_profile).setVisibility(View.GONE);
 
-		if (gameHelper.isDoingTurn()) {
+		if (mGameHelper.isDoingTurn()) {
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.VISIBLE);
 		} else {
@@ -332,7 +332,7 @@ public class MainActivity extends BaseGameActivity implements
 	public void onSignInFailed() {
 		setViewVisibility();
 	}
-	
+
 	@Override
 	public void onSignInSucceeded() {
 		if (mHelper.getTurnBasedMatch() != null) {
@@ -358,42 +358,71 @@ public class MainActivity extends BaseGameActivity implements
 		// will replace notifications you would get otherwise. You do *NOT* have
 		// to register a MatchUpdateListener.
 		getGamesClient().registerMatchUpdateListener(this);
-		
+
 		setProfileView();
+
 		
 		if (gameID != null) {
 			dismissSpinner();
-			onStartMatchClicked(null);
+			onStartMatchClicked();
 		}
 	}
 
 	// Switch to profile view
 	private void setProfileView() {
 		if (!isSignedIn()) {
-			setViewVisibility();		
+			setViewVisibility();
 		} else {
 			// Initialisation
 			URL imageUrl = null;
+			URL iconUrl = null;
+			URL iconUrl2 = null;
 			Person p = getPlusClient().getCurrentPerson();
 
 			// To display
 			String name = p.getDisplayName();
 			String nationality = p.getLanguage().toUpperCase();
 
+			String lastImage;
+			String lastGame;
+			String previousLastImage;
+			String previousLastGame;
+
+			SharedPreferences lastGamePref = getSharedPreferences(LAST_GAME,
+					MODE_PRIVATE);
+			lastGame = lastGamePref.getString(LAST_GAME, "Never play before");
+			lastImage = lastGamePref.getString(IMAGE, DEFAULT_IMAGE);
+
+			SharedPreferences previousLastGamePref = getSharedPreferences(
+					PREVIOUS_LAST_GAME, MODE_PRIVATE);
+			previousLastGame = previousLastGamePref.getString(
+					PREVIOUS_LAST_GAME, "Never played before");
+			previousLastImage = previousLastGamePref.getString(IMAGE,
+					DEFAULT_IMAGE);
+
 			// Getting URL
 			try {
 				imageUrl = new URL(p.getImage().getUrl());
+				iconUrl = new URL(lastImage);
+				iconUrl2 = new URL(previousLastImage);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
 
 			// Setting text and image in views
+			((TextView) findViewById(R.id.last_played)).setText(lastGame);
+			((TextView) findViewById(R.id.last_played2))
+					.setText(previousLastGame);
 			((TextView) findViewById(R.id.name_profile)).setText(name);
 			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
-			ImageView a = (ImageView) findViewById(R.id.image_profile);
-			final ImageDownloader downloader = new ImageDownloader();
-			downloader.download(imageUrl.toString(), a);
+			ImageView picture = (ImageView) findViewById(R.id.image_profile);
+			ImageView gameIcon = (ImageView) findViewById(R.id.game_icon_profile_last);
+			ImageView gameIcon2 = (ImageView) findViewById(R.id.game_icon_profile_last2);
 
+			final ImageDownloader downloader = new ImageDownloader();
+			downloader.download(imageUrl.toString(), picture);
+			downloader.download(iconUrl.toString(), gameIcon);
+			downloader.download(iconUrl2.toString(), gameIcon2);
 			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 		}
 	}
@@ -415,7 +444,7 @@ public class MainActivity extends BaseGameActivity implements
 		// BaseGameActivity will not work otherwise.
 		super.onActivityResult(request, response, data);
 		switch (request) {
-		
+
 		case RC_SELECT_GAME:
 			if (data != null) {
 				if (data.hasExtra(EXTRA_GAME_ID))
@@ -425,56 +454,57 @@ public class MainActivity extends BaseGameActivity implements
 				showSpinner();
 			}
 			break;
-		
-		case RC_LOOK_AT_MATCHES:  // Returning from the 'Select Match' dialog
+
+		case RC_LOOK_AT_MATCHES: // Returning from the 'Select Match' dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
 				return;
 			}
-			
+
 			TurnBasedMatch match = data
 					.getParcelableExtra(GamesClient.EXTRA_TURN_BASED_MATCH);
-			
+
 			if (match != null) {
 				updateMatch(match);
 			}
 			PygmyApp.logD("Match = " + match);
 			break;
-			
-		case RC_SELECT_PLAYERS:  // Returned from 'Select players to Invite' dialog
+
+		case RC_SELECT_PLAYERS: // Returned from 'Select players to Invite'
+								// dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
 				return;
 			}
-			
+
 			// Get the invitee list
 			final ArrayList<String> invitees = data
 					.getStringArrayListExtra(GamesClient.EXTRA_PLAYERS);
-			
+
 			// Get automatch criteria
 			Bundle autoMatchCriteria = null;
-			
+
 			int minAutoMatchPlayers = data.getIntExtra(
 					GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 			int maxAutoMatchPlayers = data.getIntExtra(
 					GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-			
+
 			if (minAutoMatchPlayers > 0) {
 				autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
 						minAutoMatchPlayers, maxAutoMatchPlayers, 0);
 			} else {
 				autoMatchCriteria = null;
 			}
-			
+
 			TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 					.addInvitedPlayers(invitees)
 					.setAutoMatchCriteria(autoMatchCriteria).build();
-			
+
 			// Kick the match off
 			getGamesClient().createTurnBasedMatch(this, tbmc);
 			showSpinner();
 			break;
-			
+
 		default:
 			break;
 		}
@@ -488,44 +518,45 @@ public class MainActivity extends BaseGameActivity implements
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
 		showSpinner();
-		gameHelper.startMatch(match, gameID,gameVersion);
+		mGameHelper.startMatch(match, gameID,gameVersion);
 		gameID = null;
+
 	}
 
 	// If you choose to rematch, then call it and wait for a response.
 	public void rematch() {
 		showSpinner();
-		gameHelper.rematch();
+		mGameHelper.rematch();
 	}
 
 	// This is the main function that gets called when players choose a match
 	// from the inbox, or else create a match and want to start it.
 	public void updateMatch(TurnBasedMatch match) {
-		gameHelper.updateMatch(match);
+		mGameHelper.updateMatch(match);
 	}
 
 	@Override
 	public void onTurnBasedMatchCanceled(int statusCode, String matchId) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchCanceled(statusCode, matchId);
+		mGameHelper.onTurnBasedMatchCanceled(statusCode, matchId);
 	}
 
 	@Override
 	public void onTurnBasedMatchInitiated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchInitiated(statusCode, match);
+		mGameHelper.onTurnBasedMatchInitiated(statusCode, match);
 	}
 
 	@Override
 	public void onTurnBasedMatchLeft(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchLeft(statusCode, match);
+		mGameHelper.onTurnBasedMatchLeft(statusCode, match);
 	}
 
 	@Override
 	public void onTurnBasedMatchUpdated(int statusCode, TurnBasedMatch match) {
 		dismissSpinner();
-		gameHelper.onTurnBasedMatchUpdated(statusCode, match);
+		mGameHelper.onTurnBasedMatchUpdated(statusCode, match);
 		setViewVisibility();
 	}
 
@@ -559,7 +590,7 @@ public class MainActivity extends BaseGameActivity implements
 	public void onTurnBasedMatchRemoved(String matchId) {
 		Toast.makeText(this, "A match was removed.", TOAST_DELAY).show();
 	}
-	
+
 	public GamesClient getGamesClient() {
 		return super.getGamesClient();
 	}
@@ -567,7 +598,7 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public void onTurnTaken() {
 		showSpinner();
-		gameHelper.onTurnTaken();
+		mGameHelper.onTurnTaken();
 	}
 	
 }

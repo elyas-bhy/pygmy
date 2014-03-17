@@ -42,22 +42,33 @@ session_start();
 					$vers = $_REQUEST["Version"];
 					$filename= "game.jar";
 					$user = $_SESSION['Login'];
+					$min_player_v = $_REQUEST["min"];
+					$max_player_v = $_REQUEST["max"];
 					
-					$check = "SELECT * FROM game WHERE name = '$title'";
+					$check = "SELECT min_player, max_player FROM game WHERE name = '$title'";
 					$check_title = mysql_query($check);
 					
+					
 					if (mysql_num_rows($check_title) != 0) 
-					{
+					{	
+					  while($row = mysql_fetch_array($check_title)){
+						  
+					  $min = $row['min_player'];
+					  $max = $row['max_player'];  
 					
 					  $target = "../files/$title/";
 					  $path = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/files/$title/";
+
 					  if(is_dir($target) == false)
 					  @mkdir ($target, 0777, true); 
+	
 					  $target = $target . basename( $_FILES['code']['name']);
 					  $path = $path . basename( $_FILES['code']['name']);
 					
 					  $extensions = array('.jar');
 					  $extension = strrchr($_FILES['code']['name'], '.'); 
+					  
+					  $error = False;
 					
 					  if(!in_array($extension, $extensions)){ 
 						echo 'You need to upload a .jar file.<br>';
@@ -65,22 +76,49 @@ session_start();
 					  else {
 
 					    if(move_uploaded_file($_FILES['code']['tmp_name'], $target)){
-						
-					    echo "The file ". basename( $_FILES['code']['name']). " has been uploaded";	
+							if(isset($min_player_v) && $min_player_v != '' && isset($max_player_v) && $max_player_v != '' && $max_player_v >= $min_player_v){
+							}
+							else if(isset($min_player_v) && $min_player_v != '' && $min_player_v <= $max){ 
+								$max_player_v = $max;						
+							}
+							else if(isset($max_player_v) && $max_player_v != '' && $max_player_v >= $min){
+								$min_player_v = $min;
+							}
+							else if(isset($min_player_v) && $min_player_v != '' && isset($max_player_v) && $max_player_v != '' && $max_player_v < $min_player_v){
+								$error = True;
+								$min_player_v = $min;
+								$max_player_v = $max;
+						}
+						else{
+								$min_player_v = $min;
+								$max_player_v = $max;
+							}
+							
+							if($error == False){
+								echo "The file ". basename( $_FILES['code']['name']). " has been uploaded good";	
 					
-					    $query = "UPDATE game SET version = '$vers' WHERE name = '$title'";
-					    mysql_query($query);
-					    }
+								$query = "UPDATE game SET min_player = '$min_player_v', max_player = '$max_player_v', version = '$vers' WHERE name = '$title'";
+								mysql_query($query);
+							}
+							else{
+								echo 'Min > Max impossible';
+								echo '<meta http-equiv="refresh" content="1; URL=PygmyLog_c.php"> <br/>';
+							}
+							
+						}
 					  }	
 	
-					echo '<meta http-equiv="refresh" content="1; URL=PygmyLog_c.php"> <br/>';
+						echo '<meta http-equiv="refresh" content="1; URL=PygmyLog_c.php"> <br/>';
+					}
 					}
 					
-					else if(mysql_num_rows($check_filename) == 0)
+					else if(mysql_num_rows($check_title) == 0)
 					{
 					    echo 'Error in your upload.';
 					    echo '<meta http-equiv="refresh" content="1; URL=Version.php">';
 					}
+					
+				
 				
 					?>
 

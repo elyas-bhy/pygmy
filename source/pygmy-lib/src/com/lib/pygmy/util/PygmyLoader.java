@@ -1,11 +1,13 @@
-package com.lib.pygmy;
+package com.lib.pygmy.util;
 
 import java.lang.reflect.Constructor;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
+
+import com.lib.pygmy.PygmyGame;
+
 import dalvik.system.DexClassLoader;
 
 public class PygmyLoader {
@@ -22,8 +24,8 @@ public class PygmyLoader {
 		try {
 			DexClassLoader classLoader = getClassLoader();
 			Class<?> clazz = classLoader.loadClass("com.client.pygmy.PygmyGameImpl");
-			Constructor<?> constructor = clazz.getConstructor(Resources.class);
-			game = (PygmyGame) constructor.newInstance(context.getResources());
+			Constructor<?> constructor = clazz.getConstructor();
+			game = (PygmyGame) constructor.newInstance();
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}

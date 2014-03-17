@@ -18,8 +18,8 @@ package com.dev.pygmy.game;
 
 import java.util.Collection;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.MotionEvent;
@@ -27,13 +27,13 @@ import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.PygmyTurnListener;
+import com.dev.pygmy.util.Utils;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.GameUniverse;
-import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGame;
-import com.lib.pygmy.TurnData;
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.TurnData;
 
 /**
  * This class represents the view which shows the 
@@ -107,6 +107,10 @@ public class EntityView extends View {
 		Point coords;
 		for (GameEntity entity : entities) {
 			if (entity != null) {
+				if (entity.getBitmap() == null) {
+					Bitmap bitmap = Utils.getBitmapByType(context.getResources(), entity.getType());
+					entity.setBitmap(bitmap);
+				}
 				coords = entity.getCurrentTile().getCoordinates();
 				canvas.drawBitmap(entity.getBitmap(), coords.x, coords.y, null);
 			}
@@ -142,13 +146,14 @@ public class EntityView extends View {
 					if (x > coords.x && x < coords.x + tileSize 
 					 && y > coords.y && y < coords.y + tileSize) {
 						// Get what entity is being dragged.
-						Player entityPlayer= entity.getPlayer();
-						Player currentPlayer = game.getCurrentPlayer();
-						
-						//if (entityPlayer.getId() != currentPlayer.getId()) {
-							//PygmyApp.logD("It's not your turn!!");
-							//return true;
-						//}
+
+						String entityPlayerId = entity.getPlayerId();
+						String currentPlayerId = game.getCurrentPlayerId();
+
+						if (!entityPlayerId.equals(currentPlayerId)) {
+							PygmyApp.logD("It's not your turn!!");
+							return true;
+						}
 						
 						draggedEntity = entity;
 						entityCurrentPosition = tile;
@@ -167,8 +172,8 @@ public class EntityView extends View {
 					//Identify the hovered tile
 					float eventX = event.getX();
 					float eventY = event.getY();
-					float mx=(eventX * nbColumns) / maxX;
-					float my=(eventY * nbRows) / maxY;
+					float mx = (eventX * nbColumns) / maxX;
+					float my = (eventY * nbRows) / maxY;
 					
 					targetColumn = Math.round(mx);
 					targetRow = Math.round(my);

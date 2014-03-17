@@ -27,7 +27,7 @@ import android.graphics.Point;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
-import com.lib.pygmy.view.Tile;
+import com.lib.pygmy.Tile;
 
 /**
  * 	This class represents the grid of the board.
@@ -41,26 +41,19 @@ public class GameBoardView extends View {
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
-	private static Map<Point, Tile> mapTileCoord;
-
-	/**
-	 * Default constructor.
-	 */
-	public GameBoardView(Context context) {
-		super(context);
-	}
-
+	private static Map<Point,Tile> mapTileCoord;
+	
 	/**
 	 * 
 	 * @param context	Context parent.
 	 * @param params	A map with board parameters. 
 	 */
-	public GameBoardView(Context context, Map<String,Object> params) {
+	public GameBoardView(Context context) {
 		super(context);
 
-		numberOfRows = (Integer) params.get("numberRows");
-		numberOfColumns = (Integer) params.get("numberColumns");
-		boardType = (Integer) params.get("boardType");
+		numberOfRows = 8;  //(Integer) params.get("numberRows");
+		numberOfColumns = 8;  //(Integer) params.get("numberColumns");
+		boardType = 0;  //(Integer) params.get("boardType");
 
 		color1 = new Paint();
 		color2 = new Paint();

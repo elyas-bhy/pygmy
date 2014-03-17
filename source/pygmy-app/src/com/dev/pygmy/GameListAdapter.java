@@ -16,7 +16,9 @@
 
 package com.dev.pygmy;
 
-import java.util.ArrayList;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -26,41 +28,58 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dev.pygmy.GameListActivity.GameHolder;
 import com.dev.pygmy.util.ImageDownloader;
 
-public class GameListAdapter extends ArrayAdapter<String> {
-	
+public class GameListAdapter extends ArrayAdapter<GameHolder> {
+
 	private final Activity activity;
-	ArrayList<String> gamesName;
-	ArrayList<String> gamesInfo;
-	ArrayList<String> gamesIcon;
-	
-	public GameListAdapter(Activity context,
-			ArrayList<String> gameName, ArrayList<String> gamesInfo, ArrayList<String> gameIcon) {
-			super(context, R.layout.game_list_item, gameName);
-			this.activity = context;
-			this.gamesName = gameName;
-			this.gamesInfo = gamesInfo;
-			this.gamesIcon = gameIcon;
+	private List<GameHolder> games;
+
+	private static class ViewHolder {
+		TextView name;
+		TextView desc;
+		ImageView icon;
 	}
 
+	public GameListAdapter(Activity context, List<GameHolder> games) {
+		super(context, R.layout.game_list_item, games);
+		this.activity = context;
+		this.games = games;
+	}
 
 	@Override
-	public View getView(int pos, View view, ViewGroup parent) {
-		LayoutInflater inflater = activity.getLayoutInflater();
-		View row = inflater.inflate(R.layout.game_list_item, null, true);
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View row = convertView;
+		ViewHolder viewHolder = null;
 
-		// Getting view ids
-		TextView gameNameText = (TextView) row.findViewById(R.id.game_name);
-		TextView gameInfoText = (TextView) row.findViewById(R.id.game_dev_descr);
-		
-		
-		
-		// Setting infos on views
-		gameNameText.setText(gamesName.get(pos));
-		gameInfoText.setText(gamesInfo.get(pos));
-		
-		
+		if (row == null) {
+			LayoutInflater inflater = activity.getLayoutInflater();
+			row = inflater.inflate(R.layout.game_list_item, null, true);
+			viewHolder = new ViewHolder();
+			viewHolder.name = (TextView) row.findViewById(R.id.game_name);
+			viewHolder.desc = (TextView) row.findViewById(R.id.game_dev_descr);
+			viewHolder.icon = (ImageView) row.findViewById(R.id.game_icon);
+			row.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) row.getTag();
+		}
+
+		GameHolder game = games.get(position);
+		viewHolder.name.setText(game.name);
+		viewHolder.desc.setText(game.info);
+
+		URL imageUrl = null;
+		try {
+			imageUrl = new URL(game.image);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		ImageDownloader downloader = new ImageDownloader();
+		downloader.download(imageUrl.toString(), viewHolder.icon);
 		return row;
 	}
+
 }

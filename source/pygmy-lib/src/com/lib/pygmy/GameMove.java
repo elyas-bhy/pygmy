@@ -1,7 +1,5 @@
 package com.lib.pygmy;
 
-import com.lib.pygmy.view.Tile;
-
 public class GameMove {
 	
 	private GameEntity entity;

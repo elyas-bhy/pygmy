@@ -2,11 +2,11 @@ package com.client.pygmy;
 
 import java.util.Vector;
 
-import com.lib.pygmy.AbstractOverlapRulesApplier;
 import com.lib.pygmy.GameUniverse;
+import com.lib.pygmy.PygmyOverlapRulesApplier;
 import com.lib.pygmy.base.Overlap;
 
-public class DemoOverlapRules extends AbstractOverlapRulesApplier {
+public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 	
 	protected GameUniverse universe;
 

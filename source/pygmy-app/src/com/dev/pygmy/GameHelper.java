@@ -9,8 +9,9 @@ import com.dev.pygmy.game.GameViewManager;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
-import com.lib.pygmy.PygmyLoader;
-import com.lib.pygmy.TurnData;
+import com.lib.pygmy.util.PygmyLoader;
+import com.lib.pygmy.util.TurnData;
+
 
 public class GameHelper {
 	
@@ -42,17 +43,21 @@ public class GameHelper {
 
 		
 		initGameViewManager(mTurnData.gamePath, null);
+
 		isDoingTurn = true;
 		mContext.setViewVisibility();
 		mGameViewManager.updateData(mTurnData);
 	}
 	
+
 	private void initGameViewManager(String gameID,String gameVersion) {
 		String path="";
 		path=mContext.getFilesDir().getPath()+"/"+gameID+"/"+gameVersion;
-		mGame = PygmyLoader.loadGame(mContext, path);
-		mGameViewManager = new GameViewManager(mContext, mGame);
 
+		mGame = PygmyLoader.loadGame(mContext, path);
+		mGame.setPlayerIds(mMatch.getParticipantIds());
+
+		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
 	
 	/**
@@ -98,18 +103,18 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
+
 	public void startMatch(TurnBasedMatch match, String gameID,String gameVersion) {
-		initGameViewManager(gameVersion, gameVersion);
 		
-		mTurnData = new TurnData();
-
-		mTurnData.gamePath = gameID;
-
-		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
-		mTurnData.turnCounter = 1;
-
-
 		mMatch = match;
+		initGameViewManager(gameVersion, gameVersion);
+
+		mTurnData = new TurnData();
+		mTurnData.game = gameID;
+		
+		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+		mTurnData.gamePath = gameID ;
+		mTurnData.turnCounter = 1;
 
 		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());

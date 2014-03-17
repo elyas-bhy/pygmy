@@ -50,7 +50,7 @@ session_start();
 						
 						if (mysql_num_rows($check_log) == 0) 
 						{
-							$query = "INSERT INTO developer(username, password, email) VALUES ('$login','$pass','$mail')";
+							$query = 'INSERT INTO developer(username, password, email) VALUES ("'.$login.'","'$pass.'","'.$mail.'")';
 							mysql_query($query);
 		
 							mysql_close($conn);

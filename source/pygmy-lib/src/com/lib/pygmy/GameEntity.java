@@ -2,8 +2,6 @@ package com.lib.pygmy;
 
 import android.graphics.Bitmap;
 
-import com.lib.pygmy.view.Tile;
-
 /**
  * Interface of board game pieces (entities)
  * @author Pygmy
@@ -20,9 +18,9 @@ public interface GameEntity {
 	
 	public void setCurrentTile(Tile tile);
 	
-	public Player getPlayer();
+	public String getPlayerId();
 	
-	public void setPlayer(Player player);
+	public void setPlayerId(String playerId);
 	
 	public void oneStepMove(GameMove move);
 	
@@ -30,10 +28,9 @@ public interface GameEntity {
 	
 	public void oneStepMoveAddedBehavior();
 
-	/**
-	 * Returns the image file of the entity
-	 */
 	public Bitmap getBitmap();
-
-	public int getResourceId();
+	
+	public void setBitmap(Bitmap bitmap);
+	
+	public EntityType getType();
 }

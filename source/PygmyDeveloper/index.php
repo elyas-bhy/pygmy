@@ -11,7 +11,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 	   
    </head> 
 <body>
 	<div id="content">
@@ -47,7 +47,7 @@ session_start();
 			
 			<div class="package log">
 				<h1>Log In</h1>
-					<form method="post" action="Pages/Connexion.php">
+					<form name="formulaire" method="post" action="Pages/Connexion.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
@@ -59,7 +59,7 @@ session_start();
 			
 			<div class="package register">
 				<h1>Sign In</h1>
-					<form method="post" action="Pages/RegisterDev.php">
+					<form method="post" name="formulaire" action="Pages/RegisterDev.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
 						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>

@@ -51,7 +51,7 @@ session_start();
 		&& $_POST['Password'] != '')
 			{	
 			$query = "SELECT username, password, email FROM developer WHERE username = '".htmlspecialchars(addslashes($_POST['Login']))."' AND password = '".htmlspecialchars(addslashes($_POST['Password']))."';";
-			
+		
 			$result = mysql_query($query);
 			
 			while ($row = mysql_fetch_array($result)) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lib.pygmy;
+package com.lib.pygmy.util;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -34,9 +34,10 @@ public class TurnData {
 	
 	private final static String TAG = "TurnData";
 
+
 	public String game="";
 	public String version="";
-	public String gamePath="";
+	public String gamePath = "source/pygmy-lib/src/com/lib/pygmy/util/TurnData.java";
     public String data = "";
     public int turnCounter;
 

@@ -16,17 +16,18 @@
 
 package com.dev.pygmy.game;
 
-import com.lib.pygmy.view.Tile;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.view.View;
+
+import com.lib.pygmy.Tile;
 
 /**
  * This class represents the view which shows the tile 
  * in which a entity is flying over.
  */
 public class TileOverlayView extends View {
+	
 	private Integer saved;
 	private Tile tile;
 

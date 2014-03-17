@@ -24,22 +24,20 @@ import android.widget.TextView;
 
 public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 
-	TextView titleView, summaryView;
-	Spinner spin;
 	private final String databaseUrl;
 	private final String gameName;
-	private boolean report = false;
-	public String title;
-	public String resume;
+	private String title;
+	private String summary;
+	private String result = "";
+	
+	private InputStream is;
+	private TextView titleView, summaryView;
+	private Spinner spin;
 
 	public LoadDataFromDatabase(Spinner sp, String url, String game) {
 		this.spin = sp;
 		this.databaseUrl = url;
 		this.gameName = game;
-
-		report = true;
-
-		execute();
 	}
 
 	public LoadDataFromDatabase(TextView title, TextView summary, String url,
@@ -48,12 +46,7 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 		this.summaryView = summary;
 		this.gameName = game;
 		this.databaseUrl = url;
-
-		execute();
 	}
-
-	private InputStream is = null;
-	private String result = "";
 
 	@Override
 	protected Void doInBackground(String... params) {
@@ -62,12 +55,12 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 		HttpPost httpPost = new HttpPost(databaseUrl);
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
-		if (report) {
+		if (spin != null) {
 			String item = spin.getSelectedItem().toString();
 			param.add(new BasicNameValuePair("report", item));
 		}
 
-		// sent variable gameName to the script php
+		// sent variable gameName to the PHP script
 		param.add(new BasicNameValuePair("name", gameName));
 
 		try {
@@ -109,9 +102,9 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 			for (int i = 0; i < array.length(); i++) {
 				json = array.getJSONObject(i);
 				title = json.getString("name");
-				resume = json.getString("resume");
+				summary = json.getString("resume");
 				titleView.append(title + "\t\t" + "\n");
-				summaryView.append(resume + "\t\t" + "\n");
+				summaryView.append(summary + "\t\t" + "\n");
 			}
 
 		} catch (Exception e) {

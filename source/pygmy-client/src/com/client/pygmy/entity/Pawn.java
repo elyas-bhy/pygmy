@@ -2,16 +2,15 @@ package com.client.pygmy.entity;
 
 import android.graphics.Point;
 
+import com.lib.pygmy.EntityType;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
-import com.lib.pygmy.Player;
 import com.lib.pygmy.PygmyGameEntity;
-import com.lib.pygmy.PygmyGameLevel;
 
 public class Pawn extends PygmyGameEntity {
 
-	public Pawn(GameLevel level, Player player, Integer resId, Point p) {
-		super(level, player, resId, p);
+	public Pawn(GameLevel level, String playerId, EntityType type, Point p) {
+		super(level, playerId, type, p);
 	}
 	
 	@Override

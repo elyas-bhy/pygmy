@@ -1,7 +1,6 @@
 package com.lib.pygmy;
 
 import java.util.List;
-import java.util.Map;
 
 import com.lib.pygmy.base.ObservableValue;
 
@@ -17,11 +16,11 @@ public interface Game {
 	
 	public PygmyGameContext getContext();
 	
-	public List<Player> getPlayers();
+	public List<String> getPlayerIds();
 	
-	void setPlayers(int minPlayers, int maxPlayers);
+	public void setPlayerIds(List<String> playerIds);
 	
-	public Player getCurrentPlayer();
+	public String getCurrentPlayerId();
 
 	public List<GameLevel> getLevels();
 	
@@ -29,12 +28,6 @@ public interface Game {
 	
 	public GameLevel getCurrentLevel();
 	
-	public void setTitle(String title);
-	
-	public void setBoardDimensions(int rows, int columns);
-	
 	public ObservableValue<Boolean> endOfGame();
-	
-	public Map<String,Object> getParameters();
-	
+		
 }

@@ -40,8 +40,8 @@ public abstract class PygmyGameLevel implements GameLevel {
 	public abstract void init();
 	
 	@Override
-	public Player getCurrentPlayer() {
-		return game.getCurrentPlayer();
+	public String getCurrentPlayerId() {
+		return game.getCurrentPlayerId();
 	}
 
 	@Override
