@@ -15,19 +15,7 @@ session_start();
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
+		<?php include '../headerConnect.php' ?>
 		
 		<div id="corps">
 			
@@ -42,8 +30,15 @@ session_start();
 					$resume = $_REQUEST["Resume"];
 					$filename= "game.jar";
 					$user = $_SESSION['Login'];
+					
+					if(!empty($_POST['min']) AND !empty($_POST['max'])){
 					$min_player = $_REQUEST["min"];
 					$max_player = $_REQUEST["max"];
+					}
+					else{
+					$min_player = '1';
+					$max_player = '1';
+					}
 					
 					$check = "SELECT * FROM game WHERE name = '$title'";
 					$check_title = mysql_query($check);

@@ -15,19 +15,7 @@ session_start();
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
+		<?php include '../header.php' ?>
 		
 		<div id="corps">
 			
@@ -50,7 +38,7 @@ session_start();
 						
 						if (mysql_num_rows($check_log) == 0) 
 						{
-							$query = 'INSERT INTO developer(username, password, email) VALUES ("'.$login.'","'$pass.'","'.$mail.'")';
+							$query = 'INSERT INTO developer(username, password, email) VALUES ("'.$login.'","'.md5($pass).'","'.$mail.'")';
 							mysql_query($query);
 		
 							mysql_close($conn);

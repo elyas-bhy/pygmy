@@ -15,19 +15,7 @@ session_start();
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
+		<?php include '../headerConnect.php' ?>
 		
 		<div id="corps">
 			
@@ -47,7 +35,8 @@ session_start();
 				}
 				else{
 						if(isset($_POST["Password"]) && $_POST["Password"] != '') {
-							$query = "Update developer set password = '".$pass."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
+							$query = "Update developer set password = '".md5($pass)."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
+							echo '<h1>LOADING...</h1>';
 						}
 						else if (isset($_POST["Email"]) && $_POST["Email"] != '') {
 							$query = "Update developer set email = '".$mail."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
