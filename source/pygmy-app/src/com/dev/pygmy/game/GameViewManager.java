@@ -16,8 +16,6 @@
 
 package com.dev.pygmy.game;
 
-import java.util.Map;
-
 import android.app.Activity;
 import android.widget.FrameLayout;
 
@@ -46,9 +44,8 @@ public class GameViewManager {
 		if (game != null) {
 			game.initGame();
 			game.start();
-			Map<String, Object> gameParams = game.getParameters();
-
-			gameBoardView = new GameBoardView(context, gameParams);
+			
+			gameBoardView = new GameBoardView(context, game);
 			tileOverlayView = new TileOverlayView(context);
 			entityView = new EntityView(context, game);
 		}

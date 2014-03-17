@@ -1,5 +1,9 @@
 package com.lib.pygmy;
 
+import java.util.List;
+
+import android.graphics.Paint;
+
 public interface GameLevel {
 
 	public void start();
@@ -14,7 +18,19 @@ public interface GameLevel {
 	
 	public PygmyGameContext getContext();
 
+	public int getNumberRows();
+	
+	public int getNumberColumns();
+
 	public void setDimensions(int rows, int col);
+
+	public int getBoardType();
+	
+	public void setBoardType(int type);
+	
+	public List<Paint> getColors();
+	
+	public void setColors(List<Paint> colors);
 
 	public void addGameRule(GameRule rule);
 
@@ -23,5 +39,5 @@ public interface GameLevel {
 	public void tryMove(GameMove move);
 
 	public void end();
+
 }
- 

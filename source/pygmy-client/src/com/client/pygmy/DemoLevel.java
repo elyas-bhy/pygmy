@@ -16,9 +16,11 @@
 
 package com.client.pygmy;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 
 import com.client.pygmy.entity.MyChessEntity;
@@ -30,18 +32,8 @@ import com.lib.pygmy.PygmyGameLevel;
 
 public class DemoLevel extends PygmyGameLevel {
 	
-	private HashMap<String, Object> parameters;
-
 	public DemoLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		super(game, overlapRules);
-		parameters = new HashMap<String, Object>();
-	}
-
-	/**
-	 * Returns a HashMap with whole parameters for this game.
-	 */
-	public HashMap<String, Object> getParameters() {
-		return parameters;
 	}
 
 	/**
@@ -54,7 +46,17 @@ public class DemoLevel extends PygmyGameLevel {
 		String p1 = playerIds.get(0);
 		String p2 = playerIds.get(1);
 		
-		setDimensions(16, 16);
+		List<Paint> colors = new ArrayList<Paint>();
+		Paint color1 = new Paint();
+		Paint color2 = new Paint();
+		color1.setColor(Color.CYAN);
+		color2.setColor(Color.WHITE);
+		colors.add(color1);
+		colors.add(color2);
+		
+		setColors(colors);
+		setDimensions(8, 8);
+		setBoardType(0);
 		addGameRule(new EndlessGameRule());
 
 		// declare each black piece (entity) with the Entity class

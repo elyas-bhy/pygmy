@@ -1,7 +1,6 @@
 package com.lib.pygmy;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,9 +13,6 @@ import com.lib.pygmy.base.ObservableValue;
  */
 public abstract class PygmyGame implements Game, Observer {
 	
-	private String title = "Pygmy Game";
-	private int rows = 8;
-	private int columns = 8;
 	protected ObservableValue<Boolean> endOfGame = null;
 	
 	private PygmyGameContext context;
@@ -100,6 +96,4 @@ public abstract class PygmyGame implements Game, Observer {
 	public PygmyGame getGame() {
 		return this;
 	}
-	
-	public abstract Map<String,Object> getParameters();
 }

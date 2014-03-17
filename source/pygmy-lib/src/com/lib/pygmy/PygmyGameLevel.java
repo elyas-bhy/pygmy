@@ -3,10 +3,12 @@ package com.lib.pygmy;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Paint;
+
 import com.lib.pygmy.base.ObservableValue;
 
 /**
- * To be implemented with respect to a specific game. Expected to initialize the
+ * To be implemented with respect to a specific game. Expected to initialise the
  * universe and the gameBoard
  */
 
@@ -16,6 +18,10 @@ public abstract class PygmyGameLevel implements GameLevel {
 	protected GameUniverse universe;
 	protected ObservableValue<Boolean> endOfGame;
 
+	private int rows;
+	private int columns;
+	private int boardType;
+	private List<Paint> colors;
 	protected final Game game;
 	protected List<GameRule> gameRules;
 
@@ -101,4 +107,27 @@ public abstract class PygmyGameLevel implements GameLevel {
 		
 	}
 	
+	public int getNumberRows() {
+		return rows;
+	}
+	
+	public int getNumberColumns() {
+		return columns;
+	}
+	
+	public int getBoardType() {
+		return boardType;
+	}
+	
+	public void setBoardType(int type) {
+		this.boardType = type;
+	}
+	
+	public List<Paint> getColors() {
+		return colors;
+	}
+	
+	public void setColors(List<Paint> colors) {
+		this.colors = colors;
+	}
 }

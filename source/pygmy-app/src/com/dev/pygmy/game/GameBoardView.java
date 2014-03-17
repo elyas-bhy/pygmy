@@ -27,6 +27,7 @@ import android.graphics.Point;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
+import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.Tile;
 
 /**
@@ -36,12 +37,14 @@ public class GameBoardView extends View {
 
 	private static int numberOfRows;
 	private static int numberOfColumns;
+	
 	private int boardType;
 	private Paint color1 = null;
 	private Paint color2 = null;
 	private Paint colorBlack = null;
-
+	
 	private static Map<Point,Tile> mapTileCoord;
+
 
 	/**
 	 * Default constructor.
@@ -55,19 +58,18 @@ public class GameBoardView extends View {
 	 * @param context	Context parent.
 	 * @param params	A map with board parameters. 
 	 */
-	public GameBoardView(Context context, Map<String,Object> params) {
+	public GameBoardView(Context context, PygmyGame game) {
 		super(context);
 
-		numberOfRows = (Integer) params.get("numberRows");
-		numberOfColumns = (Integer) params.get("numberColumns");
-		boardType = (Integer) params.get("boardType");
-
-		color1 = new Paint();
-		color2 = new Paint();
-		color1.setColor(Color.CYAN);
-		color2.setColor(Color.WHITE);
 		mapTileCoord = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
+
+		numberOfRows = game.getCurrentLevel().getNumberRows();
+		numberOfColumns = game.getCurrentLevel().getNumberColumns();
+		boardType = game.getCurrentLevel().getBoardType();
+		color1 = game.getCurrentLevel().getColors().get(1);
+		color2 = game.getCurrentLevel().getColors().get(2);
+		
 	}
 
 	/**
@@ -125,9 +127,11 @@ public class GameBoardView extends View {
 		// Up
 		canvas.drawLine(coordX + dist, coordY, coordX + tileSize - dist, coordY, colorBlack);
 		// Down
-		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, coordX + dist, coordY + tileSize, colorBlack);
+		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, 
+				coordX + dist, coordY + tileSize, colorBlack);
 		// Right Down
-		canvas.drawLine(coordX + tileSize, coordY + half, coordX + tileSize - dist, coordY + tileSize, colorBlack);
+		canvas.drawLine(coordX + tileSize, coordY + half, 
+				coordX + tileSize - dist, coordY + tileSize, colorBlack);
 		// Left Down
 		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
 		// Right Up
@@ -151,7 +155,7 @@ public class GameBoardView extends View {
 		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
 
 		// One tile distance
-		tileSize = Math.min(width / (widthBox + 2), height / (heightBox+2));
+		tileSize = Math.min(width / (widthBox + 2), height / (heightBox + 2));
 		if(tileSize*1.2 < widthSize - tileSize / 3*1.2 && tileSize*1.2 < heightSize-tileSize/3*1.2) {
 			tileSize *= 1.2;
 		}
@@ -181,16 +185,16 @@ public class GameBoardView extends View {
 
 						if (y == 1 && x != heightBox+1) {
 							canvas.drawText(Integer.toString(x), 
-									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
 									colorBlack);
 						}
 					}
 				}
 				if (y != widthBox+1) {
 					canvas.drawText(Character.toString((char)('A'-1+y)), 
-							(y+1)*(tileSize-colision)+(tileSize/4)-colorBlack.getTextSize()/2+offset,
-							tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
+							(y + 1)*(tileSize-colision) + (tileSize/4) - colorBlack.getTextSize()/2 + offset,
+							tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
 				}
 			}
 		}
@@ -207,13 +211,13 @@ public class GameBoardView extends View {
 		int tileSize = 0, offset = 0, coordY = 0, coordX = 0;
 
 		// One tile distance
-		tileSize = Math.min(width / (widthBox+2), height / (heightBox+2));
+		tileSize = Math.min(width / (widthBox+2), height / (heightBox + 2));
 		// Margin based to tileSize
 		offset = tileSize / 3;
 
-		int smallDistance = tileSize+offset;
-		int longDistanceHeight = tileSize*(heightBox+1)+offset;
-		int longDistanceWidth = tileSize*(widthBox+1)+offset;
+		int smallDistance = tileSize + offset;
+		int longDistanceHeight = tileSize*(heightBox + 1) + offset;
+		int longDistanceWidth = tileSize*(widthBox + 1) + offset;
 
 		for(int y = 0; y <= widthBox +1 ; ++y) {
 			if (y != 0) {
@@ -222,23 +226,23 @@ public class GameBoardView extends View {
 						coordY = y*tileSize+offset;
 						coordX = x*tileSize+offset;
 
-						if(y < widthBox +1 && x < heightBox +1)
-							mapTileCoord.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
+						if(y < widthBox+1 && x < heightBox+1)
+							mapTileCoord.put(new Point(x-1, y-1), new Tile(coordX, coordY, tileSize));
 
 						// Draw case
 						canvas.drawLine(coordY, smallDistance, coordY, longDistanceHeight, colorBlack);
 						canvas.drawLine(smallDistance, coordX, longDistanceWidth, coordX, colorBlack);
 						if (y == 1 && x != heightBox+1)
 							canvas.drawText(Integer.toString(x), 
-									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
-									colorBlack);		
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
+									colorBlack);
 					}
 				}
 				if (y != widthBox+1) {
-					canvas.drawText(Character.toString((char)('A'-1+y)), 
-							y*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
-							tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
+					canvas.drawText(Character.toString((char)('A' - 1 + y)), 
+							y*tileSize + (tileSize/2) - colorBlack.getTextSize()/2 + offset, 
+							tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
 				}
 			}
 		}
@@ -256,7 +260,7 @@ public class GameBoardView extends View {
 
 		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
 
-		tileSize = Math.min(width / (tileWidth+2), height / (tileHeight+2));
+		tileSize = Math.min(width / (tileWidth + 2), height / (tileHeight + 2));
 		offset = tileSize / 3;
 
 		for (int x = 0; x < tileWidth +1 ; ++x) {
@@ -268,24 +272,25 @@ public class GameBoardView extends View {
 						coordY = y * tileSize + offset;
 						if (x == 1) {
 							canvas.drawText(Integer.toString(y), 
-									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									y*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
-									colorBlack);	
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									y*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
+									colorBlack);
 						}
 
 						Tile t = new Tile(coordY, coordX, tileSize);
 						t.setPosition(new Point(x-1, y-1));
 						t.setColor(((x + y)%2 != 0) ? color1:color2);
+						
 						mapTileCoord.put(new Point(x-1, y-1), t);
 						t.draw(canvas);
 					}
 				}
 				canvas.drawText(Character.toString((char)('A'-1+x)), 
-						x*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
-						tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
+						x*tileSize + (tileSize/2) - colorBlack.getTextSize()/2 + offset, 
+						tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
 				canvas.drawText(Integer.toString(x), 
-						tileSize/2-colorBlack.getTextSize()/2+offset, 
-						x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);
+						tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+						x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, colorBlack);
 			}
 		}
 
