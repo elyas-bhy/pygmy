@@ -1,11 +1,9 @@
 package com.lib.pygmy;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-
-import android.content.res.Resources;
 
 import com.lib.pygmy.base.ObservableValue;
 
@@ -14,22 +12,21 @@ import com.lib.pygmy.base.ObservableValue;
  */
 public abstract class PygmyGame implements Game, Observer {
 	
-	private String title = "Pygmy Game";
-	private int rows = 8;
-	private int columns = 8;
 	protected ObservableValue<Boolean> endOfGame = null;
 	
 	private PygmyGameContext context;
 	private GameLevel currentPlayedLevel = null;
 	private List<GameLevel> gameLevels;
 	
-	public PygmyGame(Resources resources) {
-		context = new PygmyGameContext(this, resources);
+	public PygmyGame() {
+		context = new PygmyGameContext(this);
+		gameLevels = new ArrayList<GameLevel>();
 	}
 
 	@Override
 	public abstract void initGame();
 
+	@Override
 	public void start() {
 		endOfGame = new ObservableValue<Boolean>(false);
 		endOfGame.addObserver(this);
@@ -84,6 +81,7 @@ public abstract class PygmyGame implements Game, Observer {
 		return context.getCurrentLevel();
 	}
 
+	@Override
 	public void update(Observable o, Object arg) {
 		if (o == endOfGame) {
 			if (endOfGame.getValue()) {
@@ -93,13 +91,13 @@ public abstract class PygmyGame implements Game, Observer {
 		}
 	}
 
+	@Override
 	public ObservableValue<Boolean> endOfGame() {
 		return endOfGame;
 	}
-
+	
 	public PygmyGame getGame() {
 		return this;
 	}
 	
-	public abstract Map<String,Object> getParameters();
 }

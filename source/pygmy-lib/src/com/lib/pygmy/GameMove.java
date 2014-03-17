@@ -1,6 +1,5 @@
 package com.lib.pygmy;
 
-
 public class GameMove {
 	
 	private GameEntity entity;
