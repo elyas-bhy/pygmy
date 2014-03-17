@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -78,7 +81,8 @@ public class MainActivity extends BaseGameActivity implements
 	public static final int RC_SELECT_GAME = 10000;
 	public static final int RC_SELECT_PLAYERS = 10001;
 	public static final int RC_LOOK_AT_MATCHES = 10002;
-	public static final String EXTRA_GAME_PATH = "com.dev.pygmy.EXTRA_GAME_PATH";
+	public static final String EXTRA_GAME_ID = "com.dev.pygmy.EXTRA_GAME_ID";
+	public static final String EXTRA_GAME_VERSION= "com.dev.pygmy.EXTRA_GAME_VERSION";
 
 	// How long to show toasts.
 	private final int TOAST_DELAY = 2000;
@@ -87,7 +91,8 @@ public class MainActivity extends BaseGameActivity implements
 	private SlidingMenu mSlidingMenu;
 	
 	// Reference to the selected game's source
-	private String gamePath;
+	private String gameID;
+	private String gameVersion;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +115,7 @@ public class MainActivity extends BaseGameActivity implements
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		
 
-		initSlidingMenu();
+		
 		initSigninButtons();
 	}
 
@@ -185,7 +190,20 @@ public class MainActivity extends BaseGameActivity implements
 					setViewVisibility();
 				}
 				if (position == 4) {
-					onStartMatchClicked(findViewById(R.id.matchup_layout));
+					
+					
+					AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+						.setMessage("The game you tried to play is not installed on your device. Would you like to install it?")
+						.setCancelable(false)
+						.setPositiveButton("Yes" ,new DialogInterface.OnClickListener(){
+							public void onClick(DialogInterface dialog, int id) {
+								Intent intent = new Intent(MainActivity.this, GameListActivity.class);
+								startActivityForResult(intent, RC_SELECT_GAME);
+								}
+							})
+						.setNegativeButton("No",null).show();
+					
+					//onStartMatchClicked(findViewById(R.id.matchup_layout));
 				}
 				if (position == 5) {
 					onQuickMatchClicked(findViewById(R.id.matchup_layout));
@@ -293,6 +311,8 @@ public class MainActivity extends BaseGameActivity implements
 			}
 			return;
 		}
+		
+		initSlidingMenu(); // MOVE OUT MAYBE
 
 		((TextView) findViewById(R.id.name_field)).setText(getGamesClient()
 				.getCurrentPlayer().getDisplayName());
@@ -323,7 +343,7 @@ public class MainActivity extends BaseGameActivity implements
 			updateMatch(mHelper.getTurnBasedMatch());
 			return;
 		}
-
+		
 		setViewVisibility();
 
 		// As a demonstration, we are registering this activity as a handler for
@@ -341,7 +361,7 @@ public class MainActivity extends BaseGameActivity implements
 		
 		setProfileView();
 		
-		if (gamePath != null) {
+		if (gameID != null) {
 			dismissSpinner();
 			onStartMatchClicked(null);
 		}
@@ -397,8 +417,11 @@ public class MainActivity extends BaseGameActivity implements
 		switch (request) {
 		
 		case RC_SELECT_GAME:
-			if (data != null && data.hasExtra(EXTRA_GAME_PATH)) {
-				gamePath = data.getStringExtra(EXTRA_GAME_PATH);
+			if (data != null) {
+				if (data.hasExtra(EXTRA_GAME_ID))
+					gameID = data.getStringExtra(EXTRA_GAME_ID);
+				if (data.hasExtra(EXTRA_GAME_VERSION))
+					gameVersion = data.getStringExtra(EXTRA_GAME_VERSION);
 				showSpinner();
 			}
 			break;
@@ -465,8 +488,8 @@ public class MainActivity extends BaseGameActivity implements
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
 		showSpinner();
-		gameHelper.startMatch(match, gamePath);
-		gamePath = null;
+		gameHelper.startMatch(match, gameID,gameVersion);
+		gameID = null;
 	}
 
 	// If you choose to rematch, then call it and wait for a response.

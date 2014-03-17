@@ -38,15 +38,19 @@ public class GameHelper {
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
-		PygmyApp.logD("PATH"+mTurnData.gamePath);
-		initGameViewManager(mTurnData.gamePath);
+		
+
+		
+		initGameViewManager(mTurnData.gamePath, null);
 		isDoingTurn = true;
 		mContext.setViewVisibility();
 		mGameViewManager.updateData(mTurnData);
 	}
 	
-	private void initGameViewManager(String gamePath) {
-		mGame = PygmyLoader.loadGame(mContext, gamePath);
+	private void initGameViewManager(String gameID,String gameVersion) {
+		String path="";
+		path=mContext.getFilesDir().getPath()+"/"+gameID+"/"+gameVersion;
+		mGame = PygmyLoader.loadGame(mContext, path);
 		mGameViewManager = new GameViewManager(mContext, mGame);
 
 	}
@@ -94,12 +98,12 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
-	public void startMatch(TurnBasedMatch match, String gamePath) {
-		initGameViewManager(gamePath);
+	public void startMatch(TurnBasedMatch match, String gameID,String gameVersion) {
+		initGameViewManager(gameVersion, gameVersion);
 		
 		mTurnData = new TurnData();
 
-		mTurnData.gamePath = gamePath ;
+		mTurnData.gamePath = gameID;
 
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
 		mTurnData.turnCounter = 1;

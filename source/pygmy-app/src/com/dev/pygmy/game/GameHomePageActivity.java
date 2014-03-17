@@ -134,7 +134,8 @@ public class GameHomePageActivity extends Activity {
 		} else {
 			// Play is pressed
 			Intent data = new Intent();
-			data.putExtra(MainActivity.EXTRA_GAME_PATH, destPath);
+			data.putExtra(MainActivity.EXTRA_GAME_ID, gameName);
+			data.putExtra(MainActivity.EXTRA_GAME_VERSION, version);
 			setResult(MainActivity.RC_SELECT_GAME, data);
 			finish();
 		}
