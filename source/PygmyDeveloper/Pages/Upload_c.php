@@ -12,28 +12,38 @@ session_start();
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
 	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
-	   <script type="text/javascript">
-		<?php include 'js/chek_form.js'; ?>
-	   </script> 
+	    <!-- IMPORT Javascript -->
+		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
+		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+		$("#formulaire").formValidation({
+			alias		: "name",
+			required	: "accept",
+			err_list	: true
+		}); 
+               
+	});
+	</script> 
    </head> 
 <body>
 	<div id="content">
 
-		<?php include '../header.php' ?>
+		<?php include '../headerConnect.php' ?>
 		
 		<div id="corps">
 		<?php
 		if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
 		?>
-		<form name="formulaire" method="post" enctype="multipart/form-data" action="UploadGame.php" onsubmit="return check_form_upload()";>
+		<form id="formulaire" method="post" enctype="multipart/form-data" action="UploadGame.php">
 			<table id="upload">
-			<tr><td><th class="left"><label>Title (no spaces)* : </label></th><th><input type="text" size="20" name="Title"/></th></td></tr>
-			<tr><td><th class="left"><label>Description (size max 200)* : </label></th><th><textarea type="text" size="200" name="Resume"></textarea></textarea></th></td></tr>
+			<tr><td><th class="left"><label>Title (no spaces)* : </label></th><th><input required="true" type="text" size="20" name="Title"/></th></td></tr>
+			<tr><td><th class="left"><label>Description (size max 200)* : </label></th><th><textarea required="true" type="text" size="200" name="Resume"></textarea></textarea></th></td></tr>
 			<tr><td><th class="left"><label>Min player (default value 1) : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
 			<tr><td><th class="left"><label>Max player (default value 1) : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
 			</table>
 			<p>Please upload a .jar file. /!\ Filename must be game.jar /!\ .</p>
-			<p><input type="file" name="code"></p>
+			<p><input required="true" type="file" name="code"></p>
 			<p>Select an image for your game. (200ko max)</p>
 			<p><input type="file" name="image"></p>
 			<p><input type="submit" value="UPLOAD"/></p>

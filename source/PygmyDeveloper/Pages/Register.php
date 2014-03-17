@@ -11,9 +11,19 @@ session_start();
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
 	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pygmy.css" /> 
-	   <script type="text/javascript">
-		<?php include 'js/chek_form.js'; ?>
-	   </script> 
+	    <!-- IMPORT Javascript -->
+		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
+		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+		$("#formulaire").formValidation({
+			alias		: "name",
+			required	: "accept",
+			err_list	: true
+		}); 
+               
+	});
+	</script>
    </head> 
 <body>
 	<div id="content">
@@ -23,11 +33,11 @@ session_start();
 		<div id="corps">
 			<div class="block">
 					<h1>Register</h1>
-					<form name="formulaire" method="post" action="RegisterDev.php" onsubmit="return check_form_register()";>
+					<form id="formulaire" method="post" action="RegisterDev.php" onsubmit="return check_form_register()";>
 						<table id="connect">
-						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
-						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
-						<tr><td><th class="left"><label>Email : </label></th><th><input type="email" size="50" name="Email" id="Email"/></th></td></tr>
+						<tr><td><th class="left"><label>Login : </label></th><th><input required="true" type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input required="true" type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						<tr><td><th class="left"><label>Email : </label></th><th><input required="true" type="email" size="50" name="Email" id="Email"/></th></td></tr>
 						</table>
 						<p><input type="submit" value="Submit"/>
 						<input type="reset" value="Reset"/></p>

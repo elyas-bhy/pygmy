@@ -12,14 +12,24 @@ session_start();
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
 	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+		 <!-- IMPORT Javascript -->
+		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
+		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
 		<script type="text/javascript">
-		<?php include 'js/chek_form.js'; ?>
-	   </script> 
+		$(document).ready(function(){
+		$("#formulaire").formValidation({
+			alias		: "name",
+			required	: "accept",
+			err_list	: true
+		}); 
+               
+	});
+	</script> 
    </head> 
 <body>
 	<div id="content">
 
-		<?php include '../header.php' ?>
+		<?php include '../headerConnect.php' ?>
 		
 		<div id="corps">
 		
@@ -28,9 +38,9 @@ session_start();
 
 			echo ' '.$_GET['game'].' <br>';
 
-					$host = "dbserver"; //dbserver
-					$user = "njouanla";  //njouanla
-					$password = "pygmyproject"; //pygmyproject
+					$host = "dbserver"; 
+					$user = "njouanla";  
+					$password = "pygmyproject";
 					$conn = mysql_connect($host,$user,$password) or die ("Error. You are not registered");
 					mysql_select_db("njouanla") or die ("DB PB");
 
@@ -48,9 +58,9 @@ session_start();
 		?>
 	
 		
-		<form name="formulaire" method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>" onsubmit="return check_form_version()";>
+		<form id="formulaire" method="post" enctype="multipart/form-data" action="VersionGame.php?game=<?php echo $_GET['game']; ?>">
 						<table id="upload">
-						<tr><td><th class="left"><label>Version (write the number) : </label></th><th><input type="text" size="20" name="Version"/></th></td></tr>
+						<tr><td><th class="left"><label>Version (write the number) : </label></th><th><input required="true" type="text" size="20" name="Version"/></th></td></tr>
 						<tr><td><th class="left"><label>Min player : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
 						<tr><td><th class="left"><label>Max player : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
 						</table>

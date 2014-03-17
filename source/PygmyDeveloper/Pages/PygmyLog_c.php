@@ -15,7 +15,7 @@ session_start();
    </head> 
 <body>
 	
-		<?php include '../header.php' ?>
+		<?php include '../headerConnect.php' ?>
 		
 		<div id="corps">		
 		<?php

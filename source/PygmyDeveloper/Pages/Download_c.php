@@ -14,7 +14,7 @@ session_start();
 	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
    </head> 
 <body>
-	<?php include '../header.php' ?>			
+	<?php include '../headerConnect.php' ?>		
 				
 		<div id="corps">
 		
