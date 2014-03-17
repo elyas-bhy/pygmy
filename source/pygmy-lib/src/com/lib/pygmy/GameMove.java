@@ -1,6 +1,10 @@
 package com.lib.pygmy;
 
-public class GameMove {
+import java.io.Serializable;
+
+public class GameMove implements Serializable {
+	
+	private static final long serialVersionUID = -2310782677683578117L;
 	
 	private GameEntity entity;
 	private Tile move;

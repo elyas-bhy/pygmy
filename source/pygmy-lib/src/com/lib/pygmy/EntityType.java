@@ -1,6 +1,9 @@
 package com.lib.pygmy;
 
-public enum EntityType {
+import java.io.Serializable;
+
+public enum EntityType implements Serializable {
+	
 	BLACK_ROOK,
 	BLACK_KNIGHT,
 	BLACK_BISHOP,

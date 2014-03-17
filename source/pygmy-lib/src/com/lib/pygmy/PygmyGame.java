@@ -1,5 +1,6 @@
 package com.lib.pygmy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -10,12 +11,14 @@ import com.lib.pygmy.base.ObservableValue;
 /**
  * Create a basic game application
  */
-public abstract class PygmyGame implements Game, Observer {
+public abstract class PygmyGame implements Game, Observer, Serializable {
 	
-	protected ObservableValue<Boolean> endOfGame = null;
+	private static final long serialVersionUID = -6084846314735557726L;
+
+	protected ObservableValue<Boolean> endOfGame;
 	
 	private PygmyGameContext context;
-	private GameLevel currentPlayedLevel = null;
+	private GameLevel currentPlayedLevel;
 	private List<GameLevel> gameLevels;
 	
 	public PygmyGame() {

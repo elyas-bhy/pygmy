@@ -1,5 +1,6 @@
 package com.lib.pygmy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import com.lib.pygmy.base.ObservableValue;
  * universe and the gameBoard
  */
 
-public abstract class PygmyGameLevel implements GameLevel {
+public abstract class PygmyGameLevel implements GameLevel, Serializable {
+	
+	private static final long serialVersionUID = -5162807833660148717L;
 	
 	protected GameMap gameMap;
 	protected GameUniverse universe;

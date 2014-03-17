@@ -16,16 +16,21 @@
 
 package com.lib.pygmy;
 
+import java.io.Serializable;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 
-public class Tile {
+import com.lib.pygmy.util.Point;
+
+public class Tile implements Serializable {
+	
+	private static final long serialVersionUID = 700976869561391811L;
 	
 	private Point position;
 	private Point coordinates;
-	private Paint color;
+	private transient Paint color;
 	private int width;
 	private int height;
 	

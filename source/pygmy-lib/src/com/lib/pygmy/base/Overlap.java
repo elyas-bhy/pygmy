@@ -1,11 +1,14 @@
 package com.lib.pygmy.base;
 
-public class Overlap {
+import java.io.Serializable;
 
-	Overlappable overlappable1, overlappable2;
+public class Overlap implements Serializable {
+	
+	private static final long serialVersionUID = 3501144486095658944L;
+	
+	private Overlappable overlappable1, overlappable2;
 
 	public Overlap(Overlappable overlappable1, Overlappable overlappable2) {
-		super();
 		this.overlappable1 = overlappable1;
 		this.overlappable2 = overlappable2;
 	}

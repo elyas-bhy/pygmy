@@ -1,9 +1,9 @@
 package com.lib.pygmy.base;
 
-import android.graphics.Point;
+import com.lib.pygmy.util.Point;
 
 /**
- * Has a current position, a {@link Direction}
+ * Has a current position
  */
 public interface Movable {
 

@@ -23,11 +23,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.Point;
 
 /**
  * 	This class represents the grid of the board.
@@ -41,7 +41,7 @@ public class GameBoardView extends View {
 	private Paint color2 = null;
 	private Paint colorBlack = null;
 
-	private static Map<Point,Tile> mapTileCoord;
+	private static Map<Point,Tile> tilesMap;
 	
 	/**
 	 * 
@@ -59,7 +59,7 @@ public class GameBoardView extends View {
 		color2 = new Paint();
 		color1.setColor(Color.CYAN);
 		color2.setColor(Color.WHITE);
-		mapTileCoord = new HashMap<Point,Tile>();
+		tilesMap = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
 	}
 
@@ -70,7 +70,7 @@ public class GameBoardView extends View {
 	 * @return the Tile according to coordinates (column, row)
 	 */
 	public static Tile getTileAt(int row, int column) {
-		return mapTileCoord.get(new Point(row, column));
+		return tilesMap.get(new Point(row, column));
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class GameBoardView extends View {
 							drawHexbox(canvas, tileSize, coordY, coordX);
 							tile = new Tile(coordX,coordY, tileSize-half);
 						}
-						mapTileCoord.put(new Point(x-1, y-1), tile);
+						tilesMap.put(new Point(x-1, y-1), tile);
 
 						if (y == 1 && x != heightBox+1) {
 							canvas.drawText(Integer.toString(x), 
@@ -216,7 +216,7 @@ public class GameBoardView extends View {
 						coordX = x*tileSize+offset;
 
 						if(y < widthBox +1 && x < heightBox +1)
-							mapTileCoord.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
+							tilesMap.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
 
 						// Draw case
 						canvas.drawLine(coordY, smallDistance, coordY, longDistanceHeight, colorBlack);
@@ -270,7 +270,7 @@ public class GameBoardView extends View {
 						Tile t = new Tile(coordY, coordX, tileSize);
 						t.setPosition(new Point(x-1, y-1));
 						t.setColor(((x + y)%2 != 0) ? color1:color2);
-						mapTileCoord.put(new Point(x-1, y-1), t);
+						tilesMap.put(new Point(x-1, y-1), t);
 						t.draw(canvas);
 					}
 				}

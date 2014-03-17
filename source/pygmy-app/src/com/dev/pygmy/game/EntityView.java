@@ -21,7 +21,6 @@ import java.util.Collection;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -33,6 +32,7 @@ import com.lib.pygmy.GameMove;
 import com.lib.pygmy.GameUniverse;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.Point;
 import com.lib.pygmy.util.TurnData;
 
 /**

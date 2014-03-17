@@ -1,20 +1,24 @@
 package com.lib.pygmy;
 
+import java.io.Serializable;
+
 import android.graphics.Bitmap;
-import android.graphics.Point;
 
 import com.lib.pygmy.base.Drawable;
 import com.lib.pygmy.base.Overlappable;
+import com.lib.pygmy.util.Point;
 
 public abstract class PygmyGameEntity implements GameEntity,
-		Drawable, Overlappable {
-
+		Drawable, Overlappable, Serializable {
+	
+	private static final long serialVersionUID = -5161169793526131313L;
+	
 	private GameLevel level;
 	private String playerId;
 	private Tile tile;
-	private Bitmap bitmap;
- 
 	private EntityType type;
+	
+	private transient Bitmap bitmap;
 
 	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) {
 		this.level = level;
