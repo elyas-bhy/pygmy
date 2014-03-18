@@ -16,11 +16,17 @@ public abstract class PygmyGameEntity implements GameEntity,
  
 	private EntityType type;
 
-	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) {
+	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) throws Exception {
 		this.level = level;
 		this.playerId = playerId;
 		this.type = type;
 		this.tile = new Tile(0,0,0);
+		
+		if ( (pos.x < 0 && pos.x >= level.getNumberRows()) ||
+				(pos.y < 0 && pos.y >= level.getNumberColumns())) {
+			throw new Exception("Position of the entity is out of the board.");
+		}
+		
 		tile.setPosition(pos);
 	}
 

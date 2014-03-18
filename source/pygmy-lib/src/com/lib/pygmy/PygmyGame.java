@@ -57,7 +57,11 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 
 	@Override
-	public void setPlayerIds(List<String> playerIds) {
+	public void setPlayerIds(List<String> playerIds) throws Exception {
+		if (playerIds.isEmpty()) {
+			throw new Exception("Players' id list is empty.");
+		}
+		
 		context.setPlayers(playerIds);
 	}
 
@@ -72,7 +76,11 @@ public abstract class PygmyGame implements Game, Observer {
 	}
 
 	@Override
-	public void setLevels(List<GameLevel> levels) {
+	public void setLevels(List<GameLevel> levels) throws Exception {
+		if (levels.isEmpty()) {
+			throw new Exception("Levels list is empty.");
+		}
+		
 		gameLevels = levels;
 	}
 	

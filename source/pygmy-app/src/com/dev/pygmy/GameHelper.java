@@ -59,7 +59,11 @@ public class GameHelper {
 										mTurnData.version));
 		
 		
-		mGame.setPlayerIds(mMatch.getParticipantIds());
+		try {
+			mGame.setPlayerIds(mMatch.getParticipantIds());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}

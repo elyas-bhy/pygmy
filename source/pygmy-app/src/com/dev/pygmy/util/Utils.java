@@ -10,7 +10,7 @@ import com.lib.pygmy.EntityType;
 
 public class Utils {
 
-	public static Bitmap getBitmapByType(Resources res, EntityType type) {
+	public static Bitmap getBitmapByType(Resources res, EntityType type, int scale) {
 		int resId;
 		switch (type) {
 		case BLACK_ROOK:
@@ -58,7 +58,7 @@ public class Utils {
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;
 			bitmap = BitmapFactory.decodeResource(res, resId);
-			bitmap = Bitmap.createScaledBitmap(bitmap, 70, 70, false);
+			bitmap = Bitmap.createScaledBitmap(bitmap, scale, scale, false);
 		}
 		
 		return bitmap;
@@ -76,7 +76,6 @@ public class Utils {
 		sb.append("game.jar");
 		
 		return sb.toString();
-		
 	}
 
 }

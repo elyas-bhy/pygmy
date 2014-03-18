@@ -66,7 +66,14 @@ public abstract class PygmyGameLevel implements GameLevel {
 	}
 
 	@Override
-	public void setDimensions(int rows, int cols) {
+	public void setDimensions(int rows, int cols) throws Exception {
+		if (rows <= 0 || cols <= 0) {
+			throw new Exception("Rows and Columns must be positive.");
+		}
+		if (rows > 16 || cols > 16) {
+			throw new Exception("Dimension board could not be set.");
+		}
+		
 		gameMap = new GameMap(rows, cols);
 		for (int i = 0; i < cols; ++i) {
 			for (int j = 0; j < rows; ++j) {
@@ -119,7 +126,15 @@ public abstract class PygmyGameLevel implements GameLevel {
 		return boardType;
 	}
 	
-	public void setBoardType(int type) {
+	public void setBoardType(int type) throws Exception {
+		if (type < 0) {
+			throw new Exception("Type must be positive.");
+		}
+		// Change this if the number of available boards changes.
+		if (type > 2) {
+			throw new Exception("Board's type does not exist.");
+		}
+		
 		this.boardType = type;
 	}
 	
@@ -127,7 +142,11 @@ public abstract class PygmyGameLevel implements GameLevel {
 		return colors;
 	}
 	
-	public void setColors(List<Paint> colors) {
+	public void setColors(List<Paint> colors) throws Exception {
+		if (colors.isEmpty()) {
+			throw new Exception("Colors list is empty.");
+		}
+
 		this.colors = colors;
 	}
 }

@@ -108,7 +108,13 @@ public class EntityView extends View {
 		for (GameEntity entity : entities) {
 			if (entity != null) {
 				if (entity.getBitmap() == null) {
-					Bitmap bitmap = Utils.getBitmapByType(context.getResources(), entity.getType());
+//					int hSize = entity.getCurrentTile().getHeight();
+//					int wSize = entity.getCurrentTile().getWidth();
+//					int entityScale = Math.min(hSize, wSize);
+//					entityScale = (96*entityScale)/100;
+					int entityScale = 70;
+					Bitmap bitmap = Utils.getBitmapByType(context.getResources(), entity.getType(), 
+							entityScale);
 					entity.setBitmap(bitmap);
 				}
 				coords = entity.getCurrentTile().getCoordinates();

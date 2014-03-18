@@ -9,7 +9,7 @@ import com.lib.pygmy.PygmyGameEntity;
 
 public class MyChessEntity extends PygmyGameEntity {
 
-	public MyChessEntity(GameLevel level, String playerId, EntityType type, Point p) {
+	public MyChessEntity(GameLevel level, String playerId, EntityType type, Point p) throws Exception {
 		super(level, playerId, type, p);
 	}
 	

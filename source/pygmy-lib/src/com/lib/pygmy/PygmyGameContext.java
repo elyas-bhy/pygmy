@@ -35,7 +35,11 @@ public class PygmyGameContext {
 	}
 	
 	public void setCurrentLevel(GameLevel level) {
-		currentLevel = level;
+		try {
+			currentLevel = level;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getCurrentPlayerId() {

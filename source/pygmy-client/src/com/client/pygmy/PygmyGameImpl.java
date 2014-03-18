@@ -22,7 +22,11 @@ public class PygmyGameImpl extends PygmyGame {
 		PygmyGameLevel level1 = new DemoLevel(game, rules);
 		levels.add(level1); // only one level is available at this time
 
-		game.setLevels(levels);
+		try {
+			game.setLevels(levels);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -22,15 +22,15 @@ public interface GameLevel {
 	
 	public int getNumberColumns();
 
-	public void setDimensions(int rows, int col);
+	public void setDimensions(int rows, int col) throws Exception;
 
 	public int getBoardType();
 	
-	public void setBoardType(int type);
+	public void setBoardType(int type) throws Exception;
 	
 	public List<Paint> getColors();
 	
-	public void setColors(List<Paint> colors);
+	public void setColors(List<Paint> colors) throws Exception;
 
 	public void addGameRule(GameRule rule);
 

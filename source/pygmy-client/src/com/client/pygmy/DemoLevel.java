@@ -54,37 +54,47 @@ public class DemoLevel extends PygmyGameLevel {
 		colors.add(color1);
 		colors.add(color2);
 		
-		setColors(colors);
-		setDimensions(8, 8);
-		setBoardType(0);
-		addGameRule(new EndlessGameRule());
-
-		// declare each black piece (entity) with the Entity class
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 0)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 1)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 2)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_QUEEN, new Point(0, 3)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KING, new Point(0, 4)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 5)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 6)));
-		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 7)));
-
-		for (int i = 0; i < 8; i++) {
-			addEntity(new Pawn(this, p1, EntityType.BLACK_PAWN, new Point(1, i)));
+		try {
+			setBoardType(0);
+			setColors(colors);
+			setDimensions(13, 15);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		// declare each white piece (entity) with the Entity class
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 0)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 1)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 2)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_QUEEN, new Point(7, 3)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KING, new Point(7, 4)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 5)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 6)));
-		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 7)));
+		addGameRule(new EndlessGameRule());
 
-		for (int i = 0; i < 8; i++) {
-			addEntity(new Pawn(this, p2, EntityType.WHITE_PAWN, new Point(6, i)));
+		try {
+			// declare each black piece (entity) with the Entity class
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 0)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 1)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 2)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_QUEEN, new Point(0, 3)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KING, new Point(0, 4)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 5)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 6)));
+			addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 7)));
+
+			for (int i = 0; i < 8; i++) {
+				addEntity(new Pawn(this, p1, EntityType.BLACK_PAWN, new Point(1, i)));
+			}
+
+			// declare each white piece (entity) with the Entity class
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 0)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 1)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 2)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_QUEEN, new Point(7, 3)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KING, new Point(7, 4)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 5)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 6)));
+			addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 7)));
+
+			for (int i = 0; i < 8; i++) {
+				addEntity(new Pawn(this, p2, EntityType.WHITE_PAWN, new Point(6, i)));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

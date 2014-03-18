@@ -9,7 +9,7 @@ import com.lib.pygmy.PygmyGameEntity;
 
 public class Pawn extends PygmyGameEntity {
 
-	public Pawn(GameLevel level, String playerId, EntityType type, Point p) {
+	public Pawn(GameLevel level, String playerId, EntityType type, Point p) throws Exception {
 		super(level, playerId, type, p);
 	}
 	
