@@ -38,6 +38,7 @@ public class Utils {
 			break;
 		case BLACK_KING:
 			resId = R.drawable.black_king;
+			break;
 		case BLACK_PAWN:
 			resId = R.drawable.black_pawn;
 			break;
@@ -56,6 +57,7 @@ public class Utils {
 			break;
 		case WHITE_KING:
 			resId = R.drawable.white_king;
+			break;
 		case WHITE_PAWN:
 			resId = R.drawable.white_pawn;
 			break;
