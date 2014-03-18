@@ -39,7 +39,7 @@ public class GameBoardView extends View {
 	private static int numberOfRows;
 	private static int numberOfColumns;
 	private static int tileSize;
-	
+
 	private int boardType;
 	private List<Paint> colors;
 	private Paint colorBlack = null;
@@ -69,7 +69,7 @@ public class GameBoardView extends View {
 		numberOfRows = game.getCurrentLevel().getNumberRows();
 		numberOfColumns = game.getCurrentLevel().getNumberColumns();
 		boardType = game.getCurrentLevel().getBoardType();
-//		colors = game.getCurrentLevel().getColors();
+		// colors = game.getCurrentLevel().getColors();
 	}
 
 	/**
@@ -107,26 +107,20 @@ public class GameBoardView extends View {
 	protected void onDraw(Canvas canvas) {
 		// If the number of available board changes, that must be notify 
 		// to setBoardType at PygmyGameLevel class.
-		try {
-			switch (boardType) {
-			case 0:
-				drawCheckerboard(canvas);
-				break;
-			case 1:
-				drawGrid(canvas);
-				break;
-			case 2:
-				drawHexGrid(canvas);
-				break;
-			default:
-				PygmyApp.logE("Error : Board's type do not exist.");
-				break;
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		switch (boardType) {
+		case 0:
+			drawCheckerboard(canvas);
+			break;
+		case 1:
+			drawGrid(canvas);
+			break;
+		case 2:
+			drawHexGrid(canvas);
+			break;
+		default:
+			PygmyApp.logE("Error : Board's type do not exist.");
+			break;
 		}
-		
 	}
 
 	private void drawHexbox(Canvas canvas, int tileSize, int coordX, int coordY) {
@@ -260,17 +254,17 @@ public class GameBoardView extends View {
 
 	private void drawCheckerboard(Canvas canvas) {
 
-//		if (colors.size() < 2) {
-//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
-//		}
-//		Paint color1 = colors.get(1);
-//		Paint color2 = colors.get(2);
-		
+		//		if (colors.size() < 2) {
+		//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
+		//		}
+		//		Paint color1 = colors.get(1);
+		//		Paint color2 = colors.get(2);
+
 		Paint color1 = new Paint();
 		Paint color2 = new Paint();
 		color1.setColor(Color.CYAN);
 		color2.setColor(Color.WHITE);
-		
+
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
 		int tileHeight = Math.max(numberOfRows, numberOfColumns);
 
@@ -322,7 +316,7 @@ public class GameBoardView extends View {
 		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
 		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
 	}
-	
+
 	private void drawBoard(Canvas canvas) {
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
 		int tileHeight = Math.max(numberOfRows, numberOfColumns);
@@ -337,10 +331,10 @@ public class GameBoardView extends View {
 		// Margin based to tileSize
 		offset = tileSize / 3;
 
-		
+
 		//--// CheckerBoard
 		if (boardType == 0) {
-			
+
 		}
 
 		//--//Grid
@@ -349,7 +343,7 @@ public class GameBoardView extends View {
 			int longDistanceHeight = tileSize*(tileHeight + 1) + offset;
 			int longDistanceWidth = tileSize*(tileWidth + 1) + offset;
 		}
-		
+
 		//--// HexGrid
 		if (boardType == 2) {
 			// One tile distance
@@ -361,7 +355,7 @@ public class GameBoardView extends View {
 			int colision = tileSize / 4;
 			int half = tileSize / 2;
 		}
-		
+
 		for(int y = 0; y < tileWidth +1 ; ++y) {
 			if (y != 0){
 				for(int x = 0 ; x < tileHeight +1; ++x) {

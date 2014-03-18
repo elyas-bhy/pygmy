@@ -77,10 +77,13 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 			throw new IllegalStateException("Dimension board could not be set.");
 		}
 		
+		this.rows = rows;
+		this.columns = cols;
+		
 		gameMap = new GameMap(rows, cols);
-		for (int i = 0; i < cols; ++i) {
-			for (int j = 0; j < rows; ++j) {
-				gameMap.setValue(i, j, 5);
+		for (int x = 0; x < rows; ++x) {
+			for (int y = 0; y < cols; ++y) {
+				gameMap.setValue(x, y, 5);
 			}
 		}
 	}

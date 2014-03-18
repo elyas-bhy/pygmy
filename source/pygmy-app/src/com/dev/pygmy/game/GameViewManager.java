@@ -43,11 +43,7 @@ public class GameViewManager {
 	private void initViews() {
 		if (game != null) {
 			game.initGame();
-			try {
-				game.start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			game.start();
 			
 			gameBoardView = new GameBoardView(context, game);
 			tileOverlayView = new TileOverlayView(context);

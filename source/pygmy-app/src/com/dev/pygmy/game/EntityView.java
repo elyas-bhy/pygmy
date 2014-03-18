@@ -43,8 +43,8 @@ public class EntityView extends View {
 	
 	private Context context;
 	private PygmyGame game;
-	private Collection<GameEntity> entities;	// array that holds the entities
-	private GameEntity draggedEntity = null;	// variable to know what entity is being dragged
+	private Collection<GameEntity> entities;
+	private GameEntity draggedEntity = null;
 	
 	private boolean initial = true;
 	private int tileSize = 0;
@@ -108,11 +108,11 @@ public class EntityView extends View {
 		for (GameEntity entity : entities) {
 			if (entity != null) {
 				if (entity.getBitmap() == null) {
-//					int hSize = entity.getCurrentTile().getHeight();
-//					int wSize = entity.getCurrentTile().getWidth();
-//					int entityScale = Math.min(hSize, wSize);
-//					entityScale = (96*entityScale)/100;
-					int entityScale = 70;
+					int hSize = entity.getCurrentTile().getHeight();
+					int wSize = entity.getCurrentTile().getWidth();
+					int entityScale = Math.min(hSize, wSize);
+					entityScale = (96*entityScale)/100;
+//					int entityScale = 70;
 					Bitmap bitmap = Utils.getBitmapByType(context.getResources(), entity.getType(), 
 							entityScale);
 					entity.setBitmap(bitmap);
