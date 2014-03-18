@@ -1,10 +1,13 @@
 package com.dev.pygmy;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import com.dev.pygmy.game.DownloadTask;
+import com.dev.pygmy.game.GameHomePageActivity;
 import com.dev.pygmy.game.GameViewManager;
 import com.dev.pygmy.util.Utils;
 import com.google.android.gms.games.GamesClient;
@@ -13,9 +16,8 @@ import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.util.PygmyLoader;
 import com.lib.pygmy.util.TurnData;
 
-
 public class GameHelper {
-	
+
 	private MainActivity mContext;
 	private AlertDialog mAlertDialog;
 
@@ -29,34 +31,78 @@ public class GameHelper {
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
 	private TurnData mTurnData;
-	
+
 	// Manages all of the game's views
 	private GameViewManager mGameViewManager;
 	private PygmyGame mGame;
-	
+
 	public GameHelper(MainActivity context) {
 		this.mContext = context;
 	}
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
-		initGameViewManager();
 
-		isDoingTurn = true;
-		mContext.setViewVisibility();
-		mGameViewManager.updateData(mTurnData);
+		File versionFolder = new File(Utils.getGamePath(mContext,
+				mTurnData.game, mTurnData.version));
+		versionFolder.mkdirs();
+
+		PygmyApp.logD("FILE" + versionFolder.toString() + " BOOL"
+				+ versionFolder.exists());
+
+		if (!versionFolder.exists()) {
+			
+			AlertDialog show = new AlertDialog.Builder(mContext)
+					.setMessage(
+							"The game you tried to play is not installed on your device. Would you like to install it?")
+					.setCancelable(false)
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									String filePath = Utils.getBaseURL()
+											+ "/files/" + mTurnData.game + "/"
+											+ "game.jar";
+
+									DownloadTask downloadtask = new DownloadTask(
+											mContext);
+									
+
+									downloadtask.execute(filePath, Utils
+											.getGamePath(mContext,
+													mTurnData.game,
+													mTurnData.version,
+													"game.jar"));
+
+									initGameViewManager();
+									isDoingTurn = true;
+									mContext.setViewVisibility();
+									mGameViewManager.updateData(mTurnData);
+
+								}
+							}).setNegativeButton("No", null).show();
+		} else {
+			initGameViewManager();
+			isDoingTurn = true;
+			mContext.setViewVisibility();
+			mGameViewManager.updateData(mTurnData);
+		}
+
 	}
 
 	private void initGameViewManager() {
+
 		mGame = Utils.loadGameHistory(getHistoryPath());
 		if (mGame == null) {
-			String path = Utils.getGamePath(mContext, mTurnData.game, mTurnData.version, "game.jar");
+			String path = Utils.getGamePath(mContext, mTurnData.game,
+					mTurnData.version, "game.jar");
 			mGame = PygmyLoader.loadGame(mContext, path);
 			mGame.setPlayerIds(mMatch.getParticipantIds());
 		}
+
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
-	
+
 	/**
 	 * Get the next participant. In this function, we assume that we are
 	 * round-robin, with all known players going before all automatch players.
@@ -67,8 +113,8 @@ public class GameHelper {
 	 */
 	private String getNextParticipantId() {
 
-		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
-				.getCurrentPlayerId());
+		String myParticipantId = mMatch.getParticipantId(mContext
+				.getGamesClient().getCurrentPlayerId());
 
 		ArrayList<String> participantIds = mMatch.getParticipantIds();
 
@@ -100,20 +146,20 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
-
-	public void startMatch(TurnBasedMatch match, String gameID,String gameVersion) {
+	public void startMatch(TurnBasedMatch match, String gameID,
+			String gameVersion) {
 		mMatch = match;
-		
+
 		mTurnData = new TurnData();
 		mTurnData.game = gameID;
 		mTurnData.version = gameVersion;
 		mTurnData.turnCounter = 1;
-		
+
 		initGameViewManager();
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
 
-		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
-				.getCurrentPlayerId());
+		String myParticipantId = mMatch.getParticipantId(mContext
+				.getGamesClient().getCurrentPlayerId());
 
 		// Taking this turn will cause turnBasedMatchUpdated
 		mContext.getGamesClient().takeTurn(mContext, match.getMatchId(),
@@ -121,18 +167,21 @@ public class GameHelper {
 	}
 
 	public void rematch() {
-		mContext.getGamesClient().rematchTurnBasedMatch(mContext, mMatch.getMatchId());
+		mContext.getGamesClient().rematchTurnBasedMatch(mContext,
+				mMatch.getMatchId());
 		mMatch = null;
 		isDoingTurn = false;
 	}
 
 	public void onCancelClicked() {
-		mContext.getGamesClient().cancelTurnBasedMatch(mContext, mMatch.getMatchId());
+		mContext.getGamesClient().cancelTurnBasedMatch(mContext,
+				mMatch.getMatchId());
 		isDoingTurn = false;
 	}
 
 	public void onFinishClicked() {
-		mContext.getGamesClient().finishTurnBasedMatch(mContext, mMatch.getMatchId());
+		mContext.getGamesClient().finishTurnBasedMatch(mContext,
+				mMatch.getMatchId());
 		isDoingTurn = false;
 	}
 
@@ -140,13 +189,14 @@ public class GameHelper {
 		if (!checkStatusCode(null, statusCode)) {
 			return;
 		}
-		
+
 		isDoingTurn = false;
 		showWarning("Match",
 				"This match is canceled.  All other players will have their game ended.");
 	}
 
 	public void updateMatch(TurnBasedMatch match) {
+
 		mMatch = match;
 
 		int status = match.getStatus();
@@ -176,8 +226,7 @@ public class GameHelper {
 			showWarning("Complete!",
 					"This game is over; someone finished it!  You can only finish it now.");
 		}
-		
-		
+
 		// OK, it's active. Check on turn status.
 		switch (turnStatus) {
 		case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
@@ -196,10 +245,11 @@ public class GameHelper {
 		mTurnData = null;
 		mContext.setViewVisibility();
 	}
-	
+
 	// Generic warning/info dialog
 	public void showWarning(String title, String message) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				mContext);
 
 		// set title
 		alertDialogBuilder.setTitle(title).setMessage(message);
@@ -207,12 +257,12 @@ public class GameHelper {
 		// set dialog message
 		alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
 				new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				// if this button is clicked, close
-				// current activity
-			}
-		});
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						// if this button is clicked, close
+						// current activity
+					}
+				});
 
 		// Create alert dialog & show it
 		mAlertDialog = alertDialogBuilder.create();
@@ -223,7 +273,7 @@ public class GameHelper {
 			int stringId) {
 		showWarning("Warning", mContext.getResources().getString(stringId));
 	}
-	
+
 	// Returns false if something went wrong, probably. This should handle
 	// more cases, and probably report more accurate results.
 	private boolean checkStatusCode(TurnBasedMatch match, int statusCode) {
@@ -286,7 +336,8 @@ public class GameHelper {
 
 	// Rematch dialog
 	public void askForRematch() {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				mContext);
 
 		alertDialogBuilder.setMessage("Do you want a rematch?");
 
@@ -338,12 +389,12 @@ public class GameHelper {
 	public AlertDialog getDialog() {
 		return mAlertDialog;
 	}
-	
+
 	// Upload your new gamestate, then take a turn, and pass it on to the next
 	// player.
 	public void onTurnTaken() {
 		String nextParticipantId = getNextParticipantId();
-		
+
 		// Create the next turn
 		mTurnData.turnCounter += 1;
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
@@ -352,13 +403,13 @@ public class GameHelper {
 				mTurnData.persist(), nextParticipantId);
 
 		Utils.saveGame(mGame, getHistoryPath());
-		
+
 		mTurnData = null;
 	}
-	
+
 	private String getHistoryPath() {
-		return Utils.getGamePath(mContext, 
-				mTurnData.game, mTurnData.version, mMatch.getMatchId());
+		return Utils.getGamePath(mContext, mTurnData.game, mTurnData.version,
+				mMatch.getMatchId());
 	}
-	
+
 }

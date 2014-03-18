@@ -192,19 +192,7 @@ public class MainActivity extends BaseGameActivity implements
 				}
 				if (position == 3) {
 					
-					
-					AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-						.setMessage("The game you tried to play is not installed on your device. Would you like to install it?")
-						.setCancelable(false)
-						.setPositiveButton("Yes" ,new DialogInterface.OnClickListener(){
-							public void onClick(DialogInterface dialog, int id) {
-								Intent intent = new Intent(MainActivity.this, GameListActivity.class);
-								startActivityForResult(intent, RC_SELECT_GAME);
-								}
-							})
-						.setNegativeButton("No",null).show();
-					
-					//onStartMatchClicked(findViewById(R.id.matchup_layout));
+					onStartMatchClicked();
 
 				}
 				if (position == 4) {
