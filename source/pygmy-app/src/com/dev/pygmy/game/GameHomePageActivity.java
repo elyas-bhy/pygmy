@@ -16,21 +16,13 @@
 
 package com.dev.pygmy.game;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -58,7 +50,7 @@ public class GameHomePageActivity extends Activity {
 
 	private Spinner spinner;
 	private Button button;
-	private ProgressDialog dialog;
+	
 	private TextView titleView, summaryView;
 
 	private String LAST_GAME = "Last_Game";
@@ -164,7 +156,10 @@ public class GameHomePageActivity extends Activity {
 
 			// Path of the file we want to download
 			String filePath = BASE_URL + "/files/" + gameName + "/" + filename;
-			new GameDownloadTask().execute(filePath, destPath);
+			DownloadTask downloadtask=new DownloadTask(GameHomePageActivity.this);
+			downloadtask.execute(filePath, destPath);
+			downloaded = true;
+			button.setText("Play");
 		} else {
 			// Play is pressed
 			putGamePreferences();
@@ -176,55 +171,6 @@ public class GameHomePageActivity extends Activity {
 		}
 	}
 
-	private class GameDownloadTask extends AsyncTask<String, Void, Void> {
-
-		@Override
-		protected void onPreExecute() {
-			// Create an animation to show the progress of the download
-			dialog = ProgressDialog.show(GameHomePageActivity.this, "",
-					"Downloading game...", true);
-		}
-
-		@Override
-		protected Void doInBackground(String... urls) {
-			String url = urls[0];
-			String dest = urls[1];
-			try {
-				// Retrieve .jar files on the server with url and save this on
-				// the
-				// device
-				File destFile = new File(dest);
-				URL u = new URL(url);
-				URLConnection conn = u.openConnection();
-				int contentLength = conn.getContentLength();
-				DataInputStream stream = new DataInputStream(u.openStream());
-				byte[] buffer = new byte[contentLength];
-				stream.readFully(buffer);
-				stream.close();
-				DataOutputStream fos = new DataOutputStream(
-						new FileOutputStream(destFile));
-				fos.write(buffer);
-				fos.flush();
-				fos.close();
-
-				dialog.dismiss();
-			} catch (FileNotFoundException e) {
-				dialog.dismiss();
-			} catch (IOException e) {
-				dialog.dismiss();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			Toast.makeText(GameHomePageActivity.this, "Download Done",
-					TOAST_DELAY).show();
-			downloaded = true;
-			// change the visibility of the button
-			button.setText("Play");
-		}
-	}
 
 	// check if the most recent version of the game is installed on the device
 	private void checkDownload() {

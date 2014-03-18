@@ -9,6 +9,8 @@ import com.dev.pygmy.R;
 import com.lib.pygmy.EntityType;
 
 public class Utils {
+	
+	private static String BASE_URL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper";
 
 	public static Bitmap getBitmapByType(Resources res, EntityType type) {
 		int resId;
@@ -72,11 +74,14 @@ public class Utils {
 		sb.append(gameID);
 		sb.append("/");
 		sb.append(gameVersion);
-		sb.append("/");
-		sb.append("game.jar");
+
 		
 		return sb.toString();
 		
+	}
+	
+	public static String getBaseURL(){
+		return BASE_URL;
 	}
 
 }
