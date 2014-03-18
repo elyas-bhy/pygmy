@@ -21,12 +21,7 @@ public class PygmyGameImpl extends PygmyGame {
 		OverlapRulesApplier rules = new DemoOverlapRules();
 		PygmyGameLevel level1 = new DemoLevel(game, rules);
 		levels.add(level1); // only one level is available at this time
-
-		try {
-			game.setLevels(levels);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		game.setLevels(levels);
 	}
 
 }

@@ -258,10 +258,10 @@ public class GameBoardView extends View {
 		}
 	}
 
-	private void drawCheckerboard(Canvas canvas) throws Exception {
+	private void drawCheckerboard(Canvas canvas) {
 
 //		if (colors.size() < 2) {
-//			throw new Exception("It is mandatory to have two colors to build a Checker Board.");
+//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
 //		}
 //		Paint color1 = colors.get(1);
 //		Paint color2 = colors.get(2);

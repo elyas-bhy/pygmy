@@ -8,7 +8,7 @@ import com.lib.pygmy.util.Point;
 
 public class MyChessEntity extends PygmyGameEntity {
 
-	public MyChessEntity(GameLevel level, String playerId, EntityType type, Point p) throws Exception {
+	public MyChessEntity(GameLevel level, String playerId, EntityType type, Point p) {
 		super(level, playerId, type, p);
 	}
 	

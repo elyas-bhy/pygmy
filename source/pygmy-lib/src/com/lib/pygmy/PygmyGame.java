@@ -31,10 +31,18 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 
 	@Override
 	public void start() {
+		if (gameLevels == null) {
+			throw new IllegalStateException("Game levels is null");
+		}
+		
 		endOfGame = new ObservableValue<Boolean>(false);
 		endOfGame.addObserver(this);
 		
 		GameLevel level = gameLevels.get(0);
+		if (level == null) {
+			throw new IllegalStateException("No Level. Did you request it at setup?");
+		}
+		
 		context.setCurrentLevel(level);
 		level.start();
 	}
@@ -60,9 +68,9 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	@Override
-	public void setPlayerIds(List<String> playerIds) throws Exception {
-		if (playerIds.isEmpty()) {
-			throw new Exception("Players' id list is empty.");
+	public void setPlayerIds(List<String> playerIds) {
+		if (playerIds == null || playerIds.isEmpty()) {
+			throw new IllegalStateException("players' Id list is empty or null. Did you request it at setup?");
 		}
 		
 		context.setPlayers(playerIds);
@@ -79,9 +87,9 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	@Override
-	public void setLevels(List<GameLevel> levels) throws Exception {
-		if (levels.isEmpty()) {
-			throw new Exception("Levels list is empty.");
+	public void setLevels(List<GameLevel> levels) {
+		if (levels == null || levels.isEmpty()) {
+			throw new IllegalStateException("No Levels. Did you request it at setup?");
 		}
 		
 		gameLevels = levels;

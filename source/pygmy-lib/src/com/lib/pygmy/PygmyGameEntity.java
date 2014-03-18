@@ -20,7 +20,7 @@ public abstract class PygmyGameEntity implements GameEntity,
 	
 	private transient Bitmap bitmap;
 
-	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) throws Exception {
+	public PygmyGameEntity(GameLevel level, String playerId, EntityType type, Point pos) {
 		this.level = level;
 		this.playerId = playerId;
 		this.type = type;
@@ -28,7 +28,7 @@ public abstract class PygmyGameEntity implements GameEntity,
 		
 		if ( (pos.x < 0 && pos.x >= level.getNumberRows()) ||
 				(pos.y < 0 && pos.y >= level.getNumberColumns())) {
-			throw new Exception("Position of the entity is out of the board.");
+			throw new IllegalStateException("Position of the entity is out of the board.");
 		}
 		
 		tile.setPosition(pos);
@@ -77,6 +77,9 @@ public abstract class PygmyGameEntity implements GameEntity,
 	
 	@Override
 	public void setBitmap(Bitmap bitmap) {
+		if (bitmap == null) {
+			throw new IllegalStateException("No Bitmap. Did you request it at setup?");
+		}
 		this.bitmap = bitmap;
 	}
 

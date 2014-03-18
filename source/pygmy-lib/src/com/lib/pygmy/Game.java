@@ -18,13 +18,13 @@ public interface Game {
 	
 	public List<String> getPlayerIds();
 	
-	public void setPlayerIds(List<String> playerIds) throws Exception;
+	public void setPlayerIds(List<String> playerIds);
 	
 	public String getCurrentPlayerId();
 
 	public List<GameLevel> getLevels();
 	
-	public void setLevels(List<GameLevel> levels) throws Exception;
+	public void setLevels(List<GameLevel> levels);
 	
 	public GameLevel getCurrentLevel();
 	
