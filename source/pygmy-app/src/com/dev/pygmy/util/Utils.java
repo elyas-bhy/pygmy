@@ -21,7 +21,8 @@ import com.lib.pygmy.util.PygmyLoader;
 
 public class Utils {
 	
-	private static String BASE_URL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper";
+	public static final String BASE_URL = 
+			"http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper";
 
 	public static Bitmap getBitmapByType(Resources res, EntityType type) {
 		int resId;
@@ -81,18 +82,12 @@ public class Utils {
 	
 	public static String getGamePath(Context context, String... suffixes) {
 		StringBuilder sb = new StringBuilder();
-
 		sb.append(context.getFilesDir().getPath());
 		for (String suffix : suffixes) {
 			sb.append("/");
 			sb.append(suffix);
 		}
-
 		return sb.toString();
-	}
-	
-	public static String getBaseURL(){
-		return BASE_URL;
 	}
 
 	public static void saveGame(PygmyGame game, String path) {

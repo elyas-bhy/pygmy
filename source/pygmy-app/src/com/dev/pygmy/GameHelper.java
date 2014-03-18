@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.dev.pygmy.game.DownloadTask;
-import com.dev.pygmy.game.GameHomePageActivity;
 import com.dev.pygmy.game.GameViewManager;
 import com.dev.pygmy.util.Utils;
 import com.google.android.gms.games.GamesClient;
@@ -42,43 +41,31 @@ public class GameHelper {
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
-
 		File versionFolder = new File(Utils.getGamePath(mContext,
 				mTurnData.game, mTurnData.version));
-		versionFolder.mkdirs();
-
-		PygmyApp.logD("FILE" + versionFolder.toString() + " BOOL"
-				+ versionFolder.exists());
 
 		if (!versionFolder.exists()) {
 			
-			AlertDialog show = new AlertDialog.Builder(mContext)
+			AlertDialog dialog = new AlertDialog.Builder(mContext)
 					.setMessage(
 							"The game you tried to play is not installed on your device. Would you like to install it?")
 					.setCancelable(false)
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									String filePath = Utils.getBaseURL()
-											+ "/files/" + mTurnData.game + "/"
-											+ "game.jar";
+								public void onClick(DialogInterface dialog, int id) {
 
-									DownloadTask downloadtask = new DownloadTask(
-											mContext);
-									
-
-									downloadtask.execute(filePath, Utils
-											.getGamePath(mContext,
-													mTurnData.game,
-													mTurnData.version,
-													"game.jar"));
-
-									initGameViewManager();
-									isDoingTurn = true;
-									mContext.setViewVisibility();
-									mGameViewManager.updateData(mTurnData);
-
+									DownloadTask downloadtask = new DownloadTask(mContext);
+									downloadtask.setOnPostExecutor(new DownloadTask.OnPostExecutor() {
+										
+										@Override
+										public void onPostExecute() {
+											initGameViewManager();
+											isDoingTurn = true;
+											mContext.setViewVisibility();
+											mGameViewManager.updateData(mTurnData);
+										}
+									});
+									downloadtask.execute(mTurnData.game, mTurnData.version);
 								}
 							}).setNegativeButton("No", null).show();
 		} else {
@@ -87,11 +74,9 @@ public class GameHelper {
 			mContext.setViewVisibility();
 			mGameViewManager.updateData(mTurnData);
 		}
-
 	}
 
 	private void initGameViewManager() {
-
 		mGame = Utils.loadGameHistory(getHistoryPath());
 		if (mGame == null) {
 			String path = Utils.getGamePath(mContext, mTurnData.game,
@@ -99,7 +84,6 @@ public class GameHelper {
 			mGame = PygmyLoader.loadGame(mContext, path);
 			mGame.setPlayerIds(mMatch.getParticipantIds());
 		}
-
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
 
