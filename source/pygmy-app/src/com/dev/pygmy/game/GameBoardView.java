@@ -122,6 +122,71 @@ public class GameBoardView extends View {
 			break;
 		}
 	}
+	
+	private void drawCheckerboard(Canvas canvas) {
+
+		//		if (colors.size() < 2) {
+		//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
+		//		}
+		//		Paint color1 = colors.get(1);
+		//		Paint color2 = colors.get(2);
+
+		Paint color1 = new Paint();
+		Paint color2 = new Paint();
+		color1.setColor(Color.CYAN);
+		color2.setColor(Color.WHITE);
+
+		int tileWidth = Math.min(numberOfRows, numberOfColumns);
+		int tileHeight = Math.max(numberOfRows, numberOfColumns);
+
+		int width = getWidth();
+		int height = getHeight();
+
+		int offset = 0, coordX = 0, coordY = 0;
+
+		tileSize = Math.min(width / (tileWidth + 2), height / (tileHeight + 2));
+		offset = tileSize / 3;
+
+		for (int x = 0; x < tileHeight +1 ; ++x) {
+			if (x != 0) {
+				for(int y = 0; y < tileWidth +1; ++y) {
+					if (y != 0) {
+
+						coordX = x * tileSize + offset;
+						coordY = y * tileSize + offset;
+						if (x == 1) {
+							canvas.drawText(Integer.toString(y), 
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									y*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
+									colorBlack);
+						}
+
+						Tile t = new Tile(coordY, coordX, tileSize);
+						t.setPosition(new Point(x-1, y-1));
+						t.setColor(((x + y)%2 != 0) ? color1:color2);
+						tilesMap.put(new Point(x-1, y-1), t);
+						t.draw(canvas);
+
+						canvas.drawText(Character.toString((char)('A'-1+y)), 
+								y*tileSize + (tileSize/2) - colorBlack.getTextSize()/2 + offset, 
+								tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
+					}
+				}
+				canvas.drawText(Integer.toString(x), 
+						tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+						x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, colorBlack);
+			}
+		}
+
+		// Draw checkerboard's outline
+		int smallDistance = tileSize + offset;
+		int longDistanceHeight = tileSize * (tileHeight + 1) + offset;
+		int longDistanceWidth = tileSize * (tileWidth + 1) + offset;
+		canvas.drawLine(smallDistance, smallDistance, smallDistance, longDistanceHeight, colorBlack);
+		canvas.drawLine(smallDistance, smallDistance, longDistanceWidth, smallDistance, colorBlack);
+		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
+		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
+	}
 
 	private void drawHexbox(Canvas canvas, int tileSize, int coordX, int coordY) {
 
@@ -250,71 +315,6 @@ public class GameBoardView extends View {
 				}
 			}
 		}
-	}
-
-	private void drawCheckerboard(Canvas canvas) {
-
-		//		if (colors.size() < 2) {
-		//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
-		//		}
-		//		Paint color1 = colors.get(1);
-		//		Paint color2 = colors.get(2);
-
-		Paint color1 = new Paint();
-		Paint color2 = new Paint();
-		color1.setColor(Color.CYAN);
-		color2.setColor(Color.WHITE);
-
-		int tileWidth = Math.min(numberOfRows, numberOfColumns);
-		int tileHeight = Math.max(numberOfRows, numberOfColumns);
-
-		int width = getWidth();
-		int height = getHeight();
-
-		int offset = 0, coordX = 0, coordY = 0;
-
-		tileSize = Math.min(width / (tileWidth + 2), height / (tileHeight + 2));
-		offset = tileSize / 3;
-
-		for (int x = 0; x < tileHeight +1 ; ++x) {
-			if (x != 0) {
-				for(int y = 0; y < tileWidth +1; ++y) {
-					if (y != 0) {
-
-						coordX = x * tileSize + offset;
-						coordY = y * tileSize + offset;
-						if (x == 1) {
-							canvas.drawText(Integer.toString(y), 
-									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
-									y*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
-									colorBlack);
-						}
-
-						Tile t = new Tile(coordY, coordX, tileSize);
-						t.setPosition(new Point(x-1, y-1));
-						t.setColor(((x + y)%2 != 0) ? color1:color2);
-						tilesMap.put(new Point(x-1, y-1), t);
-						t.draw(canvas);
-
-						canvas.drawText(Character.toString((char)('A'-1+y)), 
-								y*tileSize + (tileSize/2) - colorBlack.getTextSize()/2 + offset, 
-								tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
-					}
-				}
-				canvas.drawText(Integer.toString(x), 
-						tileSize/2 - colorBlack.getTextSize()/2 + offset, 
-						x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, colorBlack);
-			}
-		}
-
-		// Draw checkerboard's outline
-		int smallDistance = tileSize + offset;
-		int longDistanceHeight = tileSize * (tileHeight + 1) + offset;
-		int longDistanceWidth = tileSize * (tileWidth + 1) + offset;
-		canvas.drawLine(smallDistance, smallDistance, smallDistance, longDistanceHeight, colorBlack);
-		canvas.drawLine(smallDistance, smallDistance, longDistanceWidth, smallDistance, colorBlack);
-		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
-		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
 	}
 
 	private void drawBoard(Canvas canvas) {

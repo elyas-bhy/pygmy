@@ -56,7 +56,7 @@ public class DemoLevel extends PygmyGameLevel {
 
 		setBoardType(0);
 		setColors(colors);
-		setDimensions(13, 15);
+		setDimensions(8, 8);
 
 		addGameRule(new EndlessGameRule());
 
