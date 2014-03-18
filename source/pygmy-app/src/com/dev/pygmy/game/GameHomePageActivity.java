@@ -111,8 +111,8 @@ public class GameHomePageActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		ImageDownloader mDownload = new ImageDownloader();
-		mDownload.download(imageUrl.toString(), gameIconImage);
+		ImageDownloader downloader = new ImageDownloader();
+		downloader.download(imageUrl.toString(), gameIconImage);
 
 		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName).execute();
 	}
@@ -144,20 +144,9 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onPlayDownloadClicked(View view) {
-		String destPath = Utils.getGamePath(this, gameName, version) + "/" + filename;
 		if (!downloaded) {
-			// Create a folder (gameName) in the pygmy files repository
-			File gameFolder = new File(Utils.getGamePath(this, gameName));
-			gameFolder.mkdirs();
-
-			// Create a folder to indicate the version of the game
-			File versionFolder = new File(Utils.getGamePath(this, gameName, version));
-			versionFolder.mkdirs();
-
-			// Path of the file we want to download
-			String filePath = BASE_URL + "/files/" + gameName + "/" + filename;
-			DownloadTask downloadtask=new DownloadTask(GameHomePageActivity.this);
-			downloadtask.execute(filePath, destPath);
+			DownloadTask downloadtask = new DownloadTask(GameHomePageActivity.this);
+			downloadtask.execute(gameName, version, filename);
 			downloaded = true;
 			button.setText("Play");
 		} else {
