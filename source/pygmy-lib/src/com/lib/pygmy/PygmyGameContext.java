@@ -1,9 +1,12 @@
 package com.lib.pygmy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PygmyGameContext {
+public class PygmyGameContext implements Serializable {
+	
+	private static final long serialVersionUID = -205963873187570678L;
 	
 	private Game game;
 	private GameLevel currentLevel;
@@ -48,19 +51,6 @@ public class PygmyGameContext {
 	
 	public void nextPlayer(String state) {
 		currentPlayer = (currentPlayer + 1) % playerIds.size();
-		
-//		showSpinner();
-//		String nextParticipantId = getNextParticipantId();
-//		// Create the next turn
-//		mTurnData.turnCounter += 1;
-//		mTurnData.data = state;
-//
-//		showSpinner();
-//
-//		getGamesClient().takeTurn(this, mMatch.getMatchId(),
-//				mTurnData.persist(), nextParticipantId);
-//
-//		mTurnData = null;
 	}
 	
 	public void onPlayerMove(GameMove move) {

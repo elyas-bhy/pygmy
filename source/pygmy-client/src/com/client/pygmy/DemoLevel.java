@@ -21,7 +21,6 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
@@ -29,9 +28,10 @@ import com.lib.pygmy.EntityType;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
+import com.lib.pygmy.util.Point;
 
 public class DemoLevel extends PygmyGameLevel {
-	
+
 	public DemoLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		super(game, overlapRules);
 	}

@@ -3,11 +3,14 @@ package com.lib.pygmy;
 import com.lib.pygmy.base.Overlap;
 import com.lib.pygmy.base.Overlappable;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
 public abstract class PygmyOverlapRulesApplier implements
-		OverlapRulesApplier {
+		OverlapRulesApplier, Serializable {
+	
+	private static final long serialVersionUID = -7248823804089586622L;
 
 	public void applyOverlapRules(Vector<Overlap> overlaps) {
 		for (Overlap col : overlaps) {

@@ -1,14 +1,17 @@
 package com.lib.pygmy;
 
+import java.io.Serializable;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import com.lib.pygmy.base.Movable;
 import com.lib.pygmy.base.Overlap;
 import com.lib.pygmy.base.Overlappable;
 
-import java.util.Vector;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-public class OverlapProcessorImpl implements OverlapProcessor {
-
+public class OverlapProcessorImpl implements OverlapProcessor, Serializable {
+	
+	private static final long serialVersionUID = -271498426157796206L;
+	
 	/**
 	 * These two lists contain all overlappables for which we want to compute
 	 * overlaps. We distinguish between movable and non-movable because two
@@ -62,4 +65,5 @@ public class OverlapProcessorImpl implements OverlapProcessor {
 		}
 		universe.getGameEntities().put(entity.getCurrentTile(), entity);
 	}
+	
 }

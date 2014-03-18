@@ -1,5 +1,10 @@
 package com.dev.pygmy;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -40,24 +45,17 @@ public class GameHelper {
 
 	// Switch to gameplay view
 	public void setGameplayUI() {
-		
-		PygmyApp.logD("UI " + mTurnData.game + mTurnData.version);
-		
 		initGameViewManager();
 
 		isDoingTurn = true;
 		mContext.setViewVisibility();
 		mGameViewManager.updateData(mTurnData);
 	}
-	
 
 	private void initGameViewManager() {
-		
-		
 		mGame = PygmyLoader.loadGame(mContext, Utils.getGamePath(mContext,
 										mTurnData.game,
 										mTurnData.version));
-		
 		
 		try {
 			mGame.setPlayerIds(mMatch.getParticipantIds());
@@ -118,12 +116,10 @@ public class GameHelper {
 		mTurnData = new TurnData();
 		mTurnData.game = gameID;
 		mTurnData.version = gameVersion;
-		initGameViewManager();
-		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
-		
 		mTurnData.turnCounter = 1;
 		
-	
+		initGameViewManager();
+		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
 
 		String myParticipantId = mMatch.getParticipantId(mContext.getGamesClient()
 				.getCurrentPlayerId());
@@ -365,6 +361,38 @@ public class GameHelper {
 				mTurnData.persist(), nextParticipantId);
 
 		mTurnData = null;
+		
+		//saveGame();
+	}
+	
+	private String getHistoryPath() {
+		return Utils.getGamePath(mContext, mTurnData.game, mTurnData.version) 
+				+ "/" + mMatch.getMatchId();
+	}
+	
+	private void saveGame() {
+		ObjectOutputStream oos = null;
+		try {
+			File history = new File(getHistoryPath());
+			history.getParentFile().createNewFile();
+			PygmyApp.logD("Path: " + history.getPath());
+			FileOutputStream fout = new FileOutputStream(history);
+			oos = new ObjectOutputStream(fout);
+			oos.writeObject(mGame);
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();  
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.flush();
+					oos.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 }

@@ -24,12 +24,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.Point;
 
 /**
  * 	This class represents the grid of the board.
@@ -43,8 +43,8 @@ public class GameBoardView extends View {
 	private int boardType;
 	private List<Paint> colors;
 	private Paint colorBlack = null;
-	
-	private static Map<Point,Tile> mapTileCoord;
+
+	private static Map<Point,Tile> tilesMap;
 
 	/**
 	 * Default constructor.
@@ -61,7 +61,7 @@ public class GameBoardView extends View {
 	public GameBoardView(Context context, PygmyGame game) {
 		super(context);
 
-		mapTileCoord = new HashMap<Point,Tile>();
+		tilesMap = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
@@ -70,7 +70,6 @@ public class GameBoardView extends View {
 		numberOfColumns = game.getCurrentLevel().getNumberColumns();
 		boardType = game.getCurrentLevel().getBoardType();
 //		colors = game.getCurrentLevel().getColors();
-
 	}
 
 	/**
@@ -80,7 +79,7 @@ public class GameBoardView extends View {
 	 * @return the Tile according to coordinates (column, row)
 	 */
 	public static Tile getTileAt(int row, int column) {
-		return mapTileCoord.get(new Point(row, column));
+		return tilesMap.get(new Point(row, column));
 	}
 
 	/**
@@ -151,7 +150,6 @@ public class GameBoardView extends View {
 		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
 		// Right Up
 		canvas.drawLine(coordX + tileSize - dist, coordY, coordX + tileSize, coordY + half, colorBlack);
-
 	}
 
 	private void drawHexGrid(Canvas canvas) {
@@ -191,7 +189,7 @@ public class GameBoardView extends View {
 							drawHexbox(canvas, tileSize, coordY, coordX);
 							tile = new Tile(coordX,coordY, tileSize-half);
 						}
-						mapTileCoord.put(new Point(x-1, y-1), tile);
+						tilesMap.put(new Point(x-1, y-1), tile);
 
 						if (y == 1 && x != tileHeight+1) {
 							canvas.drawText(Integer.toString(x), 
@@ -236,17 +234,19 @@ public class GameBoardView extends View {
 						coordY = y*tileSize+offset;
 						coordX = x*tileSize+offset;
 
-						if(y < tileWidth+1 && x < tileHeight+1)
-							mapTileCoord.put(new Point(x-1, y-1), new Tile(coordX, coordY, tileSize));
+						if(y < tileWidth+1 && x < tileHeight+1) {
+							tilesMap.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
+						}
 
 						// Draw case
 						canvas.drawLine(coordY, smallDistance, coordY, longDistanceHeight, colorBlack);
 						canvas.drawLine(smallDistance, coordX, longDistanceWidth, coordX, colorBlack);
-						if (y == 1 && x != tileHeight+1)
+						if (y == 1 && x != tileHeight+1) {
 							canvas.drawText(Integer.toString(x), 
 									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
 									x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
 									colorBlack);
+						}
 					}
 				}
 				if (y != tileWidth+1) {
@@ -271,8 +271,6 @@ public class GameBoardView extends View {
 		color1.setColor(Color.CYAN);
 		color2.setColor(Color.WHITE);
 		
-		colorBlack.setColor(Color.BLACK);
-		colorBlack.setTextSize(20);
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
 		int tileHeight = Math.max(numberOfRows, numberOfColumns);
 
@@ -301,8 +299,7 @@ public class GameBoardView extends View {
 						Tile t = new Tile(coordY, coordX, tileSize);
 						t.setPosition(new Point(x-1, y-1));
 						t.setColor(((x + y)%2 != 0) ? color1:color2);
-						
-						mapTileCoord.put(new Point(x-1, y-1), t);
+						tilesMap.put(new Point(x-1, y-1), t);
 						t.draw(canvas);
 
 						canvas.drawText(Character.toString((char)('A'-1+y)), 

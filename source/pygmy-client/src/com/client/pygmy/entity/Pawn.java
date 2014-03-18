@@ -1,11 +1,10 @@
 package com.client.pygmy.entity;
 
-import android.graphics.Point;
-
 import com.lib.pygmy.EntityType;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.PygmyGameEntity;
+import com.lib.pygmy.util.Point;
 
 public class Pawn extends PygmyGameEntity {
 
