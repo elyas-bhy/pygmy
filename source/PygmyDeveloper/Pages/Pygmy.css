@@ -99,7 +99,16 @@ input
  border-radius:5px;
  width:200px;
  box-shadow:1px 1px 2px #F2F2F2 inset;
- font-weight: bold;
+}
+
+textarea
+{
+ padding:3px;
+ border:1px solid #000000;
+ border-radius:5px;
+ width:200px;
+ height: 50px;
+ box-shadow:1px 1px 2px #F2F2F2 inset;
 }
 
 input[type=submit], input[type=reset]{
@@ -236,11 +245,12 @@ input[type=submit], input[type=reset]{
 
 #tab
 {
-	width: 500px;
+	width: 208px;
 	margin: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	text-align: center;
+	padding: auto;
 }
 
 
