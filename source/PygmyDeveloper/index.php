@@ -11,14 +11,25 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 	   
+	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 	
+		<!-- IMPORT Javascript -->
+	<script type="text/javascript" src="js/jquery-1.2.6.js"></script>
+	<script type="text/javascript" src="js/jquery.formvalidation.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#formulaire").formValidation({
+			alias		: "name",
+			required	: "accept",
+			err_list	: true
+		}); 
+               
+	});
+	</script>
    </head> 
 <body>
-	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
+	<div id="banner">
+	<div id="login">
 					<p><?php
 						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
 							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Pages/Deconnexion.php">LOG OUT</a>';
@@ -47,10 +58,10 @@ session_start();
 			
 			<div class="package log">
 				<h1>Log In</h1>
-					<form name="formulaire" method="post" action="Pages/Connexion.php">
+					<form id="formulaire" method="post" action="Pages/Connexion.php">
 						<table id="connect">
-						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
-						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						<tr><td><th class="left"><label>Login : </label></th><th><input required="true" type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input required="true" type="password" size="20" name="Password" id="Password"/></th></td></tr>
 						</table>
 						<p><input type="submit" value="SUBMIT"/>
 						<input type="reset" value="RESET"/></p>
@@ -59,11 +70,11 @@ session_start();
 			
 			<div class="package register">
 				<h1>Sign In</h1>
-					<form method="post" name="formulaire" action="Pages/RegisterDev.php">
+					<form method="post" id="formulaire" action="Pages/RegisterDev.php">
 						<table id="connect">
-						<tr><td><th class="left"><label>Login : </label></th><th><input type="text" size="20" name="Login" id="Login"/></th></td></tr>
-						<tr><td><th class="left"><label>Password : </label></th><th><input type="password" size="20" name="Password" id="Password"/></th></td></tr>
-						<tr><td><th class="left"><label>Email : </label></th><th><input type="email" size="20" name="Email" id="Email"/></th></td></tr>
+						<tr><td><th class="left"><label>Login : </label></th><th><input required="true" type="text" size="20" name="Login" id="Login"/></th></td></tr>
+						<tr><td><th class="left"><label>Password : </label></th><th><input  required="true" type="password" size="20" name="Password" id="Password"/></th></td></tr>
+						<tr><td><th class="left"><label>Email : </label></th><th><input mask="email" required="true" type="email" size="20" name="Email" id="Email"/></th></td></tr>
 						</table>
 						<p><input type="submit" value="SUBMIT"/>
 						<input type="reset" value="RESET"/></p>
@@ -73,7 +84,7 @@ session_start();
 			
 		</div>
 		</div>
-		
+		</div>
 	</div>
 		
 		<?php 

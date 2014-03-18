@@ -1,31 +1,29 @@
 package com.lib.pygmy;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.graphics.Point;
-
 import com.lib.pygmy.base.Overlappable;
+import com.lib.pygmy.util.Point;
 import com.lib.pygmy.util.PygmyLoader;
 import com.lib.pygmy.util.TurnData;
 
 import dalvik.system.DexClassLoader;
 
-public class PygmyGameUniverse implements GameUniverse {
+public class PygmyGameUniverse implements GameUniverse, Serializable {
+	
+	private static final long serialVersionUID = -6288249985123122976L;
 	
 	private GameLevel level;
 	private Map<Tile,GameEntity> entities;
 	private OverlapProcessor overlapProcessor;
-	
-	public PygmyGameUniverse() {
-		entities = new ConcurrentHashMap<Tile,GameEntity>();
-	}
 
 	public PygmyGameUniverse(GameLevel level, OverlapProcessor processor) {
-		this();
+		this.entities = new ConcurrentHashMap<Tile,GameEntity>();
 		this.level = level;
-		overlapProcessor = processor;
+		this.overlapProcessor = processor;
 	}
 	
 	@Override
@@ -58,7 +56,7 @@ public class PygmyGameUniverse implements GameUniverse {
 	@Override
 	public void updateData(TurnData ddata) {
 		// FIXME clear entries from overlapProcessor
-		entities.clear();
+		this.entities.clear();
 		String[] entities = ddata.data.split(";");
 		for (String entity : entities) {
 			addEntityFromString(entity.split(":"));

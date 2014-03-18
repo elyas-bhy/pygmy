@@ -144,14 +144,14 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onPlayDownloadClicked(View view) {
-		String destPath = getGameDirectory(version) + "/" + filename;
+		String destPath = Utils.getGamePath(this, gameName, version) + "/" + filename;
 		if (!downloaded) {
 			// Create a folder (gameName) in the pygmy files repository
-			File gameFolder = new File(getGameDirectory());
+			File gameFolder = new File(Utils.getGamePath(this, gameName));
 			gameFolder.mkdirs();
 
 			// Create a folder to indicate the version of the game
-			File versionFolder = new File(getGameDirectory(version));
+			File versionFolder = new File(Utils.getGamePath(this, gameName, version));
 			versionFolder.mkdirs();
 
 			// Path of the file we want to download
@@ -174,8 +174,8 @@ public class GameHomePageActivity extends Activity {
 
 	// check if the most recent version of the game is installed on the device
 	private void checkDownload() {
-		File gameFolder = new File(getGameDirectory());
-		File versionFolder = new File(getGameDirectory(version));
+		File gameFolder = new File(Utils.getGamePath(this, gameName));
+		File versionFolder = new File(Utils.getGamePath(this, gameName, version));
 
 		if (gameFolder.exists() && versionFolder.exists()) {
 			downloaded = true;
@@ -186,14 +186,6 @@ public class GameHomePageActivity extends Activity {
 		} else {
 			downloaded = false;
 		}
-	}
-
-	private String getGameDirectory() {
-		return getGameDirectory(null);
-	}
-
-	private String getGameDirectory(String version) {
-		return Utils.getGamePath(this, gameName, version);
 	}
 
 	// delete old version of a game

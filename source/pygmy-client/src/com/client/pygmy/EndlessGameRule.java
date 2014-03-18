@@ -1,8 +1,8 @@
 package com.client.pygmy;
 
-import com.lib.pygmy.GameRule;
+import com.lib.pygmy.PygmyGameRule;
 
-public class EndlessGameRule implements GameRule {
+public class EndlessGameRule extends PygmyGameRule {
 
 	@Override
 	public boolean check() {

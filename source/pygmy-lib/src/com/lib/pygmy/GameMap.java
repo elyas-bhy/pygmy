@@ -1,7 +1,11 @@
 package com.lib.pygmy;
 
-public class GameMap {
+import java.io.Serializable;
 
+public class GameMap implements Serializable {
+	
+	private static final long serialVersionUID = -7726213218272397453L;
+	
 	private int[][] map;
 	
 	public GameMap(int rows, int cols) {

@@ -45,11 +45,13 @@ public class GameHelper {
 
 		File versionFolder = new File(Utils.getGamePath(mContext,
 				mTurnData.game, mTurnData.version));
+		versionFolder.mkdirs();
 
 		PygmyApp.logD("FILE" + versionFolder.toString() + " BOOL"
 				+ versionFolder.exists());
 
 		if (!versionFolder.exists()) {
+			
 			AlertDialog show = new AlertDialog.Builder(mContext)
 					.setMessage(
 							"The game you tried to play is not installed on your device. Would you like to install it?")
@@ -64,10 +66,13 @@ public class GameHelper {
 
 									DownloadTask downloadtask = new DownloadTask(
 											mContext);
+									
+
 									downloadtask.execute(filePath, Utils
 											.getGamePath(mContext,
 													mTurnData.game,
-													mTurnData.version));
+													mTurnData.version,
+													"game.jar"));
 
 									initGameViewManager();
 									isDoingTurn = true;
@@ -86,15 +91,14 @@ public class GameHelper {
 	}
 
 	private void initGameViewManager() {
-		
-		PygmyApp.logD("ID"+mTurnData.game);
-		PygmyApp.logD("V"+ mTurnData.version);
-		PygmyApp.logD("PATH"+Utils.getGamePath(mContext, mTurnData.game, mTurnData.version));
 
-		mGame = PygmyLoader.loadGame(mContext,
-				Utils.getGamePath(mContext, mTurnData.game, mTurnData.version));
-
-		mGame.setPlayerIds(mMatch.getParticipantIds());
+		mGame = Utils.loadGameHistory(getHistoryPath());
+		if (mGame == null) {
+			String path = Utils.getGamePath(mContext, mTurnData.game,
+					mTurnData.version, "game.jar");
+			mGame = PygmyLoader.loadGame(mContext, path);
+			mGame.setPlayerIds(mMatch.getParticipantIds());
+		}
 
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
@@ -149,10 +153,10 @@ public class GameHelper {
 		mTurnData = new TurnData();
 		mTurnData.game = gameID;
 		mTurnData.version = gameVersion;
+		mTurnData.turnCounter = 1;
+
 		initGameViewManager();
 		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
-
-		mTurnData.turnCounter = 1;
 
 		String myParticipantId = mMatch.getParticipantId(mContext
 				.getGamesClient().getCurrentPlayerId());
@@ -398,7 +402,14 @@ public class GameHelper {
 		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
 				mTurnData.persist(), nextParticipantId);
 
+		Utils.saveGame(mGame, getHistoryPath());
+
 		mTurnData = null;
+	}
+
+	private String getHistoryPath() {
+		return Utils.getGamePath(mContext, mTurnData.game, mTurnData.version,
+				mMatch.getMatchId());
 	}
 
 }

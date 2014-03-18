@@ -16,8 +16,6 @@
 
 package com.dev.pygmy.game;
 
-import java.util.Map;
-
 import android.app.Activity;
 import android.widget.FrameLayout;
 

@@ -16,28 +16,7 @@ session_start();
 <body>
 	<div id="content">
 
-		<div id="banner">
-
-				<div id="login">
-					<p><?php
-						if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
-							echo '<p>WELCOME ' .$_SESSION['Login'].' ! | <a href="Deconnexion.php">LOG OUT</a></p>';
-						}
-						else{
-							echo '<p><a href="ConnexionSite.php">LOG IN</a> | <a href="Register.php">REGISTER</a></p>';
-						}
-					?></p>				
-				</div>
-		</div>
-		
-				<div id="menu">
-			<ul>
-				<li><a href="../index.php" class="current">ACCUEIL</a></li>
-				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
-				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
-				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>
-			</ul>
-		</div>
+		<?php include '../headerConnect.php' ?>
 		<div id="corps">
 		
 		<div class="block settings">
