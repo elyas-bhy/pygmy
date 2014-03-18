@@ -1,5 +1,14 @@
 package com.dev.pygmy.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import org.apache.commons.io.input.ClassLoaderObjectInputStream;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -7,6 +16,8 @@ import android.graphics.BitmapFactory;
 
 import com.dev.pygmy.R;
 import com.lib.pygmy.EntityType;
+import com.lib.pygmy.PygmyGame;
+import com.lib.pygmy.util.PygmyLoader;
 
 public class Utils {
 
@@ -64,20 +75,59 @@ public class Utils {
 		return bitmap;
 	}
 	
-	public static String getGamePath(Context context, String gameId) {
-		return getGamePath(context, gameId, null);
-	}
-	
-	public static String getGamePath(Context context, String gameId, String gameVersion) {
+	public static String getGamePath(Context context, String... suffixes) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(context.getFilesDir().getPath());
-		sb.append("/");
-		sb.append(gameId);
-		if (gameVersion != null) {
+		for (String suffix : suffixes) {
 			sb.append("/");
-			sb.append(gameVersion);
+			sb.append(suffix);
 		}
 		return sb.toString();
+	}
+
+	public static void saveGame(PygmyGame game, String path) {
+		ObjectOutputStream oos = null;
+		try {
+			File history = new File(path);
+			history.getParentFile().createNewFile();
+			FileOutputStream fout = new FileOutputStream(history);
+			oos = new ObjectOutputStream(fout);
+			oos.writeObject(game);
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();  
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.flush();
+					oos.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Loads a saved game from the device's memory
+	 * @return saved match if found, else returns null
+	 */
+	public static PygmyGame loadGameHistory(String path) {
+		File file = new File(path);
+		PygmyGame game = null;
+
+		if (file.exists()) {
+			try {
+				ClassLoaderObjectInputStream ois = new ClassLoaderObjectInputStream(
+						PygmyLoader.getClassLoader(), new FileInputStream(file));
+				game = (PygmyGame) ois.readObject();
+				ois.close();
+			} catch (Exception e) { 
+				e.printStackTrace();
+			}
+		}
+		return game;
 	}
 
 }
