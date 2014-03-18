@@ -56,7 +56,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	@Override
 	public void updateData(TurnData ddata) {
 		// FIXME clear entries from overlapProcessor
-		entities.clear();
+		this.entities.clear();
 		String[] entities = ddata.data.split(";");
 		for (String entity : entities) {
 			addEntityFromString(entity.split(":"));

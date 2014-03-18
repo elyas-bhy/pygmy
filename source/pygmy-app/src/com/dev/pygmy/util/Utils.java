@@ -64,19 +64,20 @@ public class Utils {
 		return bitmap;
 	}
 	
-	public static String getGamePath(Context mC, String gameID, String gameVersion) {
-		
+	public static String getGamePath(Context context, String gameId) {
+		return getGamePath(context, gameId, null);
+	}
+	
+	public static String getGamePath(Context context, String gameId, String gameVersion) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(mC.getFilesDir().getPath());
+		sb.append(context.getFilesDir().getPath());
 		sb.append("/");
-		sb.append(gameID);
-		sb.append("/");
-		sb.append(gameVersion);
-		sb.append("/");
-		sb.append("game.jar");
-		
+		sb.append(gameId);
+		if (gameVersion != null) {
+			sb.append("/");
+			sb.append(gameVersion);
+		}
 		return sb.toString();
-		
 	}
 
 }

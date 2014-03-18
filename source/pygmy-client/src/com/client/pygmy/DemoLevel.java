@@ -16,7 +16,6 @@
 
 package com.client.pygmy;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.client.pygmy.entity.MyChessEntity;
@@ -28,19 +27,9 @@ import com.lib.pygmy.PygmyGameLevel;
 import com.lib.pygmy.util.Point;
 
 public class DemoLevel extends PygmyGameLevel {
-	
-	private HashMap<String, Object> parameters;
 
 	public DemoLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		super(game, overlapRules);
-		parameters = new HashMap<String, Object>();
-	}
-
-	/**
-	 * Returns a HashMap with whole parameters for this game.
-	 */
-	public HashMap<String, Object> getParameters() {
-		return parameters;
 	}
 
 	/**

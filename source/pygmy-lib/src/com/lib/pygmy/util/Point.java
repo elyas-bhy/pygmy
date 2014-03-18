@@ -14,6 +14,30 @@ public class Point implements Serializable {
 		this.y = y;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof Point)) {
+			return false;
+		}
+		Point p = (Point)o;
+		return (this.x == p.x && this.y == p.y);
+	}
+	
+	@Override
+	public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + this.x;
+	    result = prime * result + this.y;
+	    return result;
+	}
+	
 	public String toString() {
 		return "[" + x + ":" + y + "]";
 	}

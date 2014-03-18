@@ -89,7 +89,6 @@ public class GameBoardView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-
 		switch (boardType) {
 		case 0:
 			drawCheckerboard(canvas);
@@ -125,7 +124,6 @@ public class GameBoardView extends View {
 		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
 		// Right Up
 		canvas.drawLine(coordX + tileSize - dist, coordY, coordX + tileSize, coordY + half, colorBlack);
-
 	}
 
 	private void drawHexGrid(Canvas canvas) {
@@ -238,7 +236,6 @@ public class GameBoardView extends View {
 	}
 
 	private void drawCheckerboard(Canvas canvas) {
-
 		colorBlack.setColor(Color.BLACK);
 		colorBlack.setTextSize(20);
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
@@ -292,4 +289,5 @@ public class GameBoardView extends View {
 		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
 		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
 	}
+	
 }
