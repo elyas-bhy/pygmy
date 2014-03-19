@@ -148,6 +148,7 @@ public class MainActivity extends BaseGameActivity implements
 		mSlidingMenu.setShadowDrawable(R.drawable.shadow);
 		mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		mSlidingMenu.setFadeDegree(0.35f);
+		mSlidingMenu.setSlidingEnabled(false);
 		mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		mSlidingMenu.setActionBarSlideIcon(new ActionBarSlideIcon(this,
 				R.drawable.ic_navigation_drawer, R.string.app_name,

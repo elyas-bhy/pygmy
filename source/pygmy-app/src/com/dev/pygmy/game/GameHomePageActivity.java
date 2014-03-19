@@ -209,4 +209,5 @@ public class GameHomePageActivity extends Activity {
 		editor2.putString(PREVIOUS_LAST_GAME, previousGame).commit();
 		editor2.putString(IMAGE, previousImage).commit();
 	}
+	
 }
