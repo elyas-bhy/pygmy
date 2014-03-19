@@ -22,7 +22,7 @@ public class Pawn extends PygmyGameEntity {
 	public boolean isLegalMove(GameMove move) {
 		Tile src = getCurrentTile();
 		Tile dst = move.getDestination();
-		return (dst.getPosition().x - src.getPosition().x) == 0;
+		return (dst.getPosition().y - src.getPosition().y) == 0;
 	}
 
 }
