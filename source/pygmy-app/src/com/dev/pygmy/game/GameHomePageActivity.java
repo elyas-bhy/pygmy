@@ -125,6 +125,7 @@ public class GameHomePageActivity extends Activity {
 			return true;
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);
+			finish();
 			return true;
 		default:
 			break;
