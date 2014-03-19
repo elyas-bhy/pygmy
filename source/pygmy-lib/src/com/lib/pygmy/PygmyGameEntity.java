@@ -56,7 +56,7 @@ public abstract class PygmyGameEntity implements GameEntity,
 
 	@Override
 	public void oneStepMove(GameMove move) {
-		setCurrentTile(move.getMove());
+		setCurrentTile(move.getDestination());
 		oneStepMoveAddedBehavior();
 	}
 

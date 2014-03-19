@@ -41,8 +41,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 
 	@Override
 	public synchronized void removeGameEntity(GameEntity gameEntity) {
-		// TODO remove entry by key
-		entities.remove(gameEntity);
+		entities.remove(gameEntity.getCurrentTile());
 		if (gameEntity instanceof Overlappable) {
 			overlapProcessor.removeOverlappable((Overlappable) gameEntity);
 		}
@@ -54,10 +53,10 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	@Override
-	public void updateData(TurnData ddata) {
-		// FIXME clear entries from overlapProcessor
+	public void updateData(TurnData data) {
 		this.entities.clear();
-		String[] entities = ddata.data.split(";");
+		this.overlapProcessor.clear();
+		String[] entities = data.state.split(";");
 		for (String entity : entities) {
 			addEntityFromString(entity.split(":"));
 		}

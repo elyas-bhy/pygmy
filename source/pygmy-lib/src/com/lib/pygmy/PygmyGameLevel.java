@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Paint;
-
 import com.lib.pygmy.base.ObservableValue;
 
 /**
@@ -24,7 +22,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	private int rows;
 	private int columns;
 	private int boardType;
-	private List<Paint> colors;
+	private List<Integer> colors;
 	protected final Game game;
 	protected List<GameRule> gameRules;
 
@@ -93,10 +91,12 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 		gameRules.add(rule);
 	}
 
+	@Override
 	public void addEntity(GameEntity entity) {
 		universe.addGameEntity(entity);
 	}
 	
+	@Override
 	public void tryMove(GameMove move) {
 		if (move.getEntity().isLegalMove(move)) {
 			for (GameRule rule : gameRules) {
@@ -107,31 +107,36 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 			}
 			makeMove(move);
 		} else {
-			// throw new IllegalMoveException();
+			throw new IllegalMoveException();
 		}
 	}
-
+	
 	private void makeMove(GameMove move) {
 		universe.processMove(move);
-		game.nextPlayer(universe.getState());
+		game.nextPlayer();
 	}
 
+	@Override
 	public void end() {
 		
 	}
 	
+	@Override
 	public int getNumberRows() {
 		return rows;
 	}
 	
+	@Override
 	public int getNumberColumns() {
 		return columns;
 	}
 	
+	@Override
 	public int getBoardType() {
 		return boardType;
 	}
 	
+	@Override
 	public void setBoardType(int type) {
 		if (type < 0) {
 			throw new IllegalStateException("Type must be positive.");
@@ -144,15 +149,18 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 		this.boardType = type;
 	}
 	
-	public List<Paint> getColors() {
+	@Override
+	public List<Integer> getColors() {
 		return colors;
 	}
-	
-	public void setColors(List<Paint> colors) {
+
+	@Override
+	public void setColors(List<Integer> colors) {
 		if (colors == null) {
 			throw new IllegalStateException("Colors list is null.");
 		}
-		
+
 		this.colors = colors;
 	}
+	
 }

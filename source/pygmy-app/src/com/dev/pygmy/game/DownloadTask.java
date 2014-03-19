@@ -14,7 +14,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.util.Utils;
 
 public class DownloadTask extends AsyncTask<String, Void, Void> {

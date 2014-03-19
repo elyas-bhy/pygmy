@@ -28,9 +28,9 @@ public interface GameLevel {
 	
 	public void setBoardType(int type);
 	
-	public List<Paint> getColors();
+	public List<Integer> getColors();
 	
-	public void setColors(List<Paint> colors);
+	public void setColors(List<Integer> colors);
 
 	public void addGameRule(GameRule rule);
 
@@ -39,5 +39,5 @@ public interface GameLevel {
 	public void tryMove(GameMove move);
 
 	public void end();
-
+	
 }

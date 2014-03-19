@@ -574,6 +574,8 @@ public class MainActivity extends BaseGameActivity implements
 	public void onTurnTaken() {
 		showSpinner();
 		mGameHelper.onTurnTaken();
+		}
+
 	}
 
-}
+

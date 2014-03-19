@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.PygmyTurnListener;
@@ -30,6 +31,7 @@ import com.dev.pygmy.util.Utils;
 import com.lib.pygmy.GameEntity;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.GameUniverse;
+import com.lib.pygmy.IllegalMoveException;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.Tile;
 import com.lib.pygmy.util.Point;
@@ -215,9 +217,13 @@ public class EntityView extends View {
 						&& y < maxY && targetRow > 0 && targetColumn > 0) {
 					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
 					GameMove move = new GameMove(draggedEntity, dst);
-					game.onPlayerMove(move);
-					if (context instanceof PygmyTurnListener) {
-						((PygmyTurnListener) context).onTurnTaken();
+					try {
+						game.onPlayerMove(move);
+						if (context instanceof PygmyTurnListener) {
+							((PygmyTurnListener) context).onTurnTaken();
+						}
+					} catch (IllegalMoveException e) {
+						Toast.makeText(context, "Illegal move!", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}
