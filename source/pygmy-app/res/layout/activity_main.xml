@@ -89,14 +89,7 @@
             tools:context=".SkeletonActivity"
             tools:ignore="UselessParent" >
 
-            <TextView
-                android:id="@+id/name_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin_small"
-                android:text=""
-                android:textAppearance="@style/HelpText.Caption" />
+
         </LinearLayout>
     </RelativeLayout>
 

@@ -81,17 +81,17 @@ public class MainActivity extends BaseGameActivity implements
 	public static final int RC_SELECT_PLAYERS = 10001;
 	public static final int RC_LOOK_AT_MATCHES = 10002;
 	public static final String EXTRA_GAME_ID = "com.dev.pygmy.EXTRA_GAME_ID";
-	public static final String EXTRA_GAME_VERSION= "com.dev.pygmy.EXTRA_GAME_VERSION";
+	public static final String EXTRA_GAME_VERSION = "com.dev.pygmy.EXTRA_GAME_VERSION";
 
 	// For our preferences
 	final static String LAST_GAME = "Last_Game";
 	final static String PREVIOUS_LAST_GAME = "Previous_Last_Game";
 	final static String IMAGE = "Icon";
 	final static String DEFAULT_IMAGE = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/Default/logo_home_page.png";
-	
+
 	// How long to show toasts.
 	private final static int TOAST_DELAY = 2000;
-	
+
 	private GameHelper mGameHelper;
 	private SlidingMenu mSlidingMenu;
 
@@ -101,12 +101,12 @@ public class MainActivity extends BaseGameActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mGameHelper = new GameHelper(this);
-		
-		//Start animation
+
+		// Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
 		animation.setDuration(1400);
 		animation.setFillAfter(false);
@@ -117,7 +117,6 @@ public class MainActivity extends BaseGameActivity implements
 		// Load preferences
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-		
 		initSigninButtons();
 	}
 
@@ -183,7 +182,8 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 1) {
-					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
+					Intent intent = new Intent(MainActivity.this,
+							GameListActivity.class);
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
 				if (position == 2) {
@@ -191,7 +191,7 @@ public class MainActivity extends BaseGameActivity implements
 					setViewVisibility();
 				}
 				if (position == 3) {
-					
+
 					onStartMatchClicked();
 
 				}
@@ -200,7 +200,7 @@ public class MainActivity extends BaseGameActivity implements
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 				}
 				if (position == 5) {
-					findViewById(R.id.screen_profile).setVisibility(View.GONE);	
+					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 					onCheckGamesClicked();
 				}
 			}
@@ -299,19 +299,18 @@ public class MainActivity extends BaseGameActivity implements
 			}
 			return;
 		}
-		
+
 		initSlidingMenu(); // MOVE OUT MAYBE
 
-		((TextView) findViewById(R.id.name_field)).setText(getGamesClient()
-				.getCurrentPlayer().getDisplayName());
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
-		findViewById(R.id.screen_profile).setVisibility(View.GONE);
 
 		if (mGameHelper.isDoingTurn()) {
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
+			findViewById(R.id.screen_profile).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.VISIBLE);
 		} else {
-			findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
+			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
+			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.GONE);
 		}
 	}
@@ -331,7 +330,7 @@ public class MainActivity extends BaseGameActivity implements
 			updateMatch(mHelper.getTurnBasedMatch());
 			return;
 		}
-		
+
 		setViewVisibility();
 
 		// As a demonstration, we are registering this activity as a handler for
@@ -349,7 +348,6 @@ public class MainActivity extends BaseGameActivity implements
 
 		setProfileView();
 
-		
 		if (gameID != null) {
 			dismissSpinner();
 			onStartMatchClicked();
@@ -588,5 +586,5 @@ public class MainActivity extends BaseGameActivity implements
 		showSpinner();
 		mGameHelper.onTurnTaken();
 	}
-	
+
 }
