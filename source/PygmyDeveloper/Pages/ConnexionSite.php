@@ -10,7 +10,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" />
+	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Stylesheet/Pygmy.css" />
 	    <!-- IMPORT Javascript -->
 		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
 		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
@@ -32,8 +32,9 @@ session_start();
 
 		
 		<div id="corps">
+		<img src="../Images/log.png" align="center" width=80/>	
 			<div id="connect">
-					<h1>Connexion</h1>
+					<h1>Log In</h1>
 					<form id="formulaire" method="post" action="Connexion.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input required="true" type="text" size="20" name="Login" id="Login"/></th></td></tr>

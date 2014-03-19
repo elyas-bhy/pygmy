@@ -11,7 +11,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Stylesheet/Pygmy.css" /> 
    </head> 
 <body>
 	<?php include '../headerConnect.php' ?>		
@@ -23,7 +23,7 @@ session_start();
 					{
 		?>
 					
-				
+		<a href="../download/game.jar">	<img src="../Images/download.png"  align="center" width=80/></a>	
 		<div id="tab">
 		<TABLE BORDER="1" id="dwld"> 
 			<TR> 

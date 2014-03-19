@@ -7,7 +7,7 @@
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Stylesheet/Pygmy.css" /> 
 	   	<!-- IMPORT Javascript -->
 		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
 		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
@@ -41,7 +41,7 @@
 		
 				<div id="menu">
 			<ul>
-				<li><a href="../index.php" class="current">ACCUEIL</a></li>
+				<li><a href="../index.php" class="current">HOME</a></li>
 				<li><a href="Download_c.php" class="current">DOWNLOADS</a></li>
 				<li><a href="Upload_c.php">UPLOAD YOUR CODE</a></li>
 				<li><a href="PygmyLog_c.php">MY SETTINGS</a></li>

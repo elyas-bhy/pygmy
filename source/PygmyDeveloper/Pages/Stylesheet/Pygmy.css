@@ -41,6 +41,14 @@ body
 
 }
 
+#how_it_works
+{
+	width: 800px;
+	min-height: 260px;
+	margin: auto;
+	margin-top: 40px;
+}
+
 #login
 {
 	float: right;
@@ -73,7 +81,7 @@ body
 	height: auto;
 	background-color: #F2F2F2;
 	margin: 0px;
-	padding: 10px;
+	padding: 5px;
 	padding-bottom : 10px;
 	margin-bottom: 10px;
 	font-family : "Arial";	
@@ -211,6 +219,78 @@ input[type=submit], input[type=reset]{
     -webkit-border-radius: 10px;
     -khtml-border-radius: 10px;
 	box-shadow: 3px 3px 3px #000;
+}
+
+.step1
+{
+	width: 250px;
+	margin: auto;
+	margin-left: 10px;
+	margin-right: 10px;
+	border: 0.2em solid;
+	border-color: #DAD4D4;
+	float: left;
+	padding-bottom:15px;
+	border-top-left-radius: 8px 8px;
+    border-top-right-radius: 8px 8px;
+    -moz-border-radius-topleft: 8px;
+    -moz-border-radius-topright: 8px;
+	border-bottom-left-radius: 8px 8px;
+	border-bottom-right-radius: 8px 8px;
+    -moz-border-radius-bottomleft: 8px;
+    -moz-border-radius-bottomright: 8px;
+	
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	box-shadow: 3px 3px 3px #DAD4D4;
+}
+
+.step2
+{
+	width: 250px;
+	margin: auto;
+	margin-right: 10px;
+	border: 0.2em solid;
+	border-color: #DAD4D4;
+	float: left;
+	padding-bottom:15px;
+	border-top-left-radius: 8px 8px;
+    border-top-right-radius: 8px 8px;
+    -moz-border-radius-topleft: 8px;
+    -moz-border-radius-topright: 8px;
+	border-bottom-left-radius: 8px 8px;
+	border-bottom-right-radius: 8px 8px;
+    -moz-border-radius-bottomleft: 8px;
+    -moz-border-radius-bottomright: 8px;
+	
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	box-shadow: 3px 3px 3px #DAD4D4;
+}
+
+.step3
+{
+	width: 250px;
+	margin: auto;
+	border: 0.2em solid;
+	border-color: #DAD4D4;
+	float: left;
+	padding-bottom:15px;
+	border-top-left-radius: 8px 8px;
+    border-top-right-radius: 8px 8px;
+    -moz-border-radius-topleft: 8px;
+    -moz-border-radius-topright: 8px;
+	border-bottom-left-radius: 8px 8px;
+	border-bottom-right-radius: 8px 8px;
+    -moz-border-radius-bottomleft: 8px;
+    -moz-border-radius-bottomright: 8px;
+	
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	box-shadow: 3px 3px 3px #DAD4D4;
 }
 
 #settings

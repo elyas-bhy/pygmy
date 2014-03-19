@@ -10,7 +10,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Stylesheet/Pygmy.css" /> 
 	    <!-- IMPORT Javascript -->
 		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
 		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
@@ -31,6 +31,7 @@ session_start();
 		<?php include '../header.php' ?>
 		
 		<div id="corps">
+		<img src="../Images/add.png" align="center" width=80/>	
 			<div class="block">
 					<h1>Register</h1>
 					<form id="formulaire" method="post" action="RegisterDev.php" onsubmit="return check_form_register()";>
@@ -39,8 +40,8 @@ session_start();
 						<tr><td><th class="left"><label>Password : </label></th><th><input required="true" type="password" size="20" name="Password" id="Password"/></th></td></tr>
 						<tr><td><th class="left"><label>Email : </label></th><th><input required="true" type="email" size="50" name="Email" id="Email"/></th></td></tr>
 						</table>
-						<p><input type="submit" value="Submit"/>
-						<input type="reset" value="Reset"/></p>
+						<p><input type="submit" value="SUBMIT"/>
+						<input type="reset" value="RESET"/></p>
 					</form>
 			</div>
 
