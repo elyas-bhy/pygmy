@@ -7,11 +7,11 @@ public class GameMove implements Serializable {
 	private static final long serialVersionUID = -2310782677683578117L;
 	
 	private GameEntity entity;
-	private Tile move;
+	private Tile dest;
 	
-	public GameMove(GameEntity entity, Tile move) {
+	public GameMove(GameEntity entity, Tile dest) {
 		this.entity = entity;
-		this.move = move;
+		this.dest = dest;
 	}
 
 	public GameEntity getEntity() {
@@ -22,12 +22,12 @@ public class GameMove implements Serializable {
 		this.entity = entity;
 	}
 
-	public Tile getMove() {
-		return move;
+	public Tile getDestination() {
+		return dest;
 	}
 
-	public void setMove(Tile move) {
-		this.move = move;
+	public void setDestination(Tile dest) {
+		this.dest = dest;
 	}
 
 }

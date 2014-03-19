@@ -40,8 +40,8 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	@Override
-	public void nextPlayer(String state) {
-		context.nextPlayer(state);
+	public void nextPlayer() {
+		context.nextPlayer();
 	}
 	
 	@Override
