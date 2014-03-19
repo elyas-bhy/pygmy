@@ -4,6 +4,7 @@ import com.lib.pygmy.EntityType;
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.GameMove;
 import com.lib.pygmy.PygmyGameEntity;
+import com.lib.pygmy.Tile;
 import com.lib.pygmy.util.Point;
 
 public class Pawn extends PygmyGameEntity {
@@ -19,8 +20,9 @@ public class Pawn extends PygmyGameEntity {
 	
 	@Override
 	public boolean isLegalMove(GameMove move) {
-		System.out.println(this.getCurrentTile().getPosition().toString());
-		return true;
+		Tile src = getCurrentTile();
+		Tile dst = move.getDestination();
+		return (dst.getPosition().x - src.getPosition().x) == 0;
 	}
 
 }

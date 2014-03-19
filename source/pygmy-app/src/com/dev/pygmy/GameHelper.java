@@ -145,7 +145,7 @@ public class GameHelper {
 		mTurnData.turnCounter = 1;
 
 		initGameViewManager();
-		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+		mTurnData.state = mGame.getCurrentLevel().getUniverse().getState();
 
 		String myParticipantId = mMatch.getParticipantId(mContext
 				.getGamesClient().getCurrentPlayerId());
@@ -386,7 +386,7 @@ public class GameHelper {
 
 		// Create the next turn
 		mTurnData.turnCounter += 1;
-		mTurnData.data = mGame.getCurrentLevel().getUniverse().getState();
+		mTurnData.state = mGame.getCurrentLevel().getUniverse().getState();
 
 		mContext.getGamesClient().takeTurn(mContext, mMatch.getMatchId(),
 				mTurnData.persist(), nextParticipantId);

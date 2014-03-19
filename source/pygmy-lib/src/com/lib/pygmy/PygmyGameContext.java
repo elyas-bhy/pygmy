@@ -49,7 +49,7 @@ public class PygmyGameContext implements Serializable {
 		return playerIds.get(currentPlayer);
 	}
 	
-	public void nextPlayer(String state) {
+	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % playerIds.size();
 	}
 	

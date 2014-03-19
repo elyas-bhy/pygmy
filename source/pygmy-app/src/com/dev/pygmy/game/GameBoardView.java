@@ -41,7 +41,7 @@ public class GameBoardView extends View {
 	private static int tileSize;
 
 	private int boardType;
-	private List<Paint> colors;
+	private List<Integer> colors;
 	private Paint colorBlack = null;
 
 	private static Map<Point,Tile> tilesMap;
@@ -69,7 +69,7 @@ public class GameBoardView extends View {
 		numberOfRows = game.getCurrentLevel().getNumberRows();
 		numberOfColumns = game.getCurrentLevel().getNumberColumns();
 		boardType = game.getCurrentLevel().getBoardType();
-		// colors = game.getCurrentLevel().getColors();
+		//colors = game.getCurrentLevel().getColors();
 	}
 
 	/**
@@ -128,8 +128,8 @@ public class GameBoardView extends View {
 		//		if (colors.size() < 2) {
 		//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
 		//		}
-		//		Paint color1 = colors.get(1);
-		//		Paint color2 = colors.get(2);
+		//		Paint color1 = new Paint(colors.get(1));
+		//		Paint color2 = new Paint(colors.get(2));
 
 		Paint color1 = new Paint();
 		Paint color2 = new Paint();

@@ -10,7 +10,7 @@ public interface Game {
 	
 	public void start();
 	
-	public void nextPlayer(String state);
+	public void nextPlayer();
 	
 	public void onPlayerMove(GameMove move);
 	

@@ -34,11 +34,9 @@ public class TurnData {
 	
 	private final static String TAG = "TurnData";
 
-
-	public String game="";
-	public String version="";
-	public String gamePath = "source/pygmy-lib/src/com/lib/pygmy/util/TurnData.java";
-    public String data = "";
+	public String game = "";
+	public String version = "";
+    public String state = "";
     public int turnCounter;
 
     public TurnData() {
@@ -49,10 +47,9 @@ public class TurnData {
         JSONObject retVal = new JSONObject();
 
         try {
-        	retVal.put("gamePath", gamePath);
         	retVal.put("game", game);
         	retVal.put("version", version);
-            retVal.put("data", data);
+            retVal.put("state", state);
             retVal.put("turnCounter", turnCounter);
 
         } catch (JSONException e) {
@@ -89,14 +86,11 @@ public class TurnData {
         try {
             JSONObject obj = new JSONObject(st);
 
-            if (obj.has("data")) {
-                retVal.data = obj.getString("data");
+            if (obj.has("state")) {
+                retVal.state = obj.getString("state");
             }
             if (obj.has("turnCounter")) {
                 retVal.turnCounter = obj.getInt("turnCounter");
-            }
-            if (obj.has("gamePath")) {
-                retVal.gamePath = obj.getString("gamePath");
             }
             if (obj.has("game")) {
                 retVal.game = obj.getString("game");
@@ -111,4 +105,5 @@ public class TurnData {
 
         return retVal;
     }
+    
 }
