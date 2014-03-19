@@ -10,7 +10,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Stylesheet/Pygmy.css" /> 
    </head> 
 <body>
 	<div id="content">
@@ -21,6 +21,7 @@ session_start();
 		<div id="corps">
 			<div class="block">
 					<h1>Connexion</h1>
+					<img src="../Images/loading.gif" align="center" width=80/>	
 					<p> 
 					<?php
 					

@@ -44,8 +44,8 @@ public class GameViewManager {
 		if (game != null) {
 			game.initGame();
 			game.start();
-
-			gameBoardView = new GameBoardView(context);
+			
+			gameBoardView = new GameBoardView(context, game);
 			tileOverlayView = new TileOverlayView(context);
 			entityView = new EntityView(context, game);
 		}

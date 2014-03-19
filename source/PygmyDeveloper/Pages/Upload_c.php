@@ -11,7 +11,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Stylesheet/Pygmy.css" /> 
 	    <!-- IMPORT Javascript -->
 		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
 		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
@@ -35,6 +35,7 @@ session_start();
 		<?php
 		if(isset($_SESSION['islogged']) && $_SESSION['islogged'] == true){
 		?>
+		<img src="../Images/upload.png" align="center" width=80/>
 		<form id="formulaire" method="post" enctype="multipart/form-data" action="UploadGame.php">
 			<table id="upload">
 			<tr><td><th class="left"><label>Title (no spaces)* : </label></th><th><input required="true" type="text" size="20" name="Title"/></th></td></tr>

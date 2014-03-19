@@ -38,7 +38,11 @@ public class PygmyGameContext implements Serializable {
 	}
 	
 	public void setCurrentLevel(GameLevel level) {
-		currentLevel = level;
+		try {
+			currentLevel = level;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getCurrentPlayerId() {

@@ -17,6 +17,7 @@
 package com.dev.pygmy.game;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.graphics.Paint;
 import android.view.View;
 
 import com.dev.pygmy.PygmyApp;
+import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.Tile;
 import com.lib.pygmy.util.Point;
 
@@ -36,31 +38,38 @@ public class GameBoardView extends View {
 
 	private static int numberOfRows;
 	private static int numberOfColumns;
+	private static int tileSize;
+
 	private int boardType;
-	private Paint color1 = null;
-	private Paint color2 = null;
+	private List<Paint> colors;
 	private Paint colorBlack = null;
 
 	private static Map<Point,Tile> tilesMap;
-	
+
 	/**
-	 * 
-	 * @param context	Context parent.
-	 * @param params	A map with board parameters. 
+	 * Default constructor.
 	 */
 	public GameBoardView(Context context) {
 		super(context);
+	}
 
-		numberOfRows = 8;  //(Integer) params.get("numberRows");
-		numberOfColumns = 8;  //(Integer) params.get("numberColumns");
-		boardType = 0;  //(Integer) params.get("boardType");
+	/**
+	 * 
+	 * @param context	Context parent.
+	 * @param game 		The current game.
+	 */
+	public GameBoardView(Context context, PygmyGame game) {
+		super(context);
 
-		color1 = new Paint();
-		color2 = new Paint();
-		color1.setColor(Color.CYAN);
-		color2.setColor(Color.WHITE);
 		tilesMap = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
+		colorBlack.setColor(Color.BLACK);
+		colorBlack.setTextSize(20);
+
+		numberOfRows = game.getCurrentLevel().getNumberRows();
+		numberOfColumns = game.getCurrentLevel().getNumberColumns();
+		boardType = game.getCurrentLevel().getBoardType();
+		// colors = game.getCurrentLevel().getColors();
 	}
 
 	/**
@@ -87,8 +96,17 @@ public class GameBoardView extends View {
 		return numberOfColumns;
 	}
 
+	/**
+	 * @return the size of a tile in the board.
+	 */
+	public static int getTileSize() {
+		return tileSize;
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
+		// If the number of available board changes, that must be notify 
+		// to setBoardType at PygmyGameLevel class.
 		switch (boardType) {
 		case 0:
 			drawCheckerboard(canvas);
@@ -104,6 +122,71 @@ public class GameBoardView extends View {
 			break;
 		}
 	}
+	
+	private void drawCheckerboard(Canvas canvas) {
+
+		//		if (colors.size() < 2) {
+		//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
+		//		}
+		//		Paint color1 = colors.get(1);
+		//		Paint color2 = colors.get(2);
+
+		Paint color1 = new Paint();
+		Paint color2 = new Paint();
+		color1.setColor(Color.CYAN);
+		color2.setColor(Color.WHITE);
+
+		int tileWidth = Math.min(numberOfRows, numberOfColumns);
+		int tileHeight = Math.max(numberOfRows, numberOfColumns);
+
+		int width = getWidth();
+		int height = getHeight();
+
+		int offset = 0, coordX = 0, coordY = 0;
+
+		tileSize = Math.min(width / (tileWidth + 2), height / (tileHeight + 2));
+		offset = tileSize / 3;
+
+		for (int x = 0; x < tileHeight +1 ; ++x) {
+			if (x != 0) {
+				for(int y = 0; y < tileWidth +1; ++y) {
+					if (y != 0) {
+
+						coordX = x * tileSize + offset;
+						coordY = y * tileSize + offset;
+						if (x == 1) {
+							canvas.drawText(Integer.toString(y), 
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									y*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
+									colorBlack);
+						}
+
+						Tile t = new Tile(coordY, coordX, tileSize);
+						t.setPosition(new Point(x-1, y-1));
+						t.setColor(((x + y)%2 != 0) ? color1:color2);
+						tilesMap.put(new Point(x-1, y-1), t);
+						t.draw(canvas);
+
+						canvas.drawText(Character.toString((char)('A'-1+y)), 
+								y*tileSize + (tileSize/2) - colorBlack.getTextSize()/2 + offset, 
+								tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
+					}
+				}
+				canvas.drawText(Integer.toString(x), 
+						tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+						x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, colorBlack);
+			}
+		}
+
+		// Draw checkerboard's outline
+		int smallDistance = tileSize + offset;
+		int longDistanceHeight = tileSize * (tileHeight + 1) + offset;
+		int longDistanceWidth = tileSize * (tileWidth + 1) + offset;
+		canvas.drawLine(smallDistance, smallDistance, smallDistance, longDistanceHeight, colorBlack);
+		canvas.drawLine(smallDistance, smallDistance, longDistanceWidth, smallDistance, colorBlack);
+		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
+		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
+	}
 
 	private void drawHexbox(Canvas canvas, int tileSize, int coordX, int coordY) {
 
@@ -117,9 +200,11 @@ public class GameBoardView extends View {
 		// Up
 		canvas.drawLine(coordX + dist, coordY, coordX + tileSize - dist, coordY, colorBlack);
 		// Down
-		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, coordX + dist, coordY + tileSize, colorBlack);
+		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, 
+				coordX + dist, coordY + tileSize, colorBlack);
 		// Right Down
-		canvas.drawLine(coordX + tileSize, coordY + half, coordX + tileSize - dist, coordY + tileSize, colorBlack);
+		canvas.drawLine(coordX + tileSize, coordY + half, 
+				coordX + tileSize - dist, coordY + tileSize, colorBlack);
 		// Left Down
 		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
 		// Right Up
@@ -128,22 +213,17 @@ public class GameBoardView extends View {
 
 	private void drawHexGrid(Canvas canvas) {
 
-		int widthBox = Math.min(numberOfRows, numberOfColumns);
-		int heightBox = Math.max(numberOfRows, numberOfColumns);
-
-		// Max Size Width
-		int widthSize = numberOfRows;
-		// Max Size Height
-		int heightSize = numberOfColumns;
+		int tileWidth = Math.min(numberOfRows, numberOfColumns);
+		int tileHeight = Math.max(numberOfRows, numberOfColumns);
 
 		int width = getWidth();
 		int height = getHeight();
 
-		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
+		int offset = 0, coordX = 0, coordY = 0;
 
 		// One tile distance
-		tileSize = Math.min(width / (widthBox + 2), height / (heightBox+2));
-		if(tileSize*1.2 < widthSize - tileSize / 3*1.2 && tileSize*1.2 < heightSize-tileSize/3*1.2) {
+		tileSize = Math.min(width / (tileWidth + 2), height / (tileHeight + 2));
+		if(tileSize*1.2 < numberOfRows - tileSize / 3*1.2 && tileSize*1.2 < numberOfColumns-tileSize/3*1.2) {
 			tileSize *= 1.2;
 		}
 
@@ -153,9 +233,9 @@ public class GameBoardView extends View {
 		int colision = tileSize / 4;
 		int half = tileSize / 2;
 
-		for(int y = 0; y < widthBox +1 ; ++y) {
+		for(int y = 0; y < tileWidth +1 ; ++y) {
 			if (y != 0){
-				for(int x = 0 ; x < heightBox +1; ++x) {
+				for(int x = 0 ; x < tileHeight +1; ++x) {
 					if (x != 0) {
 						coordX = x*tileSize+offset;
 						coordY = (y+1)*(tileSize-colision);
@@ -170,18 +250,18 @@ public class GameBoardView extends View {
 						}
 						tilesMap.put(new Point(x-1, y-1), tile);
 
-						if (y == 1 && x != heightBox+1) {
+						if (y == 1 && x != tileHeight+1) {
 							canvas.drawText(Integer.toString(x), 
-									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
 									colorBlack);
 						}
 					}
 				}
-				if (y != widthBox+1) {
+				if (y != tileWidth+1) {
 					canvas.drawText(Character.toString((char)('A'-1+y)), 
-							(y+1)*(tileSize-colision)+(tileSize/4)-colorBlack.getTextSize()/2+offset,
-							tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
+							(y + 1)*(tileSize-colision) + (tileSize/4) - colorBlack.getTextSize()/2 + offset,
+							tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
 				}
 			}
 		}
@@ -189,105 +269,96 @@ public class GameBoardView extends View {
 
 	private void drawGrid(Canvas canvas) {
 
-		int widthBox = Math.min(numberOfRows, numberOfColumns);
-		int heightBox = Math.max(numberOfRows, numberOfColumns);
-
-		int width = getWidth();
-		int height = getHeight();
-
-		int tileSize = 0, offset = 0, coordY = 0, coordX = 0;
-
-		// One tile distance
-		tileSize = Math.min(width / (widthBox+2), height / (heightBox+2));
-		// Margin based to tileSize
-		offset = tileSize / 3;
-
-		int smallDistance = tileSize+offset;
-		int longDistanceHeight = tileSize*(heightBox+1)+offset;
-		int longDistanceWidth = tileSize*(widthBox+1)+offset;
-
-		for(int y = 0; y <= widthBox +1 ; ++y) {
-			if (y != 0) {
-				for(int x = 0 ; x <= heightBox +1; ++x) {
-					if (x != 0) {
-						coordY = y*tileSize+offset;
-						coordX = x*tileSize+offset;
-
-						if(y < widthBox +1 && x < heightBox +1)
-							tilesMap.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
-
-						// Draw case
-						canvas.drawLine(coordY, smallDistance, coordY, longDistanceHeight, colorBlack);
-						canvas.drawLine(smallDistance, coordX, longDistanceWidth, coordX, colorBlack);
-						if (y == 1 && x != heightBox+1)
-							canvas.drawText(Integer.toString(x), 
-									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
-									colorBlack);		
-					}
-				}
-				if (y != widthBox+1) {
-					canvas.drawText(Character.toString((char)('A'-1+y)), 
-							y*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
-							tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
-				}
-			}
-		}
-	}
-
-	private void drawCheckerboard(Canvas canvas) {
-		colorBlack.setColor(Color.BLACK);
-		colorBlack.setTextSize(20);
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
 		int tileHeight = Math.max(numberOfRows, numberOfColumns);
 
 		int width = getWidth();
 		int height = getHeight();
 
-		int tileSize = 0, offset = 0, coordX = 0, coordY = 0;
-		// Minimum size in width and length
+		int offset = 0, coordY = 0, coordX = 0;
 
-		tileSize = Math.min(width / (tileWidth+2), height / (tileHeight+2));
+		// One tile distance
+		tileSize = Math.min(width / (tileWidth+2), height / (tileHeight + 2));
+		// Margin based to tileSize
 		offset = tileSize / 3;
 
-		for (int x = 0; x < tileWidth +1 ; ++x) {
-			if (x != 0) {
-				for(int y = 0; y < tileHeight +1; ++y) {
-					if (y != 0) {
+		int smallDistance = tileSize + offset;
+		int longDistanceHeight = tileSize*(tileHeight + 1) + offset;
+		int longDistanceWidth = tileSize*(tileWidth + 1) + offset;
 
-						coordX = x * tileSize + offset;
-						coordY = y * tileSize + offset;
-						if (x == 1) {
-							canvas.drawText(Integer.toString(y), 
-									tileSize/2-colorBlack.getTextSize()/2+offset, 
-									y*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, 
-									colorBlack);	
+		for(int y = 0; y <= tileWidth +1 ; ++y) {
+			if (y != 0) {
+				for(int x = 0 ; x <= tileHeight +1; ++x) {
+					if (x != 0) {
+						coordY = y*tileSize+offset;
+						coordX = x*tileSize+offset;
+
+						if(y < tileWidth+1 && x < tileHeight+1) {
+							tilesMap.put(new Point(x-1,y-1), new Tile(coordX, coordY, tileSize));
 						}
 
-						Tile t = new Tile(coordY, coordX, tileSize);
-						t.setPosition(new Point(x-1, y-1));
-						t.setColor(((x + y)%2 != 0) ? color1:color2);
-						tilesMap.put(new Point(x-1, y-1), t);
-						t.draw(canvas);
+						// Draw case
+						canvas.drawLine(coordY, smallDistance, coordY, longDistanceHeight, colorBlack);
+						canvas.drawLine(smallDistance, coordX, longDistanceWidth, coordX, colorBlack);
+						if (y == 1 && x != tileHeight+1) {
+							canvas.drawText(Integer.toString(x), 
+									tileSize/2 - colorBlack.getTextSize()/2 + offset, 
+									x*tileSize + (tileSize/2) + colorBlack.getTextSize()/2 + offset, 
+									colorBlack);
+						}
 					}
 				}
-				canvas.drawText(Character.toString((char)('A'-1+x)), 
-						x*tileSize+(tileSize/2)-colorBlack.getTextSize()/2+offset, 
-						tileSize/2+colorBlack.getTextSize()/2+offset, colorBlack);
-				canvas.drawText(Integer.toString(x), 
-						tileSize/2-colorBlack.getTextSize()/2+offset, 
-						x*tileSize+(tileSize/2)+colorBlack.getTextSize()/2+offset, colorBlack);
+				if (y != tileWidth+1) {
+					canvas.drawText(Character.toString((char)('A' - 1 + y)), 
+							y*tileSize + (tileSize/2) - colorBlack.getTextSize()/2 + offset, 
+							tileSize/2 + colorBlack.getTextSize()/2 + offset, colorBlack);
+				}
 			}
 		}
-
-		// Draw checkerboard's outline
-		int smallDistance = tileSize+offset;
-		int longDistanceHeight = tileSize*(tileHeight+1)+offset;
-		int longDistanceWidth = tileSize*(tileWidth+1)+offset;
-		canvas.drawLine(smallDistance, smallDistance, smallDistance, longDistanceHeight, colorBlack);
-		canvas.drawLine(smallDistance, smallDistance, longDistanceWidth, smallDistance, colorBlack);
-		canvas.drawLine(longDistanceWidth, longDistanceHeight, longDistanceWidth, smallDistance, colorBlack);
-		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
 	}
-	
+
+	private void drawBoard(Canvas canvas) {
+		int tileWidth = Math.min(numberOfRows, numberOfColumns);
+		int tileHeight = Math.max(numberOfRows, numberOfColumns);
+
+		int width = getWidth();
+		int height = getHeight();
+
+		int offset = 0, coordY = 0, coordX = 0;
+
+		// One tile distance
+		tileSize = Math.min(width / (tileWidth+2), height / (tileHeight + 2));
+		// Margin based to tileSize
+		offset = tileSize / 3;
+
+
+		//--// CheckerBoard
+		if (boardType == 0) {
+
+		}
+
+		//--//Grid
+		if (boardType == 1) {
+			int smallDistance = tileSize + offset;
+			int longDistanceHeight = tileSize*(tileHeight + 1) + offset;
+			int longDistanceWidth = tileSize*(tileWidth + 1) + offset;
+		}
+
+		//--// HexGrid
+		if (boardType == 2) {
+			// One tile distance
+			if(tileSize * 1.2 < numberOfRows - tileSize / 3 * 1.2 && 
+					tileSize * 1.2 < numberOfColumns-tileSize / 3 * 1.2) {
+				tileSize *= 1.2;
+			}
+
+			int colision = tileSize / 4;
+			int half = tileSize / 2;
+		}
+
+		for(int y = 0; y < tileWidth +1 ; ++y) {
+			if (y != 0){
+				for(int x = 0 ; x < tileHeight +1; ++x) {
+					if (x != 0) {}}}}
+	}
 }

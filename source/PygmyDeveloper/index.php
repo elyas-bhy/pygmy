@@ -11,7 +11,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Pygmy.css" /> 	
+	   <link rel="stylesheet" media="screen" type="text/css" title="Pages" href="Pages/Stylesheet/Pygmy.css" /> 	
 		<!-- IMPORT Javascript -->
 	<script type="text/javascript" src="js/jquery-1.2.6.js"></script>
 	<script type="text/javascript" src="js/jquery.formvalidation.js"></script>
@@ -43,7 +43,7 @@ session_start();
 		
 				<div id="menu">
 			<ul>
-				<li><a href="index.php" class="current">ACCUEIL</a></li>
+				<li><a href="index.php" class="current">HOME</a></li>
 				<li><a href="Pages/Download_c.php" class="current">DOWNLOADS</a></li>
 				<li><a href="Pages/Upload_c.php">UPLOAD YOUR CODE</a></li>
 				<li><a href="Pages/PygmyLog_c.php">MY SETTINGS</a></li>
@@ -57,7 +57,7 @@ session_start();
 		<div id="id_block">
 			
 			<div class="package log">
-				<h1>Log In</h1>
+				<h1>Log In <img src="Images/log.png" align="center" width=30/></h1>
 					<form id="formulaire" method="post" action="Pages/Connexion.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input required="true" type="text" size="20" name="Login" id="Login"/></th></td></tr>
@@ -69,7 +69,7 @@ session_start();
 			</div>
 			
 			<div class="package register">
-				<h1>Sign In</h1>
+				<h1>Register <img src="Images/add.png" align="center" width=30/></h1>
 					<form method="post" id="formulaire" action="Pages/RegisterDev.php">
 						<table id="connect">
 						<tr><td><th class="left"><label>Login : </label></th><th><input required="true" type="text" size="20" name="Login" id="Login"/></th></td></tr>
@@ -83,9 +83,31 @@ session_start();
 			<div style="clear: both;"></div>
 			
 		</div>
+		
+		<div id="how_it_works">
+			<div class="step1">
+			<img src="Images/add.png" align="center" width=55 style="padding:10px;"/> 
+			<img src="Images/log.png" align="center" width=40 style="padding:10px;"/> 
+			<h3>Step 1</h3>
+			<p style="font-weight:bold;">Register or Log In</p>
+			<p>Create a new account or log in as a Pygmy developer</p>
+			</div>
+			<div class="step2">
+			<img src="Images/download.png" align="center" width=55 style="padding:10px;"/>
+			<h3>Step 2</h3>
+			<p style="font-weight:bold;">Download our framework</p>
+			<p>Download our existing framework and create your own games</p>
+			</div>
+			<div class="step3">
+			<img src="Images/upload.png" align="center" width=55 style="padding:10px;"/>
+			<h3>Step 3</h3>
+			<p style="font-weight:bold;">Upload your code</p>
+			<p>Upload your games and enjoy them on your Pygmy Application</p>
+			</div>
 		</div>
 		</div>
-	</div>
+	
+	
 		
 		<?php 
 			include("feet.html"); 

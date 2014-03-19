@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Paint;
+
 import com.lib.pygmy.base.ObservableValue;
 
 /**
- * To be implemented with respect to a specific game. Expected to initialize the
+ * To be implemented with respect to a specific game. Expected to initialise the
  * universe and the gameBoard
  */
 
@@ -19,6 +21,10 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	protected GameUniverse universe;
 	protected ObservableValue<Boolean> endOfGame;
 
+	private int rows;
+	private int columns;
+	private int boardType;
+	private List<Paint> colors;
 	protected final Game game;
 	protected List<GameRule> gameRules;
 
@@ -64,10 +70,20 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 
 	@Override
 	public void setDimensions(int rows, int cols) {
+		if (rows <= 0 || cols <= 0) {
+			throw new IllegalStateException("Rows and Columns must be positive.");
+		}
+		if (rows > 16 || cols > 16) {
+			throw new IllegalStateException("Dimension board could not be set.");
+		}
+		
+		this.rows = rows;
+		this.columns = cols;
+		
 		gameMap = new GameMap(rows, cols);
-		for (int i = 0; i < cols; ++i) {
-			for (int j = 0; j < rows; ++j) {
-				gameMap.setValue(i, j, 5);
+		for (int x = 0; x < rows; ++x) {
+			for (int y = 0; y < cols; ++y) {
+				gameMap.setValue(x, y, 5);
 			}
 		}
 	}
@@ -104,4 +120,39 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 		
 	}
 	
+	public int getNumberRows() {
+		return rows;
+	}
+	
+	public int getNumberColumns() {
+		return columns;
+	}
+	
+	public int getBoardType() {
+		return boardType;
+	}
+	
+	public void setBoardType(int type) {
+		if (type < 0) {
+			throw new IllegalStateException("Type must be positive.");
+		}
+		// Change this if the number of available boards changes.
+		if (type > 2) {
+			throw new IllegalStateException("Board's type does not exist.");
+		}
+		
+		this.boardType = type;
+	}
+	
+	public List<Paint> getColors() {
+		return colors;
+	}
+	
+	public void setColors(List<Paint> colors) {
+		if (colors == null) {
+			throw new IllegalStateException("Colors list is null.");
+		}
+		
+		this.colors = colors;
+	}
 }

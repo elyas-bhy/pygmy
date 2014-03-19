@@ -16,7 +16,11 @@
 
 package com.client.pygmy;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
@@ -41,8 +45,19 @@ public class DemoLevel extends PygmyGameLevel {
 		List<String> playerIds = getContext().getGame().getPlayerIds();
 		String p1 = playerIds.get(0);
 		String p2 = playerIds.get(1);
-		
-		setDimensions(16, 16);
+
+		List<Paint> colors = new ArrayList<Paint>();
+		Paint color1 = new Paint();
+		Paint color2 = new Paint();
+		color1.setColor(Color.CYAN);
+		color2.setColor(Color.WHITE);
+		colors.add(color1);
+		colors.add(color2);
+
+		setBoardType(0);
+		setColors(colors);
+		setDimensions(8, 8);
+
 		addGameRule(new EndlessGameRule());
 
 		// declare each black piece (entity) with the Entity class
@@ -58,7 +73,7 @@ public class DemoLevel extends PygmyGameLevel {
 		for (int i = 0; i < 8; i++) {
 			addEntity(new Pawn(this, p1, EntityType.BLACK_PAWN, new Point(1, i)));
 		}
-		
+
 		// declare each white piece (entity) with the Entity class
 		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 0)));
 		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 1)));
@@ -72,6 +87,7 @@ public class DemoLevel extends PygmyGameLevel {
 		for (int i = 0; i < 8; i++) {
 			addEntity(new Pawn(this, p2, EntityType.WHITE_PAWN, new Point(6, i)));
 		}
+
 	}
-	
+
 }

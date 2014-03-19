@@ -11,16 +11,16 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Stylesheet/Pygmy.css" /> 
    </head> 
 <body>
 	<div id="content">
 
 		<?php include '../headerConnect.php' ?>
 		<div id="corps">
-		
+		<img src="../Images/settings.png" align="center" width=80/>	
 		<div class="block settings">
-					<h1>Modify your informations</h1>
+					<h1>Change your informations</h1>
 					<div id="changement">
 					<form method="post" action="ChangeSettings.php">
 						<p> New Password : <input type="password" size="20" name="Password"/></p>

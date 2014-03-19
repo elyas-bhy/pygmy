@@ -17,11 +17,10 @@ public class PygmyGameImpl extends PygmyGame {
 	public void initGame() {
 		PygmyGame game = getGame();
 		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
-
+		
 		OverlapRulesApplier rules = new DemoOverlapRules();
 		PygmyGameLevel level1 = new DemoLevel(game, rules);
 		levels.add(level1); // only one level is available at this time
-
 		game.setLevels(levels);
 	}
 

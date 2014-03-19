@@ -11,7 +11,7 @@ session_start();
 	   <meta name="description" content="" /> 
 	   <meta name="keyword" content=""/> 
 	   <link rel="shortcut icon" href="../Images/ic_launcher.png" /> 
-	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Pygmy.css" /> 
+	   <link rel="stylesheet" media="screen" type="text/css" title="Design" href="Stylesheet/Pygmy.css" /> 
 		 <!-- IMPORT Javascript -->
 		<script type="text/javascript" src="../js/query-1.2.6.js"></script>
 		<script type="text/javascript" src="../js/jquery.formvalidation.js"></script>
