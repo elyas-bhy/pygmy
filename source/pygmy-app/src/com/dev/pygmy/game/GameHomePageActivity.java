@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -121,6 +123,7 @@ public class GameHomePageActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
+			
 			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		case android.R.id.home:
