@@ -28,12 +28,29 @@ import com.lib.pygmy.util.TurnData;
 
 import dalvik.system.DexClassLoader;
 
+/**
+ * Represents the level's universe. This class manages the game entities lifecycles,
+ * positioning, and overlap processing.
+ * @author Pygmy
+ *
+ */
 public class PygmyGameUniverse implements GameUniverse, Serializable {
 	
 	private static final long serialVersionUID = -6288249985123122976L;
 	
+	/**
+	 * Reference to the parent level
+	 */
 	private GameLevel level;
+	
+	/**
+	 * Maps the level's entities by their current tiles
+	 */
 	private Map<Tile,GameEntity> entities;
+	
+	/**
+	 * Handles any overlap of two entities
+	 */
 	private OverlapProcessor overlapProcessor;
 
 	public PygmyGameUniverse(GameLevel level, OverlapProcessor processor) {
@@ -42,11 +59,17 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 		this.overlapProcessor = processor;
 	}
 	
+	/**
+	 * Returns the level's entity map
+	 */
 	@Override
 	public Map<Tile,GameEntity> getGameEntities() {
 		return entities;
 	}
 
+	/**
+	 * Adds an entity to the universe
+	 */
 	@Override
 	public synchronized void addGameEntity(GameEntity gameEntity) {
 		entities.put(gameEntity.getCurrentTile(), gameEntity);
@@ -55,6 +78,9 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 		}
 	}
 
+	/**
+	 * Removes an entity to the universe
+	 */
 	@Override
 	public synchronized void removeGameEntity(GameEntity gameEntity) {
 		entities.remove(gameEntity.getCurrentTile());
@@ -63,11 +89,17 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 		}
 	}
 
+	/**
+	 * Handles a player move
+	 */
 	@Override
 	public void processMove(GameMove move) {
 		overlapProcessor.processOverlap(move);
 	}
 	
+	/**
+	 * Updates the universe state according to the passed response
+	 */
 	@Override
 	public void updateData(TurnData data) {
 		this.entities.clear();
@@ -78,6 +110,10 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 		}
 	}
 	
+	/**
+	 * Instanciates a serialized entity using reflection
+	 * @param attrs the attributes of the entity
+	 */
 	private void addEntityFromString(String[] attrs) {
 		GameEntity entity = null;
 		try {
@@ -100,6 +136,9 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 		}
 	}
 	
+	/**
+	 * Returns the universe's state in a compressed formats
+	 */
 	@Override
 	public String getState() {
 		StringBuilder sb = new StringBuilder();
