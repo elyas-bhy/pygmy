@@ -37,9 +37,11 @@ session_start();
 						if(isset($_POST["Password"]) && $_POST["Password"] != '') {
 							$query = "Update developer set password = '".md5($pass)."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
 							echo '<h1>LOADING...</h1>';
+							include '../scripts/database_backup.php';
 						}
 						else if (isset($_POST["Email"]) && $_POST["Email"] != '') {
 							$query = "Update developer set email = '".$mail."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
+							include '../scripts/database_backup.php';
 						}
 					
 						mysql_query($query);
