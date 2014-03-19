@@ -1,1 +1,0 @@
-#!/bin/bash### Delete old backups#// A MODIFIER  find /scripts/backups/ -type f -mtime +4 -delete
