@@ -154,16 +154,12 @@ public class MainActivity extends BaseGameActivity implements
 				R.string.app_name));
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile, R.string.games));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
-				R.string.sign_out));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
-				R.string.start_match));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
-				R.string.quick_match));
-		entries.add(new NavbarEntryItem(R.drawable.ic_profile,
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_home, R.string.home));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_icon_games, R.string.games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_sword,
 				R.string.check_games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_signout,
+				R.string.sign_out));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -187,21 +183,12 @@ public class MainActivity extends BaseGameActivity implements
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
 				if (position == 2) {
-					signOut();
-					setViewVisibility();
-				}
-				if (position == 3) {
-
-					onStartMatchClicked();
-
-				}
-				if (position == 4) {
-					onQuickMatchClicked(findViewById(R.id.matchup_layout));
-					findViewById(R.id.screen_profile).setVisibility(View.GONE);
-				}
-				if (position == 5) {
 					findViewById(R.id.screen_profile).setVisibility(View.GONE);
 					onCheckGamesClicked();
+				}
+				if (position == 3) {
+					signOut();
+					setViewVisibility();
 				}
 			}
 		});
@@ -234,6 +221,8 @@ public class MainActivity extends BaseGameActivity implements
 	private void onCheckGamesClicked() {
 		Intent intent = getGamesClient().getMatchInboxIntent();
 		startActivityForResult(intent, RC_LOOK_AT_MATCHES);
+		findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
+		findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 	}
 
 	// Open the create-game UI. You will get back an onActivityResult
