@@ -13,4 +13,6 @@ public interface OverlapProcessor {
 	public void setOverlapRules(OverlapRulesApplier overlapRules);
 
 	public void processOverlap(GameMove move);
+
+	public void clear();
 }

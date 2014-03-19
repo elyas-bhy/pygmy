@@ -65,5 +65,11 @@ public class OverlapProcessorImpl implements OverlapProcessor, Serializable {
 		}
 		universe.getGameEntities().put(entity.getCurrentTile(), entity);
 	}
+
+	@Override
+	public void clear() {
+		overlappablesMovable.clear();
+		overlappablesNonMovable.clear();
+	}
 	
 }
