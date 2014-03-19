@@ -24,23 +24,30 @@ import android.graphics.Paint;
 
 import com.lib.pygmy.util.Point;
 
+/**
+ * Represents a gameboard tile. This class stores both absolute position (in pixels),
+ * and relative position (relative to the board) of the tile.
+ * @author Pygmy
+ *
+ */
 public class Tile implements Serializable {
 	
 	private static final long serialVersionUID = 700976869561391811L;
 	
+	/**
+	 * Relative position (relative to the board)
+	 */
 	private Point position;
+	
+	/**
+	 * Absolute position (in pixels)
+	 */
 	private Point coordinates;
+	
 	private transient Paint color;
 	private int width;
 	private int height;
 	
-	/**
-	 * Saves coordinates in pixels of a rectangular tile.
-	 * @param posX	 position X in pixels
-	 * @param posY   position Y in pixels
-	 * @param width	 width of the tile
-	 * @param height height of the tile
-	 */
 	public Tile(int posX, int posY, int width, int height) {
 		this.coordinates = new Point(posX, posY);
 		this.width = width;
@@ -51,50 +58,79 @@ public class Tile implements Serializable {
 		this(posX, posY, size, size);
 	}
 	
+	/**
+	 * Returns the relative position of the tile
+	 * @return
+	 */
 	public Point getPosition() {
 		return position;
 	}
 
+	/**
+	 * Sets the relative position of the tile
+	 * @param position
+	 */
 	public void setPosition(Point position) {
 		this.position = position;
 	}
-
+	
 	/**
-	 * @return coordinates (x,y) in pixels for a tile.
+	 * Returns the absolute position of the tile
+	 * @return
 	 */
 	public Point getCoordinates() {
 		return coordinates;
 	}
 	
+	/**
+	 * Sets the absolute position of the tile
+	 * @param posX
+	 * @param posY
+	 * @param width
+	 * @param height
+	 */
 	public void setCoordinates(int posX, int posY, int width, int height) {
 		setCoordinates(posX, posY);
 		this.width = width;
 		this.height = height;
 	}
 	
+	/**
+	 * Sets the absolute position of the tile
+	 * @param posX
+	 * @param posY
+	 */
 	public void setCoordinates(int posX, int posY) {
 		coordinates.x = posX;
 		coordinates.y = posY;
 	}
 
 	/**
-	 * @return the width of the tile.
+	 * Returns the width of the tile
 	 */
 	public int getWidth() {
 		return width;
 	}
 	
 	/**
-	 * @return the height of the tile.
+	 * Returns the height of the tile
 	 */
 	public int getHeight() {
 		return height;
 	}
 	
+	/**
+	 * Sets the tile's color
+	 * @param color
+	 */
 	public void setColor(Paint color) {
 		this.color = color;
 	}
 	
+	/**
+	 * Draws the tile on the specified canvas
+	 * @param canvas
+	 */
 	public void draw(Canvas canvas) {
 		canvas.drawRect(coordinates.x, coordinates.y,
 				coordinates.x + width,
@@ -102,22 +138,25 @@ public class Tile implements Serializable {
 				color);
 	}
 	
+	/**
+	 * Draws the tile's overlay on the specified canvas
+	 * @param canvas
+	 */
 	public void drawOverlay(Canvas canvas) {
 		Paint color = new Paint();
 		color.setColor(Color.GREEN);
 		color.setStrokeWidth(5);
-
-		// Draw tile's outline
-		// top
+		
+		// Top
 		canvas.drawLine(coordinates.x, coordinates.y, 
 				coordinates.x + width, coordinates.y, color);
-		// bottom
+		// Bottom
 		canvas.drawLine(coordinates.x, coordinates.y + height,
 				coordinates.x + width, coordinates.y + height, color);
-		// left
+		// Left
 		canvas.drawLine(coordinates.x, coordinates.y, 
 				coordinates.x, coordinates.y + height, color);
-		// right
+		// Right
 		canvas.drawLine(coordinates.x + width, coordinates.y,
 				coordinates.x + width, coordinates.y + height, color);
 	}
