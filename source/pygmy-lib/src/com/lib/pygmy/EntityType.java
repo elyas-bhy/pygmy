@@ -18,6 +18,11 @@ package com.lib.pygmy;
 
 import java.io.Serializable;
 
+/**
+ * Enumeration of available entity types
+ * @author Pygmy
+ *
+ */
 public enum EntityType implements Serializable {
 	
 	BLACK_ROOK,
