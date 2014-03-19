@@ -10,8 +10,6 @@ public interface Game {
 	
 	public void start();
 	
-	public void nextPlayer();
-	
 	public void onPlayerMove(GameMove move);
 	
 	public PygmyGameContext getContext();

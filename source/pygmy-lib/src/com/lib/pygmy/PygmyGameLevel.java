@@ -105,15 +105,10 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 					end();
 				}
 			}
-			makeMove(move);
+			universe.processMove(move);
 		} else {
 			throw new IllegalMoveException();
 		}
-	}
-	
-	private void makeMove(GameMove move) {
-		universe.processMove(move);
-		game.nextPlayer();
 	}
 
 	@Override

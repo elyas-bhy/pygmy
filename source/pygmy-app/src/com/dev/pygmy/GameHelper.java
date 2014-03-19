@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.Toast;
 
 import com.dev.pygmy.game.DownloadTask;
 import com.dev.pygmy.game.GameViewManager;
@@ -30,6 +31,8 @@ public class GameHelper {
 	// Do not retain references to match data once you have
 	// taken an action on the match, such as takeTurn()
 	private TurnData mTurnData;
+	
+	private String mCurrentPlayerId;
 
 	// Manages all of the game's views
 	private GameViewManager mGameViewManager;
@@ -45,34 +48,14 @@ public class GameHelper {
 				mTurnData.game, mTurnData.version));
 
 		if (!versionFolder.exists()) {
-			
-			AlertDialog dialog = new AlertDialog.Builder(mContext)
-					.setMessage(
-							"The game you tried to play is not installed on your device. Would you like to install it?")
-					.setCancelable(false)
-					.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-
-									DownloadTask downloadtask = new DownloadTask(mContext);
-									downloadtask.setOnPostExecutor(new DownloadTask.OnPostExecutor() {
-										
-										@Override
-										public void onPostExecute() {
-											initGameViewManager();
-											isDoingTurn = true;
-											mContext.setViewVisibility();
-											mGameViewManager.updateData(mTurnData);
-										}
-									});
-									downloadtask.execute(mTurnData.game, mTurnData.version);
-								}
-							}).setNegativeButton("No", null).show();
+			showDownloadPrompt();
 		} else {
 			initGameViewManager();
 			isDoingTurn = true;
 			mContext.setViewVisibility();
 			mGameViewManager.updateData(mTurnData);
+			Toast.makeText(mContext, "Player's " + mCurrentPlayerId + " turn", 
+					Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -82,13 +65,11 @@ public class GameHelper {
 			String path = Utils.getGamePath(mContext, mTurnData.game,
 					mTurnData.version, "game.jar");
 			mGame = PygmyLoader.loadGame(mContext, path);
-
-			try {
-				mGame.setPlayerIds(mMatch.getParticipantIds());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			mGame.setPlayerIds(mMatch.getParticipantIds());
 		}
+		
+		mCurrentPlayerId = mMatch.getParticipantId(mContext.getGamesClient().getCurrentPlayerId());
+		mGame.getContext().setCurrentPlayerId(mCurrentPlayerId);
 		mGameViewManager = new GameViewManager(mContext, mGame);
 	}
 
@@ -135,8 +116,7 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
-	public void startMatch(TurnBasedMatch match, String gameID,
-			String gameVersion) {
+	public void startMatch(TurnBasedMatch match, String gameID, String gameVersion) {
 		mMatch = match;
 
 		mTurnData = new TurnData();
@@ -156,21 +136,18 @@ public class GameHelper {
 	}
 
 	public void rematch() {
-		mContext.getGamesClient().rematchTurnBasedMatch(mContext,
-				mMatch.getMatchId());
+		mContext.getGamesClient().rematchTurnBasedMatch(mContext, mMatch.getMatchId());
 		mMatch = null;
 		isDoingTurn = false;
 	}
 
 	public void onCancelClicked() {
-		mContext.getGamesClient().cancelTurnBasedMatch(mContext,
-				mMatch.getMatchId());
+		mContext.getGamesClient().cancelTurnBasedMatch(mContext, mMatch.getMatchId());
 		isDoingTurn = false;
 	}
 
 	public void onFinishClicked() {
-		mContext.getGamesClient().finishTurnBasedMatch(mContext,
-				mMatch.getMatchId());
+		mContext.getGamesClient().finishTurnBasedMatch(mContext, mMatch.getMatchId());
 		isDoingTurn = false;
 	}
 
@@ -237,8 +214,7 @@ public class GameHelper {
 
 	// Generic warning/info dialog
 	public void showWarning(String title, String message) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				mContext);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
 
 		// set title
 		alertDialogBuilder.setTitle(title).setMessage(message);
@@ -258,8 +234,7 @@ public class GameHelper {
 		mAlertDialog.show();
 	}
 
-	public void showErrorMessage(TurnBasedMatch match, int statusCode,
-			int stringId) {
+	public void showErrorMessage(TurnBasedMatch match, int statusCode, int stringId) {
 		showWarning("Warning", mContext.getResources().getString(stringId));
 	}
 
@@ -378,6 +353,31 @@ public class GameHelper {
 	public AlertDialog getDialog() {
 		return mAlertDialog;
 	}
+	
+	private void showDownloadPrompt() {
+		AlertDialog dialog = new AlertDialog.Builder(mContext)
+		.setMessage(
+				"The game you tried to play is not installed on your device. Would you like to install it?")
+		.setCancelable(false)
+		.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+
+						DownloadTask downloadtask = new DownloadTask(mContext);
+						downloadtask.setOnPostExecutor(new DownloadTask.OnPostExecutor() {
+							
+							@Override
+							public void onPostExecute() {
+								initGameViewManager();
+								isDoingTurn = true;
+								mContext.setViewVisibility();
+								mGameViewManager.updateData(mTurnData);
+							}
+						});
+						downloadtask.execute(mTurnData.game, mTurnData.version);
+					}
+				}).setNegativeButton("No", null).show();
+	}
 
 	// Upload your new gamestate, then take a turn, and pass it on to the next
 	// player.
@@ -397,8 +397,7 @@ public class GameHelper {
 	}
 
 	private String getHistoryPath() {
-		return Utils.getGamePath(mContext, mTurnData.game, mTurnData.version,
-				mMatch.getMatchId());
+		return Utils.getGamePath(mContext, mTurnData.game, mTurnData.version, mMatch.getMatchId());
 	}
 
 }
