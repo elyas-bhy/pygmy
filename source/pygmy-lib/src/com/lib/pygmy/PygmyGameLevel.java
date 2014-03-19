@@ -31,7 +31,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	
 	private static final long serialVersionUID = -5162807833660148717L;
 	
-	protected GameMap gameMap;
+	protected final Game game;
 	protected GameUniverse universe;
 	protected ObservableValue<Boolean> endOfGame;
 
@@ -39,8 +39,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	private int columns;
 	private int boardType;
 	private List<Integer> colors;
-	protected final Game game;
-	protected List<GameRule> gameRules;
+	private List<GameRule> gameRules;
 
 	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules) {
 		this.game = game;
@@ -66,11 +65,6 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	public String getCurrentPlayerId() {
 		return game.getCurrentPlayerId();
 	}
-
-	@Override
-	public GameMap getMap() {
-		return gameMap;
-	}
 	
 	@Override
 	public GameUniverse getUniverse() {
@@ -93,13 +87,6 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 		
 		this.rows = rows;
 		this.columns = cols;
-		
-		gameMap = new GameMap(rows, cols);
-		for (int x = 0; x < rows; ++x) {
-			for (int y = 0; y < cols; ++y) {
-				gameMap.setValue(x, y, 5);
-			}
-		}
 	}
 	
 	@Override

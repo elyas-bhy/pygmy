@@ -25,8 +25,6 @@ public interface GameLevel {
 	public void init();
 
 	public String getCurrentPlayerId();
-
-	public GameMap getMap();
 	
 	public GameUniverse getUniverse();
 	
