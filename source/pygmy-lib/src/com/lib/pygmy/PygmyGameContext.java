@@ -12,12 +12,11 @@ public class PygmyGameContext implements Serializable {
 	private GameLevel currentLevel;
 	
 	private List<String> playerIds;
-	private int currentPlayer;
+	private String currentPlayerId;
 	
 	public PygmyGameContext(Game game) {
 		this.game = game;
 		this.playerIds = new ArrayList<String>();
-		this.currentPlayer = 0;
 	}
 	
 	public Game getGame() {
@@ -46,11 +45,11 @@ public class PygmyGameContext implements Serializable {
 	}
 	
 	public String getCurrentPlayerId() {
-		return playerIds.get(currentPlayer);
+		return currentPlayerId;
 	}
 	
-	public void nextPlayer() {
-		currentPlayer = (currentPlayer + 1) % playerIds.size();
+	public void setCurrentPlayerId(String playerId) {
+		currentPlayerId = playerId;
 	}
 	
 	public void onPlayerMove(GameMove move) {

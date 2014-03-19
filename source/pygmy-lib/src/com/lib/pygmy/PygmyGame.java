@@ -46,11 +46,6 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 		context.setCurrentLevel(level);
 		level.start();
 	}
-
-	@Override
-	public void nextPlayer() {
-		context.nextPlayer();
-	}
 	
 	@Override
 	public void onPlayerMove(GameMove move) {
