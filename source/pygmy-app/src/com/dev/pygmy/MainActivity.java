@@ -22,11 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -43,11 +40,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev.pygmy.GameListActivity.GameHolder;
 import com.dev.pygmy.game.GameHomePageActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
+import com.dev.pygmy.util.GamePreferences;
 import com.dev.pygmy.util.ImageDownloader;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
@@ -85,23 +82,8 @@ public class MainActivity extends BaseGameActivity implements
 	public static final int RC_LOOK_AT_MATCHES = 10002;
 	public static final String EXTRA_GAME_ID = "com.dev.pygmy.EXTRA_GAME_ID";
 	public static final String EXTRA_GAME_VERSION = "com.dev.pygmy.EXTRA_GAME_VERSION";
-
-	// For our preferences
-	final static String LAST_GAME = "Last_Game";
-	final static String PREVIOUS_LAST_GAME = "Previous_Last_Game";
-	final static String IMAGE = "Icon";
-	final static String DEFAULT_IMAGE = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/Default/logo_home_page.png";
-
-	int lastId;
-	String lastImage;
-	String lastGame;
-	String lastFilename;
-	String lastVersion;
-	int lastMin;
-	int lastMax;
-
-	String previousLastImage;
-	String previousLastGame;
+	
+	private GamePreferences mGamePrefs;
 
 	// How long to show toasts.
 	private final static int TOAST_DELAY = 2000;
@@ -113,11 +95,8 @@ public class MainActivity extends BaseGameActivity implements
 	private String gameID;
 	private String gameVersion;
 
-	private List<GameHolder> games;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mGameHelper = new GameHelper(this);
@@ -367,7 +346,6 @@ public class MainActivity extends BaseGameActivity implements
 		if (!isSignedIn()) {
 			setViewVisibility();
 		} else {
-			getGamePreferences();
 
 			// Initialisation
 			URL imageUrl = null;
@@ -378,22 +356,27 @@ public class MainActivity extends BaseGameActivity implements
 			// To display
 			String name = p.getDisplayName();
 			String nationality = p.getLanguage().toUpperCase();
-
+			
+			String previousGame = PygmyApp.persistence.getPreviousGame().getName();
+			String previousImage = PygmyApp.persistence.getPreviousGame().getImage();
+			String lastGame = PygmyApp.persistence.getLastGame().getName();
+			String lastImage = PygmyApp.persistence.getLastGame().getImage();
+			
 			// Getting URL
 			try {
 				imageUrl = new URL(p.getImage().getUrl());
-				iconUrl = new URL(lastImage);
-				iconUrl2 = new URL(previousLastImage);
+				iconUrl = new URL(previousImage);
+				iconUrl2 = new URL(lastImage);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
 
 			// Setting text and image in views
-			TextView last = (TextView) findViewById(R.id.last_played);
-			last.setText(lastGame);
-			TextView previousLast = (TextView) findViewById(R.id.last_played2);
-			previousLast.setText(previousLastGame);
-
+			TextView previousGameView = (TextView) findViewById(R.id.last_played);
+			previousGameView.setText(previousGame);
+			TextView lastGameView = (TextView) findViewById(R.id.last_played2);
+			lastGameView.setText(lastGame);
+			
 			((TextView) findViewById(R.id.name_profile)).setText(name);
 			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
 			ImageView picture = (ImageView) findViewById(R.id.image_profile);
@@ -408,19 +391,19 @@ public class MainActivity extends BaseGameActivity implements
 			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
 
 			// click on game
-			last.setOnClickListener(new OnClickListener() {
+			previousGameView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					getGamesInfos(LAST_GAME);
+					mGamePrefs = PygmyApp.persistence.getPreviousGame();
 					putGameInfos();
 				}
 			});
 			
 			// click on game
-			previousLast.setOnClickListener(new OnClickListener() {
+			lastGameView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					getGamesInfos(PREVIOUS_LAST_GAME);
+					mGamePrefs = PygmyApp.persistence.getLastGame();
 					putGameInfos();
 				}
 			});
@@ -601,51 +584,19 @@ public class MainActivity extends BaseGameActivity implements
 		mGameHelper.onTurnTaken();
 	}
 
-	// Give game infos to the new Activity
+	// Pass game infos to the new Activity
 	public void putGameInfos() {
+		Intent intent = new Intent(MainActivity.this, GameHomePageActivity.class);
 
-		Intent intent = new Intent(MainActivity.this,
-				GameHomePageActivity.class);
-
-		intent.putExtra("id", lastId);
-		intent.putExtra("gameName", lastGame);
-		intent.putExtra("filename", lastFilename);
-		intent.putExtra("version", lastVersion);
-		intent.putExtra("image", lastImage);
-		intent.putExtra("minPlayer", lastMin);
-		intent.putExtra("maxPlayer", lastMax);
+		intent.putExtra("id", mGamePrefs.getId());
+		intent.putExtra("gameName", mGamePrefs.getName());
+		intent.putExtra("filename", mGamePrefs.getFilename());
+		intent.putExtra("version", mGamePrefs.getVersion());
+		intent.putExtra("image", mGamePrefs.getImage());
+		intent.putExtra("minPlayer", mGamePrefs.getMinPlayers());
+		intent.putExtra("maxPlayer", mGamePrefs.getMaxPlayers());
 
 		startActivityForResult(intent, MainActivity.RC_SELECT_GAME);
 	}
-
-	// Retrieve names and images to show on the profile view
-	public void getGamePreferences() {
-
-		SharedPreferences lastGamePref = getSharedPreferences(
-				LAST_GAME, MODE_PRIVATE);
-		SharedPreferences previousLastGamePref = getSharedPreferences(
-				PREVIOUS_LAST_GAME, MODE_PRIVATE);
-
-		lastGame = lastGamePref.getString(LAST_GAME, "Never play before");
-		lastImage = lastGamePref.getString(IMAGE, DEFAULT_IMAGE);
-
-		previousLastGame = previousLastGamePref
-				.getString(PREVIOUS_LAST_GAME, "Never played before");
-		previousLastImage = previousLastGamePref
-				.getString(IMAGE, DEFAULT_IMAGE);
-	}
-
-	// Retrieve infos for the last games played
-	public void getGamesInfos(String gamePref) {
-		SharedPreferences gamePrefInfo = getSharedPreferences(gamePref,
-				MODE_PRIVATE);
-
-		lastGame = gamePrefInfo.getString(gamePref, "Never play before");
-		lastImage = gamePrefInfo.getString(IMAGE, DEFAULT_IMAGE);
-		lastId = gamePrefInfo.getInt("ID", 0);
-		lastVersion = gamePrefInfo.getString("VERSION", "1.0");
-		lastFilename = gamePrefInfo.getString("FILENAME", "Default");
-		lastMin = gamePrefInfo.getInt("MIN", 1);
-		lastMax = gamePrefInfo.getInt("MAX", 1);
-	}
+	
 }

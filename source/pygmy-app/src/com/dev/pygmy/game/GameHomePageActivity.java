@@ -22,7 +22,6 @@ import java.net.URL;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -35,8 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dev.pygmy.MainActivity;
+import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
+import com.dev.pygmy.util.GamePreferences;
 import com.dev.pygmy.util.ImageDownloader;
 import com.dev.pygmy.util.Utils;
 
@@ -44,19 +45,13 @@ public class GameHomePageActivity extends Activity {
 
 	private final static int TOAST_DELAY = 2000;
 
-	private final String BASE_URL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper";
-	private String gamesInfoUrl = BASE_URL + "/scripts/gamesInfo.php";
-	private String reportUrl = BASE_URL + "/scripts/report.php";
+	private String gamesInfoUrl = Utils.BASE_URL + "/scripts/gamesInfo.php";
+	private String reportUrl = Utils.BASE_URL + "/scripts/report.php";
 
 	private Spinner spinner;
 	private Button button;
 	
 	private TextView titleView, summaryView;
-
-	private String LAST_GAME = "Last_Game";
-	private String IMAGE = "Icon";
-	private String PREVIOUS_LAST_GAME = "Previous_Last_Game";
-	private String DEFAULT_IMAGE = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/Default/logo_home_page.png";
 
 	private int id;
 	private boolean downloaded = false;
@@ -64,16 +59,8 @@ public class GameHomePageActivity extends Activity {
 	private String filename;
 	private String version;
 	private String image;
-	private int minPlayer;
-	private int maxPlayer;
-
-	private int previousId;
-	private String previousGame;
-	private String previousFileName;
-	private String previousImage;
-	private String previousVersion;
-	private int previousMin;
-	private int previousMax;
+	private int minPlayers;
+	private int maxPlayers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,21 +78,10 @@ public class GameHomePageActivity extends Activity {
 			filename = extras.getString("filename");
 			version = extras.getString("version");
 			image = extras.getString("image");
-			minPlayer = extras.getInt("minPlayer");
-			maxPlayer = extras.getInt("maxPlayer");
+			minPlayers = extras.getInt("minPlayer");
+			maxPlayers = extras.getInt("maxPlayer");
 		}
-
-		// Retrieve preferences (infos) for the previous last game palyed
-		SharedPreferences previousLastGame = getSharedPreferences(LAST_GAME,
-				MODE_PRIVATE);
-		previousId = previousLastGame.getInt("ID", 0);
-		previousGame = previousLastGame.getString(LAST_GAME, "Never play before");
-		previousFileName = previousLastGame.getString("FILENAME", "Default");
-		previousImage = previousLastGame.getString(IMAGE, DEFAULT_IMAGE);
-		previousVersion = previousLastGame.getString("VERSION", "1.0");
-		previousMin = previousLastGame.getInt("MIN", 1);
-		previousMax = previousLastGame.getInt("MAX", 1);
-
+		
 		// Check if the game is already on the device or not
 		checkDownload();
 
@@ -125,7 +101,7 @@ public class GameHomePageActivity extends Activity {
 		ImageDownloader downloader = new ImageDownloader();
 		downloader.download(imageUrl.toString(), gameIconImage);
 
-		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName).execute();
+		new GameFetchTask(gamesInfoUrl, gameName, titleView, summaryView).execute();
 	}
 
 	@Override
@@ -151,7 +127,7 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onReportClicked(View view) {
-		new LoadDataFromDatabase(spinner, reportUrl, gameName).execute();
+		new GameFetchTask(reportUrl, gameName, spinner).execute();
 		Toast.makeText(this, "Report Done", TOAST_DELAY).show();
 	}
 
@@ -171,7 +147,6 @@ public class GameHomePageActivity extends Activity {
 			finish();
 		}
 	}
-
 
 	// check if the most recent version of the game is installed on the device
 	private void checkDownload() {
@@ -209,27 +184,16 @@ public class GameHomePageActivity extends Activity {
 
 	// Save the games preferences on the device
 	public void putGamePreferences() {
-		SharedPreferences lastGame = getSharedPreferences(LAST_GAME,
-				MODE_PRIVATE);
-		SharedPreferences.Editor editor = lastGame.edit();
-		editor.putInt("ID", id).commit();
-		editor.putString(LAST_GAME, gameName).commit();
-		editor.putString("FILENAME", filename).commit();
-		editor.putString("VERSION", version).commit();
-		editor.putString(IMAGE, image).commit();
-		editor.putInt("MIN", minPlayer).commit();
-		editor.putInt("MAX", maxPlayer).commit();
-
-		SharedPreferences previousLastGame = getSharedPreferences(PREVIOUS_LAST_GAME,
-				MODE_PRIVATE);
-		SharedPreferences.Editor editor2 = previousLastGame.edit();
-		editor2.putInt("ID", previousId).commit();
-		editor2.putString(PREVIOUS_LAST_GAME, previousGame).commit();
-		editor2.putString("FILENAME", previousFileName).commit();
-		editor2.putString(IMAGE, previousImage).commit();
-		editor2.putString("VERSION", previousVersion).commit();
-		editor2.putInt("MIN", previousMin).commit();
-		editor2.putInt("MAX", previousMax).commit();
+		GamePreferences previousGame = PygmyApp.persistence.getPreviousGame();
+		PygmyApp.persistence.copyToLastGame(previousGame);
+		
+		previousGame.setId(id);
+		previousGame.setName(gameName);
+		previousGame.setImage(image);
+		previousGame.setVersion(version);
+		previousGame.setFilename(filename);
+		previousGame.setMinPlayers(minPlayers);
+		previousGame.setMaxPlayers(maxPlayers);
 	}
 	
 }
