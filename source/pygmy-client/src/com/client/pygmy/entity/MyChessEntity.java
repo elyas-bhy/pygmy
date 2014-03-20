@@ -24,6 +24,11 @@ import com.lib.pygmy.util.Point;
 
 public class MyChessEntity extends PygmyGameEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7184835655366415165L;
+
 	public MyChessEntity(GameLevel level, String playerId, EntityType type, Point p) {
 		super(level, playerId, type, p);
 	}

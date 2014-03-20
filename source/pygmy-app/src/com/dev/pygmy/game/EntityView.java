@@ -207,17 +207,20 @@ public class EntityView extends View {
 			if (draggedEntity != null && entityCurrentPosition != null) {
 				// Entity should not go outside of the board
 				draggedEntity.setCurrentTile(entityCurrentPosition);
-				if (minX < x && x < maxX && minY < y 
-						&& y < maxY && targetRow >= 0 && targetColumn >= 0) {
-					Tile dst = GameBoardView.getTileAt(targetRow, targetColumn);
-					GameMove move = new GameMove(draggedEntity, dst);
-					try {
-						game.onPlayerMove(move);
-						if (context instanceof PygmyTurnListener) {
-							((PygmyTurnListener) context).onTurnTaken();
+				if (!(entityCurrentPosition.getPosition().x == targetRow && 
+						entityCurrentPosition.getPosition().y == targetColumn)) {
+					if (minX < x && x < maxX && minY < y 
+							&& y < maxY && targetRow >= 0 && targetColumn >= 0) {
+						Tile dst = GameBoardView.getTileAt(targetRow, targetColumn);
+						GameMove move = new GameMove(draggedEntity, dst);
+						try {
+							game.onPlayerMove(move);
+							if (context instanceof PygmyTurnListener) {
+								((PygmyTurnListener) context).onTurnTaken();
+							}
+						} catch (IllegalMoveException e) {
+							Toast.makeText(context, "Illegal move!", Toast.LENGTH_SHORT).show();
 						}
-					} catch (IllegalMoveException e) {
-						Toast.makeText(context, "Illegal move!", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}

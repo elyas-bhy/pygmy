@@ -161,4 +161,27 @@ public class Tile implements Serializable {
 				coordinates.x + width, coordinates.y + height, color);
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof Tile)) {
+			return false;
+		}
+		Tile t = (Tile)o;
+		return (position.x == t.getPosition().x && position.y == t.getPosition().y);
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + position.hashCode();
+		return result;
+	}
+	
 }
