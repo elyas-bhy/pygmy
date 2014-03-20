@@ -1,9 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_action_overflow"/>
-    
+        android:id="@+id/set_settings"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        android:title="@string/Settings">
+    </item>
+
+    <item
+        android:id="@+id/set_report"
+        android:orderInCategory="2"
+        android:showAsAction="never"
+        android:title="@string/name_report">
+    </item>
+
+
 </menu>

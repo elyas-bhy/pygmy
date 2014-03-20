@@ -24,6 +24,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="Night">Night</string>
     <string name="Day">Day</string>
+    <string name="Settings">Settings</string>
 
     <!-- Preferences -->
     <string name="pref_sound">Sound</string>
@@ -38,7 +39,7 @@
     <string name="invite">Invite</string>
     <string name="download">Download</string>
     <string name="v_report">Valid report</string>
-    <string name="name_report">Report the game</string>
+    <string name="name_report">Report</string>
     <string name="cond1">Incoherent content</string>
     <string name="cond2">Game not working</string>
     <string name="cond3">Offensive content</string>
@@ -54,7 +55,6 @@
     <string name="offline">Offline</string>
     <string name="board">Board</string>
     <string name="loading_error">Internal error : Could not load game</string>
-    <string name="score">Pygmy game : 4000 pts</string>
 
     <!-- Game list valus -->
     <string name="games">Games</string>

@@ -19,6 +19,7 @@ package com.dev.pygmy.game;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -71,11 +72,13 @@ public class GameHomePageActivity extends Activity {
 
 	private String previousGame;
 	private String previousImage;
+	public AlertDialog mAlertDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gamehomepage);
+			
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		button = (Button) findViewById(R.id.play_downloadButton);
 
@@ -100,7 +103,6 @@ public class GameHomePageActivity extends Activity {
 		// Check if the game is already on the device or not
 		checkDownload();
 
-		spinner = (Spinner) findViewById(R.id.spinner);
 		titleView = (TextView) findViewById(R.id.name_game);
 		summaryView = (TextView) findViewById(R.id.name_resume);
 		
@@ -121,10 +123,53 @@ public class GameHomePageActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		AlertDialog dialog;
 		switch (item.getItemId()) {
-		case R.id.menu_settings:
-			
+		case R.id.set_settings:
 			startActivity(new Intent(this, SettingsActivity.class));
+			return true;
+		case R.id.set_report:
+			  final CharSequence[] items = {" Offensive content",
+					  " Game not working "," Incoherent content "," Other "};
+	           // arraylist to keep the selected items
+	           final ArrayList seletedItems=new ArrayList();
+
+	            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	            builder.setTitle("Reporting game :"+((TextView)findViewById(R.id.name_game)).getText());
+	            builder.setMultiChoiceItems(items, null,
+	                    new DialogInterface.OnMultiChoiceClickListener() {
+	             @Override
+	             public void onClick(DialogInterface dialog, int indexSelected,
+	                     boolean isChecked) {
+	                 if (isChecked) {
+	                     // If the user checked the item, add it to the selected items
+	                     seletedItems.add(indexSelected);
+	                 } else if (seletedItems.contains(indexSelected)) {
+	                     // Else, if the item is already in the array, remove it
+	                     seletedItems.remove(Integer.valueOf(indexSelected));
+	                 }
+	             }
+	         })
+	          // Set the action buttons
+	         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	             @Override
+	             public void onClick(DialogInterface dialog, int id) {
+	                 //  Your code when user clicked on OK
+	                 //  You can write the code  to save the selected item here
+
+	             }
+	         })
+	         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	             @Override
+	             public void onClick(DialogInterface dialog, int id) {
+	                //  Your code when user clicked on Cancel
+
+	             }
+	         });
+
+	            dialog = builder.create();//AlertDialog dialog; create like this outside onClick
+	            dialog.show();
+	            
 			return true;
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);

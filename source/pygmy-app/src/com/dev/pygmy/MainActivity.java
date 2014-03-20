@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -129,8 +127,8 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menu_settings:
-			startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+		case R.id.set_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		case android.R.id.home:
 			mSlidingMenu.toggle();
@@ -290,7 +288,6 @@ public class MainActivity extends BaseGameActivity implements
 		}
 
 		initSlidingMenu(); // MOVE OUT MAYBE
-
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
 
 		if (mGameHelper.isDoingTurn()) {
