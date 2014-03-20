@@ -155,6 +155,7 @@
 
                 <TextView
                     android:id="@+id/last_played"
+                    android:onClick="onClick"
                     style="@style/text_game_list_profile" />
             </LinearLayout>
 
@@ -170,6 +171,7 @@
 
                 <TextView
                     android:id="@+id/last_played2"
+                    android:onClick="onClick"
                     style="@style/text_game_list_profile" />
             </LinearLayout>
         </LinearLayout>

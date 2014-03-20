@@ -67,8 +67,13 @@ public class GameHomePageActivity extends Activity {
 	private int minPlayer;
 	private int maxPlayer;
 
+	private int previousId;
 	private String previousGame;
+	private String previousFileName;
 	private String previousImage;
+	private String previousVersion;
+	private int previousMin;
+	private int previousMax;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +95,16 @@ public class GameHomePageActivity extends Activity {
 			maxPlayer = extras.getInt("maxPlayer");
 		}
 
+		// Retrieve preferences (infos) for the previous last game palyed
 		SharedPreferences previousLastGame = getSharedPreferences(LAST_GAME,
 				MODE_PRIVATE);
+		previousId = previousLastGame.getInt("ID", 0);
 		previousGame = previousLastGame.getString(LAST_GAME, "Never play before");
+		previousFileName = previousLastGame.getString("FILENAME", "Default");
 		previousImage = previousLastGame.getString(IMAGE, DEFAULT_IMAGE);
+		previousVersion = previousLastGame.getString("VERSION", "1.0");
+		previousMin = previousLastGame.getInt("MIN", 1);
+		previousMax = previousLastGame.getInt("MAX", 1);
 
 		// Check if the game is already on the device or not
 		checkDownload();
@@ -196,18 +207,29 @@ public class GameHomePageActivity extends Activity {
 		return (path.delete());
 	}
 
+	// Save the games preferences on the device
 	public void putGamePreferences() {
 		SharedPreferences lastGame = getSharedPreferences(LAST_GAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = lastGame.edit();
+		editor.putInt("ID", id).commit();
 		editor.putString(LAST_GAME, gameName).commit();
+		editor.putString("FILENAME", filename).commit();
+		editor.putString("VERSION", version).commit();
 		editor.putString(IMAGE, image).commit();
+		editor.putInt("MIN", minPlayer).commit();
+		editor.putInt("MAX", maxPlayer).commit();
 
 		SharedPreferences previousLastGame = getSharedPreferences(PREVIOUS_LAST_GAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor2 = previousLastGame.edit();
+		editor2.putInt("ID", previousId).commit();
 		editor2.putString(PREVIOUS_LAST_GAME, previousGame).commit();
+		editor2.putString("FILENAME", previousFileName).commit();
 		editor2.putString(IMAGE, previousImage).commit();
+		editor2.putString("VERSION", previousVersion).commit();
+		editor2.putInt("MIN", previousMin).commit();
+		editor2.putInt("MAX", previousMax).commit();
 	}
 	
 }

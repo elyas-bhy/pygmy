@@ -33,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,6 +43,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dev.pygmy.GameListActivity.GameHolder;
+import com.dev.pygmy.game.GameHomePageActivity;
 import com.dev.pygmy.navbar.NavbarAdapter;
 import com.dev.pygmy.navbar.NavbarEntryItem;
 import com.dev.pygmy.navbar.NavbarItem;
@@ -89,6 +92,17 @@ public class MainActivity extends BaseGameActivity implements
 	final static String IMAGE = "Icon";
 	final static String DEFAULT_IMAGE = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/gamesImages/Default/logo_home_page.png";
 
+	int lastId;
+	String lastImage;
+	String lastGame;
+	String lastFilename;
+	String lastVersion;
+	int lastMin;
+	int lastMax;
+
+	String previousLastImage;
+	String previousLastGame;
+
 	// How long to show toasts.
 	private final static int TOAST_DELAY = 2000;
 
@@ -98,6 +112,8 @@ public class MainActivity extends BaseGameActivity implements
 	// Reference to the selected game's source
 	private String gameID;
 	private String gameVersion;
+
+	private List<GameHolder> games;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -155,8 +171,10 @@ public class MainActivity extends BaseGameActivity implements
 				R.string.app_name));
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
-		entries.add(new NavbarEntryItem(R.drawable.ic_action_home, R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_action_icon_games, R.string.games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_home,
+				R.string.home));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_icon_games,
+				R.string.games));
 		entries.add(new NavbarEntryItem(R.drawable.ic_action_sword,
 				R.string.check_games));
 		entries.add(new NavbarEntryItem(R.drawable.ic_action_signout,
@@ -349,6 +367,8 @@ public class MainActivity extends BaseGameActivity implements
 		if (!isSignedIn()) {
 			setViewVisibility();
 		} else {
+			getGamePreferences();
+
 			// Initialisation
 			URL imageUrl = null;
 			URL iconUrl = null;
@@ -358,23 +378,6 @@ public class MainActivity extends BaseGameActivity implements
 			// To display
 			String name = p.getDisplayName();
 			String nationality = p.getLanguage().toUpperCase();
-
-			String lastImage;
-			String lastGame;
-			String previousLastImage;
-			String previousLastGame;
-
-			SharedPreferences lastGamePref = getSharedPreferences(LAST_GAME,
-					MODE_PRIVATE);
-			lastGame = lastGamePref.getString(LAST_GAME, "Never play before");
-			lastImage = lastGamePref.getString(IMAGE, DEFAULT_IMAGE);
-
-			SharedPreferences previousLastGamePref = getSharedPreferences(
-					PREVIOUS_LAST_GAME, MODE_PRIVATE);
-			previousLastGame = previousLastGamePref.getString(
-					PREVIOUS_LAST_GAME, "Never played before");
-			previousLastImage = previousLastGamePref.getString(IMAGE,
-					DEFAULT_IMAGE);
 
 			// Getting URL
 			try {
@@ -386,20 +389,41 @@ public class MainActivity extends BaseGameActivity implements
 			}
 
 			// Setting text and image in views
-			((TextView) findViewById(R.id.last_played)).setText(lastGame);
-			((TextView) findViewById(R.id.last_played2))
-					.setText(previousLastGame);
+			TextView last = (TextView) findViewById(R.id.last_played);
+			last.setText(lastGame);
+			TextView previousLast = (TextView) findViewById(R.id.last_played2);
+			previousLast.setText(previousLastGame);
+
 			((TextView) findViewById(R.id.name_profile)).setText(name);
 			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
 			ImageView picture = (ImageView) findViewById(R.id.image_profile);
 			ImageView gameIcon = (ImageView) findViewById(R.id.game_icon_profile_last);
 			ImageView gameIcon2 = (ImageView) findViewById(R.id.game_icon_profile_last2);
-
+			
+			// Retrieve images for the last played games
 			final ImageDownloader downloader = new ImageDownloader();
 			downloader.download(imageUrl.toString(), picture);
 			downloader.download(iconUrl.toString(), gameIcon);
 			downloader.download(iconUrl2.toString(), gameIcon2);
 			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
+
+			// click on game
+			last.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					getGamesInfos(LAST_GAME);
+					putGameInfos();
+				}
+			});
+			
+			// click on game
+			previousLast.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					getGamesInfos(PREVIOUS_LAST_GAME);
+					putGameInfos();
+				}
+			});
 		}
 	}
 
@@ -575,8 +599,53 @@ public class MainActivity extends BaseGameActivity implements
 	public void onTurnTaken() {
 		showSpinner();
 		mGameHelper.onTurnTaken();
-		}
-
 	}
 
+	// Give game infos to the new Activity
+	public void putGameInfos() {
 
+		Intent intent = new Intent(MainActivity.this,
+				GameHomePageActivity.class);
+
+		intent.putExtra("id", lastId);
+		intent.putExtra("gameName", lastGame);
+		intent.putExtra("filename", lastFilename);
+		intent.putExtra("version", lastVersion);
+		intent.putExtra("image", lastImage);
+		intent.putExtra("minPlayer", lastMin);
+		intent.putExtra("maxPlayer", lastMax);
+
+		startActivityForResult(intent, MainActivity.RC_SELECT_GAME);
+	}
+
+	// Retrieve names and images to show on the profile view
+	public void getGamePreferences() {
+
+		SharedPreferences lastGamePref = getSharedPreferences(
+				LAST_GAME, MODE_PRIVATE);
+		SharedPreferences previousLastGamePref = getSharedPreferences(
+				PREVIOUS_LAST_GAME, MODE_PRIVATE);
+
+		lastGame = lastGamePref.getString(LAST_GAME, "Never play before");
+		lastImage = lastGamePref.getString(IMAGE, DEFAULT_IMAGE);
+
+		previousLastGame = previousLastGamePref
+				.getString(PREVIOUS_LAST_GAME, "Never played before");
+		previousLastImage = previousLastGamePref
+				.getString(IMAGE, DEFAULT_IMAGE);
+	}
+
+	// Retrieve infos for the last games played
+	public void getGamesInfos(String gamePref) {
+		SharedPreferences gamePrefInfo = getSharedPreferences(gamePref,
+				MODE_PRIVATE);
+
+		lastGame = gamePrefInfo.getString(gamePref, "Never play before");
+		lastImage = gamePrefInfo.getString(IMAGE, DEFAULT_IMAGE);
+		lastId = gamePrefInfo.getInt("ID", 0);
+		lastVersion = gamePrefInfo.getString("VERSION", "1.0");
+		lastFilename = gamePrefInfo.getString("FILENAME", "Default");
+		lastMin = gamePrefInfo.getInt("MIN", 1);
+		lastMax = gamePrefInfo.getInt("MAX", 1);
+	}
+}
