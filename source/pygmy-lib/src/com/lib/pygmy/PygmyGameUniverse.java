@@ -137,7 +137,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	/**
-	 * Returns the universe's state in a compressed formats
+	 * Returns the universe's state in a compressed format
 	 */
 	@Override
 	public String getState() {
