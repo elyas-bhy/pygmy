@@ -157,7 +157,7 @@ public class GameHomePageActivity extends Activity {
 			downloaded = true;
 			button.setText("Play");
 		} else if (gameFolder.exists() && !versionFolder.exists()) {
-			deleteDirectory(gameFolder);
+			//deleteDirectory(gameFolder);
 			downloaded = false;
 		} else {
 			downloaded = false;
@@ -186,7 +186,6 @@ public class GameHomePageActivity extends Activity {
 	public void putGamePreferences() {
 		GamePreferences previousGame = PygmyApp.persistence.getPreviousGame();
 		PygmyApp.persistence.copyToLastGame(previousGame);
-		
 		previousGame.setId(id);
 		previousGame.setName(gameName);
 		previousGame.setImage(image);
