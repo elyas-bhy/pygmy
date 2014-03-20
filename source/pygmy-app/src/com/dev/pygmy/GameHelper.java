@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.pygmy;
 
 import java.io.File;
@@ -16,33 +32,56 @@ import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.util.PygmyLoader;
 import com.lib.pygmy.util.TurnData;
 
+/**
+ * Handles match state management by implementing callbacks and using
+ * the Google Play Services game client API
+ * @author Pygmy
+ *
+ */
 public class GameHelper {
+
+	/**
+	 * Should I be showing the turn API?
+	 */
+	public boolean isDoingTurn = false;
+
+	/**
+	 * This is the current match we're in; null if not loaded
+	 */
+	private TurnBasedMatch mMatch;
+	
+	/**
+	 * This is the current match data after being unpersisted.
+	 * Do not retain references to match data once you have
+	 * taken an action on the match, such as takeTurn()
+	 */
+	private TurnData mTurnData;
+
+	/**
+	 * Reference to the current game
+	 */
+	private PygmyGame mGame;
+	
+	/**
+	 * Manages all of the game's views
+	 */
+	private GameViewManager mGameViewManager;
+	
+	/**
+	 * Current player's participant ID
+	 */
+	private String mCurrentPlayerId;
 
 	private MainActivity mContext;
 	private AlertDialog mAlertDialog;
 
-	// Should I be showing the turn API?
-	public boolean isDoingTurn = false;
-
-	// This is the current match we're in; null if not loaded
-	private TurnBasedMatch mMatch;
-
-	// This is the current match data after being unpersisted.
-	// Do not retain references to match data once you have
-	// taken an action on the match, such as takeTurn()
-	private TurnData mTurnData;
-	
-	private String mCurrentPlayerId;
-
-	// Manages all of the game's views
-	private GameViewManager mGameViewManager;
-	private PygmyGame mGame;
-
 	public GameHelper(MainActivity context) {
-		this.mContext = context;
+		mContext = context;
 	}
 
-	// Switch to gameplay view
+	/**
+	 * Switches to gameplay view
+	 */
 	public void setGameplayUI() {
 		File versionFolder = new File(Utils.getGamePath(mContext,
 				mTurnData.game, mTurnData.version));
@@ -59,6 +98,10 @@ public class GameHelper {
 		}
 	}
 
+	/**
+	 * Initializes the game and its view manager, either by dynamically loading it,
+	 * or by deserializing it if the match was already persisted
+	 */
 	private void initGameViewManager() {
 		mGame = Utils.loadGameHistory(getHistoryPath());
 		if (mGame == null) {
@@ -116,6 +159,12 @@ public class GameHelper {
 				mMatch.getMatchId(), nextParticipantId);
 	}
 
+	/**
+	 * Starts a new match by loading the initial game state
+	 * @param match
+	 * @param gameID
+	 * @param gameVersion
+	 */
 	public void startMatch(TurnBasedMatch match, String gameID, String gameVersion) {
 		mMatch = match;
 
@@ -162,7 +211,6 @@ public class GameHelper {
 	}
 
 	public void updateMatch(TurnBasedMatch match) {
-
 		mMatch = match;
 
 		int status = match.getStatus();
@@ -379,8 +427,9 @@ public class GameHelper {
 				}).setNegativeButton("No", null).show();
 	}
 
-	// Upload your new gamestate, then take a turn, and pass it on to the next
-	// player.
+	/**
+	 * Upload your new gamestate, then take a turn, and pass it on to the next player
+	 */
 	public void onTurnTaken() {
 		String nextParticipantId = getNextParticipantId();
 

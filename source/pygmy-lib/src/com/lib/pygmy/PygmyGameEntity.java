@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.lib.pygmy;
 
 import java.io.Serializable;
@@ -26,7 +42,7 @@ public abstract class PygmyGameEntity implements GameEntity,
 		this.type = type;
 		this.tile = new Tile(0,0,0);
 		
-		if ( (pos.x < 0 && pos.x >= level.getNumberRows()) ||
+		if ((pos.x < 0 && pos.x >= level.getNumberRows()) || 
 				(pos.y < 0 && pos.y >= level.getNumberColumns())) {
 			throw new IllegalStateException("Position of the entity is out of the board.");
 		}

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.pygmy.game;
 
 import java.io.BufferedReader;
@@ -22,60 +38,62 @@ import android.os.AsyncTask;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
+/**
+ * Worker thread responsible for fetching data of a specified game
+ * and displaying it
+ * @author Pygmy
+ *
+ */
+public class GameFetchTask extends AsyncTask<String, String, String> {
 
 	private final String databaseUrl;
 	private final String gameName;
 	private String title;
 	private String summary;
-	private String result = "";
 	
-	private InputStream is;
 	private TextView titleView, summaryView;
-	private Spinner spin;
+	private Spinner spinner;
 
-	public LoadDataFromDatabase(Spinner sp, String url, String game) {
-		this.spin = sp;
+	public GameFetchTask(String url, String game, Spinner sp) {
 		this.databaseUrl = url;
 		this.gameName = game;
+		this.spinner = sp;
 	}
 
-	public LoadDataFromDatabase(TextView title, TextView summary, String url,
-			String game) {
+	public GameFetchTask(String url, String game, TextView title, TextView summary) {
+		this.databaseUrl = url;
+		this.gameName = game;
 		this.titleView = title;
 		this.summaryView = summary;
-		this.gameName = game;
-		this.databaseUrl = url;
 	}
 
 	@Override
-	protected Void doInBackground(String... params) {
+	protected String doInBackground(String... params) {
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(databaseUrl);
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
-		if (spin != null) {
-			String item = spin.getSelectedItem().toString();
+		if (spinner != null) {
+			String item = spinner.getSelectedItem().toString();
 			param.add(new BasicNameValuePair("report", item));
 		}
-
-		// sent variable gameName to the PHP script
 		param.add(new BasicNameValuePair("name", gameName));
 
+		InputStream is = null;
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(param));
 
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			HttpEntity httpEntity = httpResponse.getEntity();
 
-			// read content
+			// Read content
 			is = httpEntity.getContent();
-
 		} catch (Exception e) {
 			PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
 		}
 
+		String result = null;
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			StringBuilder sb = new StringBuilder();
@@ -85,17 +103,16 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 			}
 			is.close();
 			result = sb.toString();
-
 		} catch (Exception e) {
 			PygmyApp.logE("Error converting result: " + e.getMessage());
 		}
 
-		return null;
+		return result;
 	}
 
-	protected void onPostExecute(Void v) {
-		
-		// retrieve results of the script php 
+	@Override
+	protected void onPostExecute(String result) {
+		// Retrieve results of the PHP script 
 		JSONObject json;
 		try {
 			JSONArray array = new JSONArray(result);
@@ -103,10 +120,9 @@ public class LoadDataFromDatabase extends AsyncTask<String, String, Void> {
 				json = array.getJSONObject(i);
 				title = json.getString("name");
 				summary = json.getString("resume");
-				titleView.append(title + "\t\t" + "\n");
-				summaryView.append(summary + "\t\t" + "\n");
+				titleView.setText(title);
+				summaryView.setText(summary);
 			}
-
 		} catch (Exception e) {
 			PygmyApp.logE("Error parsing data: " + e.getMessage());
 		}

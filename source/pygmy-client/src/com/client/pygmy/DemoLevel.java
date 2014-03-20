@@ -16,10 +16,14 @@
 
 package com.client.pygmy;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import android.graphics.Color;
 
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
+import com.lib.pygmy.BoardType;
 import com.lib.pygmy.EntityType;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
@@ -41,9 +45,14 @@ public class DemoLevel extends PygmyGameLevel {
 		List<String> playerIds = getContext().getGame().getPlayerIds();
 		String p1 = playerIds.get(0);
 		String p2 = playerIds.get(1);
+		
+		List<Integer> colors = new ArrayList<Integer>();
+		colors.add(Color.CYAN);
+		colors.add(Color.WHITE);
 
-		setBoardType(0);
+		setBoardType(BoardType.CHECKER_BOARD);
 		setDimensions(8, 8);
+		setColors(colors);
 
 		addGameRule(new EndlessGameRule());
 

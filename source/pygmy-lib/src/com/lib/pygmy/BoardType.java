@@ -16,19 +16,14 @@
 
 package com.lib.pygmy;
 
-import com.lib.pygmy.base.Overlappable;
-
-public interface OverlapProcessor {
-
-	public void setUniverse(GameUniverse universe);
+/**
+ * 
+ *
+ */
+public class BoardType {
 	
-	public void addOverlappable(Overlappable p);
+	public static final int CHECKER_BOARD = 0;
+	public static final int GRID_BOARD = 1;
+	public static final int HEX_GRID_BOARD = 2;
 
-	public void removeOverlappable(Overlappable p);
-
-	public void setOverlapRules(OverlapRulesApplier overlapRules);
-
-	public void processOverlap(GameMove move);
-
-	public void clear();
 }

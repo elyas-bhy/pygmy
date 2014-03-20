@@ -62,10 +62,7 @@ session_start();
 
 					$title = $row['name'];
 					$version = $row['version'];
-					//$min = $row['min_player'];
-					//$max = $row['max_player'];
 					echo ' '.$title.'  |  Version : '.$version.' <br>';
-					//echo ' Players min : '.$min.' | Players max : '.$max.' <br>';
 					?>
 					<form method="post" action="Version.php?game=<?php echo $row['name']; ?>"><br>
 					<input type="submit" name="submit" value="UPDATE">

@@ -83,10 +83,11 @@ session_start();
 							}
 							
 							if($error == False){
-								echo "The file ". basename( $_FILES['code']['name']). " has been uploaded good";	
+								echo "The file ". basename( $_FILES['code']['name']). " has been uploaded";	
 					
 								$query = "UPDATE game SET min_player = '$min_player_v', max_player = '$max_player_v', version = '$vers' WHERE name = '$title'";
 								mysql_query($query);
+								include '../scripts/database_backup.php';
 							}
 							else{
 								echo 'Min > Max impossible';

@@ -123,7 +123,7 @@ public class EntityView extends View {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		int x = (int) event.getX();
@@ -143,6 +143,8 @@ public class EntityView extends View {
 		case MotionEvent.ACTION_DOWN: 
 			Point coords;
 			Tile tile;
+			
+			// Get what entity is being dragged.
 			for (GameEntity entity : entities) {
 				// Check all the bounds of the entity
 				if (entity != null) {
@@ -150,9 +152,9 @@ public class EntityView extends View {
 					coords = tile.getCoordinates();
 					tileSize = tile.getWidth();
 					
+					// Event is inside a tile.
 					if (x > coords.x && x < coords.x + tileSize 
 					 && y > coords.y && y < coords.y + tileSize) {
-						// Get what entity is being dragged.
 
 						String entityPlayerId = entity.getPlayerId();
 						String currentPlayerId = game.getCurrentPlayerId();
@@ -175,24 +177,16 @@ public class EntityView extends View {
 		case MotionEvent.ACTION_MOVE:
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
+				// The entity must not go out of the board.
 				if (minX < x && x < maxX && minY < y && y < maxY) {
 					//Identify the hovered tile
-					float eventX = event.getX();
-					float eventY = event.getY();
-					float mx = (eventX * nbColumns) / maxX;
-					float my = (eventY * nbRows) / maxY;
+					float eventX = event.getX() * event.getXPrecision();
+					float eventY = event.getY() * event.getYPrecision();
 					
-					targetColumn = Math.round(mx);
-					targetRow = Math.round(my);
-
-					if ((int)mx == 1) {
-						targetColumn = (int)mx;
-					}
-					if ((int)my == 1) {
-						targetRow = (int)my;
-					} 
-
-					Tile nextTile = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
+					targetColumn = (int)( (eventX-minX) / tileSize );
+					targetRow = (int)( (eventY-minY) / tileSize );
+					
+					Tile nextTile = GameBoardView.getTileAt(targetRow, targetColumn);
 					
 					// Show the future position of the entity
 					GameViewManager.redrawOverlay();
@@ -214,8 +208,8 @@ public class EntityView extends View {
 				// Entity should not go outside of the board
 				draggedEntity.setCurrentTile(entityCurrentPosition);
 				if (minX < x && x < maxX && minY < y 
-						&& y < maxY && targetRow > 0 && targetColumn > 0) {
-					Tile dst = GameBoardView.getTileAt(targetRow-1, targetColumn-1);
+						&& y < maxY && targetRow >= 0 && targetColumn >= 0) {
+					Tile dst = GameBoardView.getTileAt(targetRow, targetColumn);
 					GameMove move = new GameMove(draggedEntity, dst);
 					try {
 						game.onPlayerMove(move);
@@ -233,7 +227,8 @@ public class EntityView extends View {
 			
 		default:
 			break;
-		} 
+		}
+		
 		// Redraw the canvas
 		invalidate(); 
 		return true; 

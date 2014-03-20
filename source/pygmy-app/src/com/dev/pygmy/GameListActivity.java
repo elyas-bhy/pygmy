@@ -46,7 +46,7 @@ import com.dev.pygmy.game.GameHomePageActivity;
 
 public class GameListActivity extends Activity {
 	
-	protected final class GameHolder {
+	public final class GameHolder {
 		public Integer id;
 		public String name;
 		public String info;

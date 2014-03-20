@@ -91,11 +91,13 @@ session_start();
 					
 								$query = "Insert into game(name,username, resume, filename, min_player, max_player, path, image) values('$title','$user','$resume','$filename','$min_player', '$max_player', '$path', '$pathi')";
 								mysql_query($query);
+								include '../scripts/database_backup.php';
 							
 							}
 							else{
 								$query = "Insert into game(name,username, resume, filename, min_player, max_player, path) values('$title','$user','$resume','$filename','$min_player', '$max_player', '$path')";
 								mysql_query($query);
+								include '../scripts/database_backup.php';
 							}
 						}
 					  }	

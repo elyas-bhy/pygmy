@@ -19,7 +19,7 @@ session_start();
 		
 		<div id="corps">
 			
-					<h1> Ajout d'un utilisateur</h1>
+					<h1>New Pygmy Developer</h1>
 					<h2><?php
 					$host = "dbserver"; //dbserver
 					$user = "njouanla";  //njouanla
@@ -42,6 +42,8 @@ session_start();
 							mysql_query($query);
 		
 							mysql_close($conn);
+							
+							include '../scripts/database_backup.php';
 	
 							echo "Registration success<br>";
 							echo '<meta http-equiv="refresh" content="1; URL=ConnexionSite.php">';

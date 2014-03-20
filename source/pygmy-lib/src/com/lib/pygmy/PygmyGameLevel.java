@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Pygmy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.lib.pygmy;
 
 import java.io.Serializable;
@@ -15,7 +31,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	
 	private static final long serialVersionUID = -5162807833660148717L;
 	
-	protected GameMap gameMap;
+	protected final Game game;
 	protected GameUniverse universe;
 	protected ObservableValue<Boolean> endOfGame;
 
@@ -23,8 +39,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	private int columns;
 	private int boardType;
 	private List<Integer> colors;
-	protected final Game game;
-	protected List<GameRule> gameRules;
+	private List<GameRule> gameRules;
 
 	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules) {
 		this.game = game;
@@ -50,11 +65,6 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	public String getCurrentPlayerId() {
 		return game.getCurrentPlayerId();
 	}
-
-	@Override
-	public GameMap getMap() {
-		return gameMap;
-	}
 	
 	@Override
 	public GameUniverse getUniverse() {
@@ -77,13 +87,6 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 		
 		this.rows = rows;
 		this.columns = cols;
-		
-		gameMap = new GameMap(rows, cols);
-		for (int x = 0; x < rows; ++x) {
-			for (int y = 0; y < cols; ++y) {
-				gameMap.setValue(x, y, 5);
-			}
-		}
 	}
 	
 	@Override
@@ -151,8 +154,8 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 
 	@Override
 	public void setColors(List<Integer> colors) {
-		if (colors == null) {
-			throw new IllegalStateException("Colors list is null.");
+		if (colors == null || colors.isEmpty()) {
+			throw new IllegalStateException("Colors list is empty or null. Did you forget to setup it?");
 		}
 
 		this.colors = colors;
