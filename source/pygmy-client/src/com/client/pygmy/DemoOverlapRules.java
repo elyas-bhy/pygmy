@@ -19,6 +19,7 @@ package com.client.pygmy;
 import java.util.Vector;
 
 import com.lib.pygmy.GameUniverse;
+import com.lib.pygmy.PygmyGameEntity;
 import com.lib.pygmy.PygmyOverlapRulesApplier;
 import com.lib.pygmy.base.Overlap;
 
@@ -39,7 +40,7 @@ public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 		super.applyOverlapRules(overlappables);
 	}
 	
-//	public void overlapRule(Pacman p, Pacgum pg) {
-//		universe.removeGameEntity(pg);
+//	public void overlapRule(PygmyGameEntity e1, PygmyGameEntity e2) {
+//		universe.removeGameEntity(e2);
 //	}
 }

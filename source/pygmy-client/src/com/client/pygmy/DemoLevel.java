@@ -23,6 +23,7 @@ import android.graphics.Color;
 
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
+import com.lib.pygmy.BoardType;
 import com.lib.pygmy.EntityType;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
@@ -49,7 +50,7 @@ public class DemoLevel extends PygmyGameLevel {
 		colors.add(Color.CYAN);
 		colors.add(Color.WHITE);
 
-		setBoardType(0);
+		setBoardType(BoardType.CHECKER_BOARD);
 		setDimensions(8, 8);
 		setColors(colors);
 
