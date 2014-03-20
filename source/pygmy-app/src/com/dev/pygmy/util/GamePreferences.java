@@ -17,7 +17,7 @@ public class GamePreferences {
 	private final int DEFAULT_MAX_PLAYERS = 1;
 	private final String DEFAULT_NAME = "None";
 	private final String DEFAULT_IMAGE =  Utils.BASE_URL + "/gamesImages/Default/logo_home_page.png";
-	private final String DEFAULT_VERSION = "1.0";
+	private final String DEFAULT_VERSION = "0.1";
 	private final String DEFAULT_FILENAME = "game.jar";
 	
 	private SharedPreferences prefs;
@@ -60,7 +60,7 @@ public class GamePreferences {
 	}
 	
 	public void setVersion(String version) {
-		editor.putString(PREF_GAME_VERSION, DEFAULT_VERSION);
+		editor.putString(PREF_GAME_VERSION, version);
 		editor.commit();
 	}
 	
@@ -69,7 +69,7 @@ public class GamePreferences {
 	}
 	
 	public void setFilename(String filename) {
-		editor.putString(PREF_GAME_FILENAME, DEFAULT_FILENAME);
+		editor.putString(PREF_GAME_FILENAME, filename);
 		editor.commit();
 	}
 

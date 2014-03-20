@@ -361,6 +361,7 @@ public class MainActivity extends BaseGameActivity implements
 			String previousImage = PygmyApp.persistence.getPreviousGame().getImage();
 			String lastGame = PygmyApp.persistence.getLastGame().getName();
 			String lastImage = PygmyApp.persistence.getLastGame().getImage();
+
 			
 			// Getting URL
 			try {
