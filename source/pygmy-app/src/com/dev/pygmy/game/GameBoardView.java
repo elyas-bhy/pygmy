@@ -69,7 +69,7 @@ public class GameBoardView extends View {
 		numberOfRows = game.getCurrentLevel().getNumberRows();
 		numberOfColumns = game.getCurrentLevel().getNumberColumns();
 		boardType = game.getCurrentLevel().getBoardType();
-		//colors = game.getCurrentLevel().getColors();
+		colors = game.getCurrentLevel().getColors();
 	}
 
 	/**
@@ -125,16 +125,14 @@ public class GameBoardView extends View {
 	
 	private void drawCheckerboard(Canvas canvas) {
 
-		//		if (colors.size() < 2) {
-		//			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
-		//		}
-		//		Paint color1 = new Paint(colors.get(1));
-		//		Paint color2 = new Paint(colors.get(2));
-
+		if (colors.size() < 2) {
+			throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
+		}
+		
 		Paint color1 = new Paint();
 		Paint color2 = new Paint();
-		color1.setColor(Color.CYAN);
-		color2.setColor(Color.WHITE);
+		color1.setColor(colors.get(0));
+		color2.setColor(colors.get(1));
 
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
 		int tileHeight = Math.max(numberOfRows, numberOfColumns);

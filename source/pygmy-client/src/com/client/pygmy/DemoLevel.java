@@ -16,7 +16,10 @@
 
 package com.client.pygmy;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import android.graphics.Color;
 
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
@@ -41,9 +44,14 @@ public class DemoLevel extends PygmyGameLevel {
 		List<String> playerIds = getContext().getGame().getPlayerIds();
 		String p1 = playerIds.get(0);
 		String p2 = playerIds.get(1);
+		
+		List<Integer> colors = new ArrayList<Integer>();
+		colors.add(Color.CYAN);
+		colors.add(Color.WHITE);
 
 		setBoardType(0);
 		setDimensions(8, 8);
+		setColors(colors);
 
 		addGameRule(new EndlessGameRule());
 

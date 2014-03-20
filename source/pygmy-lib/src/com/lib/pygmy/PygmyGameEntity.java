@@ -42,7 +42,7 @@ public abstract class PygmyGameEntity implements GameEntity,
 		this.type = type;
 		this.tile = new Tile(0,0,0);
 		
-		if ( (pos.x < 0 && pos.x >= level.getNumberRows()) ||
+		if ((pos.x < 0 && pos.x >= level.getNumberRows()) || 
 				(pos.y < 0 && pos.y >= level.getNumberColumns())) {
 			throw new IllegalStateException("Position of the entity is out of the board.");
 		}
