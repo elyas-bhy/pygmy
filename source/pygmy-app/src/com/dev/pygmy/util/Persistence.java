@@ -22,21 +22,25 @@ import android.preference.PreferenceManager;
 
 public class Persistence {
 	
-	public static final String PREF_SOUND_CHECK = "pref_check_sound";
-	public static final String PREF_NOTIF_CHECK = "pref_check_notif";
-	public static final String PREF_VIBRATE_CHECK = "pref_check_vibrate";
-	//public static final String PREF_SKIN_SELECT = "pref_select_skin";	
+	private final String PREF_SOUND_CHECK = "pref_check_sound";
+	private final String PREF_NOTIF_CHECK = "pref_check_notif";
+	private final String PREF_VIBRATE_CHECK = "pref_check_vibrate";
+	//private final String PREF_SKIN_SELECT = "pref_select_skin";
 	
-	private SharedPreferences settings;
+	private GamePreferences previousGame;
+	private GamePreferences lastGame;
+	private SharedPreferences prefs;
 	private SharedPreferences.Editor editor;
 	
 	public Persistence(Context context) {
-		settings = PreferenceManager.getDefaultSharedPreferences(context);
-		editor = settings.edit();
+		prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		editor = prefs.edit();
+		previousGame = new GamePreferences(context, "PREVIOUS_GAME");
+		lastGame = new GamePreferences(context, "LAST_GAME");
 	}
 	
 	public boolean isCheckedSound() {
-		return settings.getBoolean(PREF_SOUND_CHECK, true);
+		return prefs.getBoolean(PREF_SOUND_CHECK, true);
 	}
 	
 	public void setCheckedSound(boolean checked) {
@@ -45,7 +49,7 @@ public class Persistence {
 	}
 	
 	public boolean isCheckedNotif() {
-		return settings.getBoolean(PREF_NOTIF_CHECK, true);
+		return prefs.getBoolean(PREF_NOTIF_CHECK, true);
 	}
 	
 	public void setCheckedNotif(boolean checked) {
@@ -54,12 +58,30 @@ public class Persistence {
 	}
 		
 	public boolean isCheckedVibrate() {
-		return settings.getBoolean(PREF_VIBRATE_CHECK, true);
+		return prefs.getBoolean(PREF_VIBRATE_CHECK, true);
 	}
 	
 	public void setCheckedVibrate(boolean checked) {
 		editor.putBoolean(PREF_VIBRATE_CHECK, checked);
 		editor.commit();
+	}
+	
+	public GamePreferences getPreviousGame() {
+		return previousGame;
+	}
+	
+	public GamePreferences getLastGame() {
+		return lastGame;
+	}
+
+	public void copyToLastGame(GamePreferences game) {
+		lastGame.setId(game.getId());
+		lastGame.setName(game.getName());
+		lastGame.setImage(game.getImage());
+		lastGame.setVersion(game.getVersion());
+		lastGame.setFilename(game.getFilename());
+		lastGame.setMinPlayers(game.getMinPlayers());
+		lastGame.setMaxPlayers(game.getMaxPlayers());
 	}
 
 }
