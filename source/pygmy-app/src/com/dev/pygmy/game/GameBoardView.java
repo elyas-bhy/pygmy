@@ -133,7 +133,7 @@ public class GameBoardView extends View {
 
 		Paint color1 = new Paint();
 		Paint color2 = new Paint();
-		color1.setColor(Color.CYAN);
+		color1.setColor(Color.GRAY);
 		color2.setColor(Color.WHITE);
 
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);

@@ -53,7 +53,7 @@ public class GameHomePageActivity extends Activity {
 
 	private Spinner spinner;
 	private Button button;
-	
+
 	private TextView titleView, summaryView;
 
 	private String LAST_GAME = "Last_Game";
@@ -72,13 +72,16 @@ public class GameHomePageActivity extends Activity {
 
 	private String previousGame;
 	private String previousImage;
-	public AlertDialog mAlertDialog;
+	private AlertDialog report_dialog;
+
+	private final String[] report_option = { " Offensive content",
+			" Game not working ", " Incoherent content ", " Other " };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gamehomepage);
-			
+
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		button = (Button) findViewById(R.id.play_downloadButton);
 
@@ -97,7 +100,8 @@ public class GameHomePageActivity extends Activity {
 
 		SharedPreferences previousLastGame = getSharedPreferences(LAST_GAME,
 				MODE_PRIVATE);
-		previousGame = previousLastGame.getString(LAST_GAME, "Never play before");
+		previousGame = previousLastGame.getString(LAST_GAME,
+				"Never play before");
 		previousImage = previousLastGame.getString(IMAGE, DEFAULT_IMAGE);
 
 		// Check if the game is already on the device or not
@@ -105,7 +109,7 @@ public class GameHomePageActivity extends Activity {
 
 		titleView = (TextView) findViewById(R.id.name_game);
 		summaryView = (TextView) findViewById(R.id.name_resume);
-		
+
 		ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
 		URL imageUrl = null;
 		try {
@@ -118,58 +122,19 @@ public class GameHomePageActivity extends Activity {
 		ImageDownloader downloader = new ImageDownloader();
 		downloader.download(imageUrl.toString(), gameIconImage);
 
-		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName).execute();
+		new LoadDataFromDatabase(titleView, summaryView, gamesInfoUrl, gameName)
+				.execute();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		AlertDialog dialog;
+
 		switch (item.getItemId()) {
 		case R.id.set_settings:
 			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		case R.id.set_report:
-			  final CharSequence[] items = {" Offensive content",
-					  " Game not working "," Incoherent content "," Other "};
-	           // arraylist to keep the selected items
-	           final ArrayList seletedItems=new ArrayList();
-
-	            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	            builder.setTitle("Reporting game :"+((TextView)findViewById(R.id.name_game)).getText());
-	            builder.setMultiChoiceItems(items, null,
-	                    new DialogInterface.OnMultiChoiceClickListener() {
-	             @Override
-	             public void onClick(DialogInterface dialog, int indexSelected,
-	                     boolean isChecked) {
-	                 if (isChecked) {
-	                     // If the user checked the item, add it to the selected items
-	                     seletedItems.add(indexSelected);
-	                 } else if (seletedItems.contains(indexSelected)) {
-	                     // Else, if the item is already in the array, remove it
-	                     seletedItems.remove(Integer.valueOf(indexSelected));
-	                 }
-	             }
-	         })
-	          // Set the action buttons
-	         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	             @Override
-	             public void onClick(DialogInterface dialog, int id) {
-	                 //  Your code when user clicked on OK
-	                 //  You can write the code  to save the selected item here
-
-	             }
-	         })
-	         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	             @Override
-	             public void onClick(DialogInterface dialog, int id) {
-	                //  Your code when user clicked on Cancel
-
-	             }
-	         });
-
-	            dialog = builder.create();//AlertDialog dialog; create like this outside onClick
-	            dialog.show();
-	            
+			reportDialog();
 			return true;
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);
@@ -194,7 +159,8 @@ public class GameHomePageActivity extends Activity {
 
 	public void onPlayDownloadClicked(View view) {
 		if (!downloaded) {
-			DownloadTask downloadtask = new DownloadTask(GameHomePageActivity.this);
+			DownloadTask downloadtask = new DownloadTask(
+					GameHomePageActivity.this);
 			downloadtask.execute(gameName, version, filename);
 			downloaded = true;
 			button.setText("Play");
@@ -209,11 +175,11 @@ public class GameHomePageActivity extends Activity {
 		}
 	}
 
-
 	// check if the most recent version of the game is installed on the device
 	private void checkDownload() {
 		File gameFolder = new File(Utils.getGamePath(this, gameName));
-		File versionFolder = new File(Utils.getGamePath(this, gameName, version));
+		File versionFolder = new File(
+				Utils.getGamePath(this, gameName, version));
 
 		if (gameFolder.exists() && versionFolder.exists()) {
 			downloaded = true;
@@ -251,10 +217,57 @@ public class GameHomePageActivity extends Activity {
 		editor.putString(LAST_GAME, gameName).commit();
 		editor.putString(IMAGE, image).commit();
 
-		SharedPreferences previousLastGame = getSharedPreferences(PREVIOUS_LAST_GAME,
-				MODE_PRIVATE);
+		SharedPreferences previousLastGame = getSharedPreferences(
+				PREVIOUS_LAST_GAME, MODE_PRIVATE);
 		SharedPreferences.Editor editor2 = previousLastGame.edit();
 		editor2.putString(PREVIOUS_LAST_GAME, previousGame).commit();
 		editor2.putString(IMAGE, previousImage).commit();
+	}
+
+	private void reportDialog() {
+
+		// arraylist to keep the selected items
+		final ArrayList report_selected = new ArrayList();
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Repor :"
+				+ ((TextView) findViewById(R.id.name_game)).getText());
+		builder.setMultiChoiceItems(report_option, null,
+				new DialogInterface.OnMultiChoiceClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,
+							int indexSelected, boolean isChecked) {
+						if (isChecked) {
+							// If the user checked the item, add it to the
+							// selected items
+							report_selected.add(indexSelected);
+						} else if (report_selected.contains(indexSelected)) {
+							// Else, if the item is already in the array, remove
+							// it
+							report_selected.remove(Integer
+									.valueOf(indexSelected));
+						}
+					}
+				})
+				// Set the action buttons
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						Toast.makeText(GameHomePageActivity.this,
+								"Report Done", TOAST_DELAY).show();
+					}
+				})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								Toast.makeText(GameHomePageActivity.this,
+										"Cancel report", TOAST_DELAY).show();
+							}
+						});
+
+		report_dialog = builder.create();
+		report_dialog.show();
+
 	}
 }
