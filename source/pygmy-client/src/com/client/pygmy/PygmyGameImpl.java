@@ -36,6 +36,7 @@ public class PygmyGameImpl extends PygmyGame {
 		
 		OverlapRulesApplier rules = new DemoOverlapRules();
 		PygmyGameLevel level1 = new DemoLevel(game, rules);
+		rules.setUniverse(level1.getUniverse());
 		levels.add(level1); // only one level is available at this time
 		game.setLevels(levels);
 	}

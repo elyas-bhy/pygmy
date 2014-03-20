@@ -25,6 +25,11 @@ import com.lib.pygmy.util.Point;
 
 public class Pawn extends PygmyGameEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7846794391141055797L;
+
 	public Pawn(GameLevel level, String playerId, EntityType type, Point p) {
 		super(level, playerId, type, p);
 	}
