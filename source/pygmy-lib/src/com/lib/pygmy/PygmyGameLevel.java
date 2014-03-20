@@ -154,8 +154,8 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 
 	@Override
 	public void setColors(List<Integer> colors) {
-		if (colors == null) {
-			throw new IllegalStateException("Colors list is null.");
+		if (colors == null || colors.isEmpty()) {
+			throw new IllegalStateException("Colors list is empty or null. Did you forget to setup it?");
 		}
 
 		this.colors = colors;
