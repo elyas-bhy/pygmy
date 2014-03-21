@@ -103,11 +103,11 @@ public class GameHelper {
 	 * or by deserializing it if the match was already persisted
 	 */
 	private void initGameViewManager() {
-		mGame = Utils.loadGameHistory(getHistoryPath());
 		String path = Utils.getGamePath(mContext, mTurnData.game, mTurnData.version, "game.jar");
-		if (mGame != null) {
-			PygmyLoader.setGamePath(path);
-		} else {
+		PygmyLoader.setGamePath(path);
+		mGame = Utils.loadGameHistory(getHistoryPath());
+		
+		if (mGame == null) {
 			mGame = PygmyLoader.loadGame(mContext, path);
 			mGame.setPlayerIds(mMatch.getParticipantIds());
 		}
