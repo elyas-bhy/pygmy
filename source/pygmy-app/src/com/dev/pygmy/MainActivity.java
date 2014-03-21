@@ -308,6 +308,7 @@ public class MainActivity extends BaseGameActivity implements
 
 	@Override
 	public void onSignInSucceeded() {
+		
 		if (mHelper.getTurnBasedMatch() != null) {
 			// GameHelper will cache any connection hint it gets. In this case,
 			// it can cache a TurnBasedMatch that it got from choosing a
@@ -435,6 +436,10 @@ public class MainActivity extends BaseGameActivity implements
 				if (data.hasExtra(EXTRA_GAME_VERSION))
 					gameVersion = data.getStringExtra(EXTRA_GAME_VERSION);
 				showSpinner();
+			}
+			else{
+				gameID = null;
+				gameVersion = null;
 			}
 			break;
 

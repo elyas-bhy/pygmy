@@ -78,7 +78,7 @@ public class GameListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(GameListActivity.this, GameHomePageActivity.class);
 				GameHolder game = games.get(position);
-				
+				PygmyApp.logE("name : " + game.name);
 				intent.putExtra("id", game.id);
 				intent.putExtra("gameName", game.name);
 				intent.putExtra("filename", game.fileName);
@@ -93,6 +93,9 @@ public class GameListActivity extends Activity {
 	
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
+		PygmyApp.logE("request : "+ request);
+		PygmyApp.logE("response : " + response);
+		PygmyApp.logE("intent data list : " + data);
 		switch (request) {
 		case MainActivity.RC_SELECT_GAME:
 			setResult(MainActivity.RC_SELECT_GAME, data);

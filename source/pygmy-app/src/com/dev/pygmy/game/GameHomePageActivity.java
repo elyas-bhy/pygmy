@@ -16,15 +16,30 @@
 
 package com.dev.pygmy.game;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -50,19 +65,22 @@ public class GameHomePageActivity extends Activity {
 
 	private String gamesInfoUrl = Utils.BASE_URL + "/scripts/gamesInfo.php";
 	private String reportUrl = Utils.BASE_URL + "/scripts/report.php";
-
+	private String databaseUrl = Utils.BASE_URL + "/scripts/update.php";
 	private Spinner spinner;
 	private Button button;
 
 	private TextView titleView, summaryView;
 
+	private String versionGame;
+
 	private int id;
 	private boolean downloaded = false;
+	private boolean update;
 	private String gameName;
 	private String filename;
 	private String version;
 	private String image;
-	
+
 	private AlertDialog reportDialog;
 
 	private final String[] report_option = { " Offensive content",
@@ -81,39 +99,23 @@ public class GameHomePageActivity extends Activity {
 
 		// Retrieve informations of the game selected
 		Bundle extras;
-		if (savedInstanceState == null) {
-			extras = getIntent().getExtras();
-			id = extras.getInt("id");
-			gameName = extras.getString("gameName");
-			filename = extras.getString("filename");
-			version = extras.getString("version");
-			image = extras.getString("image");
-			minPlayers = extras.getInt("minPlayer");
-			maxPlayers = extras.getInt("maxPlayer");
-		}
 
-		// Check if the game is already on the device or not
-		checkDownload();
+		extras = getIntent().getExtras();
+		id = extras.getInt("id");
+		gameName = extras.getString("gameName");
+		filename = extras.getString("filename");
+		version = extras.getString("version");
+		image = extras.getString("image");
+		minPlayers = extras.getInt("minPlayer");
+		maxPlayers = extras.getInt("maxPlayer");
 
-		titleView = (TextView) findViewById(R.id.name_game);
-		summaryView = (TextView) findViewById(R.id.name_resume);
-
-		ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
-		URL imageUrl = null;
-		try {
-			imageUrl = new URL(image);
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
-		ImageDownloader downloader = new ImageDownloader();
-		downloader.download(imageUrl.toString(), gameIconImage);
-
-
-		new GameFetchTask(gamesInfoUrl, gameName, titleView, summaryView).execute();
+		new FetchUpdateTask().execute();
 
 	}
+
+	/*
+	 * protected void onResume() { PygmyApp.logD("onResume"); }
+	 */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -159,6 +161,7 @@ public class GameHomePageActivity extends Activity {
 			Intent data = new Intent();
 			data.putExtra(MainActivity.EXTRA_GAME_ID, gameName);
 			data.putExtra(MainActivity.EXTRA_GAME_VERSION, version);
+			PygmyApp.logE("GHA DATA : " + data);
 			setResult(MainActivity.RC_SELECT_GAME, data);
 			finish();
 		}
@@ -169,12 +172,12 @@ public class GameHomePageActivity extends Activity {
 		File gameFolder = new File(Utils.getGamePath(this, gameName));
 		File versionFolder = new File(
 				Utils.getGamePath(this, gameName, version));
-
-		if (gameFolder.exists() && versionFolder.exists()) {
+		update = updateGame(version);
+		if (gameFolder.exists() && versionFolder.exists() && update) {
 			downloaded = true;
 			button.setText("Play");
 		} else if (gameFolder.exists() && !versionFolder.exists()) {
-			//deleteDirectory(gameFolder);
+			// deleteDirectory(gameFolder);
 			downloaded = false;
 		} else {
 			downloaded = false;
@@ -197,6 +200,16 @@ public class GameHomePageActivity extends Activity {
 			}
 		}
 		return (path.delete());
+	}
+
+	public boolean updateGame(String versionL) {
+		if (!versionL.equals(versionGame)) {
+			update = false;
+			return update;
+		} else {
+			update = true;
+			return update;
+		}
 	}
 
 	// Save the games preferences on the device
@@ -258,5 +271,82 @@ public class GameHomePageActivity extends Activity {
 		reportDialog.show();
 
 	}
-}
 
+	private class FetchUpdateTask extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost httpPost = new HttpPost(databaseUrl);
+			ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+
+			param.add(new BasicNameValuePair("name", gameName));
+
+			InputStream is = null;
+			try {
+				httpPost.setEntity(new UrlEncodedFormEntity(param));
+
+				HttpResponse httpResponse = httpClient.execute(httpPost);
+				HttpEntity httpEntity = httpResponse.getEntity();
+
+				// Read content
+				is = httpEntity.getContent();
+			} catch (Exception e) {
+				PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
+			}
+
+			String result = null;
+			try {
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(is));
+				StringBuilder sb = new StringBuilder();
+				String line = "";
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString();
+			} catch (Exception e) {
+				PygmyApp.logE("Error converting result: " + e.getMessage());
+			}
+
+			return result;
+		}
+
+		protected void onPostExecute(String result) {
+			// Retrieve results of the PHP script
+			JSONObject json;
+			try {
+				JSONArray array = new JSONArray(result);
+				for (int i = 0; i < array.length(); i++) {
+					json = array.getJSONObject(i);
+					versionGame = json.getString("version");
+					PygmyApp.logE("Version Game : " + versionGame);
+				}
+			} catch (Exception e) {
+				PygmyApp.logE("Error parsing data: " + e.getMessage());
+			}
+
+			// Check if the game is already on the device or not
+			checkDownload();
+
+			PygmyApp.logE("downloaded :  " + downloaded);
+			titleView = (TextView) findViewById(R.id.name_game);
+			titleView.setText(gameName);
+			summaryView = (TextView) findViewById(R.id.name_resume);
+
+			ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
+			URL imageUrl = null;
+			try {
+				imageUrl = new URL(image);
+
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+
+			ImageDownloader downloader = new ImageDownloader();
+			downloader.download(imageUrl.toString(), gameIconImage);
+		}
+
+	}
+}

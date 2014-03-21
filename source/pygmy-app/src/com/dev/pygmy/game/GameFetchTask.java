@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import com.dev.pygmy.PygmyApp;
 
 import android.os.AsyncTask;
+import android.os.Build.VERSION;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -60,12 +61,6 @@ public class GameFetchTask extends AsyncTask<String, String, String> {
 		this.spinner = sp;
 	}
 
-	public GameFetchTask(String url, String game, TextView title, TextView summary) {
-		this.databaseUrl = url;
-		this.gameName = game;
-		this.titleView = title;
-		this.summaryView = summary;
-	}
 
 	@Override
 	protected String doInBackground(String... params) {
