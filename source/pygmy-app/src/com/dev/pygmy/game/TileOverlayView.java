@@ -53,6 +53,9 @@ public class TileOverlayView extends View {
 		}
 	}
 	
+	/**
+	 * Sets new coordinates and size, whole in pixels, for the tile on the board. 	
+	 */
 	public void setCoordinates(int posX, int posY, int sizeX, int sizeY) {
 		tile.setCoordinates(posX, posY, sizeX, sizeY);
 	}

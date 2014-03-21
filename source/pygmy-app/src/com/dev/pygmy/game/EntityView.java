@@ -46,7 +46,6 @@ public class EntityView extends View {
 	private Context context;
 	private PygmyGame game;
 	private Collection<GameEntity> entities;
-	private GameEntity draggedEntity = null;
 	
 	private boolean initial = true;
 	private int tileSize = 0;
@@ -54,6 +53,7 @@ public class EntityView extends View {
 	
 	private int targetColumn = 0;
 	private int targetRow = 0;
+	private GameEntity draggedEntity;
 	private Tile entityCurrentPosition;
 
 	/**
@@ -85,6 +85,9 @@ public class EntityView extends View {
 		entities = universe.getGameEntities().values();
 	}
 	
+	/**
+	 * Sets position on the board for each entity.
+	 */
 	private void initTiles() {
 		Tile tile;
 		Point p;
@@ -177,14 +180,15 @@ public class EntityView extends View {
 		case MotionEvent.ACTION_MOVE:
 			// Move the entities the same as the finger
 			if (draggedEntity != null) {
+				float eventX = event.getX() * event.getXPrecision();
+				float eventY = event.getY() * event.getYPrecision();
+				
 				// The entity must not go out of the board.
-				if (minX < x && x < maxX && minY < y && y < maxY) {
+				if (minX < eventX && eventX < maxX && minY < eventY && eventY < maxY) {
 					//Identify the hovered tile
-					float eventX = event.getX() * event.getXPrecision();
-					float eventY = event.getY() * event.getYPrecision();
 					
-					targetColumn = (int)( (eventX-minX) / tileSize );
-					targetRow = (int)( (eventY-minY) / tileSize );
+					targetColumn = (int)( (eventX - minX) / tileSize );
+					targetRow = (int)( (eventY - minY) / tileSize );
 					
 					Tile nextTile = GameBoardView.getTileAt(targetRow, targetColumn);
 					
