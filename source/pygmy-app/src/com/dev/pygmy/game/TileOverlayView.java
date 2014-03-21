@@ -25,6 +25,7 @@ import com.lib.pygmy.Tile;
 /**
  * This class represents the view which shows the tile 
  * in which a entity is flying over.
+ * @author Pygmy
  */
 public class TileOverlayView extends View {
 	
@@ -53,6 +54,9 @@ public class TileOverlayView extends View {
 		}
 	}
 	
+	/**
+	 * Sets new coordinates and size, whole in pixels, for the tile on the board. 	
+	 */
 	public void setCoordinates(int posX, int posY, int sizeX, int sizeY) {
 		tile.setCoordinates(posX, posY, sizeX, sizeY);
 	}

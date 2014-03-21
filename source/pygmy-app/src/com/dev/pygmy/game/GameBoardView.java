@@ -34,6 +34,7 @@ import com.lib.pygmy.util.Point;
 
 /**
  * 	This class represents the grid of the board.
+ * @author Pygmy
  */
 public class GameBoardView extends View {
 
@@ -47,7 +48,7 @@ public class GameBoardView extends View {
 	private Paint colorBlack = null;
 	
 	/**
-	 * Default constructor.
+	 * Default constructor, needed by Android.
 	 */
 	public GameBoardView(Context context) {
 		super(context);
@@ -73,10 +74,9 @@ public class GameBoardView extends View {
 	}
 
 	/**
-	 * 
 	 * @param row		Relative position on Y
 	 * @param column	Relative position on X
-	 * @return the Tile according to coordinates (column, row)
+	 * @return the Tile according to position (row, column)
 	 */
 	public static Tile getTileAt(int row, int column) {
 		return tilesMap.get(new Point(row, column));
@@ -123,6 +123,9 @@ public class GameBoardView extends View {
 		}
 	}
 	
+	/**
+	 * Draws the type board Checker or grid according with value in @param boardType.
+	 */
 	private void drawBoard(Canvas canvas) {
 
 		Paint color1 = new Paint();
@@ -205,29 +208,9 @@ public class GameBoardView extends View {
 		canvas.drawLine(longDistanceWidth, longDistanceHeight, smallDistance, longDistanceHeight, colorBlack);
 	}
 
-	private void drawHexbox(Canvas canvas, int tileSize, int coordX, int coordY) {
-
-		// Distance difference between square and hexa
-		int dist = tileSize / 4;
-		// Half tile's size
-		int half = tileSize / 2;
-
-		// Left Up
-		canvas.drawLine(coordX + dist, coordY, coordX, coordY + half, colorBlack);
-		// Up
-		canvas.drawLine(coordX + dist, coordY, coordX + tileSize - dist, coordY, colorBlack);
-		// Down
-		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, 
-				coordX + dist, coordY + tileSize, colorBlack);
-		// Right Down
-		canvas.drawLine(coordX + tileSize, coordY + half, 
-				coordX + tileSize - dist, coordY + tileSize, colorBlack);
-		// Left Down
-		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
-		// Right Up
-		canvas.drawLine(coordX + tileSize - dist, coordY, coordX + tileSize, coordY + half, colorBlack);
-	}
-
+	/**
+	 * Draws a board of type Hexagonal Grid.
+	 */
 	private void drawHexGrid(Canvas canvas) {
 
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
@@ -259,10 +242,10 @@ public class GameBoardView extends View {
 
 						Tile tile = null;new Tile(coordX,coordY, tileSize);
 						if(y%2 == 0) {
-							drawHexbox(canvas, tileSize, coordY, coordX + half);
+							drawHexTile(canvas, coordY, coordX + half);
 							tile = new Tile(coordX + half, coordY, tileSize-half);
 						} else { 
-							drawHexbox(canvas, tileSize, coordY, coordX);
+							drawHexTile(canvas, coordY, coordX);
 							tile = new Tile(coordX,coordY, tileSize-half);
 						}
 						tilesMap.put(new Point(x-1, y-1), tile);
@@ -282,6 +265,32 @@ public class GameBoardView extends View {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Draws a hexagonal tile for a hexagonal grid.
+	 */
+	private void drawHexTile(Canvas canvas, int coordX, int coordY) {
+		
+		// Distance difference between square and hexagonal.
+		int dist = tileSize / 4;
+		// Half tile's size
+		int half = tileSize / 2;
+		
+		// Left Up
+		canvas.drawLine(coordX + dist, coordY, coordX, coordY + half, colorBlack);
+		// Up
+		canvas.drawLine(coordX + dist, coordY, coordX + tileSize - dist, coordY, colorBlack);
+		// Down
+		canvas.drawLine(coordX + tileSize - dist, coordY + tileSize, 
+				coordX + dist, coordY + tileSize, colorBlack);
+		// Right Down
+		canvas.drawLine(coordX + tileSize, coordY + half, 
+				coordX + tileSize - dist, coordY + tileSize, colorBlack);
+		// Left Down
+		canvas.drawLine(coordX, coordY + half, coordX + dist, coordY + tileSize, colorBlack);
+		// Right Up
+		canvas.drawLine(coordX + tileSize - dist, coordY, coordX + tileSize, coordY + half, colorBlack);
 	}
 
 }
