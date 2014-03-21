@@ -429,7 +429,7 @@ public class GameHelper {
 	}
 
 	/**
-	 * Upload your new gamestate, then take a turn, and pass it on to the next player
+	 * Upload your new game state, then take a turn, and pass it on to the next player
 	 */
 	public void onTurnTaken() {
 		String nextParticipantId = getNextParticipantId();
