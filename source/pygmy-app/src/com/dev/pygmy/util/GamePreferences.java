@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 public class GamePreferences {
 	private final String PREF_GAME_ID = "pref_game_id";
 	private final String PREF_GAME_NAME = "pref_game_name";
+	private final String PREF_GAME_SUMMARY = "pref_game_summary";
 	private final String PREF_GAME_IMAGE = "pref_game_image";
 	private final String PREF_GAME_VERSION = "pref_game_version";
 	private final String PREF_GAME_FILENAME = "pref_game_filename";
@@ -22,6 +23,7 @@ public class GamePreferences {
 	private final String DEFAULT_NAME = "None";
 	private final String DEFAULT_IMAGE =  Utils.BASE_URL + "/gamesImages/Default/logo_home_page.png";
 	private final String DEFAULT_VERSION = "0.1";
+	private final String DEFAULT_SUMMARY = "None";
 	private final String DEFAULT_FILENAME = "game.jar";
 	
 	private SharedPreferences prefs;
@@ -38,6 +40,15 @@ public class GamePreferences {
 	
 	public void setName(String name) {
 		editor.putString(PREF_GAME_NAME, name);
+		editor.commit();
+	}
+	
+	public String getSummary() {
+		return prefs.getString(PREF_GAME_SUMMARY, DEFAULT_SUMMARY);
+	}
+	
+	public void setSummary(String summary) {
+		editor.putString(PREF_GAME_SUMMARY, summary);
 		editor.commit();
 	}
 	

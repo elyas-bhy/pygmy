@@ -595,6 +595,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		intent.putExtra("id", mGamePrefs.getId());
 		intent.putExtra("gameName", mGamePrefs.getName());
+		intent.putExtra("summary", mGamePrefs.getSummary());
 		intent.putExtra("filename", mGamePrefs.getFilename());
 		intent.putExtra("version", mGamePrefs.getVersion());
 		intent.putExtra("image", mGamePrefs.getImage());

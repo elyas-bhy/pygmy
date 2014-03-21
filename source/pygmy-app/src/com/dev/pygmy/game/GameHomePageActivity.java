@@ -77,6 +77,7 @@ public class GameHomePageActivity extends Activity {
 	private boolean downloaded = false;
 	private boolean update;
 	private String gameName;
+	private String summary;
 	private String filename;
 	private String version;
 	private String image;
@@ -103,6 +104,7 @@ public class GameHomePageActivity extends Activity {
 		extras = getIntent().getExtras();
 		id = extras.getInt("id");
 		gameName = extras.getString("gameName");
+		summary = extras.getString("summary");
 		filename = extras.getString("filename");
 		version = extras.getString("version");
 		image = extras.getString("image");
@@ -218,6 +220,7 @@ public class GameHomePageActivity extends Activity {
 		PygmyApp.persistence.copyToLastGame(previousGame);
 		previousGame.setId(id);
 		previousGame.setName(gameName);
+		previousGame.setSummary(summary);
 		previousGame.setImage(image);
 		previousGame.setVersion(version);
 		previousGame.setFilename(filename);
@@ -334,6 +337,7 @@ public class GameHomePageActivity extends Activity {
 			titleView = (TextView) findViewById(R.id.name_game);
 			titleView.setText(gameName);
 			summaryView = (TextView) findViewById(R.id.name_resume);
+			summaryView.setText(summary);
 
 			ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
 			URL imageUrl = null;
