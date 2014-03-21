@@ -16,14 +16,12 @@
 
 package com.lib.pygmy;
 
-import android.util.Log;
-
-import com.lib.pygmy.base.Overlap;
-import com.lib.pygmy.base.Overlappable;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Vector;
+
+import com.lib.pygmy.base.Overlap;
+import com.lib.pygmy.base.Overlappable;
 
 public abstract class PygmyOverlapRulesApplier implements
 		OverlapRulesApplier, Serializable {
@@ -39,10 +37,9 @@ public abstract class PygmyOverlapRulesApplier implements
 
 	protected void applySpecificOverlapRule(Overlappable e1, Overlappable e2) {
 		Method m;
+
 		try {
-			Log.d("DEMO", "e1 (applySpecf) : "+e1.getClass().getName());
-			Log.d("DEMO", "e2 (applySpecf) : "+e2.getClass().getName());
-			m = getClass().getMethod("overlapRule", e1.getClass(),
+			m = getClass().getDeclaredMethod("overlapRule", e1.getClass(),
 					e2.getClass());
 		} catch (NoSuchMethodException e) {
 			// automatic commutativity handling
@@ -55,9 +52,7 @@ public abstract class PygmyOverlapRulesApplier implements
 	protected void reverseParameters(Overlappable e1, Overlappable e2) {
 		Method m;
 		try {
-			Log.d("DEMO", "e1 (reverseParam) : "+e1.getClass().getName());
-			Log.d("DEMO", "e2 (reverseParam) : "+e2.getClass().getName());
-			m = getClass().getMethod("overlapRule", e2.getClass(),
+			m = getClass().getDeclaredMethod("overlapRule", e2.getClass(),
 					e1.getClass());
 		} catch (NoSuchMethodException e) {
 			return;
@@ -67,16 +62,11 @@ public abstract class PygmyOverlapRulesApplier implements
 
 	protected void invoke(Method m, Overlappable e1, Overlappable e2) {
 		try {
-			Log.d("DEMO", "e1 (invoke) : "+e1.getClass().getName());
-			Log.d("DEMO", "e2 (invoke) : "+e2.getClass().getName());
-
-			Log.d("DEMO", "e1 : "+e1.getClass().hashCode());
-			Log.d("DEMO", "m : "+ m.getParameterTypes()[0].getName());
-			Log.d("DEMO", "m : "+ m.getParameterTypes()[0].hashCode());
 			m.invoke(this, e1, e2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Reflective invocation exception", e);
 		}
 	}
+	
 }

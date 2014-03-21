@@ -62,18 +62,14 @@ public class GameHomePageActivity extends Activity {
 	private String filename;
 	private String version;
 	private String image;
-
-
-
 	
-	private AlertDialog report_dialog;
+	private AlertDialog reportDialog;
 
 	private final String[] report_option = { " Offensive content",
 			" Game not working ", " Incoherent content ", " Other " };
 
 	private int minPlayers;
 	private int maxPlayers;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -258,8 +254,8 @@ public class GameHomePageActivity extends Activity {
 							}
 						});
 
-		report_dialog = builder.create();
-		report_dialog.show();
+		reportDialog = builder.create();
+		reportDialog.show();
 
 	}
 }

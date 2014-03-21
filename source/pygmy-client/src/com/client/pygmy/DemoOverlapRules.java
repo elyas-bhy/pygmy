@@ -59,4 +59,5 @@ public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 		Log.d("DEMO", "OVERLAPRULE PygmyGameEntity");
 		universe.removeGameEntity(e2);
 	}
+	
 }
