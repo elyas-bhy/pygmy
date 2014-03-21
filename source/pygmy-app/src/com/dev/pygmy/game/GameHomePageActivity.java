@@ -218,7 +218,7 @@ public class GameHomePageActivity extends Activity {
 		final ArrayList report_selected = new ArrayList();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Repor :"
+		builder.setTitle("Report :"
 				+ ((TextView) findViewById(R.id.name_game)).getText());
 		builder.setMultiChoiceItems(report_option, null,
 				new DialogInterface.OnMultiChoiceClickListener() {
