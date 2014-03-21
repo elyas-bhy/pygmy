@@ -23,6 +23,11 @@ import android.view.MenuItem;
 
 import com.dev.pygmy.util.PrefFragment;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public class SettingsActivity extends Activity {
 
 	@Override

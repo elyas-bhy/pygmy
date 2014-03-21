@@ -23,9 +23,13 @@ import com.dev.pygmy.R;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.util.TurnData;
 
+/**
+ * This class manages the different view used in creation of a game.
+ * @author Pygmy
+ */
 public class GameViewManager {
 	
-	private Activity context;
+	private Activity activity;
 	private PygmyGame game;
 	private FrameLayout mainLayout;
 	
@@ -33,24 +37,33 @@ public class GameViewManager {
 	private EntityView entityView;
 	private static TileOverlayView tileOverlayView;
 	
-	public GameViewManager(Activity context, PygmyGame game) {
-		this.context = context;
+	/**
+	 * Constructs each of the different views.
+	 */
+	public GameViewManager(Activity activity, PygmyGame game) {
+		this.activity = activity;
 		this.game = game;
-		this.mainLayout = (FrameLayout) context.findViewById(R.id.gameplay_layout);
+		this.mainLayout = (FrameLayout) activity.findViewById(R.id.gameplay_layout);
 		initViews();
 	}
 	
+	/**
+	 * Sets each future view used in the game. 
+	 */
 	private void initViews() {
 		if (game != null) {
 			game.initGame();
 			game.start();
 			
-			gameBoardView = new GameBoardView(context, game);
-			tileOverlayView = new TileOverlayView(context);
-			entityView = new EntityView(context, game);
+			gameBoardView = new GameBoardView(activity, game);
+			tileOverlayView = new TileOverlayView(activity);
+			entityView = new EntityView(activity, game);
 		}
 	}
 	
+	/**
+	 * Updates the entityView state according to the passed response.
+	 */
 	public void updateData(TurnData data) {
 		mainLayout.removeAllViews();
 		if (game != null) {
@@ -59,19 +72,28 @@ public class GameViewManager {
 			mainLayout.addView(tileOverlayView);
 			mainLayout.addView(entityView);
 		} else {
-			mainLayout.addView(context.findViewById(R.id.creation_error));
+			mainLayout.addView(activity.findViewById(R.id.creation_error));
 		}
 	}
 	
+	/**
+	 * Removes tile overlay.
+	 */
 	public static void resetOverlay() {
 		getOverlay().setCoordinates(0, 0, 0, 0);
 		redrawOverlay();
 	}
 	
+	/**
+	 * Calls onDraw method in tileOverlayView and draw a new tile overlap.
+	 */
 	public static void redrawOverlay() {
 		tileOverlayView.invalidate();
 	}
 	
+	/**
+	 * @return the tile used to show the future position of an entity.
+	 */
 	public static TileOverlayView getOverlay() {
 		return tileOverlayView;
 	}

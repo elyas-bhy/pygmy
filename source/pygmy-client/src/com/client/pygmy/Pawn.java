@@ -16,18 +16,29 @@
 
 package com.client.pygmy;
 
-import com.lib.pygmy.PygmyGameRule;
+import com.lib.pygmy.EntityType;
+import com.lib.pygmy.GameLevel;
+import com.lib.pygmy.GameMove;
+import com.lib.pygmy.PygmyGameEntity;
+import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.Point;
 
-public class EndlessGameRule extends PygmyGameRule {
+public class Pawn extends PygmyGameEntity {
 
-	@Override
-	public boolean check() {
-		return true;
+	public Pawn(GameLevel level, String playerId, EntityType type, Point p) {
+		super(level, playerId, type, p);
 	}
 	
 	@Override
-	public String getMessage() {
-		return "Playing";
+	public void oneStepMoveAddedBehavior() {
+		
+	}
+	
+	@Override
+	public boolean isLegalMove(GameMove move) {
+		Tile src = getCurrentTile();
+		Tile dst = move.getDestination();
+		return (dst.getPosition().y - src.getPosition().y) == 0;
 	}
 
 }

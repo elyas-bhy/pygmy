@@ -3,6 +3,10 @@ package com.dev.pygmy.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * This class allows to manage the different user parameters for our application.
+ * @author Pygmy
+ */
 public class GamePreferences {
 	private final String PREF_GAME_ID = "pref_game_id";
 	private final String PREF_GAME_NAME = "pref_game_name";
