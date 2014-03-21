@@ -43,6 +43,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.dev.pygmy.game.GameHomePageActivity;
+import com.dev.pygmy.util.Utils;
 
 public class GameListActivity extends Activity {
 	
@@ -108,7 +109,7 @@ public class GameListActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(String... params) {
-			String gamesListURL = "http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/scripts/gamesList.php";
+			String gamesListURL = Utils.BASE_URL + "/scripts/gamesList.php";
 
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(gamesListURL);

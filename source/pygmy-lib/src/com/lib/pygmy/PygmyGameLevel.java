@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lib.pygmy.base.ObservableValue;
+import com.lib.pygmy.util.Color;
 
 /**
  * To be implemented with respect to a specific game. Expected to initialise the
@@ -38,7 +39,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	private int rows;
 	private int columns;
 	private int boardType;
-	private List<Integer> colors;
+	private List<Color> colors;
 	private List<GameRule> gameRules;
 
 	public PygmyGameLevel(Game game, OverlapRulesApplier overlapRules) {
@@ -148,12 +149,12 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	}
 	
 	@Override
-	public List<Integer> getColors() {
+	public List<Color> getColors() {
 		return colors;
 	}
 
 	@Override
-	public void setColors(List<Integer> colors) {
+	public void setColors(List<Color> colors) {
 		if (colors == null || colors.isEmpty()) {
 			throw new IllegalStateException("Colors list is empty or null. Did you forget to setup it?");
 		}

@@ -16,33 +16,23 @@
 
 package com.client.pygmy;
 
-import com.lib.pygmy.GameUniverse;
-import com.lib.pygmy.PygmyOverlapRulesApplier;
+import com.lib.pygmy.PygmyGameRule;
 
 /**
- * Allows to specify the actions to take when an overlap occurs
- * between to game entities
+ * Basic implementation of an endless game rule
  * @author Pygmy
  *
  */
-public class DemoOverlapRules extends PygmyOverlapRulesApplier {
-	
-	protected GameUniverse universe;
+public class EndlessGameRule extends PygmyGameRule {
 
-	public DemoOverlapRules() {
-		
+	@Override
+	public boolean check() {
+		return true;
+	}
+	
+	@Override
+	public String getMessage() {
+		return "All clear!";
 	}
 
-	public void setUniverse(GameUniverse universe) {
-		this.universe = universe;
-	}
-	
-	// Specify here the actions to take when two pawns overlap.
-	// You can implement a similar method for each of your concrete
-	// game entity implementations. 
-	// The method name should always be "overlapRule".
-	public void overlapRule(Pawn p1, Pawn p2) {
-		
-	}
-	
 }
