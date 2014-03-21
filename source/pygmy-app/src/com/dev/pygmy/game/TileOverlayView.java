@@ -25,6 +25,7 @@ import com.lib.pygmy.Tile;
 /**
  * This class represents the view which shows the tile 
  * in which a entity is flying over.
+ * @author Pygmy
  */
 public class TileOverlayView extends View {
 	

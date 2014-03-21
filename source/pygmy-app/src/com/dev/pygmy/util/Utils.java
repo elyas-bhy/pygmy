@@ -35,6 +35,9 @@ import com.lib.pygmy.EntityType;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.util.PygmyLoader;
 
+/**
+ * @author Pygmy
+ */
 public class Utils {
 	
 	public static final String BASE_URL = 
@@ -106,6 +109,9 @@ public class Utils {
 		return sb.toString();
 	}
 
+	/**
+	 * Saves the current game @param game.
+	 */
 	public static void saveGame(PygmyGame game, String path) {
 		ObjectOutputStream oos = null;
 		try {

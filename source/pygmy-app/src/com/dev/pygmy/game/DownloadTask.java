@@ -32,6 +32,9 @@ import android.widget.Toast;
 
 import com.dev.pygmy.util.Utils;
 
+/**
+ * @author Pygmy
+ */
 public class DownloadTask extends AsyncTask<String, Void, Void> {
 
 	private final static int TOAST_DELAY = 2000;

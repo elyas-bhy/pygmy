@@ -34,6 +34,7 @@ import com.lib.pygmy.util.Point;
 
 /**
  * 	This class represents the grid of the board.
+ * @author Pygmy
  */
 public class GameBoardView extends View {
 
@@ -123,8 +124,7 @@ public class GameBoardView extends View {
 	}
 	
 	/**
-	 * Draws the type board Checker or grid according with value in class variable.
-	 * @param canvas	Got from onDraw method.
+	 * Draws the type board Checker or grid according with value in @param boardType.
 	 */
 	private void drawBoard(Canvas canvas) {
 
@@ -210,7 +210,6 @@ public class GameBoardView extends View {
 
 	/**
 	 * Draws a board of type Hexagonal Grid.
-	 * @param canvas	Got from onDraw method.
 	 */
 	private void drawHexGrid(Canvas canvas) {
 

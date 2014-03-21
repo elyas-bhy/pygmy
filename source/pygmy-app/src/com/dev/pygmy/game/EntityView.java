@@ -40,6 +40,7 @@ import com.lib.pygmy.util.TurnData;
 /**
  * This class represents the view which shows the 
  * pieces of the board game on the screen.
+ * @author Pygmy
  */
 public class EntityView extends View {
 	
@@ -79,6 +80,9 @@ public class EntityView extends View {
 		entities = universe.getGameEntities().values();
 	}
 	
+	/**
+	 * Updates the entities and universe state according to the passed response.
+	 */
 	public void updateData(TurnData data) {
 		GameUniverse universe = game.getCurrentLevel().getUniverse();
 		universe.updateData(data);
