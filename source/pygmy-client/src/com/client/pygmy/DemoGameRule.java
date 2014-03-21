@@ -23,7 +23,7 @@ import com.lib.pygmy.PygmyGameRule;
  * @author Pygmy
  *
  */
-public class EndlessGameRule extends PygmyGameRule {
+public class DemoGameRule extends PygmyGameRule {
 
 	@Override
 	public boolean check() {

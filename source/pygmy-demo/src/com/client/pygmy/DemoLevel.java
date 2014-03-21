@@ -19,8 +19,6 @@ package com.client.pygmy;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Color;
-
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
 import com.lib.pygmy.BoardType;
@@ -28,6 +26,7 @@ import com.lib.pygmy.EntityType;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
+import com.lib.pygmy.util.Color;
 import com.lib.pygmy.util.Point;
 
 public class DemoLevel extends PygmyGameLevel {
@@ -46,9 +45,9 @@ public class DemoLevel extends PygmyGameLevel {
 		String p1 = playerIds.get(0);
 		String p2 = playerIds.get(1);
 		
-		List<Integer> colors = new ArrayList<Integer>();
-		colors.add(Color.CYAN);
-		colors.add(Color.WHITE);
+		List<Color> colors = new ArrayList<Color>();
+		colors.add(new Color(255, 173, 179, 250));  // stale blue
+		colors.add(new Color(255, 255, 255, 255));  // white
 
 		setBoardType(BoardType.CHECKER_BOARD);
 		setDimensions(8, 8);

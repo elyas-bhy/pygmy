@@ -22,7 +22,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
@@ -30,6 +29,7 @@ import com.dev.pygmy.PygmyApp;
 import com.lib.pygmy.BoardType;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.Tile;
+import com.lib.pygmy.util.Color;
 import com.lib.pygmy.util.Point;
 
 /**
@@ -44,7 +44,7 @@ public class GameBoardView extends View {
 	private static Map<Point,Tile> tilesMap;
 
 	private int boardType;
-	private List<Integer> colors;
+	private List<Color> colors;
 	private Paint colorBlack = null;
 	
 	/**
@@ -64,7 +64,7 @@ public class GameBoardView extends View {
 
 		tilesMap = new HashMap<Point,Tile>();
 		colorBlack = new Paint();
-		colorBlack.setColor(Color.BLACK);
+		colorBlack.setColor(android.graphics.Color.BLACK);
 		colorBlack.setTextSize(20);
 
 		numberOfRows = game.getCurrentLevel().getNumberRows();
@@ -136,8 +136,11 @@ public class GameBoardView extends View {
 				throw new IllegalStateException("It is mandatory to have two colors to build a Checker Board.");
 			}
 
-			color1.setColor(colors.get(0));
-			color2.setColor(colors.get(1));
+			Color c;
+			c = colors.get(0);
+			color1.setARGB(c.getA(), c.getR(), c.getG(), c.getB());
+			c = colors.get(1);
+			color2.setARGB(c.getA(), c.getR(), c.getG(), c.getB());
 		}
 
 		int tileWidth = Math.min(numberOfRows, numberOfColumns);
@@ -172,7 +175,7 @@ public class GameBoardView extends View {
 							t.setColor(((x + y)%2 != 0) ? color1:color2);
 						} else if (boardType == BoardType.GRID_BOARD) {
 							Paint c = new Paint();
-							c.setColor(Color.TRANSPARENT);
+							c.setColor(android.graphics.Color.TRANSPARENT);
 							t.setColor(c);
 							
 							int smallDist = tileSize + offset;

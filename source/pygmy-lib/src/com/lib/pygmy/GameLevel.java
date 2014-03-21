@@ -18,6 +18,8 @@ package com.lib.pygmy;
 
 import java.util.List;
 
+import com.lib.pygmy.util.Color;
+
 public interface GameLevel {
 
 	public void start();
@@ -40,9 +42,9 @@ public interface GameLevel {
 	
 	public void setBoardType(int type);
 	
-	public List<Integer> getColors();
+	public List<Color> getColors();
 	
-	public void setColors(List<Integer> colors);
+	public void setColors(List<Color> colors);
 
 	public void addGameRule(GameRule rule);
 

@@ -16,18 +16,17 @@
 
 package com.client.pygmy;
 
-import java.util.Vector;
-
-import com.client.pygmy.entity.MyChessEntity;
-import com.client.pygmy.entity.Pawn;
 import com.lib.pygmy.GameUniverse;
-import com.lib.pygmy.PygmyGameEntity;
 import com.lib.pygmy.PygmyOverlapRulesApplier;
-import com.lib.pygmy.base.Overlap;
 
+/**
+ * Allows to specify the actions to take when an overlap occurs
+ * between to game entities
+ * @author Pygmy
+ *
+ */
 public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 	
-	private static final long serialVersionUID = -1258944691352234655L;
 	protected GameUniverse universe;
 
 	public DemoOverlapRules() {
@@ -37,22 +36,13 @@ public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}
-
-	@Override
-	public void applyOverlapRules(Vector<Overlap> overlappables) {
-		super.applyOverlapRules(overlappables);
-	}
 	
-	public void overlapRule(Pawn e1, MyChessEntity e2) {
-		universe.removeGameEntity(e2);
-	}
-	
-	public void overlapRule(MyChessEntity e1, MyChessEntity e2) {
-		universe.removeGameEntity(e2);
-	}
-	
-	public void overlapRule(PygmyGameEntity e1, PygmyGameEntity e2) {
-		universe.removeGameEntity(e2);
+	// Specify here the actions to take when two pawns overlap.
+	// You can implement a similar method for each of your concrete
+	// game entity implementations. 
+	// The method name should always be "overlapRule".
+	public void overlapRule(Pawn p1, Pawn p2) {
+		
 	}
 	
 }

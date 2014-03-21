@@ -16,17 +16,17 @@
 
 package com.client.pygmy;
 
-import java.util.Vector;
-
-import android.util.Log;
-
 import com.client.pygmy.entity.MyChessEntity;
 import com.client.pygmy.entity.Pawn;
 import com.lib.pygmy.GameUniverse;
-import com.lib.pygmy.PygmyGameEntity;
 import com.lib.pygmy.PygmyOverlapRulesApplier;
-import com.lib.pygmy.base.Overlap;
 
+/**
+ * Allows to specify the actions to take when an overlap occurs
+ * between to game entities
+ * @author Pygmy
+ *
+ */
 public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 	
 	private static final long serialVersionUID = -1258944691352234655L;
@@ -39,24 +39,12 @@ public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}
-
-	@Override
-	public void applyOverlapRules(Vector<Overlap> overlappables) {
-		super.applyOverlapRules(overlappables);
-	}
 	
 	public void overlapRule(Pawn e1, MyChessEntity e2) {
-		Log.d("DEMO", "OVERLAPRULE Pawn MyChessEntity");
 		universe.removeGameEntity(e2);
 	}
 	
 	public void overlapRule(MyChessEntity e1, MyChessEntity e2) {
-		Log.d("DEMO", "OVERLAPRULE MyChessEntity MyChessEntity");
-		universe.removeGameEntity(e2);
-	}
-	
-	public void overlapRule(PygmyGameEntity e1, PygmyGameEntity e2) {
-		Log.d("DEMO", "OVERLAPRULE PygmyGameEntity");
 		universe.removeGameEntity(e2);
 	}
 	
