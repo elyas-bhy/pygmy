@@ -39,4 +39,5 @@ public interface OverlapRulesApplier {
 	 * @param overlaps
 	 */
 	public void applyOverlapRules(Vector<Overlap> overlaps);
+	
 }

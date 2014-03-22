@@ -49,7 +49,7 @@ public abstract class PygmyGameEntity implements GameEntity,
 		
 		if ((pos.x < 0 && pos.x >= level.getNumberRows()) || 
 				(pos.y < 0 && pos.y >= level.getNumberColumns())) {
-			throw new IllegalStateException("Position of the entity is out of bounds.");
+			throw new IllegalStateException("Entity's position is out of bounds.");
 		}
 		
 		tile.setPosition(pos);
@@ -108,9 +108,6 @@ public abstract class PygmyGameEntity implements GameEntity,
 	 */
 	@Override
 	public void setBitmap(Bitmap bitmap) {
-		if (bitmap == null) {
-			throw new IllegalStateException("No Bitmap. Did you request it at setup?");
-		}
 		this.bitmap = bitmap;
 	}
 	

@@ -114,10 +114,10 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	@Override
 	public void setDimensions(int rows, int cols) {
 		if (rows <= 0 || cols <= 0) {
-			throw new IllegalStateException("Rows and Columns must be positive.");
+			throw new IllegalStateException("Rows and columns must be positive.");
 		}
 		if (rows > 16 || cols > 16) {
-			throw new IllegalStateException("Dimension board could not be set.");
+			throw new IllegalStateException("Rows and columns must be less than 16");
 		}
 		
 		this.rows = rows;
@@ -142,7 +142,7 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 		}
 		// Change this if the number of available boards changes.
 		if (type > 2) {
-			throw new IllegalStateException("Board's type does not exist.");
+			throw new IllegalStateException("Board type does not exist.");
 		}
 		
 		this.boardType = type;
@@ -162,7 +162,8 @@ public abstract class PygmyGameLevel implements GameLevel, Serializable {
 	@Override
 	public void setColors(List<Color> colors) {
 		if (colors == null || colors.isEmpty()) {
-			throw new IllegalStateException("Colors list is empty or null. Did you forget to setup it?");
+			throw new IllegalStateException(
+					"Colors list is empty or null. Did you specify it at setup?");
 		}
 
 		this.colors = colors;
