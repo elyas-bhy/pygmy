@@ -38,9 +38,21 @@ public class PygmyLoader {
 	private static String mGamePath;
 	private static DexClassLoader mClassLoader;
 
-	public static PygmyGame loadGame(Activity context, String gamePath) {
+	public static void setGamePath(Activity context, String path) {
 		mContext = context;
-		setGamePath(gamePath);
+		mGamePath = path;
+		
+		// Drop reference to previous class loader
+		mClassLoader = null;
+		
+		// Delete optimized dex file of previous class loader
+		File dex = new File(context.getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath() + "/game.dex");
+		if (dex.exists()) {
+			dex.delete();
+		}
+	}
+
+	public static PygmyGame loadGame() {
 		PygmyGame game = null;
 		
 		try {
@@ -80,11 +92,6 @@ public class PygmyLoader {
 				null, 
 				mContext.getClassLoader());
 		return mClassLoader;
-	}
-	
-	public static void setGamePath(String path) {
-		mGamePath = path;
-		mClassLoader = null;  // drop reference to previous class loader
 	}
 
 }

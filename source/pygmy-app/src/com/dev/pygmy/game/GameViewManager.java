@@ -77,7 +77,7 @@ public class GameViewManager {
 	}
 	
 	/**
-	 * Clear the overlay
+	 * Clears the overlay
 	 */
 	public static void resetOverlay() {
 		getOverlay().setCoordinates(0, 0, 0, 0);

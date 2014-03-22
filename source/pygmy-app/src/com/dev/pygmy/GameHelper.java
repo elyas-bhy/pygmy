@@ -104,11 +104,11 @@ public class GameHelper {
 	 */
 	private void initGameViewManager() {
 		String path = Utils.getGamePath(mContext, mTurnData.game, mTurnData.version, "game.jar");
-		PygmyLoader.setGamePath(path);
+		PygmyLoader.setGamePath(mContext, path);
 		mGame = Utils.loadGameHistory(getHistoryPath());
 		
 		if (mGame == null) {
-			mGame = PygmyLoader.loadGame(mContext, path);
+			mGame = PygmyLoader.loadGame();
 			mGame.setPlayerIds(mMatch.getParticipantIds());
 		}
 		
