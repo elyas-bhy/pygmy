@@ -143,7 +143,10 @@
                 style="@style/game_profile"
                 android:text="@string/last_played_profile" />
 
-            <LinearLayout style="@style/game_list_profile" >
+            <LinearLayout 
+                style="@style/game_list_profile" 
+                android:id="@+id/previously_played_game"
+                android:onClick="onPreviouslyPlayedGameClick">
 
                 <ImageView
                     android:id="@+id/game_icon_profile_last"
@@ -159,7 +162,9 @@
                     style="@style/text_game_list_profile" />
             </LinearLayout>
 
-            <LinearLayout style="@style/game_list_profile" >
+            <LinearLayout style="@style/game_list_profile"
+                android:id="@+id/last_played_game"
+                android:onClick="onLastGamePlayedClick">
 
                 <ImageView
                     android:id="@+id/game_icon_profile_last2"

@@ -373,10 +373,8 @@ public class MainActivity extends BaseGameActivity implements
 			}
 
 			// Setting text and image in views
-			TextView previousGameView = (TextView) findViewById(R.id.last_played);
-			previousGameView.setText(previousGame);
-			TextView lastGameView = (TextView) findViewById(R.id.last_played2);
-			lastGameView.setText(lastGame);
+			((TextView) findViewById(R.id.last_played)).setText(previousGame);
+			((TextView) findViewById(R.id.last_played2)).setText(lastGame);
 			
 			((TextView) findViewById(R.id.name_profile)).setText(name);
 			((TextView) findViewById(R.id.nat_profile)).setText(nationality);
@@ -390,25 +388,17 @@ public class MainActivity extends BaseGameActivity implements
 			downloader.download(iconUrl.toString(), gameIcon);
 			downloader.download(iconUrl2.toString(), gameIcon2);
 			findViewById(R.id.screen_profile).setVisibility(View.VISIBLE);
-
-			// click on game
-			previousGameView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					mGamePrefs = PygmyApp.persistence.getPreviousGame();
-					putGameInfos();
-				}
-			});
-			
-			// click on game
-			lastGameView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					mGamePrefs = PygmyApp.persistence.getLastGame();
-					putGameInfos();
-				}
-			});
 		}
+	}
+	
+	public void onPreviouslyPlayedGameClick(View v) {
+		mGamePrefs = PygmyApp.persistence.getPreviousGame();
+		putGameInfos();
+	}
+	
+	public void onLastPlayedGameClick(View v) {
+		mGamePrefs = PygmyApp.persistence.getLastGame();
+		putGameInfos();
 	}
 
 	// Helper dialogs
