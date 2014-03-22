@@ -31,8 +31,7 @@ import com.lib.pygmy.util.TurnData;
 import dalvik.system.DexClassLoader;
 
 /**
- * Represents the level's universe. This class manages the game entities lifecycles,
- * positioning, and overlap processing.
+ * Basic implementation of {@link GameUniverse}
  * @author Pygmy
  *
  */
@@ -62,7 +61,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	/**
-	 * Returns the entity occupying the specified tile
+	 * {@inheritDoc}
 	 */
 	@Override
 	public GameEntity getEntityAt(Tile tile) {
@@ -70,7 +69,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	/**
-	 * Returns a collection of the universe's game entities
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Collection<GameEntity> getGameEntities() {
@@ -78,7 +77,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 
 	/**
-	 * Adds an entity to the universe
+	 * {@inheritDoc}
 	 */
 	@Override
 	public synchronized void addGameEntity(GameEntity gameEntity) {
@@ -89,7 +88,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 
 	/**
-	 * Removes an entity to the universe
+	 * {@inheritDoc}
 	 */
 	@Override
 	public synchronized void removeGameEntity(GameEntity gameEntity) {
@@ -100,7 +99,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 
 	/**
-	 * Handles a player move
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void processMove(GameMove move) {
@@ -108,7 +107,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	/**
-	 * Updates the universe state according to the passed response
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateData(TurnData data) {
@@ -147,7 +146,7 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	/**
-	 * Returns the universe's state in a compressed format
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getState() {

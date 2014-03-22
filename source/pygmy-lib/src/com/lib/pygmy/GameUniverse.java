@@ -21,24 +21,50 @@ import java.util.Collection;
 import com.lib.pygmy.util.TurnData;
 
 /**
- * Manages the lifecycle of the level's game entities
+ * Manages the game entities lifecycles, positioning, and overlap processing.
  * @author Pygmy
  * 
  */
 public interface GameUniverse {
 
+	/**
+	 * Returns the entity occupying the specified tile
+	 * @param tile
+	 */
+	public GameEntity getEntityAt(Tile tile);
+	
+	/**
+	 * Returns a collection of the universe's game entities
+	 */
+	public Collection<GameEntity> getGameEntities();
+	
+	/**
+	 * Adds an entity to the universe
+	 * @param gameEntity
+	 */
 	public void addGameEntity(GameEntity gameEntity);
-
+	
+	/**
+	 * Removes an entity from the universe
+	 * @param gameEntity
+	 */
 	public void removeGameEntity(GameEntity gameEntity);
 
-	public GameEntity getEntityAt(Tile tile);
-
-	public Collection<GameEntity> getGameEntities();
-
+	/**
+	 * Handles a player move
+	 * @param move
+	 */
 	public void processMove(GameMove move);
 	
+	/**
+	 * Updates the universe state according to the passed response
+	 * @param data
+	 */
 	public void updateData(TurnData data);
 	
+	/**
+	 * Returns the universe's state in a compressed format
+	 */
 	public String getState();
 
 }

@@ -16,9 +16,21 @@
 
 package com.lib.pygmy;
 
+/**
+ * Represents a game rule. Rules are used to verify if a game should end.
+ * @author Pygmy
+ *
+ */
 public interface GameRule {
 
+	/**
+	 * Returns whether the rule is verified
+	 */
 	public boolean check();
 	
+	/**
+	 * Returns the message associated to this rule when it gets verified
+	 */
 	public String getMessage();
+	
 }

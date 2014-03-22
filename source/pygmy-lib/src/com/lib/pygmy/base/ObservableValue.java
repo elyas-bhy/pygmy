@@ -19,6 +19,12 @@ package com.lib.pygmy.base;
 import java.io.Serializable;
 import java.util.Observable;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ * @param <T>
+ */
 public class ObservableValue<T> extends Observable implements Serializable {
 	
 	private static final long serialVersionUID = -2453057466577519147L;

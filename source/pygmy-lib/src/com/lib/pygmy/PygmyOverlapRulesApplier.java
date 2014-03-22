@@ -23,11 +23,19 @@ import java.util.Vector;
 import com.lib.pygmy.base.Overlap;
 import com.lib.pygmy.base.Overlappable;
 
+/**
+ * Basic implementation of {@link OverlapRulesApplier}
+ * @author Pygmy
+ *
+ */
 public abstract class PygmyOverlapRulesApplier implements
 		OverlapRulesApplier, Serializable {
 	
 	private static final long serialVersionUID = -7248823804089586622L;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void applyOverlapRules(Vector<Overlap> overlaps) {
 		for (Overlap col : overlaps) {
 			applySpecificOverlapRule(col.getOverlappable1(),
@@ -42,7 +50,7 @@ public abstract class PygmyOverlapRulesApplier implements
 			m = getClass().getDeclaredMethod("overlapRule", e1.getClass(),
 					e2.getClass());
 		} catch (NoSuchMethodException e) {
-			// automatic commutativity handling
+			// Automatic commutativity handling
 			reverseParameters(e1, e2);
 			return;
 		}

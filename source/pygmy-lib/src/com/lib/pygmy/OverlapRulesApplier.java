@@ -20,12 +20,23 @@ import com.lib.pygmy.base.Overlap;
 
 import java.util.Vector;
 
+/**
+ * Handles entity overlaps and applies the appropriate rules 
+ * whenever appropriate
+ * @author Pygmy
+ *
+ */
 public interface OverlapRulesApplier {
 	
+	/**
+	 * Sets the managed universe by this instance
+	 * @param universe
+	 */
 	public void setUniverse(GameUniverse universe);
 
 	/**
 	 * Updates the universe according to the passed overlaps
+	 * @param overlaps
 	 */
 	public void applyOverlapRules(Vector<Overlap> overlaps);
 }

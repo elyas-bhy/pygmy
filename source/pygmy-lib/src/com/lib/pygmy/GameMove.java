@@ -18,6 +18,12 @@ package com.lib.pygmy;
 
 import java.io.Serializable;
 
+/**
+ * Represents a move by associating the target entity with its 
+ * future destination.
+ * @author Pygmy
+ *
+ */
 public class GameMove implements Serializable {
 	
 	private static final long serialVersionUID = -2310782677683578117L;
@@ -30,18 +36,32 @@ public class GameMove implements Serializable {
 		this.dest = dest;
 	}
 
+	/**
+	 * Returns the entity to move
+	 */
 	public GameEntity getEntity() {
 		return entity;
 	}
 
+	/**
+	 * Sets the entity to move
+	 * @param entity
+	 */
 	public void setEntity(GameEntity entity) {
 		this.entity = entity;
 	}
 
+	/**
+	 * Returns the entity's destination
+	 */
 	public Tile getDestination() {
 		return dest;
 	}
 
+	/**
+	 * Sets the entity's destination
+	 * @param dest
+	 */
 	public void setDestination(Tile dest) {
 		this.dest = dest;
 	}
