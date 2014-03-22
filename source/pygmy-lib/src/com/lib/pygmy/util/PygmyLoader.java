@@ -30,6 +30,12 @@ import com.lib.pygmy.PygmyGame;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
+/**
+ * Utility class responsible for dynamically loading client games and managing
+ * the class loader's lifecycle
+ * @author Pygmy
+ *
+ */
 public class PygmyLoader {
 	
 	private static final String TAG = "PygmyLoader";
@@ -38,6 +44,12 @@ public class PygmyLoader {
 	private static String mGamePath;
 	private static DexClassLoader mClassLoader;
 
+	/**
+	 * Updates the path of the next game to load.
+	 * Always call this method before calling {@link PygmyGame.loadGame()}
+	 * @param context
+	 * @param path
+	 */
 	public static void setGamePath(Activity context, String path) {
 		mContext = context;
 		mGamePath = path;
@@ -52,6 +64,10 @@ public class PygmyLoader {
 		}
 	}
 
+	/**
+	 * Loads the client plugin and creates a new instance of the client's game
+	 * @return the client's game if the class was found, or null instead
+	 */
 	public static PygmyGame loadGame() {
 		PygmyGame game = null;
 		
@@ -68,6 +84,9 @@ public class PygmyLoader {
 		return game;
 	}
 	
+	/**
+	 * Retrieves the client plugin classes and dynamically loads them
+	 */
 	private static void loadDex() {
 		try {
 			DexFile dx = DexFile.loadDex(mGamePath, File.createTempFile("opt", "dex",
@@ -82,6 +101,10 @@ public class PygmyLoader {
 		}
 	}
 	
+	/**
+	 * Returns the class loader of the current game
+	 * @return
+	 */
 	public static DexClassLoader getClassLoader() {
 		if (mClassLoader != null) {
 			return mClassLoader;
