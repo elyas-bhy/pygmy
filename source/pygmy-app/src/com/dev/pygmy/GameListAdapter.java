@@ -67,7 +67,7 @@ public class GameListAdapter extends ArrayAdapter<GameHolder> {
 
 		GameHolder game = games.get(position);
 		viewHolder.name.setText(game.name);
-		viewHolder.desc.setText(game.info);
+		viewHolder.desc.setText(game.summary);
 
 		URL imageUrl = null;
 		try {

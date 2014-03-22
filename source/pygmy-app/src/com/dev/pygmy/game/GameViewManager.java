@@ -24,7 +24,7 @@ import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.util.TurnData;
 
 /**
- * This class manages the different view used in creation of a game.
+ * This class manages the different graphic layers of a game
  * @author Pygmy
  */
 public class GameViewManager {
@@ -38,7 +38,7 @@ public class GameViewManager {
 	private static TileOverlayView tileOverlayView;
 	
 	/**
-	 * Constructs each of the different views.
+	 * Constructs each of the different views
 	 */
 	public GameViewManager(Activity activity, PygmyGame game) {
 		this.activity = activity;
@@ -62,7 +62,7 @@ public class GameViewManager {
 	}
 	
 	/**
-	 * Updates the entityView state according to the passed response.
+	 * Updates the entityView state according to the passed response
 	 */
 	public void updateData(TurnData data) {
 		mainLayout.removeAllViews();
@@ -77,7 +77,7 @@ public class GameViewManager {
 	}
 	
 	/**
-	 * Removes tile overlay.
+	 * Clears the overlay
 	 */
 	public static void resetOverlay() {
 		getOverlay().setCoordinates(0, 0, 0, 0);
@@ -85,14 +85,14 @@ public class GameViewManager {
 	}
 	
 	/**
-	 * Calls onDraw method in tileOverlayView and draw a new tile overlap.
+	 * Invalidates the overlay in order to redraw it
 	 */
 	public static void redrawOverlay() {
 		tileOverlayView.invalidate();
 	}
 	
 	/**
-	 * @return the tile used to show the future position of an entity.
+	 * Returns the overlay used to show the future position of an entity
 	 */
 	public static TileOverlayView getOverlay() {
 		return tileOverlayView;

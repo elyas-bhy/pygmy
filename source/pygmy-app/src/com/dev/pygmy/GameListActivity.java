@@ -50,7 +50,7 @@ public class GameListActivity extends Activity {
 	public final class GameHolder {
 		public Integer id;
 		public String name;
-		public String info;
+		public String summary;
 		public String fileName;
 		public String version;
 		public String image;
@@ -79,9 +79,10 @@ public class GameListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(GameListActivity.this, GameHomePageActivity.class);
 				GameHolder game = games.get(position);
-				
+				PygmyApp.logE("name : " + game.name);
 				intent.putExtra("id", game.id);
 				intent.putExtra("gameName", game.name);
+				intent.putExtra("summary", game.summary);
 				intent.putExtra("filename", game.fileName);
 				intent.putExtra("version", game.version);
 				intent.putExtra("image", game.image);
@@ -94,6 +95,9 @@ public class GameListActivity extends Activity {
 	
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
+		PygmyApp.logE("request : "+ request);
+		PygmyApp.logE("response : " + response);
+		PygmyApp.logE("intent data list : " + data);
 		switch (request) {
 		case MainActivity.RC_SELECT_GAME:
 			setResult(MainActivity.RC_SELECT_GAME, data);
@@ -152,7 +156,7 @@ public class GameListActivity extends Activity {
 					
 					game.id = json.getInt("id_game");
 					game.name = json.getString("name");
-					game.info = json.getString("resume");
+					game.summary = json.getString("resume");
 					game.fileName = json.getString("filename");
 					game.version = json.getString("version");
 					game.image = json.getString("image");

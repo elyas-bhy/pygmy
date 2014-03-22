@@ -172,6 +172,9 @@ public class GameBoardView extends View {
 						t.setPosition(new Point(x-1, y-1));
 						
 						if (boardType == BoardType.CHECKER_BOARD) {
+							if (color1 == null || color2 == null) {
+								throw new IllegalStateException("Colors must be initialized. Did you setup it?");
+							}
 							t.setColor(((x + y)%2 != 0) ? color1:color2);
 						} else if (boardType == BoardType.GRID_BOARD) {
 							Paint c = new Paint();
