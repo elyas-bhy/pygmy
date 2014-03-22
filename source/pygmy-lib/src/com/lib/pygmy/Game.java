@@ -20,28 +20,65 @@ import java.util.List;
 
 import com.lib.pygmy.base.ObservableValue;
 
+/**
+ * Encapsulates the game's state and levels
+ */
 public interface Game {
 	
+	/**
+	 * Initializes the game's configuration
+	 */
 	public void initGame();
 	
+	/**
+	 * Starts the game by running the first level
+	 */
 	public void start();
 	
+	/**
+	 * Callback method called when a player has made a move
+	 */
 	public void onPlayerMove(GameMove move);
 	
+	/**
+	 * Returns the current game's global context
+	 */
 	public PygmyGameContext getContext();
 	
+	/**
+	 * Returns the IDs of the participant players
+	 */
 	public List<String> getPlayerIds();
 	
+	/**
+	 * Sets the IDs of the participant players
+	 */
 	public void setPlayerIds(List<String> playerIds);
 	
+	/**
+	 * Returns the current player's ID
+	 */
 	public String getCurrentPlayerId();
 
+	/**
+	 * Returns the game's levels
+	 */
 	public List<GameLevel> getLevels();
 	
+	/**
+	 * Sets the game's levels
+	 */
 	public void setLevels(List<GameLevel> levels);
 	
+	/**
+	 * Returns the current level
+	 */
 	public GameLevel getCurrentLevel();
 	
+	/**
+	 * 
+	 * @return true if the game has ended, false otherwise
+	 */
 	public ObservableValue<Boolean> endOfGame();
 		
 }

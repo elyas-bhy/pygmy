@@ -25,21 +25,21 @@ import org.json.JSONObject;
 import android.util.Log;
 
 /**
- * Basic turn data. It's just a blank data string and a turn number counter.
- * 
- * @author wolff
+ * Encapsulates the data to transmit to the other players
+ * @author Pygmy
  * 
  */
 public class TurnData {
 	
 	private final static String TAG = "TurnData";
 
-	public String game = "";
-	public String version = "";
-    public String state = "";
+	public String game;
+	public String version;
+    public String state;
     public int turnCounter;
 
     public TurnData() {
+    	
     }
 
     // This is the byte array we will write out to the TBMP API.
@@ -57,9 +57,6 @@ public class TurnData {
         }
 
         String st = retVal.toString();
-
-        Log.d(TAG, "==== PERSISTING\n" + st);
-
         return st.getBytes(Charset.forName("UTF-16"));
     }
 
@@ -67,7 +64,7 @@ public class TurnData {
     public static TurnData unpersist(byte[] byteArray) {
 
         if (byteArray == null) {
-            Log.d(TAG, "Empty array---possible bug.");
+            Log.d(TAG, "Empty array - possible bug.");
             return new TurnData();
         }
 
@@ -79,10 +76,7 @@ public class TurnData {
             return null;
         }
 
-        Log.d(TAG, "====UNPERSIST \n" + st);
-
         TurnData retVal = new TurnData();
-
         try {
             JSONObject obj = new JSONObject(st);
 

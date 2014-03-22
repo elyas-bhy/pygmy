@@ -25,7 +25,9 @@ import java.util.Observer;
 import com.lib.pygmy.base.ObservableValue;
 
 /**
- * Encapsulates the game's state and levels
+ * Basic implementation of a {@link Game}
+ * @author Pygmy
+ * 
  */
 public abstract class PygmyGame implements Game, Observer, Serializable {
 	
@@ -41,15 +43,15 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 		context = new PygmyGameContext(this);
 		gameLevels = new ArrayList<GameLevel>();
 	}
-
+	
 	/**
-	 * Initializes the game's configuration
+	 * {@inheritDoc}
 	 */
 	@Override
 	public abstract void initGame();
 
 	/**
-	 * Starts the game by running the first level
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void start() {
@@ -70,7 +72,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 	
 	/**
-	 * Callback method called when a player has made a move
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void onPlayerMove(GameMove move) {
@@ -78,7 +80,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	/**
-	 * Returns the current game's context
+	 * {@inheritDoc}
 	 */
 	@Override
 	public PygmyGameContext getContext() {
@@ -86,7 +88,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 	
 	/**
-	 * Returns the IDs of the participant players
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<String> getPlayerIds() {
@@ -94,7 +96,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	/**
-	 * Sets the IDs of the participant players
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setPlayerIds(List<String> playerIds) {
@@ -106,7 +108,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	/**
-	 * Returns the current player's ID
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getCurrentPlayerId() {
@@ -114,7 +116,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 	
 	/**
-	 * Returns the game's levels
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<GameLevel> getLevels() {
@@ -122,7 +124,7 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 
 	/**
-	 * Sets the game's levels
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setLevels(List<GameLevel> levels) {
@@ -134,26 +136,28 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 	}
 	
 	/**
-	 * Returns the current level
+	 * {@inheritDoc}
 	 */
 	@Override
 	public GameLevel getCurrentLevel() {
 		return context.getCurrentLevel();
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ObservableValue<Boolean> endOfGame() {
+		return endOfGame;
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o == endOfGame) {
 			if (endOfGame.getValue()) {
-				//informationValue.setText("You win");
 				currentPlayedLevel.end();
 			}
 		}
-	}
-
-	@Override
-	public ObservableValue<Boolean> endOfGame() {
-		return endOfGame;
 	}
 	
 }

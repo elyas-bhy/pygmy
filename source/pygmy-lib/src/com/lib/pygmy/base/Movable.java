@@ -19,7 +19,9 @@ package com.lib.pygmy.base;
 import com.lib.pygmy.util.Point;
 
 /**
- * Has a current position
+ * 
+ * @author Pygmy
+ *
  */
 public interface Movable {
 

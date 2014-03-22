@@ -19,34 +19,71 @@ package com.lib.pygmy;
 import android.graphics.Bitmap;
 
 /**
- * Interface of board game pieces (entities)
+ * Represents a board game entity
  * @author Pygmy
+ * 
  */
 public interface GameEntity {
 	
 	/**
 	 * Returns the current game context
-	 * @return
 	 */
 	public PygmyGameContext getContext();
 	
+	/**
+	 * Returns the current tile occupied by this instance
+	 */
 	public Tile getCurrentTile();
 	
+	/**
+	 * Sets the current tile occupied by this instance
+	 * @param tile
+	 */
 	public void setCurrentTile(Tile tile);
 	
+	/**
+	 * Returns the player ID associated to this instance
+	 */
 	public String getPlayerId();
 	
+	/**
+	 * Sets the player ID associated to this instance
+	 * @param playerId
+	 */
 	public void setPlayerId(String playerId);
-	
-	public void oneStepMove(GameMove move);
-	
-	public boolean isLegalMove(GameMove move);
-	
-	public void oneStepMoveAddedBehavior();
 
+	/**
+	 * Returns the inflated bitmap of this instance
+	 */
 	public Bitmap getBitmap();
 	
+	/**
+	 * Sets the inflated bitmap of this instance
+	 * @param bitmap
+	 */
 	public void setBitmap(Bitmap bitmap);
 	
+	/**
+	 * Returns the entity type of this instance
+	 */
 	public EntityType getType();
+	
+	/**
+	 * Updates the entity's position by applying the passed move
+	 * @param move
+	 */
+	public void oneStepMove(GameMove move);
+	
+	/**
+	 * Verifies if the passed move is a valid move
+	 * @param move
+	 * @return true if the move is valid, false otherwise
+	 */
+	public boolean isLegalMove(GameMove move);
+	
+	/**
+	 * Adds additional behaviour after a move has been made
+	 */
+	public void oneStepMoveAddedBehavior();
+	
 }

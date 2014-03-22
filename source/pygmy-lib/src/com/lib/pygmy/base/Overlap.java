@@ -18,6 +18,11 @@ package com.lib.pygmy.base;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public class Overlap implements Serializable {
 	
 	private static final long serialVersionUID = 3501144486095658944L;

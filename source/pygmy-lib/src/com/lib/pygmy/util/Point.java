@@ -18,6 +18,11 @@ package com.lib.pygmy.util;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public class Point implements Serializable {
 	
 	private static final long serialVersionUID = -2364779929670023241L;

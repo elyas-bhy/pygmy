@@ -2,6 +2,11 @@ package com.lib.pygmy.util;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public class Color implements Serializable {
 	
 	private static final long serialVersionUID = 2077516928421365866L;

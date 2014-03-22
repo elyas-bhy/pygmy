@@ -18,6 +18,11 @@ package com.lib.pygmy.base;
 
 import com.lib.pygmy.Tile;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public interface Overlappable {
 	
 	public Tile getCurrentTile();

@@ -20,6 +20,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Encapsulates the global state of the currently played game
+ * @author Pygmy
+ *
+ */
 public class PygmyGameContext implements Serializable {
 	
 	private static final long serialVersionUID = -205963873187570678L;

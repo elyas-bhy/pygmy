@@ -24,6 +24,11 @@ import com.lib.pygmy.base.Drawable;
 import com.lib.pygmy.base.Overlappable;
 import com.lib.pygmy.util.Point;
 
+/**
+ * Basic implementation of a {@link GameEntity}
+ * @author Pygmy
+ *
+ */
 public abstract class PygmyGameEntity implements GameEntity,
 		Drawable, Overlappable, Serializable {
 	
@@ -44,53 +49,63 @@ public abstract class PygmyGameEntity implements GameEntity,
 		
 		if ((pos.x < 0 && pos.x >= level.getNumberRows()) || 
 				(pos.y < 0 && pos.y >= level.getNumberColumns())) {
-			throw new IllegalStateException("Position of the entity is out of the board.");
+			throw new IllegalStateException("Position of the entity is out of bounds.");
 		}
 		
 		tile.setPosition(pos);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PygmyGameContext getContext() {
+		return level.getContext();
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Tile getCurrentTile() {
 		return tile;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setCurrentTile(Tile tile) {
 		this.tile = tile;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getPlayerId() {
 		return playerId;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setPlayerId(String playerId) {
 		this.playerId = playerId;
 	}
-
-	@Override
-	public void oneStepMove(GameMove move) {
-		setCurrentTile(move.getDestination());
-		oneStepMoveAddedBehavior();
-	}
-
-	@Override
-	public void draw() {
-
-	}
-
-	@Override
-	public PygmyGameContext getContext() {
-		return level.getContext();
-	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Bitmap getBitmap() {
 		return bitmap;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setBitmap(Bitmap bitmap) {
 		if (bitmap == null) {
@@ -98,16 +113,39 @@ public abstract class PygmyGameEntity implements GameEntity,
 		}
 		this.bitmap = bitmap;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public EntityType getType() {
 		return type;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void oneStepMove(GameMove move) {
+		setCurrentTile(move.getDestination());
+		oneStepMoveAddedBehavior();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public abstract boolean isLegalMove(GameMove move);
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public abstract void oneStepMoveAddedBehavior();
+	
+	@Override
+	public void draw() {
+		
+	}
 
 }

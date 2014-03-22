@@ -16,6 +16,11 @@
 
 package com.lib.pygmy.base;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public interface Drawable {
 	
 	public void draw();

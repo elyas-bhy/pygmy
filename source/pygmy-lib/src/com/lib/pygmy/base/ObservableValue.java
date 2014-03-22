@@ -40,4 +40,5 @@ public class ObservableValue<T> extends Observable implements Serializable {
 	public T getValue() {
 		return value;
 	}
+	
 }
