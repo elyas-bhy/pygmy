@@ -110,7 +110,8 @@ public class Utils {
 	}
 
 	/**
-	 * Saves the current game @param game.
+	 * Saves the current game by serializing it and storing in locally
+	 * on the device
 	 */
 	public static void saveGame(PygmyGame game, String path) {
 		ObjectOutputStream oos = null;

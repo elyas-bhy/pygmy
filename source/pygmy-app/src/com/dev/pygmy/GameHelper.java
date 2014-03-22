@@ -104,11 +104,11 @@ public class GameHelper {
 	 */
 	private void initGameViewManager() {
 		String path = Utils.getGamePath(mContext, mTurnData.game, mTurnData.version, "game.jar");
-		PygmyLoader.setGamePath(path);
+		PygmyLoader.setGamePath(mContext, path);
 		mGame = Utils.loadGameHistory(getHistoryPath());
 		
 		if (mGame == null) {
-			mGame = PygmyLoader.loadGame(mContext, path);
+			mGame = PygmyLoader.loadGame();
 			mGame.setPlayerIds(mMatch.getParticipantIds());
 		}
 		
@@ -429,7 +429,7 @@ public class GameHelper {
 	}
 
 	/**
-	 * Upload your new gamestate, then take a turn, and pass it on to the next player
+	 * Upload your new game state, then take a turn, and pass it on to the next player
 	 */
 	public void onTurnTaken() {
 		String nextParticipantId = getNextParticipantId();

@@ -100,6 +100,8 @@ public class MainActivity extends BaseGameActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mGameHelper = new GameHelper(this);
+		
+		
 
 		// Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
@@ -118,6 +120,7 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.default_actionbar, menu);
+		menu.findItem(R.id.set_report).setVisible(false);
 		return true;
 	}
 
@@ -308,6 +311,7 @@ public class MainActivity extends BaseGameActivity implements
 
 	@Override
 	public void onSignInSucceeded() {
+		
 		if (mHelper.getTurnBasedMatch() != null) {
 			// GameHelper will cache any connection hint it gets. In this case,
 			// it can cache a TurnBasedMatch that it got from choosing a
@@ -435,6 +439,9 @@ public class MainActivity extends BaseGameActivity implements
 				if (data.hasExtra(EXTRA_GAME_VERSION))
 					gameVersion = data.getStringExtra(EXTRA_GAME_VERSION);
 				showSpinner();
+			} else {
+				gameID = null;
+				gameVersion = null;
 			}
 			break;
 
@@ -590,6 +597,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		intent.putExtra("id", mGamePrefs.getId());
 		intent.putExtra("gameName", mGamePrefs.getName());
+		intent.putExtra("summary", mGamePrefs.getSummary());
 		intent.putExtra("filename", mGamePrefs.getFilename());
 		intent.putExtra("version", mGamePrefs.getVersion());
 		intent.putExtra("image", mGamePrefs.getImage());

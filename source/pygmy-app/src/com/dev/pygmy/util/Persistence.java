@@ -77,6 +77,7 @@ public class Persistence {
 	public void copyToLastGame(GamePreferences game) {
 		lastGame.setId(game.getId());
 		lastGame.setName(game.getName());
+		lastGame.setSummary(game.getSummary());
 		lastGame.setImage(game.getImage());
 		lastGame.setVersion(game.getVersion());
 		lastGame.setFilename(game.getFilename());

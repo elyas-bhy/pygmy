@@ -23,6 +23,11 @@ import android.view.MenuItem;
 
 import com.dev.pygmy.util.PrefFragment;
 
+/**
+ * 
+ * @author Pygmy
+ *
+ */
 public class SettingsActivity extends Activity {
 
 	@Override
@@ -45,4 +50,5 @@ public class SettingsActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
 }

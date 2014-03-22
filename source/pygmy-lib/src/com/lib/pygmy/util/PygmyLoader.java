@@ -30,6 +30,12 @@ import com.lib.pygmy.PygmyGame;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
+/**
+ * Utility class responsible for dynamically loading client games and managing
+ * the class loader's lifecycle
+ * @author Pygmy
+ *
+ */
 public class PygmyLoader {
 	
 	private static final String TAG = "PygmyLoader";
@@ -38,9 +44,31 @@ public class PygmyLoader {
 	private static String mGamePath;
 	private static DexClassLoader mClassLoader;
 
-	public static PygmyGame loadGame(Activity context, String gamePath) {
+	/**
+	 * Updates the path of the next game to load.
+	 * Always call this method before calling {@link PygmyGame.loadGame()}
+	 * @param context
+	 * @param path
+	 */
+	public static void setGamePath(Activity context, String path) {
 		mContext = context;
-		setGamePath(gamePath);
+		mGamePath = path;
+		
+		// Drop reference to previous class loader
+		mClassLoader = null;
+		
+		// Delete optimized dex file of previous class loader
+		File dex = new File(context.getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath() + "/game.dex");
+		if (dex.exists()) {
+			dex.delete();
+		}
+	}
+
+	/**
+	 * Loads the client plugin and creates a new instance of the client's game
+	 * @return the client's game if the class was found, or null instead
+	 */
+	public static PygmyGame loadGame() {
 		PygmyGame game = null;
 		
 		try {
@@ -56,6 +84,9 @@ public class PygmyLoader {
 		return game;
 	}
 	
+	/**
+	 * Retrieves the client plugin classes and dynamically loads them
+	 */
 	private static void loadDex() {
 		try {
 			DexFile dx = DexFile.loadDex(mGamePath, File.createTempFile("opt", "dex",
@@ -70,6 +101,10 @@ public class PygmyLoader {
 		}
 	}
 	
+	/**
+	 * Returns the class loader of the current game
+	 * @return
+	 */
 	public static DexClassLoader getClassLoader() {
 		if (mClassLoader != null) {
 			return mClassLoader;
@@ -80,11 +115,6 @@ public class PygmyLoader {
 				null, 
 				mContext.getClassLoader());
 		return mClassLoader;
-	}
-	
-	public static void setGamePath(String path) {
-		mGamePath = path;
-		mClassLoader = null;  // drop reference to previous class loader
 	}
 
 }
