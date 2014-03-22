@@ -29,33 +29,47 @@ import com.lib.pygmy.PygmyGameLevel;
 import com.lib.pygmy.util.Color;
 import com.lib.pygmy.util.Point;
 
+/**
+ * This class represents a game level.
+ * You should always extend {@link PygmyGameLevel} class
+ * @author Pygmy
+ *
+ */
 public class DemoLevel extends PygmyGameLevel {
 
 	public DemoLevel(PygmyGame game, OverlapRulesApplier overlapRules) {
 		super(game, overlapRules);
 	}
 
-	/**
-	 * Sets images for each entity in the initial position.
-	 * @param context Context of the parent view
-	 */
+	// Entry-point method for initializing a game level.
+	// Override this to setup your level configuration.
 	@Override
 	public void init() {
-		List<String> playerIds = getContext().getGame().getPlayerIds();
-		String p1 = playerIds.get(0);
-		String p2 = playerIds.get(1);
 		
+		// Set your level dimensions.
+		// Note that rows and columns cannot exceed a size of 16
+		setDimensions(8, 8);
+		
+		// Select your board type
+		setBoardType(BoardType.CHECKER_BOARD);
+		
+		// Select your grid colors.
+		// You need to specify two colors for checker boards
 		List<Color> colors = new ArrayList<Color>();
 		colors.add(new Color(255, 173, 179, 250));  // stale blue
 		colors.add(new Color(255, 255, 255, 255));  // white
-
-		setBoardType(BoardType.CHECKER_BOARD);
-		setDimensions(8, 8);
 		setColors(colors);
-
+		
+		// Specify the level's rules
 		addGameRule(new EndlessGameRule());
+		
+		// Retrieve player IDs
+		List<String> playerIds = getContext().getGame().getPlayerIds();
+		String p1 = playerIds.get(0);
+		String p2 = playerIds.get(1);
 
-		// declare each black piece (entity) with the Entity class
+		// Add your entities to the level's universe
+		// using addEntity(GameEntity) method
 		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_ROOK, new Point(0, 0)));
 		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_KNIGHT, new Point(0, 1)));
 		addEntity(new MyChessEntity(this, p1, EntityType.BLACK_BISHOP, new Point(0, 2)));
@@ -69,7 +83,6 @@ public class DemoLevel extends PygmyGameLevel {
 			addEntity(new Pawn(this, p1, EntityType.BLACK_PAWN, new Point(1, i)));
 		}
 
-		// declare each white piece (entity) with the Entity class
 		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_ROOK, new Point(7, 0)));
 		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_KNIGHT, new Point(7, 1)));
 		addEntity(new MyChessEntity(this, p2, EntityType.WHITE_BISHOP, new Point(7, 2)));

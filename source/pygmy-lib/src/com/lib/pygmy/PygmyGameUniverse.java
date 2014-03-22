@@ -18,6 +18,8 @@ package com.lib.pygmy;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -60,11 +62,19 @@ public class PygmyGameUniverse implements GameUniverse, Serializable {
 	}
 	
 	/**
-	 * Returns the level's entity map
+	 * Returns the entity occupying the specified tile
 	 */
 	@Override
-	public Map<Tile,GameEntity> getGameEntities() {
-		return entities;
+	public GameEntity getEntityAt(Tile tile) {
+		return entities.get(tile);
+	}
+	
+	/**
+	 * Returns a collection of the universe's game entities
+	 */
+	@Override
+	public Collection<GameEntity> getGameEntities() {
+		return Collections.unmodifiableCollection(entities.values());
 	}
 
 	/**

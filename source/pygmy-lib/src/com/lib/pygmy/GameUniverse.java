@@ -16,14 +16,14 @@
 
 package com.lib.pygmy;
 
-import java.util.Map;
+import java.util.Collection;
 
 import com.lib.pygmy.util.TurnData;
 
 /**
- * stores all the gameframework.game entities of a gameframework.game level:
- * oneStepMoveAll() makes all the entities move ; overlapAll() manages all the
- * interactions between the entities.
+ * Manages the lifecycle of the level's game entities
+ * @author Pygmy
+ * 
  */
 public interface GameUniverse {
 
@@ -31,7 +31,9 @@ public interface GameUniverse {
 
 	public void removeGameEntity(GameEntity gameEntity);
 
-	public Map<Tile,GameEntity> getGameEntities();
+	public GameEntity getEntityAt(Tile tile);
+
+	public Collection<GameEntity> getGameEntities();
 
 	public void processMove(GameMove move);
 	

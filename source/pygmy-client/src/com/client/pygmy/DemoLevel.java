@@ -43,6 +43,7 @@ public class DemoLevel extends PygmyGameLevel {
 	// Override this to setup your level configuration.
 	@Override
 	public void init() {
+		
 		// Set your level dimensions.
 		// Note that rows and columns cannot exceed a size of 16
 		setDimensions(4, 4);

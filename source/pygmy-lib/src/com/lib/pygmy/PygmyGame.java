@@ -156,11 +156,4 @@ public abstract class PygmyGame implements Game, Observer, Serializable {
 		return endOfGame;
 	}
 	
-	/**
-	 * Returns a reference of this instance
-	 */
-	public PygmyGame getGame() {
-		return this;
-	}
-	
 }

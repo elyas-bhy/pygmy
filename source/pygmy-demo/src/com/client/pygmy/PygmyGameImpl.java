@@ -17,28 +17,40 @@
 package com.client.pygmy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.OverlapRulesApplier;
 import com.lib.pygmy.PygmyGame;
 import com.lib.pygmy.PygmyGameLevel;
 
+/**
+ * Entry-point class for the game plugin.
+ * Warning: do not modify this class' name nor its package. Doing so will
+ * result in a failure when loading your plugin.
+ * @author Pygmy
+ *
+ */
 public class PygmyGameImpl extends PygmyGame {
 
 	public PygmyGameImpl() {
 		super();
 	}
-
+	
+	// Entry-point method for initializing a game.
+	// Override this to setup your game configuration.
 	@Override
 	public void initGame() {
-		PygmyGame game = getGame();
-		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
 		
+		// You are required to add at least one game level
+		List<GameLevel> levels = new ArrayList<GameLevel>();
 		OverlapRulesApplier rules = new DemoOverlapRules();
-		PygmyGameLevel level1 = new DemoLevel(game, rules);
-		rules.setUniverse(level1.getUniverse());
-		levels.add(level1); // only one level is available at this time
-		game.setLevels(levels);
+		PygmyGameLevel level1 = new DemoLevel(this, rules);
+		levels.add(level1);
+		
+		// Register your levels using 
+		// PygmyGame.setLevels(List<GameLevel>) method
+		setLevels(levels);
 	}
 
 }

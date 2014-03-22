@@ -77,7 +77,7 @@ public class EntityView extends View {
 		this.context = context;
 		this.game = game;
 		GameUniverse universe = game.getCurrentLevel().getUniverse();
-		entities = universe.getGameEntities().values();
+		entities = universe.getGameEntities();
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class EntityView extends View {
 	public void updateData(TurnData data) {
 		GameUniverse universe = game.getCurrentLevel().getUniverse();
 		universe.updateData(data);
-		entities = universe.getGameEntities().values();
+		entities = universe.getGameEntities();
 	}
 	
 	/**

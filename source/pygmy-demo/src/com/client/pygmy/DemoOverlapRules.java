@@ -40,6 +40,10 @@ public class DemoOverlapRules extends PygmyOverlapRulesApplier {
 		this.universe = universe;
 	}
 	
+	public void overlapRule(Pawn e1, Pawn e2) {
+		universe.removeGameEntity(e2);
+	}
+	
 	public void overlapRule(Pawn e1, MyChessEntity e2) {
 		universe.removeGameEntity(e2);
 	}

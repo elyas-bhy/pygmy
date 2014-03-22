@@ -20,8 +20,6 @@ import java.io.Serializable;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import android.util.Log;
-
 import com.lib.pygmy.base.Movable;
 import com.lib.pygmy.base.Overlap;
 import com.lib.pygmy.base.Overlappable;
@@ -75,13 +73,13 @@ public class OverlapProcessorImpl implements OverlapProcessor, Serializable {
 		GameEntity entity = move.getEntity();
 		universe.removeGameEntity(entity);
 		entity.oneStepMove(move);
-		GameEntity dst = universe.getGameEntities().get(entity.getCurrentTile());
+		GameEntity dst = universe.getEntityAt(entity.getCurrentTile());
 		if (entity instanceof Overlappable && dst instanceof Overlappable) {
 			Vector<Overlap> overlaps = new Vector<Overlap>();
 			overlaps.add(new Overlap((Overlappable)entity, (Overlappable)dst));
 			overlapRules.applyOverlapRules(overlaps);
 		}
-		universe.getGameEntities().put(entity.getCurrentTile(), entity);
+		universe.addGameEntity(entity);
 	}
 
 	@Override

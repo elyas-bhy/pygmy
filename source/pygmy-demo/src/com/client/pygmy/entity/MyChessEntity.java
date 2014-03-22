@@ -23,10 +23,7 @@ import com.lib.pygmy.PygmyGameEntity;
 import com.lib.pygmy.util.Point;
 
 public class MyChessEntity extends PygmyGameEntity {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 7184835655366415165L;
 
 	public MyChessEntity(GameLevel level, String playerId, EntityType type, Point p) {
@@ -40,7 +37,6 @@ public class MyChessEntity extends PygmyGameEntity {
 	
 	@Override
 	public boolean isLegalMove(GameMove move) {
-		System.out.println(this.getCurrentTile().getPosition().toString());
 		return true;
 	}
 

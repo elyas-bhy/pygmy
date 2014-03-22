@@ -17,6 +17,7 @@
 package com.client.pygmy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.lib.pygmy.GameLevel;
 import com.lib.pygmy.OverlapRulesApplier;
@@ -40,18 +41,17 @@ public class PygmyGameImpl extends PygmyGame {
 	// Override this to setup your game configuration.
 	@Override
 	public void initGame() {
-		PygmyGame game = getGame();
 		
 		// You are required to add at least one game level
-		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
+		List<GameLevel> levels = new ArrayList<GameLevel>();
 		OverlapRulesApplier rules = new DemoOverlapRules();
-		PygmyGameLevel level1 = new DemoLevel(game, rules);
+		PygmyGameLevel level1 = new DemoLevel(this, rules);
 		rules.setUniverse(level1.getUniverse());
 		levels.add(level1);
 		
 		// Register your levels using 
-		// getGame().setLevels(List<GameLevel) method
-		game.setLevels(levels);
+		// PygmyGame.setLevels(List<GameLevel>) method
+		setLevels(levels);
 	}
 
 }

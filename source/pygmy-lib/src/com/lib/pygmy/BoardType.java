@@ -16,11 +16,16 @@
 
 package com.lib.pygmy;
 
+import java.io.Serializable;
+
 /**
- * 
+ * Enumerates available board types
+ * @author Pygmy
  *
  */
-public class BoardType {
+public class BoardType implements Serializable {
+	
+	private static final long serialVersionUID = 4081316113153332539L;
 	
 	public static final int CHECKER_BOARD = 0;
 	public static final int GRID_BOARD = 1;
