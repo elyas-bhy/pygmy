@@ -119,10 +119,9 @@ public class EntityView extends View {
 				if (entity.getBitmap() == null) {
 					int hSize = entity.getCurrentTile().getHeight();
 					int wSize = entity.getCurrentTile().getWidth();
-					int entityScale = Math.min(hSize, wSize);
-					entityScale = (96*entityScale)/100;
+					int scale = (int) (Math.min(hSize, wSize) * 0.95);
 					Bitmap bitmap = Utils.getBitmapByType(context.getResources(), entity.getType(), 
-							entityScale);
+							scale);
 					entity.setBitmap(bitmap);
 				}
 				coords = entity.getCurrentTile().getCoordinates();

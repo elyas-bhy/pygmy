@@ -113,6 +113,7 @@ public class MainActivity extends BaseGameActivity implements
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		initSigninButtons();
+		initSlidingMenu();
 	}
 
 	@Override
@@ -286,8 +287,7 @@ public class MainActivity extends BaseGameActivity implements
 			}
 			return;
 		}
-
-		initSlidingMenu(); // MOVE OUT MAYBE
+		
 		findViewById(R.id.login_layout).setVisibility(View.GONE);
 
 		if (mGameHelper.isDoingTurn()) {
