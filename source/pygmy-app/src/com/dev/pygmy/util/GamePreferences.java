@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
  * @author Pygmy
  */
 public class GamePreferences {
+	
 	private final String PREF_GAME_ID = "pref_game_id";
 	private final String PREF_GAME_NAME = "pref_game_name";
 	private final String PREF_GAME_SUMMARY = "pref_game_summary";

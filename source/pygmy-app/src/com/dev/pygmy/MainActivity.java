@@ -436,8 +436,7 @@ public class MainActivity extends BaseGameActivity implements
 				if (data.hasExtra(EXTRA_GAME_VERSION))
 					gameVersion = data.getStringExtra(EXTRA_GAME_VERSION);
 				showSpinner();
-			}
-			else{
+			} else {
 				gameID = null;
 				gameVersion = null;
 			}

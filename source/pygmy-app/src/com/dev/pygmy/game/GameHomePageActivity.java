@@ -62,8 +62,7 @@ import com.dev.pygmy.util.Utils;
 public class GameHomePageActivity extends Activity {
 
 	private final static int TOAST_DELAY = 2000;
-
-	private String gamesInfoUrl = Utils.BASE_URL + "/scripts/gamesInfo.php";
+	
 	private String reportUrl = Utils.BASE_URL + "/scripts/report.php";
 	private String databaseUrl = Utils.BASE_URL + "/scripts/update.php";
 	private Spinner spinner;
@@ -71,11 +70,10 @@ public class GameHomePageActivity extends Activity {
 
 	private TextView titleView, summaryView;
 
-	private String versionGame;
+	private String latestVersion;
 
 	private int id;
 	private boolean downloaded = false;
-	private boolean update;
 	private String gameName;
 	private String summary;
 	private String filename;
@@ -112,7 +110,6 @@ public class GameHomePageActivity extends Activity {
 		maxPlayers = extras.getInt("maxPlayer");
 
 		new FetchUpdateTask().execute();
-
 	}
 
 	/*
@@ -172,10 +169,9 @@ public class GameHomePageActivity extends Activity {
 	// check if the most recent version of the game is installed on the device
 	private void checkDownload() {
 		File gameFolder = new File(Utils.getGamePath(this, gameName));
-		File versionFolder = new File(
-				Utils.getGamePath(this, gameName, version));
-		update = updateGame(version);
-		if (gameFolder.exists() && versionFolder.exists() && update) {
+		File versionFolder = new File(Utils.getGamePath(this, gameName, version));
+		
+		if (gameFolder.exists() && versionFolder.exists() && version.equals(latestVersion)) {
 			downloaded = true;
 			button.setText("Play");
 		} else if (gameFolder.exists() && !versionFolder.exists()) {
@@ -203,17 +199,7 @@ public class GameHomePageActivity extends Activity {
 		}
 		return (path.delete());
 	}
-
-	public boolean updateGame(String versionL) {
-		if (!versionL.equals(versionGame)) {
-			update = false;
-			return update;
-		} else {
-			update = true;
-			return update;
-		}
-	}
-
+	
 	// Save the games preferences on the device
 	public void putGamePreferences() {
 		GamePreferences previousGame = PygmyApp.persistence.getPreviousGame();
@@ -234,7 +220,7 @@ public class GameHomePageActivity extends Activity {
 		final ArrayList report_selected = new ArrayList();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Repor :"
+		builder.setTitle("Report: "
 				+ ((TextView) findViewById(R.id.name_game)).getText());
 		builder.setMultiChoiceItems(report_option, null,
 				new DialogInterface.OnMultiChoiceClickListener() {
@@ -272,7 +258,6 @@ public class GameHomePageActivity extends Activity {
 
 		reportDialog = builder.create();
 		reportDialog.show();
-
 	}
 
 	private class FetchUpdateTask extends AsyncTask<String, String, String> {
@@ -316,6 +301,7 @@ public class GameHomePageActivity extends Activity {
 			return result;
 		}
 
+		@Override
 		protected void onPostExecute(String result) {
 			// Retrieve results of the PHP script
 			JSONObject json;
@@ -323,8 +309,8 @@ public class GameHomePageActivity extends Activity {
 				JSONArray array = new JSONArray(result);
 				for (int i = 0; i < array.length(); i++) {
 					json = array.getJSONObject(i);
-					versionGame = json.getString("version");
-					PygmyApp.logE("Version Game : " + versionGame);
+					latestVersion = json.getString("version");
+					PygmyApp.logE("Version Game : " + latestVersion);
 				}
 			} catch (Exception e) {
 				PygmyApp.logE("Error parsing data: " + e.getMessage());
@@ -351,6 +337,6 @@ public class GameHomePageActivity extends Activity {
 			ImageDownloader downloader = new ImageDownloader();
 			downloader.download(imageUrl.toString(), gameIconImage);
 		}
-
 	}
+	
 }
