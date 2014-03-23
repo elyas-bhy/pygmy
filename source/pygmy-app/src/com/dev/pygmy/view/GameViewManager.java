@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy.game;
+package com.dev.pygmy.view;
 
 import android.app.Activity;
 import android.widget.FrameLayout;

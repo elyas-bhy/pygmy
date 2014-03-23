@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy.game;
+package com.dev.pygmy.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

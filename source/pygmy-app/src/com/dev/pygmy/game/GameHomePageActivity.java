@@ -46,7 +46,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,16 +59,7 @@ import com.dev.pygmy.util.ImageDownloader;
 import com.dev.pygmy.util.Utils;
 
 public class GameHomePageActivity extends Activity {
-
-	private final static int TOAST_DELAY = 2000;
-
-	private final String[] reportOptions = { " Offensive content",
-			" Game not working ", " Incoherent content ", " Other " };
 	
-	private final String reportUrl = Utils.BASE_URL + "/scripts/report.php";
-	private final String databaseUrl = Utils.BASE_URL + "/scripts/update.php";
-	
-	private Spinner spinner;
 	private Button button;
 	private AlertDialog reportDialog;
 	
@@ -126,14 +116,9 @@ public class GameHomePageActivity extends Activity {
 		return true;
 	}
 
-	public void onReportClicked(View view) {
-		new GameFetchTask(reportUrl, mGame.name, spinner).execute();
-		Toast.makeText(this, "Report sent", TOAST_DELAY).show();
-	}
-
 	public void onPlayDownloadClicked(View view) {
 		if (!downloaded) {
-			DownloadTask downloadtask = new DownloadTask(GameHomePageActivity.this);
+			GameDownloadTask downloadtask = new GameDownloadTask(GameHomePageActivity.this);
 			downloadtask.execute(mGame.name, mGame.version, mGame.filename);
 			downloaded = true;
 			button.setText("Play");
@@ -178,32 +163,34 @@ public class GameHomePageActivity extends Activity {
 	}
 	
 	private void onReportClick() {
-		final ArrayList<Integer> selections = new ArrayList<Integer>();
+		final ArrayList<String> selectedItems = new ArrayList<String>();
+		final String[] reasons = getResources().getStringArray(R.array.report_reasons);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Report: " + ((TextView) findViewById(R.id.name_game)).getText());
-		builder.setMultiChoiceItems(reportOptions, null,
+		builder.setMultiChoiceItems(reasons, null,
 				new DialogInterface.OnMultiChoiceClickListener() {
 			
 					@Override
 					public void onClick(DialogInterface dialog,
 							int indexSelected, boolean isChecked) {
+						String reason = reasons[indexSelected];
 						if (isChecked) {
-							// If the user checked the item, add it to the
-							// selected items
-							selections.add(indexSelected);
-						} else if (selections.contains(indexSelected)) {
-							// Else, if the item is already in the array, remove it
-							selections.remove(Integer.valueOf(indexSelected));
+							selectedItems.add(reason);
+						} else if (selectedItems.contains(reason)) {
+							selectedItems.remove(reason);
 						}
+						
+						Button positiveButton = ((AlertDialog) dialog).getButton(
+								DialogInterface.BUTTON_POSITIVE);
+						positiveButton.setEnabled((selectedItems.size() != 0));
 					}
 				})
 				// Assign action buttons
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
-						Toast.makeText(GameHomePageActivity.this,
-								"Report done", TOAST_DELAY).show();
+						new GameReportTask(GameHomePageActivity.this, selectedItems).execute(mGame.name);
 					}
 				})
 				.setNegativeButton("Cancel",
@@ -211,20 +198,23 @@ public class GameHomePageActivity extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								Toast.makeText(GameHomePageActivity.this,
-										"Cancel report", TOAST_DELAY).show();
+										"Report canceled", Toast.LENGTH_SHORT).show();
 							}
 						});
 
 		reportDialog = builder.create();
 		reportDialog.show();
+		reportDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 	}
 
 	private class FetchUpdateTask extends AsyncTask<String, String, String> {
+		
+		private final String DB_URL = Utils.BASE_URL + "/scripts/update.php";
 
 		@Override
 		protected String doInBackground(String... params) {
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(databaseUrl);
+			HttpPost httpPost = new HttpPost(DB_URL);
 			ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
 			param.add(new BasicNameValuePair("name", mGame.name));

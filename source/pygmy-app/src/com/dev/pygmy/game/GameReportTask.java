@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,58 +30,46 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.dev.pygmy.PygmyApp;
-
-import android.os.AsyncTask;
-import android.widget.Spinner;
-import android.widget.TextView;
+import com.dev.pygmy.util.Utils;
 
 /**
- * Worker thread responsible for fetching data of a specified game
- * and displaying it
+ * Worker thread responsible for submitting a game report
  * @author Pygmy
  *
  */
-public class GameFetchTask extends AsyncTask<String, String, String> {
-
-	private final String databaseUrl;
-	private final String gameName;
-	private String title;
-	private String summary;
+public class GameReportTask extends AsyncTask<String, String, String> {
 	
-	private TextView titleView, summaryView;
-	private Spinner spinner;
+	private final String REPORT_URL = Utils.BASE_URL + "/scripts/report.php";
 
-	public GameFetchTask(String url, String game, Spinner sp) {
-		this.databaseUrl = url;
-		this.gameName = game;
-		this.spinner = sp;
+	private Context mContext;
+	private List<String> mReasons;
+
+	public GameReportTask(Context context, List<String> reasons) {
+		mContext = context;
+		mReasons = reasons;
 	}
 
 	@Override
 	protected String doInBackground(String... params) {
 
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(databaseUrl);
+		HttpPost httpPost = new HttpPost(REPORT_URL);
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
-		if (spinner != null) {
-			String item = spinner.getSelectedItem().toString();
-			param.add(new BasicNameValuePair("report", item));
-		}
-		param.add(new BasicNameValuePair("name", gameName));
+		
+		param.add(new BasicNameValuePair("report", mReasons.get(0)));
+		param.add(new BasicNameValuePair("name", params[0]));
 
 		InputStream is = null;
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(param));
-
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			HttpEntity httpEntity = httpResponse.getEntity();
-
-			// Read content
 			is = httpEntity.getContent();
 		} catch (Exception e) {
 			PygmyApp.logE("Error in HTTP connection: " + e.getMessage());
@@ -105,20 +94,7 @@ public class GameFetchTask extends AsyncTask<String, String, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		// Retrieve results of the PHP script 
-		JSONObject json;
-		try {
-			JSONArray array = new JSONArray(result);
-			for (int i = 0; i < array.length(); i++) {
-				json = array.getJSONObject(i);
-				title = json.getString("name");
-				summary = json.getString("resume");
-				titleView.setText(title);
-				summaryView.setText(summary);
-			}
-		} catch (Exception e) {
-			PygmyApp.logE("Error parsing data: " + e.getMessage());
-		}
+		Toast.makeText(mContext, "Report submitted", Toast.LENGTH_SHORT).show();
 	}
 
 }

@@ -23,9 +23,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
-import com.dev.pygmy.game.DownloadTask;
-import com.dev.pygmy.game.GameViewManager;
+import com.dev.pygmy.game.GameDownloadTask;
 import com.dev.pygmy.util.Utils;
+import com.dev.pygmy.view.GameViewManager;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.lib.pygmy.PygmyGame;
@@ -414,8 +414,8 @@ public class GameHelper {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 
-						DownloadTask downloadtask = new DownloadTask(mContext);
-						downloadtask.setOnPostExecutor(new DownloadTask.OnPostExecutor() {
+						GameDownloadTask downloadtask = new GameDownloadTask(mContext);
+						downloadtask.setOnPostExecutor(new GameDownloadTask.OnPostExecutor() {
 							
 							@Override
 							public void onPostExecute() {

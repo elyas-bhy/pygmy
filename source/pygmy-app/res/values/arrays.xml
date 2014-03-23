@@ -5,22 +5,33 @@
         <item>@string/Day</item>
         <item>@string/Night</item>
     </string-array>
+    
     <string-array name="SkinData">
         <item>1</item>
         <item>2</item>
     </string-array>
+    
     <string-array name="Conditions">
         <item>@string/cond1</item>
         <item>@string/cond2</item>
         <item>@string/cond3</item>
     </string-array>
+    
     <string-array name="CondData">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
+    
     <string-array name="SettingGame">
         <item>Settings</item>
+    </string-array>
+    
+    <string-array name="report_reasons">
+        <item>Game crashes</item>
+        <item>Offensive content</item>
+        <item>Unbalanced rules</item>
+        <item>Other</item>
     </string-array>
 
 </resources>

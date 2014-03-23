@@ -33,9 +33,12 @@ import android.widget.Toast;
 import com.dev.pygmy.util.Utils;
 
 /**
+ * Worker thread responsible for downloading the binaries
+ * of the specified game
  * @author Pygmy
+ *
  */
-public class DownloadTask extends AsyncTask<String, Void, Void> {
+public class GameDownloadTask extends AsyncTask<String, Void, Void> {
 
 	private final static int TOAST_DELAY = 2000;
 	
@@ -43,7 +46,7 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
 	private ProgressDialog mDialog;
 	private Context mContext;
 
-	public DownloadTask(Context context) {
+	public GameDownloadTask(Context context) {
 		mContext = context;
 	}
 
