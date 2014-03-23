@@ -71,7 +71,6 @@ public class GameHomePageActivity extends Activity {
 	
 	private Spinner spinner;
 	private Button button;
-	private TextView titleView, summaryView;
 	private AlertDialog reportDialog;
 	
 	private GameHolder mGame;
@@ -245,8 +244,7 @@ public class GameHomePageActivity extends Activity {
 
 			String result = null;
 			try {
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(is));
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 				StringBuilder sb = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
@@ -278,16 +276,13 @@ public class GameHomePageActivity extends Activity {
 			// Check if the game is already on the device or not
 			checkDownload();
 
-			titleView = (TextView) findViewById(R.id.name_game);
-			titleView.setText(mGame.name);
-			summaryView = (TextView) findViewById(R.id.name_resume);
-			summaryView.setText(mGame.summary);
+			((TextView) findViewById(R.id.name_game)).setText(mGame.name);
+			((TextView) findViewById(R.id.name_resume)).setText(mGame.summary);
 
 			ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
 			URL imageUrl = null;
 			try {
 				imageUrl = new URL(mGame.image);
-
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}

@@ -58,19 +58,13 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
 
 /**
- * TBMPSkeleton: A minimalistic "game" that shows turn-based multiplayer
- * features for Play Games Services. In this game, you can invite a variable
- * number of players and take turns editing a shared state, which consists of
- * single string. You can also select automatch players; all known players play
- * before automatch slots are filled.
- * 
- * INSTRUCTIONS: To run this sample, please set up a project in the Developer
+ * INSTRUCTIONS: To run this app, please set up a project in the Developer
  * Console. Then, place your app ID on res/values/ids.xml. Also, change the
  * package name to the package name you used to create the client ID in
  * Developer Console. Make sure you sign the APK with the certificate whose
  * fingerprint you entered in Developer Console when creating your Client Id.
  * 
- * @author Wolff (wolff@google.com), 2013
+ * @author Pygmy
  */
 public class MainActivity extends BaseGameActivity implements
 		TurnBasedMultiplayerListener, PygmyTurnListener {
@@ -85,7 +79,7 @@ public class MainActivity extends BaseGameActivity implements
 	// How long to show toasts
 	private final static int TOAST_DELAY = 2000;
 
-	// Reference to the selected game's source
+	// Selected game's infos
 	private String gameId;
 	private String gameVersion;
 	private boolean shouldStartMatch;
@@ -326,13 +320,11 @@ public class MainActivity extends BaseGameActivity implements
 		}
 	}
 
-	// Switch to profile view
+	// Switches to profile view
 	private void setProfileView() {
 		if (!isSignedIn()) {
 			setViewVisibility();
 		} else {
-
-			// Initialisation
 			URL imageUrl = null;
 			URL iconUrl = null;
 			URL iconUrl2 = null;
@@ -346,9 +338,8 @@ public class MainActivity extends BaseGameActivity implements
 			String previousImage = PygmyApp.persistence.getPreviousGame().getImage();
 			String lastGame = PygmyApp.persistence.getLastGame().getName();
 			String lastImage = PygmyApp.persistence.getLastGame().getImage();
-
 			
-			// Getting URL
+			// Load image URLs
 			try {
 				imageUrl = new URL(p.getImage().getUrl());
 				iconUrl = new URL(previousImage);
@@ -357,7 +348,7 @@ public class MainActivity extends BaseGameActivity implements
 				e.printStackTrace();
 			}
 
-			// Setting text and image in views
+			// Set texts and images in views
 			((TextView) findViewById(R.id.last_played)).setText(previousGame);
 			((TextView) findViewById(R.id.last_played2)).setText(lastGame);
 			
