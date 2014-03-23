@@ -45,8 +45,6 @@ import android.widget.ListView;
 import com.dev.pygmy.MainActivity;
 import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
-import com.dev.pygmy.R.id;
-import com.dev.pygmy.R.layout;
 import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.Utils;
 

@@ -29,8 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dev.pygmy.R;
-import com.dev.pygmy.R.id;
-import com.dev.pygmy.R.layout;
 import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.ImageDownloader;
 

@@ -25,7 +25,6 @@ public class Persistence {
 	private final String PREF_SOUND_CHECK = "pref_check_sound";
 	private final String PREF_NOTIF_CHECK = "pref_check_notif";
 	private final String PREF_VIBRATE_CHECK = "pref_check_vibrate";
-	//private final String PREF_SKIN_SELECT = "pref_select_skin";
 	
 	private GamePreferences previousGame;
 	private GamePreferences lastGame;

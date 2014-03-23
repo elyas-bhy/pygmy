@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * This class allows to manage the different user parameters for our application.
+ * Persists data of recently played games
  * @author Pygmy
+ * 
  */
 public class GamePreferences {
 	
@@ -24,7 +25,7 @@ public class GamePreferences {
 	private final String DEFAULT_NAME = "None";
 	private final String DEFAULT_IMAGE =  Utils.BASE_URL + "/gamesImages/Default/logo_home_page.png";
 	private final String DEFAULT_VERSION = "0.1";
-	private final String DEFAULT_SUMMARY = "None";
+	private final String DEFAULT_SUMMARY = "No description";
 	private final String DEFAULT_FILENAME = "game.jar";
 	
 	private SharedPreferences prefs;
