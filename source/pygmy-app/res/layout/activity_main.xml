@@ -134,7 +134,9 @@
             android:layout_height="3dp"
             android:background="@color/orange" />
 
-        <LinearLayout style="@style/box_profile" >
+        <LinearLayout style="@style/box_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
             <!-- LAST PLAYED -->
 

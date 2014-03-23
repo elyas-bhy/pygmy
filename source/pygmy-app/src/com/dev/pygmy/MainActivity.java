@@ -100,6 +100,8 @@ public class MainActivity extends BaseGameActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mGameHelper = new GameHelper(this);
+		
+		
 
 		// Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
@@ -119,6 +121,7 @@ public class MainActivity extends BaseGameActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.default_actionbar, menu);
+		menu.findItem(R.id.set_report).setVisible(false);
 		return true;
 	}
 
