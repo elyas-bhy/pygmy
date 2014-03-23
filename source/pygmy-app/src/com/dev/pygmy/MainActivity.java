@@ -30,7 +30,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -83,25 +82,22 @@ public class MainActivity extends BaseGameActivity implements
 	public static final String EXTRA_GAME_ID = "com.dev.pygmy.EXTRA_GAME_ID";
 	public static final String EXTRA_GAME_VERSION = "com.dev.pygmy.EXTRA_GAME_VERSION";
 	
-	private GamePreferences mGamePrefs;
-
 	// How long to show toasts.
 	private final static int TOAST_DELAY = 2000;
-
-	private GameHelper mGameHelper;
-	private SlidingMenu mSlidingMenu;
 
 	// Reference to the selected game's source
 	private String gameID;
 	private String gameVersion;
+	
+	private SlidingMenu mSlidingMenu;
+	private GameHelper mGameHelper;
+	private GamePreferences mGamePrefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mGameHelper = new GameHelper(this);
-		
-		
 
 		// Start animation
 		TranslateAnimation animation = new TranslateAnimation(500, 0, 0, 0);
@@ -154,14 +150,10 @@ public class MainActivity extends BaseGameActivity implements
 				R.string.app_name));
 
 		List<NavbarItem> entries = new ArrayList<NavbarItem>();
-		entries.add(new NavbarEntryItem(R.drawable.ic_action_home,
-				R.string.home));
-		entries.add(new NavbarEntryItem(R.drawable.ic_action_icon_games,
-				R.string.games));
-		entries.add(new NavbarEntryItem(R.drawable.ic_action_sword,
-				R.string.check_games));
-		entries.add(new NavbarEntryItem(R.drawable.ic_action_signout,
-				R.string.sign_out));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_home, R.string.home));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_icon_games, R.string.games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_sword, R.string.check_games));
+		entries.add(new NavbarEntryItem(R.drawable.ic_action_signout, R.string.sign_out));
 		NavbarAdapter adapter = new NavbarAdapter(this, entries);
 
 		// Assign adapter to slidemenu list view
@@ -180,8 +172,7 @@ public class MainActivity extends BaseGameActivity implements
 					setProfileView();
 				}
 				if (position == 1) {
-					Intent intent = new Intent(MainActivity.this,
-							GameListActivity.class);
+					Intent intent = new Intent(MainActivity.this, GameListActivity.class);
 					startActivityForResult(intent, RC_SELECT_GAME);
 				}
 				if (position == 2) {
@@ -204,10 +195,8 @@ public class MainActivity extends BaseGameActivity implements
 					public void onClick(View v) {
 						// Start the asynchronous sign in flow
 						beginUserInitiatedSignIn();
-						findViewById(R.id.sign_in_button).setVisibility(
-								View.GONE);
-						findViewById(R.id.offline_button).setVisibility(
-								View.GONE);
+						findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+						findViewById(R.id.offline_button).setVisibility(View.GONE);
 						findViewById(R.id.welcome).setVisibility(View.GONE);
 					}
 				});
@@ -271,8 +260,6 @@ public class MainActivity extends BaseGameActivity implements
 		setViewVisibility();
 	}
 
-	// Sign-in, Sign out behavior
-
 	// Update the visibility based on what state we're in.
 	public void setViewVisibility() {
 		FrameLayout gameplayLayout = ((FrameLayout) findViewById(R.id.gameplay_layout));
@@ -285,9 +272,7 @@ public class MainActivity extends BaseGameActivity implements
 			findViewById(R.id.matchup_layout).setVisibility(View.GONE);
 			gameplayLayout.setVisibility(View.GONE);
 
-			if (mGameHelper.getDialog() != null) {
-				mGameHelper.getDialog().dismiss();
-			}
+			mGameHelper.dismissDialog();
 			return;
 		}
 		
@@ -435,7 +420,7 @@ public class MainActivity extends BaseGameActivity implements
 			}
 			break;
 
-		case RC_LOOK_AT_MATCHES: // Returning from the 'Select Match' dialog
+		case RC_LOOK_AT_MATCHES:  // Returning from the 'Select Match' dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
 				return;
@@ -450,8 +435,7 @@ public class MainActivity extends BaseGameActivity implements
 			PygmyApp.logD("Match = " + match);
 			break;
 
-		case RC_SELECT_PLAYERS: // Returned from 'Select players to Invite'
-								// dialog
+		case RC_SELECT_PLAYERS:  // Returned from 'Select players to Invite' dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
 				return;
@@ -556,8 +540,7 @@ public class MainActivity extends BaseGameActivity implements
 	}
 
 	@Override
-	public void onTurnBasedMatchesLoaded(int statusCode,
-			LoadMatchesResponse response) {
+	public void onTurnBasedMatchesLoaded(int statusCode, LoadMatchesResponse response) {
 		// Not used.
 	}
 

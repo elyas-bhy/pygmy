@@ -399,8 +399,10 @@ public class GameHelper {
 		return isDoingTurn;
 	}
 
-	public AlertDialog getDialog() {
-		return mAlertDialog;
+	public void dismissDialog() {
+		if (mAlertDialog != null) {
+			mAlertDialog.dismiss();
+		}
 	}
 	
 	private void showDownloadPrompt() {
