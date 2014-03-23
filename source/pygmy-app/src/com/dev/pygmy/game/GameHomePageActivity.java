@@ -41,7 +41,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +54,7 @@ import com.dev.pygmy.MainActivity;
 import com.dev.pygmy.PygmyApp;
 import com.dev.pygmy.R;
 import com.dev.pygmy.SettingsActivity;
+import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.GamePreferences;
 import com.dev.pygmy.util.ImageDownloader;
 import com.dev.pygmy.util.Utils;
@@ -62,31 +62,21 @@ import com.dev.pygmy.util.Utils;
 public class GameHomePageActivity extends Activity {
 
 	private final static int TOAST_DELAY = 2000;
+
+	private final String[] reportOptions = { " Offensive content",
+			" Game not working ", " Incoherent content ", " Other " };
 	
-	private String reportUrl = Utils.BASE_URL + "/scripts/report.php";
-	private String databaseUrl = Utils.BASE_URL + "/scripts/update.php";
+	private final String reportUrl = Utils.BASE_URL + "/scripts/report.php";
+	private final String databaseUrl = Utils.BASE_URL + "/scripts/update.php";
+	
 	private Spinner spinner;
 	private Button button;
-
 	private TextView titleView, summaryView;
-
-	private String latestVersion;
-
-	private int id;
-	private boolean downloaded = false;
-	private String gameName;
-	private String summary;
-	private String filename;
-	private String version;
-	private String image;
-
 	private AlertDialog reportDialog;
-
-	private final String[] report_option = { " Offensive content",
-			" Game not working ", " Incoherent content ", " Other " };
-
-	private int minPlayers;
-	private int maxPlayers;
+	
+	private GameHolder mGame;
+	private String latestVersion;
+	private boolean downloaded = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,26 +85,21 @@ public class GameHomePageActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		button = (Button) findViewById(R.id.play_downloadButton);
+		mGame = new GameHolder();
 
 		// Retrieve informations of the game selected
-		Bundle extras;
-
-		extras = getIntent().getExtras();
-		id = extras.getInt("id");
-		gameName = extras.getString("gameName");
-		summary = extras.getString("summary");
-		filename = extras.getString("filename");
-		version = extras.getString("version");
-		image = extras.getString("image");
-		minPlayers = extras.getInt("minPlayer");
-		maxPlayers = extras.getInt("maxPlayer");
+		Bundle extras = getIntent().getExtras();
+		mGame.id = extras.getInt("id");
+		mGame.name = extras.getString("gameName");
+		mGame.summary = extras.getString("summary");
+		mGame.filename = extras.getString("filename");
+		mGame.version = extras.getString("version");
+		mGame.image = extras.getString("image");
+		mGame.minPlayers = extras.getInt("minPlayer");
+		mGame.maxPlayers = extras.getInt("maxPlayer");
 
 		new FetchUpdateTask().execute();
 	}
-
-	/*
-	 * protected void onResume() { PygmyApp.logD("onResume"); }
-	 */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -124,10 +109,10 @@ public class GameHomePageActivity extends Activity {
 			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		case R.id.set_report:
-			reportDialog();
+			onReportClick();
 			return true;
 		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
+			setResult(RESULT_CANCELED);
 			finish();
 			return true;
 		default:
@@ -143,108 +128,83 @@ public class GameHomePageActivity extends Activity {
 	}
 
 	public void onReportClicked(View view) {
-		new GameFetchTask(reportUrl, gameName, spinner).execute();
-		Toast.makeText(this, "Report Done", TOAST_DELAY).show();
+		new GameFetchTask(reportUrl, mGame.name, spinner).execute();
+		Toast.makeText(this, "Report sent", TOAST_DELAY).show();
 	}
 
 	public void onPlayDownloadClicked(View view) {
 		if (!downloaded) {
-			DownloadTask downloadtask = new DownloadTask(
-					GameHomePageActivity.this);
-			downloadtask.execute(gameName, version, filename);
+			DownloadTask downloadtask = new DownloadTask(GameHomePageActivity.this);
+			downloadtask.execute(mGame.name, mGame.version, mGame.filename);
 			downloaded = true;
 			button.setText("Play");
 		} else {
 			// Play is pressed
 			putGamePreferences();
 			Intent data = new Intent();
-			data.putExtra(MainActivity.EXTRA_GAME_ID, gameName);
-			data.putExtra(MainActivity.EXTRA_GAME_VERSION, version);
-			PygmyApp.logE("GHA DATA : " + data);
+			data.putExtra(MainActivity.EXTRA_GAME_ID, mGame.name);
+			data.putExtra(MainActivity.EXTRA_GAME_VERSION, mGame.version);
 			setResult(MainActivity.RC_SELECT_GAME, data);
 			finish();
 		}
 	}
 
-	// check if the most recent version of the game is installed on the device
+	/**
+	 * Checks if the most recent version of the game is installed on the device
+	 */
 	private void checkDownload() {
-		File gameFolder = new File(Utils.getGamePath(this, gameName));
-		File versionFolder = new File(Utils.getGamePath(this, gameName, version));
+		File gameFolder = new File(Utils.getGamePath(this, mGame.name));
+		File versionFolder = new File(Utils.getGamePath(this, mGame.name, mGame.version));
 		
-		if (gameFolder.exists() && versionFolder.exists() && version.equals(latestVersion)) {
+		if (gameFolder.exists() && versionFolder.exists() && mGame.version.equals(latestVersion)) {
 			downloaded = true;
 			button.setText("Play");
-		} else if (gameFolder.exists() && !versionFolder.exists()) {
-			// deleteDirectory(gameFolder);
-			downloaded = false;
 		} else {
 			downloaded = false;
 		}
-	}
-
-	// delete old version of a game
-	public static boolean deleteDirectory(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			if (files == null) {
-				return true;
-			}
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					deleteDirectory(files[i]);
-				} else {
-					files[i].delete();
-				}
-			}
-		}
-		return (path.delete());
 	}
 	
 	// Save the games preferences on the device
 	public void putGamePreferences() {
 		GamePreferences previousGame = PygmyApp.persistence.getPreviousGame();
 		PygmyApp.persistence.copyToLastGame(previousGame);
-		previousGame.setId(id);
-		previousGame.setName(gameName);
-		previousGame.setSummary(summary);
-		previousGame.setImage(image);
-		previousGame.setVersion(version);
-		previousGame.setFilename(filename);
-		previousGame.setMinPlayers(minPlayers);
-		previousGame.setMaxPlayers(maxPlayers);
+		previousGame.setId(mGame.id);
+		previousGame.setName(mGame.name);
+		previousGame.setSummary(mGame.summary);
+		previousGame.setImage(mGame.image);
+		previousGame.setVersion(mGame.version);
+		previousGame.setFilename(mGame.filename);
+		previousGame.setMinPlayers(mGame.minPlayers);
+		previousGame.setMaxPlayers(mGame.maxPlayers);
 	}
-
-	private void reportDialog() {
-
-		// arraylist to keep the selected items
-		final ArrayList report_selected = new ArrayList();
+	
+	private void onReportClick() {
+		final ArrayList<Integer> selections = new ArrayList<Integer>();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Report: "
-				+ ((TextView) findViewById(R.id.name_game)).getText());
-		builder.setMultiChoiceItems(report_option, null,
+		builder.setTitle("Report: " + ((TextView) findViewById(R.id.name_game)).getText());
+		builder.setMultiChoiceItems(reportOptions, null,
 				new DialogInterface.OnMultiChoiceClickListener() {
+			
 					@Override
 					public void onClick(DialogInterface dialog,
 							int indexSelected, boolean isChecked) {
 						if (isChecked) {
 							// If the user checked the item, add it to the
 							// selected items
-							report_selected.add(indexSelected);
-						} else if (report_selected.contains(indexSelected)) {
-							// Else, if the item is already in the array, remove
-							// it
-							report_selected.remove(Integer
-									.valueOf(indexSelected));
+							selections.add(indexSelected);
+						} else if (selections.contains(indexSelected)) {
+							// Else, if the item is already in the array, remove it
+							selections.remove(Integer.valueOf(indexSelected));
 						}
 					}
 				})
-				// Set the action buttons
+				// Assign action buttons
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						Toast.makeText(GameHomePageActivity.this,
-								"Report Done", TOAST_DELAY).show();
+								"Report done", TOAST_DELAY).show();
 					}
 				})
 				.setNegativeButton("Cancel",
@@ -268,7 +228,7 @@ public class GameHomePageActivity extends Activity {
 			HttpPost httpPost = new HttpPost(databaseUrl);
 			ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
-			param.add(new BasicNameValuePair("name", gameName));
+			param.add(new BasicNameValuePair("name", mGame.name));
 
 			InputStream is = null;
 			try {
@@ -310,7 +270,6 @@ public class GameHomePageActivity extends Activity {
 				for (int i = 0; i < array.length(); i++) {
 					json = array.getJSONObject(i);
 					latestVersion = json.getString("version");
-					PygmyApp.logE("Version Game : " + latestVersion);
 				}
 			} catch (Exception e) {
 				PygmyApp.logE("Error parsing data: " + e.getMessage());
@@ -319,16 +278,15 @@ public class GameHomePageActivity extends Activity {
 			// Check if the game is already on the device or not
 			checkDownload();
 
-			PygmyApp.logE("downloaded :  " + downloaded);
 			titleView = (TextView) findViewById(R.id.name_game);
-			titleView.setText(gameName);
+			titleView.setText(mGame.name);
 			summaryView = (TextView) findViewById(R.id.name_resume);
-			summaryView.setText(summary);
+			summaryView.setText(mGame.summary);
 
 			ImageView gameIconImage = (ImageView) findViewById(R.id.logo_image_gamepage);
 			URL imageUrl = null;
 			try {
-				imageUrl = new URL(image);
+				imageUrl = new URL(mGame.image);
 
 			} catch (MalformedURLException e) {
 				e.printStackTrace();

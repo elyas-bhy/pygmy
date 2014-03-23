@@ -43,20 +43,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.dev.pygmy.game.GameHomePageActivity;
+import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.Utils;
 
 public class GameListActivity extends Activity {
-	
-	public final class GameHolder {
-		public Integer id;
-		public String name;
-		public String summary;
-		public String fileName;
-		public String version;
-		public String image;
-		public Integer minPlayers;
-		public Integer maxPlayers;
-	}
 
 	private ListView listView;
 	private List<GameHolder> games;
@@ -79,11 +69,11 @@ public class GameListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(GameListActivity.this, GameHomePageActivity.class);
 				GameHolder game = games.get(position);
-				PygmyApp.logE("name : " + game.name);
+				
 				intent.putExtra("id", game.id);
 				intent.putExtra("gameName", game.name);
 				intent.putExtra("summary", game.summary);
-				intent.putExtra("filename", game.fileName);
+				intent.putExtra("filename", game.filename);
 				intent.putExtra("version", game.version);
 				intent.putExtra("image", game.image);
 				intent.putExtra("minPlayer", game.minPlayers);
@@ -94,12 +84,13 @@ public class GameListActivity extends Activity {
 	}
 	
 	@Override
-	public void onActivityResult(int request, int response, Intent data) {
-		PygmyApp.logE("request : "+ request);
-		PygmyApp.logE("response : " + response);
-		PygmyApp.logE("intent data list : " + data);
-		switch (request) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
 		case MainActivity.RC_SELECT_GAME:
+			if (resultCode == RESULT_CANCELED) {
+				return;
+			}
 			setResult(MainActivity.RC_SELECT_GAME, data);
 			finish();
 			break;
@@ -109,7 +100,7 @@ public class GameListActivity extends Activity {
 	private class FetchGamesTask extends AsyncTask<String, String, Void> {
 
 		private InputStream is;
-		private String result = "";
+		private String result;
 
 		@Override
 		protected Void doInBackground(String... params) {
@@ -157,7 +148,7 @@ public class GameListActivity extends Activity {
 					game.id = json.getInt("id_game");
 					game.name = json.getString("name");
 					game.summary = json.getString("resume");
-					game.fileName = json.getString("filename");
+					game.filename = json.getString("filename");
 					game.version = json.getString("version");
 					game.image = json.getString("image");
 					game.minPlayers = json.getInt("min_player");

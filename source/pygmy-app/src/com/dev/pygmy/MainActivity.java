@@ -82,12 +82,13 @@ public class MainActivity extends BaseGameActivity implements
 	public static final String EXTRA_GAME_ID = "com.dev.pygmy.EXTRA_GAME_ID";
 	public static final String EXTRA_GAME_VERSION = "com.dev.pygmy.EXTRA_GAME_VERSION";
 	
-	// How long to show toasts.
+	// How long to show toasts
 	private final static int TOAST_DELAY = 2000;
 
 	// Reference to the selected game's source
-	private String gameID;
+	private String gameId;
 	private String gameVersion;
+	private boolean shouldStartMatch;
 	
 	private SlidingMenu mSlidingMenu;
 	private GameHelper mGameHelper;
@@ -202,11 +203,6 @@ public class MainActivity extends BaseGameActivity implements
 				});
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-
 	// Displays your inbox. You will get back onActivityResult where
 	// you will need to figure out what you clicked on.
 	private void onCheckGamesClicked() {
@@ -221,6 +217,7 @@ public class MainActivity extends BaseGameActivity implements
 	private void onStartMatchClicked() {
 		Intent intent = getGamesClient().getSelectPlayersIntent(1, 2, true);
 		startActivityForResult(intent, RC_SELECT_PLAYERS);
+		shouldStartMatch = false;
 	}
 
 	// Create a one-on-one automatch game.
@@ -323,7 +320,7 @@ public class MainActivity extends BaseGameActivity implements
 
 		setProfileView();
 
-		if (gameID != null) {
+		if (shouldStartMatch) {
 			dismissSpinner();
 			onStartMatchClicked();
 		}
@@ -410,13 +407,13 @@ public class MainActivity extends BaseGameActivity implements
 		case RC_SELECT_GAME:
 			if (data != null) {
 				if (data.hasExtra(EXTRA_GAME_ID))
-					gameID = data.getStringExtra(EXTRA_GAME_ID);
+					gameId = data.getStringExtra(EXTRA_GAME_ID);
 				if (data.hasExtra(EXTRA_GAME_VERSION))
 					gameVersion = data.getStringExtra(EXTRA_GAME_VERSION);
 				showSpinner();
+				shouldStartMatch = true;
 			} else {
-				gameID = null;
-				gameVersion = null;
+				shouldStartMatch = false;
 			}
 			break;
 
@@ -432,12 +429,12 @@ public class MainActivity extends BaseGameActivity implements
 			if (match != null) {
 				updateMatch(match);
 			}
-			PygmyApp.logD("Match = " + match);
 			break;
 
 		case RC_SELECT_PLAYERS:  // Returned from 'Select players to Invite' dialog
 			if (response != Activity.RESULT_OK) {
 				// User canceled
+				shouldStartMatch = false;
 				return;
 			}
 
@@ -482,9 +479,7 @@ public class MainActivity extends BaseGameActivity implements
 	// UI.
 	public void startMatch(TurnBasedMatch match) {
 		showSpinner();
-		mGameHelper.startMatch(match, gameID, gameVersion);
-		gameID = null;
-
+		mGameHelper.startMatch(match, gameId, gameVersion);
 	}
 
 	// If you choose to rematch, then call it and wait for a response.

@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dev.pygmy.GameListActivity.GameHolder;
+import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.ImageDownloader;
 
 public class GameListAdapter extends ArrayAdapter<GameHolder> {
