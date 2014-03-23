@@ -46,7 +46,7 @@ public class PygmyLoader {
 
 	/**
 	 * Updates the path of the next game to load.
-	 * Always call this method before calling {@link PygmyLoader.loadGame()}
+	 * Always call this method before calling {@link #loadGame()}
 	 * @param context
 	 * @param path
 	 */
