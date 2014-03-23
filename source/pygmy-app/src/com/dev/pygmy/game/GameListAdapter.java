@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy;
+package com.dev.pygmy.game;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dev.pygmy.R;
+import com.dev.pygmy.R.id;
+import com.dev.pygmy.R.layout;
 import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.ImageDownloader;
 

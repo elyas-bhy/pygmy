@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dev.pygmy;
+package com.dev.pygmy.game;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -42,7 +42,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.dev.pygmy.game.GameHomePageActivity;
+import com.dev.pygmy.MainActivity;
+import com.dev.pygmy.PygmyApp;
+import com.dev.pygmy.R;
+import com.dev.pygmy.R.id;
+import com.dev.pygmy.R.layout;
 import com.dev.pygmy.util.GameHolder;
 import com.dev.pygmy.util.Utils;
 

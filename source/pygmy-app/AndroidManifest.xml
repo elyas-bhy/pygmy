@@ -55,7 +55,7 @@
         </activity>
         
         <activity 
-            android:name="com.dev.pygmy.GameListActivity"
+            android:name="com.dev.pygmy.game.GameListActivity"
             android:noHistory="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
