@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
@@ -37,10 +38,17 @@ session_start();
 						if(isset($_POST["Password"]) && $_POST["Password"] != '') {
 							$query = "Update developer set password = '".md5($pass)."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
 							echo '<h1>LOADING...</h1>';
+							?>
+							<img src="../Images/loading.gif" align="center" width=80/>
+							<?php
+							// When a change is made in the database we save all the datas on the server
 							include '../scripts/database_backup.php';
 						}
 						else if (isset($_POST["Email"]) && $_POST["Email"] != '') {
 							$query = "Update developer set email = '".$mail."' where username='".htmlspecialchars(addslashes($_SESSION['Login']))."';";
+							echo '<h1>LOADING...</h1>';?>
+							<img src="../Images/loading.gif" align="center" width=80/>
+							<?php
 							include '../scripts/database_backup.php';
 						}
 					

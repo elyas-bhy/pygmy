@@ -26,6 +26,7 @@ session_start();
 					$conn = mysql_connect($host,$user,$password) or die ("Error. You are not registered");
 					mysql_select_db("njouanla") or die ("DB PB");
 	
+					// Retrieve datas from the update form
 					$title = $_GET['game'];
 					$vers = $_REQUEST["Version"];
 					$filename= "game.jar";
@@ -84,7 +85,7 @@ session_start();
 							
 							if($error == False){
 								echo "The file ". basename( $_FILES['code']['name']). " has been uploaded";	
-					
+								// Update database with games information
 								$query = "UPDATE game SET min_player = '$min_player_v', max_player = '$max_player_v', version = '$vers' WHERE name = '$title'";
 								mysql_query($query);
 								include '../scripts/database_backup.php';

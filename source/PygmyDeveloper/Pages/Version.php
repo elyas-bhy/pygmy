@@ -43,7 +43,8 @@ session_start();
 					$password = "pygmyproject";
 					$conn = mysql_connect($host,$user,$password) or die ("Error. You are not registered");
 					mysql_select_db("njouanla") or die ("DB PB");
-
+					
+					// Retrieve datas from the game selected
 					$query = "SELECT version, min_player, max_player FROM game WHERE name = '".$_GET['game']."';";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result)) {

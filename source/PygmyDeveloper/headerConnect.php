@@ -12,7 +12,7 @@
  <body>
 	 <div id="content">
 		<div id="banner">
-				
+				<!-- Header for pages when a developer is logged in -->
 
 				<div id="login">
 					<p><?php

@@ -36,8 +36,8 @@ session_start();
 					$max_player = $_REQUEST["max"];
 					}
 					else{
-					$min_player = '1';
-					$max_player = '1';
+					$min_player = '2';
+					$max_player = '2';
 					}
 					
 					$check = "SELECT * FROM game WHERE name = '$title'";
@@ -82,7 +82,7 @@ session_start();
 						echo 'You need to upload a .jar file.<br>';
 					  }
 					  else {
-
+						// Save the path of the game on the database and the code on the server
 					    if(move_uploaded_file($_FILES['code']['tmp_name'], $target)){
 						
 							echo "The file ". basename( $_FILES['code']['name']). " has been uploaded";	

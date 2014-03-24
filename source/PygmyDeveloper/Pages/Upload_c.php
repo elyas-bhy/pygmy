@@ -40,8 +40,8 @@ session_start();
 			<table id="upload">
 			<tr><td><th class="left"><label>Title (no spaces)* : </label></th><th><input required="true" type="text" size="20" name="Title"/></th></td></tr>
 			<tr><td><th class="left"><label>Description (size max 200)* : </label></th><th><textarea required="true" type="text" size="200" name="Resume"></textarea></textarea></th></td></tr>
-			<tr><td><th class="left"><label>Min player (default value 1) : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
-			<tr><td><th class="left"><label>Max player (default value 1) : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
+			<tr><td><th class="left"><label>Min player (default value 2) : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
+			<tr><td><th class="left"><label>Max player (default value 2) : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
 			</table>
 			<p>Please upload a .jar file. /!\ Filename must be game.jar /!\ .</p>
 			<p><input required="true" type="file" name="code"></p>
@@ -49,7 +49,7 @@ session_start();
 			<p><input type="file" name="image"></p>
 			<p><input type="submit" value="UPLOAD"/></p>
 			<input type="reset" value="RESET"/></p>
-			<p>* You need to renseign this field.</p>
+			<p>* Required.</p>
 			</form>
 					
 		</div>

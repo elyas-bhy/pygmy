@@ -38,6 +38,7 @@ session_start();
 						
 						if (mysql_num_rows($check_log) == 0) 
 						{
+							// Add a new developer in the database
 							$query = 'INSERT INTO developer(username, password, email) VALUES ("'.$login.'","'.md5($pass).'","'.$mail.'")';
 							mysql_query($query);
 		

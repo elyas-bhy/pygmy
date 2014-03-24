@@ -25,7 +25,7 @@
  <body>
 	 <div id="content">
 		<div id="banner">
-				
+				<!-- Header for pages when user not logged in -->
 
 				<div id="login">
 					<p><?php

@@ -49,11 +49,11 @@ session_start();
 			$password = $row['password'];
 			$mail = $row['email'];
 			}
-
+			// Start the session with developer infos from the database
 			if($_POST['Login'] == $login && md5($_POST['Password']) == $password)
 				{
 					$islogged = true;
-
+	
 					$_SESSION['Login'] = $login;
 					$_SESSION['Password'] = $password;
 					$_SESSION['Email'] = $mail;
