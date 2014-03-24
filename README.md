@@ -12,7 +12,7 @@ Developers can use the Pygmy Android library to develop their own board games, a
 5. Invite your friends and enjoy your gaming experience!
 
 ### Contributing to Pygmy
-In order to contribute to the Pygmy project, follow [these instructions]().
+In order to contribute to the Pygmy project, follow [these instructions](https://github.com/elyas-bhy/pygmy/wiki/Contributing-to-the-Pygmy-project).
 
 ### Developing a Pygmy game
 In order to develop a game using the Pygmy library, head over to the [Pygmy Developer site](http://nicolas.jouanlanne.emi.u-bordeaux1.fr/PygmyDeveloper/).
