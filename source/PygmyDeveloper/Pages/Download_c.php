@@ -23,12 +23,16 @@ session_start();
 					{
 		?>
 					
-		<a href="../download/game.jar">	<img src="../Images/download.png"  align="center" width=80/></a>	
-		<div id="tab">
+		<img src="../Images/download.png"  align="center" width=80/>
+		<div id="tabDownload">
 		<TABLE BORDER="1" id="dwld"> 
 			<TR> 
-			<TH> Pygmy </TH> 
-			<TD> <a href="../download/game.jar">PYGMY (Download me)</a> </TD> 
+			<TH> Pygmy Lib </TH> 
+			<TD> <a href="../download/pygmy-lib.jar">PYGMY LIB(.jar)</a> </TD>
+			</TR>
+			<TR>
+			<TH> Pygmy Client Project </TH> 
+			<TD> <a href="../download/pygmy-client.zip">PYGMY CLIENT PROJECT(.zip)</a> </TD>
 			</TR> 
 		</TABLE> 	
 		<h1>

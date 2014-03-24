@@ -60,7 +60,7 @@ session_start();
 					$_SESSION['islogged'] = $islogged;
 					echo 'Redirection';
 					echo '<meta http-equiv="refresh" content="1; URL=PygmyLog_c.php"> <br/>';
-					echo '<a href="PygmyLog.php" class="lien"> (Or click here.)</a></p>';
+					echo '<a href="PygmyLog_c.php" class="lien"> (Or click here.)</a></p>';
 				}
 			else
 				{

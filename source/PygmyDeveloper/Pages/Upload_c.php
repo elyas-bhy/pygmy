@@ -43,7 +43,7 @@ session_start();
 			<tr><td><th class="left"><label>Min player (default value 2) : </label></th><th><input type="text" size="10" name="min"</th></td></tr>
 			<tr><td><th class="left"><label>Max player (default value 2) : </label></th><th><input type="text" size="10" name="max"</th></td></tr>
 			</table>
-			<p>Please upload a .jar file. /!\ Filename must be game.jar /!\ .</p>
+			<p>Please upload a .jar file. /!\ Filename must be game.jar /!\ * .</p>
 			<p><input required="true" type="file" name="code"></p>
 			<p>Select an image for your game. (200ko max)</p>
 			<p><input type="file" name="image"></p>

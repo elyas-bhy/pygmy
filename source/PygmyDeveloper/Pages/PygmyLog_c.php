@@ -46,6 +46,7 @@ session_start();
 		<input type="submit" name="submit" value="CHANGE">
 		</form>
 		<form method="post" action="Remove.php?username=<?php echo $_SESSION['Login']; ?>">
+		<br>
 		<input type="submit" name="submit" value="DELETE">
 		</form>
 		</p>

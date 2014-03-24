@@ -47,6 +47,7 @@ session_start();
 				<li><a href="Pages/Download_c.php" class="current">DOWNLOADS</a></li>
 				<li><a href="Pages/Upload_c.php">UPLOAD YOUR CODE</a></li>
 				<li><a href="Pages/PygmyLog_c.php">MY SETTINGS</a></li>
+				<li><a href="doc/index.html">REFERENCES</a></li> 
 			</ul>
 		</div>
 

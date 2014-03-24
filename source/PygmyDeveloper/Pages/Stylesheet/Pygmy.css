@@ -333,6 +333,16 @@ input[type=submit], input[type=reset]{
 	padding: auto;
 }
 
+#tabDownload
+{
+	width: 350px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	padding: auto;
+}
+
 
 #menu
 {
